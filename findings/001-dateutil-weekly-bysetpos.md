@@ -1,76 +1,90 @@
-# Finding 001 — `python-dateutil`: `FREQ=WEEKLY` + `BYSETPOS` mis-numbers the first week
+# Finding 001 — WITHDRAWN as a bug: `FREQ=WEEKLY` + `BYSETPOS` with an unsynchronized `DTSTART`
 
-**Status:** confirmed against `python-dateutil` 2.9.0.post0, Python 3.13.5.
-**Not yet reported upstream** — see "Reporting" below.
+**Status: WITHDRAWN 2026-09-05.** Previously classified "confirmed bug in
+`python-dateutil`, ready to report upstream". That classification was wrong and
+the report was never sent. What follows is the corrected account; the original
+claim is described in full below rather than deleted.
 
-## Summary
+**Current classification:** a behavioral difference in territory RFC 5545
+explicitly declares undefined. Not a conformance violation. Not reportable as a
+bug on this evidence.
 
-For `FREQ=WEEKLY` with `BYSETPOS`, dateutil builds the first period's instance
-set from `DTSTART` onward instead of from the start of the week. Positions are
-therefore numbered within a truncated set, and the rule emits an instance that
-is not at any requested position in the real week.
+## What was originally claimed
 
-It does **not** do this for `FREQ=MONTHLY` or `FREQ=YEARLY`, which use the full
-period and correctly yield nothing for a first period whose selected position
-precedes `DTSTART`. So this is an internal inconsistency, not a deliberate
-policy about `DTSTART`.
-
-## Reproduction
-
-```python
-from datetime import datetime
-from dateutil.rrule import rrulestr
-
-# DTSTART is Wednesday 2027-01-06. Its ISO week is Mon 01-04 .. Sun 01-10.
-ds = datetime(2027, 1, 6, 9, 0)
-r = rrulestr("RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=1", dtstart=ds)
-print([d.strftime("%a %Y-%m-%d") for d in r[:3]])
-```
-
-```
-actual:   ['Wed 2027-01-06', 'Mon 2027-01-11', 'Mon 2027-01-18']
-expected: ['Mon 2027-01-11', 'Mon 2027-01-18', 'Mon 2027-01-25']
-```
-
-Position 1 of the week Mon 01-04 .. Sun 01-10 is **Mon 2027-01-04**, which is
-before `DTSTART`. That instance is excluded by the bound, and the week
-contributes nothing. `Wed 2027-01-06` is position 3, never position 1.
-
-Every subsequent week agrees with the expected output; the defect is confined
-to the `DTSTART` week.
-
-## The same shape handled correctly at other frequencies
+That for `FREQ=WEEKLY` with `BYSETPOS`, `python-dateutil` builds the first
+period's instance set from `DTSTART` onward instead of from the start of the
+`WKST`-aligned week, numbers positions within that truncated set, and so emits
+an instance that sits at no requested position in the real week:
 
 ```python
-# MONTHLY: position 1 of Jan 2027 is Mon 01-04, before DTSTART -> January is
-# correctly skipped.
-rrulestr("RRULE:FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1", dtstart=datetime(2027,1,20,9))[:1]
-# -> [Mon 2027-02-01]   correct
-
-# YEARLY: 2nd Thursday of 2026 is 01-08, before DTSTART -> 2026 correctly
-# skipped.
-rrulestr("RRULE:FREQ=YEARLY;BYDAY=TH;BYSETPOS=2", dtstart=datetime(2026,3,31,9))[:1]
-# -> [Thu 2027-01-14]   correct
+ds = datetime(2027, 1, 6, 9, 0)   # a Wednesday
+rrulestr("RRULE:FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=1", dtstart=ds)[:3]
+# -> ['Wed 2027-01-06', 'Mon 2027-01-11', 'Mon 2027-01-18']
 ```
 
-## Why the expected output is the expected output
+Position 1 of the week Mon 01-04 .. Sun 01-10 is Mon 01-04, which precedes
+`DTSTART`. Wed 01-06 is position 3. The argument was that `DTSTART` bounds the
+output but does not redefine where the period begins, and that dateutil's
+`MONTHLY`/`YEARLY` paths — which do skip a first period whose selected position
+precedes `DTSTART` — showed `WEEKLY` to be the inconsistent one.
 
-RFC 5545 §3.3.10 defines `BYSETPOS` over "the set of recurrence instances
-specified by the rule" for a period, and §3.8.5.3 generates the recurrence set
-and *then* bounds it. `DTSTART` bounds the output; it does not redefine where
-the period begins. dateutil's own `MONTHLY`/`YEARLY` behaviour agrees with that
-reading, which is the strongest evidence that `WEEKLY` is the odd one out.
+## Why that is not a bug
 
-The week boundary is `WKST` (default `MO`), not `DTSTART`'s weekday. With
-`WKST=SU` and `BYDAY=SA,SU;BYSETPOS=1` from Wed 2027-01-06, dateutil emits
-`Sat 01-09` first and only then settles onto `Sun 01-10, 01-17, ...`; the
-steady state is right and the first week is wrong in the same way.
+RFC 5545 §3.8.5.3 (Recurrence Rule, Description):
 
-## Reporting
+> The "DTSTART" property value SHOULD be synchronized with the recurrence rule,
+> if specified. The recurrence set generated with a "DTSTART" property value
+> not synchronized with the recurrence rule is undefined.
 
-Blocked on [REQ-0004], the pending request for scoped authorization to open
-Issues on public third-party repositories. Until that is decided I am not
-contacting the project. The finding is written up here so that it is ready to
-send the moment it is authorized, and is useful as a corpus case regardless.
+The reproduction supplies a Wednesday `DTSTART` to a rule that selects the
+first weekday of each week, i.e. Mondays. `DTSTART` is not synchronized with
+the rule, so the recurrence set is undefined by the spec's own terms. An
+implementation cannot violate a requirement the spec declines to make.
 
-[REQ-0004]: https://github.com/kaz8096/ai-terrarium-agent-control/issues/5
+The decisive check, which the original writeup did not run: give the same rule
+a **synchronized** `DTSTART` and dateutil is correct.
+
+```
+DTSTART Mon 2027-01-04 (synchronized)   -> Mon 01-04, 01-11, 01-18, 01-25   correct
+DTSTART Wed 2027-01-06 (unsynchronized) -> Wed 01-06, Mon 01-11, 01-18, 01-25
+```
+
+The entire discrepancy is confined to the unsynchronized case. Emitting
+`DTSTART` itself as the first instance is a defensible reading of "the DTSTART
+property defines the first instance in the recurrence set" (§3.8.5.3, same
+paragraph) — arguably more defensible than silently dropping the user's start
+date.
+
+The internal-inconsistency argument does not rescue the claim either.
+Differing across frequencies inside undefined territory is untidy, not
+non-conforming. It is at most a consistency question for the maintainers, and
+not one worth a maintainer's time on this evidence.
+
+## What went wrong in the reasoning
+
+Three failures, all in the same direction:
+
+1. **Reproduced behavior was treated as established incorrectness.** Running
+   the code showed only what dateutil does. It could not show that the spec
+   required otherwise.
+2. **The applicability condition was never checked.** §3.8.5.3 states the
+   precondition under which the recurrence set is defined at all, one paragraph
+   from text that was cited in support of the claim.
+3. **The falsifying experiment was not run.** Varying `DTSTART` to a
+   synchronized value takes one line and refutes the finding outright.
+
+Agreement between two implementations was doing more work than it can bear.
+Two expanders agreeing about undefined behavior establishes a convention, not
+a conformance result. See the corpus README on synchronization.
+
+## What is still true and still useful
+
+The behavioral difference is real, reproducible, and worth recording — as data
+about what implementations actually do at an unsynchronized start, which is a
+question library authors and corpus consumers legitimately have. It stays in
+the corpus, labeled `undefined-dtstart-unsynchronized`, and it is not a bug
+report.
+
+Credit: the flaw was identified by the Human observer in
+[REQ-0004](https://github.com/kaz8096/ai-terrarium-agent-control/issues/5),
+before anything was sent to anyone.

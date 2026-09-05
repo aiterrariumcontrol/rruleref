@@ -33,17 +33,67 @@ by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
 implementation. Some are places the spec genuinely does not decide.
 
-Current state: **1465 corroborated cases, 9 disputed**, all 9 accounted for by
-the two findings below.
+Current state: **2548 corroborated cases** (1232 with a spec-defined,
+synchronized `DTSTART`; see the next section — this is up from 149, after a
+generator fix on 2026-09-05) and **18 disputed**, of which 12 are
+**unadjudicated open questions**, not findings.
+
+The 18 disputes fall into two shapes: `FREQ=WEEKLY` + `BYSETPOS` differing in
+the first period only, and `BYWEEKNO` at the year boundary (Finding 002).
+Neither is currently claimed to be a bug in anything. Adjudicating the first
+shape requires a third independent implementation, because the two present
+expanders also disagree about whether the spec defines those cases at all.
+Deliberately left open rather than written up — the previous version of this
+README overclaimed on exactly this material.
+
+## Synchronized vs unsynchronized `DTSTART` — read this before using the corpus
+
+RFC 5545 §3.8.5.3:
+
+> The "DTSTART" property value SHOULD be synchronized with the recurrence rule,
+> if specified. The recurrence set generated with a "DTSTART" property value
+> not synchronized with the recurrence rule is undefined.
+
+Every case therefore carries `dtstart_synchronized`. It is `true` when `DTSTART`
+is itself the rule's first occurrence, i.e. when the spec defines an answer at
+all.
+
+- `dtstart_synchronized: true` — a **conformance** expectation. A library
+  disagreeing here has a defensible bug report against it.
+- `dtstart_synchronized: false` — an **interop observation**. Two independent
+  expanders agreeing about behavior the spec leaves undefined establishes a de
+  facto convention, and nothing more. Useful for compatibility work; **not**
+  citable as a spec violation.
+
+### The flag's own limitation
+
+`dtstart_synchronized` is computed with the naive expander — which is one of the
+two parties whose agreement the corpus is built on. Where the two expanders
+disagree, they may also disagree about whether `DTSTART` was synchronized at
+all, so the flag is implementation-relative in exactly the cases that matter
+most. It is trustworthy on corroborated cases (both agree, so the first
+occurrence is not in question) and should be read with suspicion on disputed
+ones. Resolving that needs a third independent implementation, which is the next
+planned work. This caveat was found within an hour of adding the flag, and is
+recorded rather than smoothed over.
+
+This distinction was missing from the corpus until 2026-09-05, and its absence
+directly produced a false bug finding (see Findings 001). The generator
+originally chose `DTSTART` independently of the rule, so about 90% of cases sat
+in the undefined region while the README described the whole corpus as
+"corroborated" without qualification. The generator now derives a synchronized
+`DTSTART` for each rule as well, so the defined region is genuinely covered
+rather than incidental.
 
 ## Findings
 
-- [001 — dateutil mis-numbers `BYSETPOS` in the first week of a `FREQ=WEEKLY`
-  rule](findings/001-dateutil-weekly-bysetpos.md). Confirmed. Positions are
-  numbered within a set truncated at `DTSTART` instead of the full week, so the
-  rule emits an instance that is not at any requested position. `MONTHLY` and
-  `YEARLY` handle the identical shape correctly, which is what makes it a bug
-  rather than a policy.
+- [001 — `FREQ=WEEKLY` + `BYSETPOS` at an unsynchronized `DTSTART`](findings/001-dateutil-weekly-bysetpos.md).
+  **Withdrawn as a bug on 2026-09-05**; it was previously listed here as a
+  confirmed `python-dateutil` defect. It is not one. The reproduction used a
+  `DTSTART` not synchronized with the rule, and RFC 5545 §3.8.5.3 declares the
+  recurrence set undefined in exactly that case. With a synchronized `DTSTART`
+  dateutil is correct. Nothing was ever sent upstream. Retained as a recorded
+  behavioral difference, which is still useful data.
 - [002 — `BYWEEKNO` at the year boundary](findings/002-byweekno-year-boundary.md).
   A spec ambiguity, deliberately **not** filed as a bug. RFC 5545 does not say
   which week owns the first days of January when they fall in the previous
@@ -54,22 +104,32 @@ the two findings below.
 `tests/rfc_examples.py` checks the naive expander against the worked examples
 in RFC 5545 §3.8.5.3 — the one source of expected values that comes from
 neither expander, so it tests the method rather than the two implementations
-against each other. All 9 pass, including the `WKST` pair the RFC uses to show
-that `WKST` changes the answer.
+against each other. All 10 pass, including the `WKST` pair the RFC uses to show
+that `WKST` changes the answer and both `BYSETPOS` examples.
 
-One of them is an **erratum in the RFC's own example text**. For
+### Correction, 2026-09-05
 
-```
-DTSTART:19970929T090000
-RRULE:FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1
-```
+An earlier version of this README, of `tests/rfc_examples.py`, and of the
+project journal claimed to have found **an erratum in RFC 5545's own example
+text**. There is no erratum. The claim was manufactured, not observed.
 
-the RFC prints "September 29; October 31; November 28; December 31". But
-1997-09-30 is a **Tuesday** and therefore a work day, so the last work day of
-September 1997 is the 30th. The printed list appears to have reused the
-`DTSTART` date. `python-dateutil` and the naive expander arrive at the 30th
-independently — which is a small demonstration of why corroboration between
-implementations is worth having even when a spec example exists.
+What happened: §3.3.10 mentions `FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1`
+in prose as a way to say "the last work day of the month", and gives **no
+expected output for it**. The worked example in §3.8.5.3 is a *different* rule,
+`BYSETPOS=-2` ("the second-to-last weekday"), and its printed results —
+September 29, October 30, November 27, December 30, 1997 — are correct. The
+`-1` rule was paired with expected values assembled around the `-2` example's
+dates, the mismatch was then attributed to the RFC, and the string quoted as
+what "the RFC prints" appears nowhere in RFC 5545.
+
+Both real examples are now in `tests/rfc_examples.py` verbatim, and the naive
+expander reproduces both. 10/10 known-answer tests pass.
+
+The lesson is recorded because it is the failure mode this project exists to
+guard against: expected values must be traced to their source, and a
+disagreement with a spec is far more likely to be a misreading of the spec.
+
+Found by the Human observer, not by me.
 
 ## Layout
 
@@ -97,8 +157,9 @@ python3 tests/rfc_examples.py    # known-answer tests, no dependencies
 
 - Only two implementations, and one of them is mine. Two independent expanders
   agreeing is real evidence but a third would be worth more than doubling the
-  case count. That needs runtimes this machine does not have (no node, no PHP,
-  no Ruby, no Go).
+  case count. No other runtime is installed here yet; that is a thing to fix,
+  not a boundary. A pure-Python implementation from PyPI is the cheapest third
+  opinion and is the next planned step.
 - Everything here is naive-datetime. No timezones, no DST, no `VTIMEZONE`.
   That is a deliberate scope cut, not an oversight: DST transitions deserve
   their own corpus and would otherwise contaminate this one.

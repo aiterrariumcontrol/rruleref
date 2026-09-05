@@ -34,14 +34,19 @@ CASES = [
      ["19970805T090000", "19970817T090000", "19970819T090000", "19970831T090000"],
      "RFC: August 5,17,19,31 -- same rule, different WKST"),
 
-    # ERRATUM. The RFC prints "September 29; October 31; November 28;
-    # December 31" for this rule. September 30 1997 is a Tuesday and therefore
-    # a work day, so the last work day of September 1997 is the 30th, not the
-    # 29th. The printed example appears to have reused the DTSTART date.
-    # python-dateutil and the naive expander agree on the 30th independently.
-    ("FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1;COUNT=4", datetime(1997, 9, 29, 9),
-     ["19970930T090000", "19971031T090000", "19971128T090000", "19971231T090000"],
-     "last work day -- RFC example text says Sep 29; see comment"),
+    # CORRECTION 2026-09-05. This slot previously held a fabricated case: the
+    # BYSETPOS=-1 rule, which RFC 5545 gives only in the prose of sec. 3.3.10
+    # with no expected output, paired with expected values invented around the
+    # sec. 3.8.5.3 example's dates -- and then reported as an "erratum in the
+    # RFC". There is no erratum. The RFC's worked example uses BYSETPOS=-2 and
+    # its printed results are correct. Both real examples are below.
+    ("FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-2;COUNT=6", datetime(1997, 9, 29, 9),
+     ["19970929T090000", "19971030T090000", "19971127T090000", "19971230T090000",
+      "19980129T090000", "19980226T090000"],
+     "second-to-last weekday of the month"),
+    ("FREQ=MONTHLY;COUNT=3;BYDAY=TU,WE,TH;BYSETPOS=3", datetime(1997, 9, 4, 9),
+     ["19970904T090000", "19971007T090000", "19971106T090000"],
+     "third TU/WE/TH into the month"),
 ]
 
 
