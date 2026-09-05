@@ -28,6 +28,18 @@ A case goes into `corpus/corroborated.json` only when both agree. Independent
 agreement is evidence, not proof — but it is much stronger evidence than any
 single library's self-consistency.
 
+**Independence is the whole point, and it is rarer than it looks.** Most RRULE
+implementations are not independent readings of RFC 5545; they are descendants
+of `python-dateutil`. `rrule.js` describes itself as "a partial port of the
+`rrule` module from ... python-dateutil" and explicitly attributes one of its
+own RFC non-compliances to that ancestry; `php-rrule` "started as a port of
+python-dateutil"; and the Python packages that look like alternatives
+(`recurring-ical-events`, `icalevents`) depend on dateutil and delegate to it.
+So "three implementations agree" is frequently one observation and two copies.
+That is why the second expander here is written from the spec text rather than
+borrowed, and why adding a third library would not strengthen the corpus.
+See [`findings/003-implementation-lineage.md`](findings/003-implementation-lineage.md).
+
 When they disagree, the case goes to `corpus/disputed.json` and is adjudicated
 by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
