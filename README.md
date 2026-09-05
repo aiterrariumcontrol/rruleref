@@ -37,7 +37,10 @@ python-dateutil"; and the Python packages that look like alternatives
 (`recurring-ical-events`, `icalevents`) depend on dateutil and delegate to it.
 So "three implementations agree" is frequently one observation and two copies.
 That is why the second expander here is written from the spec text rather than
-borrowed, and why adding a third library would not strengthen the corpus.
+borrowed, and why adding a third library adds little. (`rrule.js` 2.8.1 was
+installed and run anyway on 2026-09-05 — see finding 004. It agreed with
+dateutil on 10 of 12 disputes and with neither expander on 2, which is about
+what descent predicts.)
 See [`findings/003-implementation-lineage.md`](findings/003-implementation-lineage.md).
 
 When they disagree, the case goes to `corpus/disputed.json` and is adjudicated
@@ -97,6 +100,28 @@ in the undefined region while the README described the whole corpus as
 `DTSTART` for each rule as well, so the defined region is genuinely covered
 rather than incidental.
 
+## Three separate questions
+
+A case in this corpus answers three questions that are easy to conflate, and
+conflating them is how the corpus previously overstated itself:
+
+1. **Is the rule valid?** `src/validity.py` applies the `MUST NOT` constraints
+   and value ranges of RFC 5545 §3.3.10 directly from the spec text, with no
+   expander involved. Each case carries `rule_valid`. Implementations happily
+   accept prohibited rules, so **agreement on an invalid rule is not evidence
+   of conformance**. 13 corroborated cases combined `FREQ=YEARLY`, `BYWEEKNO`
+   and a numeric `BYDAY` — prohibited by §3.3.10 — and were counted as ordinary
+   corroboration until 2026-09-05. They are now flagged, and the generator
+   rejects invalid rules at the source.
+2. **Is `DTSTART` synchronized with the rule?** `dtstart_synchronized`. If not,
+   §3.8.5.3 declares the recurrence set undefined and there is nothing to
+   conform to. Caveat: this flag is computed by `naive`, so it is
+   implementation-relative exactly where the expanders disagree.
+3. **Do the implementations agree?** That is all `corroborated` means.
+
+Only a case that is valid, synchronized, and corroborated is a candidate
+conformance case, and even then see the caveat on (2).
+
 ## Findings
 
 - [001 — `FREQ=WEEKLY` + `BYSETPOS` at an unsynchronized `DTSTART`](findings/001-dateutil-weekly-bysetpos.md).
@@ -110,8 +135,25 @@ rather than incidental.
   A spec ambiguity, deliberately **not** filed as a bug. RFC 5545 does not say
   which week owns the first days of January when they fall in the previous
   year's last week, and implementations diverge. Recorded as disputed.
+- [004 — `BYSETPOS` applied to a truncated first period](findings/004-bysetpos-first-period-truncation.md).
+  All 12 unadjudicated defined-region disputes are one shape. `python-dateutil`
+  and `rrule.js` drop instances earlier than `DTSTART` *before* applying
+  `BYSETPOS`, so in `DTSTART`'s own period `BYSETPOS` indexes a truncated set.
+  RFC 5545 §3.3.10 says the set "starts at the beginning of the interval defined
+  by the FREQ rule part". An equivalent report is already open upstream
+  ([dateutil#1398](https://github.com/dateutil/dateutil/issues/1398), 2024-11-14),
+  so this is **not** filed as a new bug; it is recorded as a spec/practice
+  divergence, with the mechanism and the citation the existing report lacks.
 
 ## Known-answer tests
+
+`tests/test_validity.py` checks `src/validity.py` against hand-picked valid and
+invalid rules, and asserts that every shipped case's `rule_valid` flag agrees
+with a fresh evaluation. `tests/test_differ.py` tests the *comparator* by fault
+injection: it replaces the expander's output with an empty, truncated, or
+DTSTART-only list and asserts each is reported as a difference. It previously
+was not — the comparator shortened the reference output to match, so an
+expander could omit valid occurrences and still score as agreeing.
 
 `tests/rfc_examples.py` checks the naive expander against the worked examples
 in RFC 5545 §3.8.5.3 — the one source of expected values that comes from

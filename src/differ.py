@@ -5,6 +5,7 @@ sys.path.insert(0, "src")
 from datetime import datetime, timedelta
 import dateutil.rrule as du
 from naive import expand
+import validity
 
 DTSTARTS = [datetime(2026, 1, 1, 9, 0, 0), datetime(2026, 3, 31, 9, 0, 0),
             datetime(2024, 2, 29, 9, 0, 0), datetime(2026, 12, 31, 9, 0, 0),
@@ -28,12 +29,30 @@ def compare(rule, dtstart, n=8):
     theirs = du_expand(rule, dtstart, n)
     if isinstance(theirs, str):
         return (mine, theirs)
-    theirs = [x for x in theirs if x <= horizon]
-    if len(mine) < n:
-        theirs = theirs[:len(mine)] if len(theirs) > len(mine) else theirs
+    # Compare inside one independently defined bound -- the horizon -- and
+    # never shorten one side to match the other. Truncating `theirs` to
+    # len(mine) let an expander omit valid occurrences and still be scored as
+    # agreeing: an empty output compared equal to eight occurrences. See
+    # tests/test_differ.py.
+    mine = [x for x in mine if x <= horizon][:n]
+    theirs = [x for x in theirs if x <= horizon][:n]
     return (mine, theirs) if mine != theirs else None
 
-def gen(rng):
+def gen(rng, _depth=0):
+    """Generate a random rule that is *valid* under RFC 5545 3.3.10.
+
+    Generating rules the spec prohibits (e.g. numeric BYDAY with FREQ=YEARLY
+    and BYWEEKNO) put 13 invalid cases in the corroborated corpus, where
+    implementation agreement looked like conformance evidence. Rejected here
+    at the source; src/validity.py is the check.
+    """
+    r = _gen_raw(rng)
+    if validity.is_valid(r) or _depth > 20:
+        return r
+    return gen(rng, _depth + 1)
+
+
+def _gen_raw(rng):
     freq = rng.choice(["YEARLY", "MONTHLY", "WEEKLY", "DAILY"])
     parts = ["FREQ=" + freq]
     if rng.random() < 0.3:

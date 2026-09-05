@@ -23,7 +23,8 @@
     "20260418T090000",
     "20260425T090000"
    ],
-   "rrule": "FREQ=WEEKLY;BYDAY=FR,SA;BYMONTH=2,4;WKST=WE;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,SA;BYMONTH=2,4;WKST=WE;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -48,7 +49,8 @@
     "20270211T090000",
     "20270218T090000"
    ],
-   "rrule": "FREQ=WEEKLY;BYDAY=FR,TH,TU;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,TH,TU;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -73,7 +75,8 @@
     "20261221T090000",
     "20261228T090000"
    ],
-   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=8,12;WKST=WE;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=8,12;WKST=WE;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -98,7 +101,8 @@
     "20270217T090000",
     "20270224T090000"
    ],
-   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1"
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -123,7 +127,8 @@
     "20280123T090000",
     "20280130T090000"
    ],
-   "rrule": "FREQ=WEEKLY;BYDAY=SU,TH;BYMONTH=1;WKST=MO;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;BYDAY=SU,TH;BYMONTH=1;WKST=MO;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -148,7 +153,8 @@
     "20270507T090000",
     "20270521T090000"
    ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=FR,MO,SU;BYMONTH=5;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=FR,MO,SU;BYMONTH=5;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -173,7 +179,8 @@
     "20240523T090000",
     "20240606T090000"
    ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH,WE;WKST=WE;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH,WE;WKST=WE;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -198,7 +205,8 @@
     "20261112T090000",
     "20270204T090000"
    ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=2,11;BYDAY=SU,TH,TU;BYSETPOS=2"
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=2,11;BYDAY=SU,TH,TU;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -223,7 +231,8 @@
     "20330102T090000",
     "20340102T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2"
+   "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -248,7 +257,8 @@
     "20330102T090000",
     "20340102T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2"
+   "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -273,7 +283,8 @@
     "20450101T090000",
     "20500101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52"
+   "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -298,7 +309,8 @@
     "20450101T090000",
     "20500101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52"
+   "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -319,7 +331,8 @@
     "20490101T090000",
     "20550101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200"
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -340,7 +353,8 @@
     "20490101T090000",
     "20550101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200"
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -361,7 +375,8 @@
     "20490101T090000",
     "20550101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53"
+   "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -382,7 +397,8 @@
     "20490101T090000",
     "20550101T090000"
    ],
-   "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53"
+   "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -407,7 +423,8 @@
     "20471216T090000",
     "20500101T090000"
    ],
-   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1"
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1",
+   "rule_valid": true
   },
   {
    "dateutil": [
@@ -432,13 +449,18 @@
     "20471216T090000",
     "20500101T090000"
    ],
-   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1"
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1",
+   "rule_valid": true
   }
  ],
  "meta": {
   "about": "Cases where the two expanders disagree. Unadjudicated unless referenced in findings/.",
   "dtstart_synchronized_cases": 12,
   "dtstart_unsynchronized_cases": 6,
-  "synchronization_note": "RFC 5545 sec 3.8.5.3 declares the recurrence set undefined when DTSTART is not synchronized with the recurrence rule. Cases with dtstart_synchronized=false record observed cross-implementation convention in that undefined region, NOT a conformance requirement. Consume them as interop data; do not cite them as spec violations."
+  "first_period_truncation_note": "The 12 dtstart_synchronized cases share one shape and are analysed in findings/004-bysetpos-first-period-truncation.md: dateutil and rrule.js drop instances earlier than DTSTART before applying BYSETPOS, so BYSETPOS indexes a truncated set in DTSTART's own period. RFC 5545 3.3.10 says the set 'starts at the beginning of the interval defined by the FREQ rule part'. Recorded as a spec/practice divergence, not as 12 implementation bugs.",
+  "rule_invalid_cases": 0,
+  "rule_valid_cases": 18,
+  "synchronization_note": "RFC 5545 sec 3.8.5.3 declares the recurrence set undefined when DTSTART is not synchronized with the recurrence rule. Cases with dtstart_synchronized=false record observed cross-implementation convention in that undefined region, NOT a conformance requirement. Consume them as interop data; do not cite them as spec violations.",
+  "validity_note": "rule_valid is computed by src/validity.py from RFC 5545 3.3.10 MUST NOT constraints and value ranges, independently of any expander. It is a third, separate dimension: rule validity, DTSTART synchronization, and implementation agreement are different questions. Agreement on a rule the spec prohibits is not evidence of conformance."
  }
 }
