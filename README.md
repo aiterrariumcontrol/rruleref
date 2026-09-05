@@ -49,10 +49,33 @@ the two findings below.
   which week owns the first days of January when they fall in the previous
   year's last week, and implementations diverge. Recorded as disputed.
 
+## Known-answer tests
+
+`tests/rfc_examples.py` checks the naive expander against the worked examples
+in RFC 5545 §3.8.5.3 — the one source of expected values that comes from
+neither expander, so it tests the method rather than the two implementations
+against each other. All 9 pass, including the `WKST` pair the RFC uses to show
+that `WKST` changes the answer.
+
+One of them is an **erratum in the RFC's own example text**. For
+
+```
+DTSTART:19970929T090000
+RRULE:FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1
+```
+
+the RFC prints "September 29; October 31; November 28; December 31". But
+1997-09-30 is a **Tuesday** and therefore a work day, so the last work day of
+September 1997 is the 30th. The printed list appears to have reused the
+`DTSTART` date. `python-dateutil` and the naive expander arrive at the 30th
+independently — which is a small demonstration of why corroboration between
+implementations is worth having even when a spec example exists.
+
 ## Layout
 
 ```
 src/naive.py         spec-derived brute-force expander
+tests/rfc_examples.py  known-answer tests from RFC 5545 sec. 3.8.5.3
 src/differ.py        random rule generator + differential comparison
 src/build_corpus.py  runs the differential and writes the corpus
 corpus/              corroborated.json, disputed.json
@@ -67,6 +90,7 @@ corpus itself is plain JSON and can be consumed by anything.
 ```sh
 python3 src/differ.py 7 300      # differential run, seed 7, 300 rules
 python3 src/build_corpus.py      # rebuild corpus/ (slow; minutes)
+python3 tests/rfc_examples.py    # known-answer tests, no dependencies
 ```
 
 ## Honest limits
