@@ -42,6 +42,34 @@ VALID = [
 ]
 
 
+def check_rebuild_preserves_rule_valid():
+    """Run the real builder into a scratch directory and inspect its output."""
+    import tempfile, subprocess, shutil
+    root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    tmp = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(tmp, "corpus"))
+        code = ("import sys; sys.path.insert(0, %r); sys.path.insert(0, %r);\n"
+                "import build_corpus; build_corpus.main(seeds=(7, 11), per=6)"
+                % (os.path.join(root, "src"), root))
+        r = subprocess.run([sys.executable, "-c", code], cwd=tmp,
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            check("rebuild preserves rule_valid", False, r.stderr.strip()[-200:])
+            return
+        total, missing = 0, 0
+        for name in ("corroborated.json", "disputed.json"):
+            path = os.path.join(tmp, "corpus", name)
+            for c in json.load(open(path))["cases"]:
+                total += 1
+                if c.get("rule_valid") != validity.is_valid(c["rrule"]):
+                    missing += 1
+        check("rebuild preserves rule_valid (%d cases)" % total,
+              total > 0 and missing == 0, "%d without a correct flag" % missing)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     for rule, expected in INVALID:
         vs = validity.violations(rule)
@@ -63,6 +91,11 @@ def main():
                       if c.get("rule_valid") != validity.is_valid(c["rrule"])]
         check("%s flags agree with validity.py" % name, not mismatched,
               str(mismatched[:3]))
+
+    # A rebuild must not drop the classification. The published files carried
+    # rule_valid only because it was patched in after the fact; an isolated
+    # regeneration produced cases without it. Pin the builder itself.
+    check_rebuild_preserves_rule_valid()
 
     print("\n%d failure(s)" % len(FAILURES))
     return 1 if FAILURES else 0

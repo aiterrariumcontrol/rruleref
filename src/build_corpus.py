@@ -15,6 +15,7 @@ sys.path.insert(0, "src")
 from datetime import datetime
 from differ import compare, gen, DTSTARTS, du_expand, HORIZON_DAYS
 from naive import expand
+import validity
 
 N = 8  # occurrences recorded per case
 
@@ -63,6 +64,11 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                     continue
                 seen.add((rule, ds))
                 synced = is_synchronized(rule, ds)
+                # RFC 5545 3.3.10 validity is a separate dimension from
+                # DTSTART synchronization and from implementation agreement.
+                # It is written here, at generation time, so an ordinary
+                # rebuild cannot drop it. See tests/test_validity.py.
+                rule_valid = validity.is_valid(rule)
                 diff = compare(rule, ds, N)
                 if diff is None:
                     occ = expand(rule, ds, limit=N)[:N]
@@ -72,6 +78,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                         "expect": [fmt(x) for x in occ],
                         "truncated": len(occ) == N,
                         "dtstart_synchronized": synced,
+                        "rule_valid": rule_valid,
                         "corroborated_by": ["naive-bruteforce", "python-dateutil-2.9.0"],
                     })
                 else:
@@ -80,6 +87,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                         "rrule": rule,
                         "dtstart": fmt(ds),
                         "dtstart_synchronized": synced,
+                        "rule_valid": rule_valid,
                         "naive": mine if isinstance(mine, str) else [fmt(x) for x in mine],
                         "dateutil": theirs if isinstance(theirs, str) else [fmt(x) for x in theirs],
                     })

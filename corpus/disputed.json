@@ -54,6 +54,58 @@
   },
   {
    "dateutil": [
+    "20270108T090000",
+    "20270115T090000",
+    "20270122T090000",
+    "20270129T090000",
+    "20270205T090000",
+    "20270212T090000",
+    "20270219T090000",
+    "20270226T090000"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "naive": [
+    "20270101T090000",
+    "20270108T090000",
+    "20270115T090000",
+    "20270122T090000",
+    "20270129T090000",
+    "20270205T090000",
+    "20270212T090000",
+    "20270219T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYSETPOS=2",
+   "rule_valid": true
+  },
+  {
+   "dateutil": [
+    "20270108T090000",
+    "20270115T090000",
+    "20270122T090000",
+    "20270129T090000",
+    "20270205T090000",
+    "20270212T090000",
+    "20270219T090000",
+    "20270226T090000"
+   ],
+   "dtstart": "20270101T090000",
+   "dtstart_synchronized": true,
+   "naive": [
+    "20270101T090000",
+    "20270108T090000",
+    "20270115T090000",
+    "20270122T090000",
+    "20270129T090000",
+    "20270205T090000",
+    "20270212T090000",
+    "20270219T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYSETPOS=2",
+   "rule_valid": true
+  },
+  {
+   "dateutil": [
     "20260817T090000",
     "20260824T090000",
     "20260831T090000",
@@ -319,7 +371,9 @@
     "20380101T090000",
     "20390101T090000",
     "20440101T090000",
-    "20490101T090000"
+    "20490101T090000",
+    "20500101T090000",
+    "20550101T090000"
    ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
@@ -341,7 +395,9 @@
     "20380101T090000",
     "20390101T090000",
     "20440101T090000",
-    "20490101T090000"
+    "20490101T090000",
+    "20500101T090000",
+    "20550101T090000"
    ],
    "dtstart": "20270101T090000",
    "dtstart_synchronized": true,
@@ -363,7 +419,9 @@
     "20380101T090000",
     "20390101T090000",
     "20440101T090000",
-    "20490101T090000"
+    "20490101T090000",
+    "20500101T090000",
+    "20550101T090000"
    ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
@@ -385,7 +443,9 @@
     "20380101T090000",
     "20390101T090000",
     "20440101T090000",
-    "20490101T090000"
+    "20490101T090000",
+    "20500101T090000",
+    "20550101T090000"
    ],
    "dtstart": "20270101T090000",
    "dtstart_synchronized": true,
@@ -454,13 +514,6 @@
   }
  ],
  "meta": {
-  "about": "Cases where the two expanders disagree. Unadjudicated unless referenced in findings/.",
-  "dtstart_synchronized_cases": 12,
-  "dtstart_unsynchronized_cases": 6,
-  "first_period_truncation_note": "The 12 dtstart_synchronized cases share one shape and are analysed in findings/004-bysetpos-first-period-truncation.md: dateutil and rrule.js drop instances earlier than DTSTART before applying BYSETPOS, so BYSETPOS indexes a truncated set in DTSTART's own period. RFC 5545 3.3.10 says the set 'starts at the beginning of the interval defined by the FREQ rule part'. Recorded as a spec/practice divergence, not as 12 implementation bugs.",
-  "rule_invalid_cases": 0,
-  "rule_valid_cases": 18,
-  "synchronization_note": "RFC 5545 sec 3.8.5.3 declares the recurrence set undefined when DTSTART is not synchronized with the recurrence rule. Cases with dtstart_synchronized=false record observed cross-implementation convention in that undefined region, NOT a conformance requirement. Consume them as interop data; do not cite them as spec violations.",
-  "validity_note": "rule_valid is computed by src/validity.py from RFC 5545 3.3.10 MUST NOT constraints and value ranges, independently of any expander. It is a third, separate dimension: rule validity, DTSTART synchronization, and implementation agreement are different questions. Agreement on a rule the spec prohibits is not evidence of conformance."
+  "about": "Cases where the two expanders disagree. Unadjudicated unless referenced in findings/."
  }
 }

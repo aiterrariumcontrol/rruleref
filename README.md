@@ -38,9 +38,11 @@ python-dateutil"; and the Python packages that look like alternatives
 So "three implementations agree" is frequently one observation and two copies.
 That is why the second expander here is written from the spec text rather than
 borrowed, and why adding a third library adds little. (`rrule.js` 2.8.1 was
-installed and run anyway on 2026-09-05 — see finding 004. It agreed with
-dateutil on 10 of 12 disputes and with neither expander on 2, which is about
-what descent predicts.)
+installed and run anyway on 2026-09-05 — see finding 004. Under matching
+bounds it agrees with dateutil on **all 13** synchronized disputes and with
+`naive` on none, which is what descent predicts. An earlier claim here that it
+agreed with neither on two cases was an artifact of comparing horizon-clipped
+dateutil output against unclipped rrule.js output; it has been withdrawn.)
 See [`findings/003-implementation-lineage.md`](findings/003-implementation-lineage.md).
 
 When they disagree, the case goes to `corpus/disputed.json` and is adjudicated
@@ -48,16 +50,18 @@ by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
 implementation. Some are places the spec genuinely does not decide.
 
-Current state: **2548 corroborated cases** (1232 with a spec-defined,
+Current state: **2541 corroborated cases** (1230 with a spec-defined,
 synchronized `DTSTART`; see the next section — this is up from 149, after a
-generator fix on 2026-09-05) and **18 disputed**, of which 12 are
+generator fix on 2026-09-05) and **20 disputed**, of which 13 are
 **unadjudicated open questions**, not findings.
 
-The 18 disputes fall into two shapes: `FREQ=WEEKLY` + `BYSETPOS` differing in
-the first period only, and `BYWEEKNO` at the year boundary (Finding 002).
-Neither is currently claimed to be a bug in anything. Adjudicating the first
-shape requires a third independent implementation, because the two present
-expanders also disagree about whether the spec defines those cases at all.
+Of those 13, a per-case test (`src/crosscheck.py`) shows **8** are the
+`FREQ=WEEKLY` + `BYSETPOS` first-period shape of Finding 004 — established by
+re-running dateutil from the period start and checking that the divergence
+disappears, not by assertion. The remaining **5** all involve `BYWEEKNO`, are
+*not* explained by that mechanism, and stay unadjudicated; Finding 002 is a
+hypothesis about them, not a result. An earlier version of this README claimed
+all of them were one shape. That was wrong.
 Deliberately left open rather than written up — the previous version of this
 README overclaimed on exactly this material.
 
@@ -111,8 +115,12 @@ conflating them is how the corpus previously overstated itself:
    accept prohibited rules, so **agreement on an invalid rule is not evidence
    of conformance**. 13 corroborated cases combined `FREQ=YEARLY`, `BYWEEKNO`
    and a numeric `BYDAY` — prohibited by §3.3.10 — and were counted as ordinary
-   corroboration until 2026-09-05. They are now flagged, and the generator
-   rejects invalid rules at the source.
+   corroboration until 2026-09-05. The generator now rejects invalid rules at
+   the source and `build_corpus.py` writes the flag at generation time, so a
+   rebuild cannot drop it; the 13 are gone from the regenerated corpus.
+   `validity.py` is a *detector*, not a guarantee: `NOT_CHECKED` in that module
+   lists what it does not test (satisfiability, DTSTART-dependent constraints,
+   value-type agreement). An empty result means "no checked violation".
 2. **Is `DTSTART` synchronized with the rule?** `dtstart_synchronized`. If not,
    §3.8.5.3 declares the recurrence set undefined and there is nothing to
    conform to. Caveat: this flag is computed by `naive`, so it is
@@ -136,7 +144,8 @@ conformance case, and even then see the caveat on (2).
   which week owns the first days of January when they fall in the previous
   year's last week, and implementations diverge. Recorded as disputed.
 - [004 — `BYSETPOS` applied to a truncated first period](findings/004-bysetpos-first-period-truncation.md).
-  All 12 unadjudicated defined-region disputes are one shape. `python-dateutil`
+  8 of the 13 unadjudicated defined-region disputes are one shape (not all of
+  them, as this entry previously said). `python-dateutil`
   and `rrule.js` drop instances earlier than `DTSTART` *before* applying
   `BYSETPOS`, so in `DTSTART`'s own period `BYSETPOS` indexes a truncated set.
   RFC 5545 §3.3.10 says the set "starts at the beginning of the interval defined
@@ -144,6 +153,8 @@ conformance case, and even then see the caveat on (2).
   ([dateutil#1398](https://github.com/dateutil/dateutil/issues/1398), 2024-11-14),
   so this is **not** filed as a new bug; it is recorded as a spec/practice
   divergence, with the mechanism and the citation the existing report lacks.
+  It is **not** a demonstrated specification violation: whether §3.8.5.3's
+  "undefined" clause applies is itself decided by the reading under dispute.
 
 ## Known-answer tests
 

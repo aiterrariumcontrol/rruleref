@@ -13,6 +13,7 @@ import re
 
 DAYS = ("SU", "MO", "TU", "WE", "TH", "FR", "SA")
 _WEEKDAYNUM = re.compile(r"^([+-]?\d{1,2})?(SU|MO|TU|WE|TH|FR|SA)$")
+ORDWK = (1, 53)  # RFC 5545 3.3.10 ABNF: ordwk = 1*2DIGIT ;1 to 53
 
 # (id, quoted RFC sentence)
 RULES = {
@@ -41,7 +42,32 @@ RULES = {
         "in the same 'recur'."),
     "value-range": (
         "Valid values are as stated per rule part in RFC 5545 3.3.10."),
+    "freq-value": (
+        'freq = "SECONDLY" / "MINUTELY" / "HOURLY" / "DAILY" / "WEEKLY" '
+        '/ "MONTHLY" / "YEARLY"'),
+    "part-repeated": (
+        "The other rule parts are OPTIONAL, but MUST NOT occur more than "
+        "once."),
+    "count-zero": (
+        'COUNT = 1*DIGIT, and "The COUNT rule part defines the number of '
+        'occurrences at which to range-bound the recurrence. The DTSTART '
+        'property value always counts as the first occurrence." COUNT=0 is '
+        "syntactically well-formed but cannot describe a recurrence whose "
+        "first occurrence is DTSTART; flagged separately for that reason."),
 }
+
+FREQS = ("SECONDLY", "MINUTELY", "HOURLY", "DAILY", "WEEKLY", "MONTHLY",
+         "YEARLY")
+
+#: What `violations()` does *not* check. An empty result means "no violation
+#: of the checks below was detected", never "this rule is valid".
+NOT_CHECKED = (
+    "BYSECOND/BYMINUTE/BYHOUR with a DATE-valued DTSTART (needs DTSTART)",
+    "UNTIL value-type and UTC agreement with DTSTART (needs DTSTART)",
+    "whether the rule is satisfiable at all (e.g. BYMONTHDAY=30;BYMONTH=2)",
+    "whether DTSTART is synchronized with the rule (RFC 5545 3.8.5.3)",
+    "RRULE-vs-RECUR framing: property parameters, folding, escaping",
+)
 
 RANGES = {  # part -> (lo, hi, allow_negative_mirror)
     "BYSECOND": (0, 60, False), "BYMINUTE": (0, 59, False),
@@ -65,6 +91,18 @@ def parse(rule):
         k, v = chunk.split("=", 1)
         out[k.strip().upper()] = v.strip()
     return out
+
+
+def _repeated(rule):
+    seen, dup = set(), []
+    for chunk in rule.strip().split(";"):
+        if not chunk or "=" not in chunk:
+            continue
+        k = chunk.split("=", 1)[0].strip().upper()
+        if k in seen:
+            dup.append(k)
+        seen.add(k)
+    return dup
 
 
 def _ints(raw):
@@ -93,9 +131,25 @@ def violations(rule):
     freq = p.get("FREQ")
     if not freq:
         bad("freq-required", "FREQ", "FREQ is absent")
+    elif freq.upper() not in FREQS:
+        bad("freq-value", "FREQ", "%r is not one of %s" % (freq, ", ".join(FREQS)))
+
+    for k in _repeated(rule):
+        bad("part-repeated", k, "%s occurs more than once" % k)
 
     if "COUNT" in p and "UNTIL" in p:
         bad("count-until-exclusive", "COUNT/UNTIL", "both present")
+
+    if "COUNT" in p:
+        try:
+            c = int(p["COUNT"])
+        except ValueError:
+            bad("value-range", "COUNT", "unparseable %r" % p["COUNT"])
+        else:
+            if c < 0:
+                bad("value-range", "COUNT", "COUNT = 1*DIGIT, %d is negative" % c)
+            elif c == 0:
+                bad("count-zero", "COUNT", "COUNT=0")
 
     if "BYDAY" in p:
         numeric = []
@@ -105,6 +159,10 @@ def violations(rule):
                 bad("value-range", "BYDAY", "unparseable weekdaynum %r" % tok)
                 continue
             if m.group(1) is not None:
+                n = abs(int(m.group(1)))
+                if not (ORDWK[0] <= n <= ORDWK[1]):
+                    bad("value-range", "BYDAY",
+                        "ordwk %s out of range 1..53 in %r" % (m.group(1), tok.strip()))
                 numeric.append(tok.strip())
         if numeric:
             if freq not in ("MONTHLY", "YEARLY"):

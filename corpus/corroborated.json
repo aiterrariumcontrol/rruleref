@@ -488,6 +488,48 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260401T090000",
+    "20260402T090000",
+    "20260403T090000",
+    "20260408T090000",
+    "20260409T090000",
+    "20260410T090000",
+    "20260415T090000",
+    "20260416T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYDAY=FR,TH,WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260401T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260401T090000",
+    "20260402T090000",
+    "20260403T090000",
+    "20260408T090000",
+    "20260409T090000",
+    "20260410T090000",
+    "20260415T090000",
+    "20260416T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYDAY=FR,TH,WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -1187,48 +1229,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260905T090000",
-    "20260907T090000",
-    "20260912T090000",
-    "20260914T090000",
-    "20260919T090000",
-    "20260921T090000",
-    "20260926T090000",
-    "20260928T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=MO,SA;BYMONTH=1,9",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260905T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260905T090000",
-    "20260907T090000",
-    "20260912T090000",
-    "20260914T090000",
-    "20260919T090000",
-    "20260921T090000",
-    "20260926T090000",
-    "20260928T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=MO,SA;BYMONTH=1,9",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260331T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -1527,48 +1527,6 @@
     "20260128T090000"
    ],
    "rrule": "FREQ=DAILY;BYDAY=MO,WE",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240229T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20240415T090000",
-    "20240715T090000",
-    "20250915T090000",
-    "20251215T090000",
-    "20260615T090000",
-    "20270215T090000",
-    "20270315T090000",
-    "20271115T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=MO;BYMONTHDAY=15",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240415T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20240415T090000",
-    "20240715T090000",
-    "20250915T090000",
-    "20251215T090000",
-    "20260615T090000",
-    "20270215T090000",
-    "20270315T090000",
-    "20271115T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=MO;BYMONTHDAY=15",
    "rule_valid": true,
    "truncated": true
   },
@@ -2568,48 +2526,6 @@
     "python-dateutil-2.9.0"
    ],
    "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260405T090000",
-    "20260531T090000",
-    "20260705T090000",
-    "20270131T090000",
-    "20270905T090000",
-    "20271031T090000",
-    "20271205T090000",
-    "20280305T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=SU;BYMONTHDAY=31,5;WKST=SU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260405T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260405T090000",
-    "20260531T090000",
-    "20260705T090000",
-    "20270131T090000",
-    "20270905T090000",
-    "20271031T090000",
-    "20271205T090000",
-    "20280305T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYDAY=SU;BYMONTHDAY=31,5;WKST=SU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260101T090000",
    "dtstart_synchronized": true,
    "expect": [
     "20260101T090000",
@@ -2864,6 +2780,48 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20270104T090000",
+    "20270105T090000",
+    "20270106T090000",
+    "20270107T090000",
+    "20270108T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYMONTH=1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20270101T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20270104T090000",
+    "20270105T090000",
+    "20270106T090000",
+    "20270107T090000",
+    "20270108T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYMONTH=1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20240229T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -3027,6 +2985,48 @@
     "20270108T090000"
    ],
    "rrule": "FREQ=DAILY;BYMONTH=1,7",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260517T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20261004T090000",
+    "20261005T090000",
+    "20261006T090000",
+    "20261011T090000",
+    "20261012T090000",
+    "20261013T090000",
+    "20261018T090000",
+    "20261019T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYMONTH=10;BYDAY=MO,SU,TU",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261004T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261004T090000",
+    "20261005T090000",
+    "20261006T090000",
+    "20261011T090000",
+    "20261012T090000",
+    "20261013T090000",
+    "20261018T090000",
+    "20261019T090000"
+   ],
+   "rrule": "FREQ=DAILY;BYMONTH=10;BYDAY=MO,SU,TU",
    "rule_valid": true,
    "truncated": true
   },
@@ -7838,48 +7838,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260530T090000",
-    "20260531T090000",
-    "20260630T090000",
-    "20260730T090000",
-    "20260731T090000",
-    "20260830T090000",
-    "20260831T090000",
-    "20260930T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYMONTHDAY=30,-1;BYSETPOS=1",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260530T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260530T090000",
-    "20260531T090000",
-    "20260630T090000",
-    "20260730T090000",
-    "20260731T090000",
-    "20260830T090000",
-    "20260831T090000",
-    "20260930T090000"
-   ],
-   "rrule": "FREQ=DAILY;BYMONTHDAY=30,-1;BYSETPOS=1",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -9228,6 +9186,48 @@
     "20260827T090000"
    ],
    "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=TH",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20240229T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20240801T090000",
+    "20250701T090000",
+    "20260101T090000",
+    "20261201T090000",
+    "20270601T090000",
+    "20270701T090000",
+    "20280601T090000",
+    "20290501T090000"
+   ],
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=TH,TU;BYMONTHDAY=1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20240801T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20240801T090000",
+    "20250701T090000",
+    "20260101T090000",
+    "20261201T090000",
+    "20270601T090000",
+    "20270701T090000",
+    "20280601T090000",
+    "20290501T090000"
+   ],
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=TH,TU;BYMONTHDAY=1",
    "rule_valid": true,
    "truncated": true
   },
@@ -10844,48 +10844,6 @@
    "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTH=3,10;BYMONTHDAY=-1;WKST=SU;BYSETPOS=2",
    "rule_valid": true,
    "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260302T090000",
-    "20260305T090000",
-    "20260308T090000",
-    "20260311T090000",
-    "20260314T090000",
-    "20260317T090000",
-    "20260320T090000",
-    "20260323T090000"
-   ],
-   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTH=3,10;WKST=WE",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260302T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260302T090000",
-    "20260305T090000",
-    "20260308T090000",
-    "20260311T090000",
-    "20260314T090000",
-    "20260317T090000",
-    "20260320T090000",
-    "20260323T090000"
-   ],
-   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTH=3,10;WKST=WE",
-   "rule_valid": true,
-   "truncated": true
   },
   {
    "corroborated_by": [
@@ -12935,48 +12893,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260525T090000",
-    "20260629T090000",
-    "20260727T090000",
-    "20260831T090000",
-    "20260928T090000",
-    "20261026T090000",
-    "20261130T090000",
-    "20261228T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=-1MO",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260525T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260525T090000",
-    "20260629T090000",
-    "20260727T090000",
-    "20260831T090000",
-    "20260928T090000",
-    "20261026T090000",
-    "20261130T090000",
-    "20261228T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=-1MO",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20261231T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -13487,48 +13403,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260421T090000",
-    "20260429T090000",
-    "20260519T090000",
-    "20260527T090000",
-    "20260623T090000",
-    "20260624T090000",
-    "20260721T090000",
-    "20260729T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=-2TU,-1WE;WKST=MO",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260421T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260421T090000",
-    "20260429T090000",
-    "20260519T090000",
-    "20260527T090000",
-    "20260623T090000",
-    "20260624T090000",
-    "20260721T090000",
-    "20260729T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=-2TU,-1WE;WKST=MO",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -13617,48 +13491,6 @@
     "20241004T090000"
    ],
    "rrule": "FREQ=MONTHLY;BYDAY=1FR,1FR",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260806T090000",
-    "20260807T090000",
-    "20261105T090000",
-    "20261106T090000",
-    "20270805T090000",
-    "20270806T090000",
-    "20271104T090000",
-    "20271105T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=1FR,1TH;BYMONTH=8,11",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260806T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260806T090000",
-    "20260807T090000",
-    "20261105T090000",
-    "20261106T090000",
-    "20270805T090000",
-    "20270806T090000",
-    "20271104T090000",
-    "20271105T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYDAY=1FR,1TH;BYMONTH=8,11",
    "rule_valid": true,
    "truncated": true
   },
@@ -16193,27 +16025,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20261231T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20270131T090000",
-    "20280131T090000",
-    "20290131T090000",
-    "20300131T090000",
-    "20310131T090000",
-    "20320131T090000",
-    "20330131T090000",
-    "20340131T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYMONTH=1,6",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20270131T090000",
    "dtstart_synchronized": true,
    "expect": [
@@ -16701,6 +16512,48 @@
     "20301230T090000"
    ],
    "rrule": "FREQ=MONTHLY;BYMONTH=12;BYMONTHDAY=15,30",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20240229T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20241229T090000",
+    "20251229T090000",
+    "20261229T090000",
+    "20271229T090000",
+    "20281229T090000",
+    "20291229T090000",
+    "20301229T090000",
+    "20311229T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTH=12;BYSETPOS=1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20241229T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20241229T090000",
+    "20251229T090000",
+    "20261229T090000",
+    "20271229T090000",
+    "20281229T090000",
+    "20291229T090000",
+    "20301229T090000",
+    "20311229T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTH=12;BYSETPOS=1",
    "rule_valid": true,
    "truncated": true
   },
@@ -19514,6 +19367,27 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261231T090000",
+    "20270131T090000",
+    "20270228T090000",
+    "20270331T090000",
+    "20270430T090000",
+    "20270531T090000",
+    "20270630T090000",
+    "20270731T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -19989,6 +19863,48 @@
     "20260901T090000"
    ],
    "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,1;WKST=MO",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20270128T090000",
+    "20270130T090000",
+    "20270227T090000",
+    "20270228T090000",
+    "20270328T090000",
+    "20270330T090000",
+    "20270428T090000",
+    "20270429T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,28",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20270128T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20270128T090000",
+    "20270130T090000",
+    "20270227T090000",
+    "20270228T090000",
+    "20270328T090000",
+    "20270330T090000",
+    "20270428T090000",
+    "20270429T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,28",
    "rule_valid": true,
    "truncated": true
   },
@@ -20894,6 +20810,27 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260331T090000",
+    "20260401T090000",
+    "20260501T090000",
+    "20260531T090000",
+    "20260601T090000",
+    "20260701T090000",
+    "20260731T090000",
+    "20260801T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,31;WKST=WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -21276,48 +21213,6 @@
     "20301215T090000"
    ],
    "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYMONTH=7,12",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260815T090000",
-    "20270815T090000",
-    "20280815T090000",
-    "20290815T090000",
-    "20300815T090000",
-    "20310815T090000",
-    "20320815T090000",
-    "20330815T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYMONTH=8",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260815T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260815T090000",
-    "20270815T090000",
-    "20280815T090000",
-    "20290815T090000",
-    "20300815T090000",
-    "20310815T090000",
-    "20320815T090000",
-    "20330815T090000"
-   ],
-   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYMONTH=8",
    "rule_valid": true,
    "truncated": true
   },
@@ -21893,6 +21788,48 @@
    "rrule": "FREQ=MONTHLY;BYMONTHDAY=29;BYSETPOS=2",
    "rule_valid": true,
    "truncated": false
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260130T090000",
+    "20260330T090000",
+    "20260430T090000",
+    "20260530T090000",
+    "20260630T090000",
+    "20260730T090000",
+    "20260830T090000",
+    "20260930T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260130T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260130T090000",
+    "20260330T090000",
+    "20260430T090000",
+    "20260530T090000",
+    "20260630T090000",
+    "20260730T090000",
+    "20260830T090000",
+    "20260930T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30",
+   "rule_valid": true,
+   "truncated": true
   },
   {
    "corroborated_by": [
@@ -22755,6 +22692,18 @@
    "dtstart_synchronized": false,
    "expect": [],
    "rrule": "FREQ=MONTHLY;BYMONTHDAY=5;BYDAY=FR,MO,WE;BYSETPOS=2",
+   "rule_valid": true,
+   "truncated": false
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=5;BYDAY=SA;BYSETPOS=-2",
    "rule_valid": true,
    "truncated": false
   },
@@ -24184,18 +24133,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYDAY=1TU,2FR;BYMONTHDAY=15;WKST=WE",
-   "rule_valid": true,
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -24772,6 +24709,18 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260517T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTH=9;BYDAY=1SA,-1MO",
+   "rule_valid": true,
+   "truncated": false
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260331T090000",
    "dtstart_synchronized": true,
    "expect": [
@@ -25033,6 +24982,18 @@
    "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=31,30",
    "rule_valid": true,
    "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20240229T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=31;BYMONTH=12",
+   "rule_valid": true,
+   "truncated": false
   },
   {
    "corroborated_by": [
@@ -26084,6 +26045,48 @@
     "20270118T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=FR,MO,TU",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260517T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260518T090000",
+    "20260520T090000",
+    "20260522T090000",
+    "20260525T090000",
+    "20260527T090000",
+    "20260529T090000",
+    "20260601T090000",
+    "20260603T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO,WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260518T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260518T090000",
+    "20260520T090000",
+    "20260522T090000",
+    "20260525T090000",
+    "20260527T090000",
+    "20260529T090000",
+    "20260601T090000",
+    "20260603T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO,WE",
    "rule_valid": true,
    "truncated": true
   },
@@ -27646,6 +27649,48 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20270404T090000",
+    "20270405T090000",
+    "20270411T090000",
+    "20270412T090000",
+    "20270418T090000",
+    "20270419T090000",
+    "20270425T090000",
+    "20270426T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU;BYMONTH=4",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20270404T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20270404T090000",
+    "20270405T090000",
+    "20270411T090000",
+    "20270412T090000",
+    "20270418T090000",
+    "20270419T090000",
+    "20270425T090000",
+    "20270426T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU;BYMONTH=4",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20240229T090000",
    "dtstart_synchronized": true,
    "expect": [
@@ -28742,48 +28787,6 @@
     "20260425T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=SA,TH;BYMONTH=4",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240229T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20240801T090000",
-    "20240803T090000",
-    "20240808T090000",
-    "20240810T090000",
-    "20240815T090000",
-    "20240817T090000",
-    "20240822T090000",
-    "20240824T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH;BYMONTH=8,9",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240801T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20240801T090000",
-    "20240803T090000",
-    "20240808T090000",
-    "20240810T090000",
-    "20240815T090000",
-    "20240817T090000",
-    "20240822T090000",
-    "20240824T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH;BYMONTH=8,9",
    "rule_valid": true,
    "truncated": true
   },
@@ -30067,6 +30070,27 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20240229T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20240229T090000",
+    "20250206T090000",
+    "20250213T090000",
+    "20250220T090000",
+    "20250227T090000",
+    "20260205T090000",
+    "20260212T090000",
+    "20260219T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYDAY=TH;BYMONTH=2",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -30946,6 +30970,18 @@
    "rrule": "FREQ=WEEKLY;BYMONTH=1,8;BYSETPOS=1",
    "rule_valid": true,
    "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=WEEKLY;BYMONTH=1,8;BYSETPOS=2",
+   "rule_valid": true,
+   "truncated": false
   },
   {
    "corroborated_by": [
@@ -32357,6 +32393,48 @@
     "20280323T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYMONTH=3",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260305T090000",
+    "20260312T090000",
+    "20260319T090000",
+    "20260326T090000",
+    "20261001T090000",
+    "20261008T090000",
+    "20261015T090000",
+    "20261022T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYMONTH=3,10;WKST=WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260305T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260305T090000",
+    "20260312T090000",
+    "20260319T090000",
+    "20260326T090000",
+    "20261001T090000",
+    "20261008T090000",
+    "20261015T090000",
+    "20261022T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;BYMONTH=3,10;WKST=WE",
    "rule_valid": true,
    "truncated": true
   },
@@ -35411,48 +35489,6 @@
     "python-dateutil-2.9.0"
    ],
    "dtstart": "20261231T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20271101T090000",
-    "20271104T090000",
-    "20271106T090000",
-    "20271115T090000",
-    "20271118T090000",
-    "20271120T090000",
-    "20271129T090000",
-    "20281102T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,SA,TH;BYMONTH=11",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20271101T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20271101T090000",
-    "20271104T090000",
-    "20271106T090000",
-    "20271115T090000",
-    "20271118T090000",
-    "20271120T090000",
-    "20271129T090000",
-    "20281102T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,SA,TH;BYMONTH=11",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20261231T090000",
    "dtstart_synchronized": true,
    "expect": [
     "20261231T090000",
@@ -35729,6 +35765,48 @@
     "20240331T090000"
    ],
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU,TU",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20270102T090000",
+    "20270103T090000",
+    "20270113T090000",
+    "20270116T090000",
+    "20270117T090000",
+    "20270127T090000",
+    "20270130T090000",
+    "20270131T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU,WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20270102T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20270102T090000",
+    "20270103T090000",
+    "20270113T090000",
+    "20270116T090000",
+    "20270117T090000",
+    "20270127T090000",
+    "20270130T090000",
+    "20270131T090000"
+   ],
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU,WE",
    "rule_valid": true,
    "truncated": true
   },
@@ -36529,6 +36607,18 @@
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=6;BYDAY=TH",
    "rule_valid": true,
    "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=7;BYSETPOS=2",
+   "rule_valid": true,
+   "truncated": false
   },
   {
    "corroborated_by": [
@@ -38344,48 +38434,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260404T090000",
-    "20260405T090000",
-    "20260502T090000",
-    "20260503T090000",
-    "20260530T090000",
-    "20260531T090000",
-    "20260627T090000",
-    "20260628T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=SA,SU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260404T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260404T090000",
-    "20260405T090000",
-    "20260502T090000",
-    "20260503T090000",
-    "20260530T090000",
-    "20260531T090000",
-    "20260627T090000",
-    "20260628T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=SA,SU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260101T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -39322,48 +39370,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260623T090000",
-    "20270622T090000",
-    "20280620T090000",
-    "20290619T090000",
-    "20300618T090000",
-    "20310617T090000",
-    "20320615T090000",
-    "20330614T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=6;BYDAY=SA,TH,TU;BYSETPOS=1",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260623T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260623T090000",
-    "20270622T090000",
-    "20280620T090000",
-    "20290619T090000",
-    "20300618T090000",
-    "20310617T090000",
-    "20320615T090000",
-    "20330614T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=6;BYDAY=SA,TH,TU;BYSETPOS=1",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20261231T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -39440,48 +39446,6 @@
     "20330814T090000"
    ],
    "rrule": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=8;BYDAY=SU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20261231T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20270810T090000",
-    "20280808T090000",
-    "20290807T090000",
-    "20300806T090000",
-    "20310805T090000",
-    "20320803T090000",
-    "20320831T090000",
-    "20330802T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=8;BYDAY=TU",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20270810T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20270810T090000",
-    "20280808T090000",
-    "20290807T090000",
-    "20300806T090000",
-    "20310805T090000",
-    "20320803T090000",
-    "20320831T090000",
-    "20330802T090000"
-   ],
-   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=8;BYDAY=TU",
    "rule_valid": true,
    "truncated": true
   },
@@ -39643,167 +39607,6 @@
    "rrule": "FREQ=YEARLY;BYDAY=-1SA;BYYEARDAY=100",
    "rule_valid": true,
    "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240229T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20241229T090000",
-    "20251228T090000",
-    "20281231T090000",
-    "20291230T090000",
-    "20301229T090000",
-    "20311228T090000",
-    "20341231T090000",
-    "20351230T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1SU,2WE;BYWEEKNO=-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1SU', '2WE'] with FREQ=YEARLY and BYWEEKNO=-1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20241229T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20241229T090000",
-    "20251228T090000",
-    "20281231T090000",
-    "20291230T090000",
-    "20301229T090000",
-    "20311228T090000",
-    "20341231T090000",
-    "20351230T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1SU,2WE;BYWEEKNO=-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1SU', '2WE'] with FREQ=YEARLY and BYWEEKNO=-1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20281231T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1SU;BYWEEKNO=53;WKST=WE",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1SU'] with FREQ=YEARLY and BYWEEKNO=53",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20281231T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20281231T090000",
-    "20561231T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1SU;BYWEEKNO=53;WKST=WE",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1SU'] with FREQ=YEARLY and BYWEEKNO=53",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20261224T090000",
-    "20271223T090000",
-    "20281221T090000",
-    "20291220T090000",
-    "20301219T090000",
-    "20311218T090000",
-    "20321223T090000",
-    "20331222T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1TH,-2TH;BYWEEKNO=-2,2",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1TH', '-2TH'] with FREQ=YEARLY and BYWEEKNO=-2,2",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20261224T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20261224T090000",
-    "20271223T090000",
-    "20281221T090000",
-    "20291220T090000",
-    "20301219T090000",
-    "20311218T090000",
-    "20321223T090000",
-    "20331222T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYDAY=-1TH,-2TH;BYWEEKNO=-2,2",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-1TH', '-2TH'] with FREQ=YEARLY and BYWEEKNO=-2,2",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
   },
   {
    "corroborated_by": [
@@ -40344,26 +40147,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=YEARLY;BYDAY=2FR,2MO;BYWEEKNO=52",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['2FR', '2MO'] with FREQ=YEARLY and BYWEEKNO=52",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -40418,20 +40201,42 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
+   "dtstart": "20260331T090000",
    "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=YEARLY;BYDAY=2SU;BYWEEKNO=52;BYSETPOS=-2",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['2SU'] with FREQ=YEARLY and BYWEEKNO=52",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
+   "expect": [
+    "20260510T090000",
+    "20260511T090000",
+    "20260809T090000",
+    "20260810T090000",
+    "20270509T090000",
+    "20270510T090000",
+    "20270808T090000",
+    "20270809T090000"
    ],
-   "truncated": false
+   "rrule": "FREQ=YEARLY;BYDAY=2SU,2MO;BYMONTH=5,8;WKST=WE",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260510T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260510T090000",
+    "20260511T090000",
+    "20260809T090000",
+    "20260810T090000",
+    "20270509T090000",
+    "20270510T090000",
+    "20270808T090000",
+    "20270809T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYDAY=2SU,2MO;BYMONTH=5,8;WKST=WE",
+   "rule_valid": true,
+   "truncated": true
   },
   {
    "corroborated_by": [
@@ -40624,26 +40429,6 @@
    "rrule": "FREQ=YEARLY;BYDAY=3SA",
    "rule_valid": true,
    "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=YEARLY;BYDAY=3SA,2SA;BYWEEKNO=53,-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['3SA', '2SA'] with FREQ=YEARLY and BYWEEKNO=53,-1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
   },
   {
    "corroborated_by": [
@@ -40957,6 +40742,48 @@
     "20260630T090000"
    ],
    "rrule": "FREQ=YEARLY;BYDAY=FR,TU;BYMONTHDAY=30",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20271231T090000",
+    "20301231T090000",
+    "20321231T090000",
+    "20381231T090000",
+    "20411231T090000",
+    "20471231T090000",
+    "20491231T090000",
+    "20521231T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYDAY=FR,TU;BYYEARDAY=-1,366",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20271231T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20271231T090000",
+    "20301231T090000",
+    "20321231T090000",
+    "20381231T090000",
+    "20411231T090000",
+    "20471231T090000",
+    "20491231T090000",
+    "20521231T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYDAY=FR,TU;BYYEARDAY=-1,366",
    "rule_valid": true,
    "truncated": true
   },
@@ -42200,6 +42027,48 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260517T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260805T090000",
+    "20270205T090000",
+    "20270805T090000",
+    "20280205T090000",
+    "20280805T090000",
+    "20290205T090000",
+    "20290805T090000",
+    "20300205T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTH=2,8;BYMONTHDAY=5",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260805T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260805T090000",
+    "20270205T090000",
+    "20270805T090000",
+    "20280205T090000",
+    "20280805T090000",
+    "20290205T090000",
+    "20290805T090000",
+    "20300205T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTH=2,8;BYMONTHDAY=5",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20261231T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -42639,6 +42508,48 @@
     "20310429T090000"
    ],
    "rrule": "FREQ=YEARLY;BYMONTH=4;WKST=MO;BYSETPOS=1",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20260501T090000",
+    "20261201T090000",
+    "20270501T090000",
+    "20271201T090000",
+    "20280501T090000",
+    "20281201T090000",
+    "20290501T090000",
+    "20291201T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTH=5,12",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260501T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260501T090000",
+    "20261201T090000",
+    "20270501T090000",
+    "20271201T090000",
+    "20280501T090000",
+    "20281201T090000",
+    "20290501T090000",
+    "20291201T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTH=5,12",
    "rule_valid": true,
    "truncated": true
   },
@@ -43870,48 +43781,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260127T090000",
-    "20260224T090000",
-    "20260327T090000",
-    "20260426T090000",
-    "20260527T090000",
-    "20260626T090000",
-    "20260727T090000",
-    "20260827T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260127T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260127T090000",
-    "20260224T090000",
-    "20260327T090000",
-    "20260426T090000",
-    "20260527T090000",
-    "20260626T090000",
-    "20260727T090000",
-    "20260827T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -44409,6 +44278,48 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20270401T090000",
+    "20270701T090000",
+    "20280601T090000",
+    "20290201T090000",
+    "20290301T090000",
+    "20291101T090000",
+    "20300801T090000",
+    "20310501T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20270401T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20270401T090000",
+    "20270701T090000",
+    "20280601T090000",
+    "20290201T090000",
+    "20290301T090000",
+    "20291101T090000",
+    "20300801T090000",
+    "20310501T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20240229T090000",
    "dtstart_synchronized": false,
    "expect": [],
@@ -44721,48 +44632,6 @@
    "rrule": "FREQ=YEARLY;BYMONTHDAY=28;BYWEEKNO=1,2",
    "rule_valid": true,
    "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260101T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20260127T090000",
-    "20260129T090000",
-    "20260224T090000",
-    "20260327T090000",
-    "20260329T090000",
-    "20260426T090000",
-    "20260429T090000",
-    "20260527T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYMONTHDAY=29,-5",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260127T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260127T090000",
-    "20260129T090000",
-    "20260224T090000",
-    "20260327T090000",
-    "20260329T090000",
-    "20260426T090000",
-    "20260429T090000",
-    "20260527T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYMONTHDAY=29,-5",
-   "rule_valid": true,
-   "truncated": true
   },
   {
    "corroborated_by": [
@@ -45552,6 +45421,18 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=5;BYYEARDAY=200,366",
+   "rule_valid": true,
+   "truncated": false
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -46042,6 +45923,48 @@
     "20260105T090000"
    ],
    "rrule": "FREQ=YEARLY;BYWEEKNO=2",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20261221T090000",
+    "20261222T090000",
+    "20261223T090000",
+    "20261224T090000",
+    "20261225T090000",
+    "20261226T090000",
+    "20261227T090000",
+    "20270111T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYWEEKNO=2,-2",
+   "rule_valid": true,
+   "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261221T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261221T090000",
+    "20261222T090000",
+    "20261223T090000",
+    "20261224T090000",
+    "20261225T090000",
+    "20261226T090000",
+    "20261227T090000",
+    "20270111T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYWEEKNO=2,-2",
    "rule_valid": true,
    "truncated": true
   },
@@ -46566,48 +46489,6 @@
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYMONTH=2;BYSETPOS=2",
    "rule_valid": true,
    "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20240229T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20241231T090000",
-    "20251231T090000",
-    "20261231T090000",
-    "20271231T090000",
-    "20281231T090000",
-    "20291231T090000",
-    "20301231T090000",
-    "20311231T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYYEARDAY=-1",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20241231T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20241231T090000",
-    "20251231T090000",
-    "20261231T090000",
-    "20271231T090000",
-    "20281231T090000",
-    "20291231T090000",
-    "20301231T090000",
-    "20311231T090000"
-   ],
-   "rrule": "FREQ=YEARLY;BYYEARDAY=-1",
-   "rule_valid": true,
-   "truncated": true
   },
   {
    "corroborated_by": [
@@ -48162,26 +48043,6 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYDAY=1WE;BYWEEKNO=-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['1WE'] with FREQ=YEARLY and BYWEEKNO=-1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
    "dtstart": "20240229T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -48883,48 +48744,6 @@
    ],
    "dtstart": "20260331T090000",
    "dtstart_synchronized": false,
-   "expect": [
-    "20260415T090000",
-    "20260515T090000",
-    "20260615T090000",
-    "20260715T090000",
-    "20260815T090000",
-    "20260915T090000",
-    "20261015T090000",
-    "20261115T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=15",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260415T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20260415T090000",
-    "20260515T090000",
-    "20260615T090000",
-    "20260715T090000",
-    "20260815T090000",
-    "20260915T090000",
-    "20261015T090000",
-    "20261115T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=15",
-   "rule_valid": true,
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
    "expect": [],
    "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=1;BYYEARDAY=-60,365",
    "rule_valid": true,
@@ -49109,64 +48928,6 @@
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
-    "20280106T090000",
-    "20300103T090000",
-    "20320101T090000",
-    "20340105T090000",
-    "20360103T090000",
-    "20380107T090000",
-    "20400105T090000",
-    "20420102T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=-2,1;BYDAY=1TH,3FR;BYSETPOS=-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['1TH', '3FR'] with FREQ=YEARLY and BYWEEKNO=-2,1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20280106T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20280106T090000",
-    "20300103T090000",
-    "20320101T090000",
-    "20340105T090000",
-    "20360103T090000",
-    "20380107T090000",
-    "20400105T090000",
-    "20420102T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=-2,1;BYDAY=1TH,3FR;BYSETPOS=-1",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['1TH', '3FR'] with FREQ=YEARLY and BYWEEKNO=-2,1",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260517T090000",
-   "dtstart_synchronized": false,
-   "expect": [
     "20261220T090000",
     "20261221T090000",
     "20261222T090000",
@@ -49200,41 +48961,6 @@
    "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=-2;WKST=SU",
    "rule_valid": true,
    "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [
-    "20301230T090000",
-    "20361230T090000",
-    "20421230T090000",
-    "20521230T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=1;BYMONTHDAY=30",
-   "rule_valid": true,
-   "truncated": false
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20301230T090000",
-   "dtstart_synchronized": true,
-   "expect": [
-    "20301230T090000",
-    "20361230T090000",
-    "20421230T090000",
-    "20521230T090000",
-    "20581230T090000"
-   ],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=1;BYMONTHDAY=30",
-   "rule_valid": true,
-   "truncated": false
   },
   {
    "corroborated_by": [
@@ -49319,26 +49045,6 @@
    "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=20;WKST=MO",
    "rule_valid": true,
    "truncated": true
-  },
-  {
-   "corroborated_by": [
-    "naive-bruteforce",
-    "python-dateutil-2.9.0"
-   ],
-   "dtstart": "20260331T090000",
-   "dtstart_synchronized": false,
-   "expect": [],
-   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=2;BYDAY=-2SA",
-   "rule_valid": false,
-   "rule_violations": [
-    {
-     "detail": "numeric ['-2SA'] with FREQ=YEARLY and BYWEEKNO=2",
-     "part": "BYDAY",
-     "rfc": "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
-     "rule": "byday-numeric-byweekno"
-    }
-   ],
-   "truncated": false
   },
   {
    "corroborated_by": [
@@ -49672,6 +49378,18 @@
    "rrule": "FREQ=YEARLY;INTERVAL=2;BYYEARDAY=366,365;WKST=WE",
    "rule_valid": true,
    "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": false,
+   "expect": [],
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYYEARDAY=60;BYMONTHDAY=15",
+   "rule_valid": true,
+   "truncated": false
   },
   {
    "corroborated_by": [
@@ -50380,6 +50098,35 @@
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-1;WKST=SU",
    "rule_valid": true,
    "truncated": true
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260101T090000",
+   "dtstart_synchronized": false,
+   "expect": [
+    "20530105T090000"
+   ],
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
+   "rule_valid": true,
+   "truncated": false
+  },
+  {
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20530105T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20530105T090000",
+    "20590105T090000"
+   ],
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
+   "rule_valid": true,
+   "truncated": false
   },
   {
    "corroborated_by": [
@@ -51438,14 +51185,8 @@
  ],
  "meta": {
   "about": "Cross-implementation RFC 5545 RRULE conformance corpus.",
-  "cases": 2548,
-  "dtstart_synchronized_cases": 1232,
-  "dtstart_unsynchronized_cases": 1316,
+  "cases": 2541,
   "horizon_days": 10958,
-  "occurrences_per_case": 8,
-  "rule_invalid_cases": 13,
-  "rule_valid_cases": 2535,
-  "synchronization_note": "RFC 5545 sec 3.8.5.3 declares the recurrence set undefined when DTSTART is not synchronized with the recurrence rule. Cases with dtstart_synchronized=false record observed cross-implementation convention in that undefined region, NOT a conformance requirement. Consume them as interop data; do not cite them as spec violations.",
-  "validity_note": "rule_valid is computed by src/validity.py from RFC 5545 3.3.10 MUST NOT constraints and value ranges, independently of any expander. It is a third, separate dimension: rule validity, DTSTART synchronization, and implementation agreement are different questions. Agreement on a rule the spec prohibits is not evidence of conformance."
+  "occurrences_per_case": 8
  }
 }
