@@ -24,6 +24,12 @@ import enumerate_cells
 import enumerate_branches
 import pairs
 
+#: The committed corpus. Inputs (hand adjudications, the DATE-value
+#: cases) are always read from here; outputs go wherever the caller asks,
+#: so that a rebuild can be compared against this directory rather than
+#: overwriting it. Absolute, so the script does not depend on the cwd.
+CORPUS = os.path.join(env.REPO, "corpus")
+
 N = 8  # occurrences recorded per case
 
 
@@ -110,7 +116,9 @@ def record(rule, ds, cell, agreed, disputed, seen):
     return True
 
 
-def main(seeds=(7, 11, 13, 17, 23), per=300):
+def main(seeds=(7, 11, 13, 17, 23), per=300, out=None):
+    out = out or CORPUS
+    os.makedirs(out, exist_ok=True)
     agreed, disputed, seen = [], [], set()
     # Systematic first: one case per permitted cell of the 3.3.10 table, so
     # what the corpus covers does not depend on which seeds were used.
@@ -142,13 +150,13 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
         "occurrences_per_case": N,
         "cases": len(agreed),
     }
-    json.dump({"meta": meta, "cases": agreed}, open("corpus/corroborated.json", "w"),
+    json.dump({"meta": meta, "cases": agreed}, open(os.path.join(out, "corroborated.json"), "w"),
               indent=1, sort_keys=True)
     # Hand adjudications survive regeneration: they live in their own file and
     # are re-attached here by rule+DTSTART.
     adj = {}
-    if os.path.exists("corpus/adjudications.json"):
-        adj = json.load(open("corpus/adjudications.json"))["cases"]
+    if os.path.exists(os.path.join(CORPUS, "adjudications.json")):
+        adj = json.load(open(os.path.join(CORPUS, "adjudications.json")))["cases"]
     hit = 0
     for c in disputed:
         a = adj.get("%s|%s" % (c["rrule"], c["dtstart"]))
@@ -160,7 +168,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                                  "'adjudication' key (see corpus/"
                                  "adjudications.json and findings/).",
                         "adjudicated": hit, "cases": len(disputed)},
-               "cases": disputed}, open("corpus/disputed.json", "w"),
+               "cases": disputed}, open(os.path.join(out, "disputed.json"), "w"),
               indent=1, sort_keys=True)
     # Coverage against RFC 5545 3.3.10's own BYxxx/FREQ table. N/A cells are
     # excluded: the spec forbids them, so an empty one is conformance.
@@ -178,7 +186,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                         "uncovered": len(missing)},
                "uncovered": missing,
                "cases_per_cell": hits},
-              open("corpus/coverage.json", "w"), indent=1, sort_keys=True)
+              open(os.path.join(out, "coverage.json"), "w"), indent=1, sort_keys=True)
     # Coverage against 3.3.10's other printed model, the RECUR ABNF.
     feats = grammar.features()
     bhits = {f: 0 for f in feats}
@@ -193,7 +201,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
     # no DATE value type. A branch covered there is covered conformantly; only
     # what is left counts as covered_nonconformantly.
     try:
-        date_branches = set(json.load(open("corpus/date-value-type.json"))["branches"])
+        date_branches = set(json.load(open(os.path.join(CORPUS, "date-value-type.json")))["branches"])
     except FileNotFoundError:
         date_branches = set()
     nonconf = sorted(enumerate_branches.NEEDS_DATE_DTSTART - set(bmiss)
@@ -207,7 +215,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                "uncovered": bmiss,
                "covered_nonconformantly": nonconf,
                "cases_per_branch": bhits},
-              open("corpus/grammar-coverage.json", "w"), indent=1,
+              open(os.path.join(out, "grammar-coverage.json"), "w"), indent=1,
               sort_keys=True)
     # Interaction coverage: pairs of ABNF branches. Pairs no conformant rule
     # can take are excluded by construction and reported with the reason, so
@@ -217,7 +225,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
     for c in agreed + disputed:
         seen_pairs |= set(itertools.combinations(sorted(c["branches"]), 2))
     try:
-        for c in json.load(open("corpus/date-value-type.json"))["cases"]:
+        for c in json.load(open(os.path.join(CORPUS, "date-value-type.json")))["cases"]:
             seen_pairs |= set(itertools.combinations(sorted(c["branches"]), 2))
     except (FileNotFoundError, KeyError):
         pass
@@ -236,7 +244,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                "uncovered": [list(p) for p in pmiss],
                "unrealizable_by_reason": {k: sorted(v)
                                           for k, v in sorted(reasons.items())}},
-              open("corpus/pair-coverage.json", "w"), indent=1, sort_keys=True)
+              open(os.path.join(out, "pair-coverage.json"), "w"), indent=1, sort_keys=True)
     print("pairs realizable=%d covered=%d uncovered=%d unrealizable=%d" % (
         len(realizable), len(realizable) - len(pmiss), len(pmiss),
         len(unrealizable)))
@@ -248,4 +256,10 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
 
 
 if __name__ == "__main__":
-    main()
+    # --out DIR writes the rebuild somewhere else, which is how
+    # tools/verify_corpus.py checks that the committed corpus reproduces.
+    argv = sys.argv[1:]
+    dest = None
+    if "--out" in argv:
+        dest = argv[argv.index("--out") + 1]
+    sys.exit(main(out=dest))

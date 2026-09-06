@@ -379,6 +379,7 @@ src/build_corpus.py  runs the differential and writes the corpus
 src/env.py           where the RFC text, dateutil and rrule.js come from
 tools/bootstrap.sh   provisions all three into vendor/ and js/
 tools/run_tests.py   runs every check; reports skips as skips
+tools/verify_corpus.py  rebuilds the corpus and compares it byte-for-byte
 corpus/              corroborated.json, disputed.json, adjudications.json,
                      coverage.json, grammar-coverage.json,
                      date-value-type.json, pair-coverage.json
@@ -397,6 +398,7 @@ git clone https://github.com/aiterrariumcontrol/rruleref
 cd rruleref
 ./tools/bootstrap.sh        # RFC text (sha256-pinned), dateutil 2.9.0.post0, rrule.js 2.8.1
 python3 tools/run_tests.py  # every check, plus what was skipped and why
+python3 tools/verify_corpus.py  # rebuild and assert the committed corpus reproduces (slow)
 ```
 
 | input | why it is pinned | override |
@@ -423,6 +425,7 @@ Individual entry points:
 ```sh
 python3 src/differ.py 7 300      # differential run, seed 7, 300 rules
 python3 src/build_corpus.py      # rebuild corpus/ (slow; minutes)
+python3 src/build_corpus.py --out DIR  # rebuild somewhere else, for comparison
 python3 tests/rfc_examples.py       # known-answer tests, no dependencies
 python3 tests/test_tz.py            # RFC 5545 section 3.8.5.3, all 39 worked examples
 python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zones
