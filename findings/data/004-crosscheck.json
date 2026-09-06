@@ -1,7 +1,9 @@
 {
  "meta": {
-  "about": "Disputed synchronized cases under matching bounds: every implementation asked for 8 occurrences, no horizon clip.",
+  "about": "Disputed synchronized cases under matching bounds: every implementation asked for 8 occurrences. The naive expander needs a horizon; it is extended per case until it no longer binds, so the three lists are comparable elementwise.",
   "occurrences_requested": 8,
+  "naive_horizon": "extended per case until N occurrences are found or extension stops helping; see naive_horizon_years",
+  "cases_needing_horizon_extension": 2,
   "implementations": {
    "naive": "rruleref src/naive.py (spec-derived brute force)",
    "dateutil": "python-dateutil 2.9.0.post0",
@@ -9,7 +11,8 @@
   },
   "cases": 13,
   "dateutil_matches_rrulejs": 13,
-  "explained_by_first_period_truncation": 8
+  "explained_by_first_period_truncation": 8,
+  "cases_still_short_of_n": 0
  },
  "cases": [
   {
@@ -48,7 +51,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20260204T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20260204T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;BYDAY=FR,TH,TU;BYSETPOS=2",
@@ -86,7 +91,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20261228T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20261228T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYSETPOS=2",
@@ -124,7 +131,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20261228T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20261228T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=8,12;WKST=WE;BYSETPOS=2",
@@ -162,7 +171,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20260805T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20260805T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;BYDAY=SU,TH;BYMONTH=1;WKST=MO;BYSETPOS=2",
@@ -200,7 +211,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20270104T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20270104T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=FR,MO,SU;BYMONTH=5;BYSETPOS=2",
@@ -238,7 +251,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20240506T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20240506T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH,WE;WKST=WE;BYSETPOS=2",
@@ -276,7 +291,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20240228T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20240228T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=2,11;BYDAY=SU,TH,TU;BYSETPOS=2",
@@ -314,7 +331,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": true,
-   "explanation_evidence": "dateutil from period start 20240226T090000 reproduces the naive expansion"
+   "explanation_evidence": "dateutil from period start 20240226T090000 reproduces the naive expansion",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2",
@@ -352,7 +371,9 @@
    "first_divergence_index": 0,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": false,
-   "explanation_evidence": "dateutil from period start 20270101T090000 still differs from naive at index 0 (20270104T090000 vs 20270102T090000)"
+   "explanation_evidence": "dateutil from period start 20270101T090000 still differs from naive at index 0 (20270104T090000 vs 20270102T090000)",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52",
@@ -390,7 +411,9 @@
    "first_divergence_index": 3,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": false,
-   "explanation_evidence": "DTSTART is already the period start; nothing to truncate"
+   "explanation_evidence": "DTSTART is already the period start; nothing to truncate",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   },
   {
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200",
@@ -401,7 +424,9 @@
     "20380101T090000",
     "20440101T090000",
     "20490101T090000",
-    "20550101T090000"
+    "20550101T090000",
+    "20610101T090000",
+    "20660101T090000"
    ],
    "dateutil": [
     "20270101T090000",
@@ -426,7 +451,9 @@
    "first_divergence_index": 3,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": false,
-   "explanation_evidence": "DTSTART is already the period start; nothing to truncate"
+   "explanation_evidence": "DTSTART is already the period start; nothing to truncate",
+   "naive_horizon_years": 60,
+   "naive_horizon_extended": true
   },
   {
    "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53",
@@ -437,7 +464,9 @@
     "20380101T090000",
     "20440101T090000",
     "20490101T090000",
-    "20550101T090000"
+    "20550101T090000",
+    "20610101T090000",
+    "20660101T090000"
    ],
    "dateutil": [
     "20270101T090000",
@@ -462,7 +491,9 @@
    "first_divergence_index": 3,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": false,
-   "explanation_evidence": "DTSTART is already the period start; nothing to truncate"
+   "explanation_evidence": "DTSTART is already the period start; nothing to truncate",
+   "naive_horizon_years": 60,
+   "naive_horizon_extended": true
   },
   {
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1",
@@ -500,7 +531,9 @@
    "first_divergence_index": 7,
    "dateutil_matches_rrulejs": true,
    "explained_by_first_period_truncation": false,
-   "explanation_evidence": "dateutil from period start 20290101T090000 still differs from naive at index 7 (20501219T090000 vs 20500101T090000)"
+   "explanation_evidence": "dateutil from period start 20290101T090000 still differs from naive at index 7 (20501219T090000 vs 20500101T090000)",
+   "naive_horizon_years": 30,
+   "naive_horizon_extended": false
   }
  ]
 }

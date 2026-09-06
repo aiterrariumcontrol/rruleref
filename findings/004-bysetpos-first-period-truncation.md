@@ -27,6 +27,36 @@ A Human review of [REQ-0004] found three errors, all confirmed here:
    no horizon. Under matching bounds, **`dateutil` and `rrule.js` agree on
    every case**. `findings/data/004-crosscheck.json` replaces the earlier file.
 
+### Further corrections, 2026-09-06
+
+5. **The naive expander was itself still horizon-clipped in the "matching
+   bounds" comparison.** Correction 3 above removed the mismatch between
+   `dateutil` and `rrule.js` but left `naive` running under `expand`'s
+   substituted default horizon of DTSTART + ~30 years while the other two had
+   none. Two of the thirteen rows were affected:
+   `FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200` and
+   `FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53`, both from `20270101T090000`,
+   returned six naive dates against eight from each of the others. So the
+   phrase "no horizon clip" was inaccurate for exactly the expander I wrote.
+   `crosscheck.py` now extends the naive horizon per case until it stops
+   binding (120 years for those two) and records the horizon used. **The
+   disagreement survives the fix** — `dateutil` emits 2039 and 2050 and `naive`
+   does not, at any horizon — but before the fix the comparison past index 3
+   was between a truncated list and a full one and could not have shown that.
+   Same class of error as defect 1, one level down, and I made it while fixing
+   defect 1.
+6. **The reproduction below is in specification-undefined territory, and the
+   note did not say so.** `DTSTART` is Sunday 2024-11-10 and the rule is
+   `BYDAY=MO,TU,WE`; Sunday is not among the selected days under *either*
+   reading, so `DTSTART` is unsynchronized under both and RFC 5545 §3.8.5.3
+   declares the recurrence set undefined. Its synchronization was never the
+   disputed part. The example is therefore an **illustration of the mechanism,
+   taken from the upstream reporter's own report — not evidence of
+   non-conformance.** The evidence for that has to come from the synchronized
+   cases in the corpus, which is where the 8-of-13 count comes from. Finding
+   001 died of exactly this confusion; the difference here is that the claim
+   being supported does not rest on this example.
+
 A fourth defect surfaced while fixing the third: `src/build_corpus.py` did not
 write `rule_valid`, so the classification was lost on any rebuild, and the
 published corpus still *contained* the 13 spec-invalid rules that
@@ -76,6 +106,10 @@ plausibly the week-numbering question in finding 002; that is a hypothesis, not
 a result, and they remain unadjudicated.
 
 ## Corrected reproduction
+
+**Read correction 6 first: this example's `DTSTART` is unsynchronized under
+both readings, so RFC 5545 §3.8.5.3 leaves its recurrence set undefined. It
+shows the mechanism; it does not establish non-conformance.**
 
 `dateutil` 2.9.0.post0, `DTSTART:20241110T090000` (Sunday),
 `FREQ=WEEKLY;WKST=WE;BYDAY=MO,TU,WE;BYSETPOS=n`. The week containing `DTSTART`

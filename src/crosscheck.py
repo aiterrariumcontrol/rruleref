@@ -7,8 +7,24 @@ Two defects in the earlier comparison are addressed here.
    were then saved and compared against rrule.js output that had been asked
    for eight occurrences with no horizon. Two cases whose dateutil list was
    six entries long were recorded as "agreeing with neither implementation".
-   Here every implementation is asked for exactly N occurrences with no
-   horizon clip, so the three lists are comparable elementwise.
+   Here every implementation is asked for exactly N occurrences, so the three
+   lists are comparable elementwise.
+
+   *Correction, 2026-09-06.* An earlier version of this docstring said "with no
+   horizon clip". That was still false for the naive expander: `expand`
+   substitutes a default horizon of DTSTART + ~30 years whenever none is
+   passed, so it was bounded while the other two were not — the same class of
+   bounds mismatch as defect 1, one level down. `naive_n` now *extends* the
+   horizon (doubling, up to ~480 years) until it has N occurrences or the
+   extension stops producing any, and each row records the horizon actually
+   used and whether extension was needed.
+
+   Two rows needed it, and the effect was real but not the whole story:
+   `FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200` from 20270101 returned 6 dates at
+   30 years and 8 at 120. The disagreement with dateutil survives the fix
+   (dateutil emits 2039 and 2050, naive at any horizon does not), but before
+   the fix the comparison past index 3 was between a truncated list and a full
+   one and could not have shown that.
 
 2. **One mechanism was asserted for every case.** `explains_truncation`
    tests, per case, the specific claim that dateutil truncates the first
@@ -21,7 +37,7 @@ Two defects in the earlier comparison are addressed here.
 import sys, json, subprocess, os
 sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
-from datetime import datetime
+from datetime import datetime, timedelta
 import dateutil.rrule as du
 import itertools
 from naive import expand, parse, _period_start
@@ -46,6 +62,27 @@ def du_expand(rule, dtstart, n=N):
         return "ERROR:" + type(e).__name__
 
 
+def naive_n(rule, dtstart, n=N, start_years=30, max_years=480):
+    """Naive expansion of exactly n occurrences, with the horizon made non-binding.
+
+    `naive.expand` needs *some* horizon — it is a brute-force enumerator — and
+    it silently substitutes dtstart + ~30 years. That default is a real bound
+    the other two implementations do not have, so comparing elementwise against
+    them is only valid once the bound has been shown not to bind. Double the
+    horizon until either n occurrences are found or an extension yields nothing
+    new. Returns (occurrences, horizon_years_used, extended?).
+    """
+    years = start_years
+    prev = None
+    while True:
+        got = expand(rule, dtstart, horizon=dtstart + timedelta(days=365 * years + years // 4),
+                     limit=n)[:n]
+        if len(got) >= n or years >= max_years or (prev is not None and len(got) == prev):
+            return got, years, years != start_years
+        prev = len(got)
+        years *= 2
+
+
 def explains_truncation(rule, dtstart, n=N):
     """Does 'dateutil truncates the first period at DTSTART' explain this case?
 
@@ -61,7 +98,7 @@ def explains_truncation(rule, dtstart, n=N):
     if isinstance(shifted, str):
         return False, shifted
     shifted = [x for x in shifted if x >= dtstart][:n]
-    mine = expand(rule, dtstart, limit=n)[:n]
+    mine = naive_n(rule, dtstart, n)[0]
     if shifted == mine:
         return True, "dateutil from period start %s reproduces the naive expansion" % fmt(ps)
     i = next((k for k in range(min(len(shifted), len(mine)))
@@ -106,10 +143,12 @@ def main():
     rows = []
     for c, jsout in zip(cases, js):
         ds = parse_dt(c["dtstart"])
-        mine = [fmt(x) for x in expand(c["rrule"], ds, limit=N)[:N]]
+        mine_dts, years, extended = naive_n(c["rrule"], ds)
+        mine = [fmt(x) for x in mine_dts]
         theirs = du_expand(c["rrule"], ds)
         theirs = theirs if isinstance(theirs, str) else [fmt(x) for x in theirs]
         ok, why = explains_truncation(c["rrule"], ds)
+
         first = next((i for i in range(min(len(mine), len(theirs)))
                       if mine[i] != theirs[i]), None)
         rows.append({
@@ -119,11 +158,18 @@ def main():
             "dateutil_matches_rrulejs": theirs == jsout,
             "explained_by_first_period_truncation": ok,
             "explanation_evidence": why,
+            "naive_horizon_years": years,
+            "naive_horizon_extended": extended,
         })
     meta = {
         "about": "Disputed synchronized cases under matching bounds: every "
-                 "implementation asked for %d occurrences, no horizon clip." % N,
+                 "implementation asked for %d occurrences. The naive expander "
+                 "needs a horizon; it is extended per case until it no longer "
+                 "binds, so the three lists are comparable elementwise." % N,
         "occurrences_requested": N,
+        "naive_horizon": "extended per case until N occurrences are found or "
+                         "extension stops helping; see naive_horizon_years",
+        "cases_needing_horizon_extension": None,  # filled below
         "implementations": {
             "naive": "rruleref src/naive.py (spec-derived brute force)",
             "dateutil": "python-dateutil " + __import__("dateutil").__version__,
@@ -134,6 +180,8 @@ def main():
         "explained_by_first_period_truncation":
             sum(r["explained_by_first_period_truncation"] for r in rows),
     }
+    meta["cases_needing_horizon_extension"] = sum(r["naive_horizon_extended"] for r in rows)
+    meta["cases_still_short_of_n"] = sum(len(r["naive"]) < N for r in rows)
     json.dump({"meta": meta, "cases": rows},
               open("findings/data/004-crosscheck.json", "w"), indent=1)
     print(json.dumps(meta, indent=1))
