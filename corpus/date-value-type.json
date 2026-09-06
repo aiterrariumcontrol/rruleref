@@ -1,0 +1,1470 @@
+{
+ "branches": [
+  "BYDAY|bywdaylist/1|repeat=0",
+  "BYDAY|bywdaylist/1|repeat=1+",
+  "BYDAY|weekdaynum/0/0/0/0|minus",
+  "BYDAY|weekdaynum/0/0/0|present",
+  "BYDAY|weekdaynum/0|absent",
+  "BYDAY|weekdaynum/0|present",
+  "BYDAY|weekday|FR",
+  "BYDAY|weekday|MO",
+  "BYDAY|weekday|SA",
+  "BYDAY|weekday|SU",
+  "BYDAY|weekday|TH",
+  "BYDAY|weekday|TU",
+  "BYDAY|weekday|WE",
+  "BYHOUR|byhrlist/1|repeat=0",
+  "BYHOUR|byhrlist/1|repeat=1+",
+  "BYMINUTE|byminlist/1|repeat=0",
+  "BYMINUTE|byminlist/1|repeat=1+",
+  "BYMONTHDAY|bymodaylist/1|repeat=0",
+  "BYMONTHDAY|bymodaylist/1|repeat=1+",
+  "BYMONTHDAY|monthdaynum/0/0|minus",
+  "BYMONTHDAY|monthdaynum/0|absent",
+  "BYMONTHDAY|monthdaynum/0|present",
+  "BYMONTH|bymolist/1|repeat=0",
+  "BYSECOND|byseclist/1|repeat=0",
+  "BYSETPOS|bysplist/1|repeat=0",
+  "BYSETPOS|yeardaynum/0/0|minus",
+  "BYSETPOS|yeardaynum/0|present",
+  "BYWEEKNO|bywknolist/1|repeat=1+",
+  "BYWEEKNO|weeknum/0|absent",
+  "BYYEARDAY|byyrdaylist/1|repeat=1+",
+  "BYYEARDAY|yeardaynum/0/0|minus",
+  "BYYEARDAY|yeardaynum/0|absent",
+  "BYYEARDAY|yeardaynum/0|present",
+  "FREQ|freq|DAILY",
+  "FREQ|freq|MONTHLY",
+  "FREQ|freq|WEEKLY",
+  "FREQ|freq|YEARLY",
+  "UNTIL|enddate|date",
+  "WKST|weekday|SU",
+  "recur|recur-rule-part|BYDAY",
+  "recur|recur-rule-part|BYHOUR",
+  "recur|recur-rule-part|BYMINUTE",
+  "recur|recur-rule-part|BYMONTH",
+  "recur|recur-rule-part|BYMONTHDAY",
+  "recur|recur-rule-part|BYSECOND",
+  "recur|recur-rule-part|BYSETPOS",
+  "recur|recur-rule-part|BYWEEKNO",
+  "recur|recur-rule-part|BYYEARDAY",
+  "recur|recur-rule-part|COUNT",
+  "recur|recur-rule-part|FREQ",
+  "recur|recur-rule-part|INTERVAL",
+  "recur|recur-rule-part|UNTIL",
+  "recur|recur-rule-part|WKST",
+  "recur|recur/1|repeat=0",
+  "recur|recur/1|repeat=1+"
+ ],
+ "cases": [
+  {
+   "branches": [
+    "BYHOUR|byhrlist/1|repeat=1+",
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|BYHOUR",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108",
+    "20260109",
+    "20260110",
+    "20260111",
+    "20260112"
+   ],
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T090000",
+     "20260105T170000",
+     "20260106T090000",
+     "20260106T170000",
+     "20260107T090000",
+     "20260107T170000",
+     "20260108T090000",
+     "20260108T170000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T090000",
+     "20260105T170000",
+     "20260106T090000",
+     "20260106T170000",
+     "20260107T090000",
+     "20260107T170000",
+     "20260108T090000",
+     "20260108T170000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T174049",
+     "20260907T094049",
+     "20260907T174049",
+     "20260908T094049",
+     "20260908T174049",
+     "20260909T094049",
+     "20260909T174049",
+     "20260910T094049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;BYHOUR=9,17",
+   "rule_valid": true,
+   "why": "BYHOUR must be ignored"
+  },
+  {
+   "branches": [
+    "BYMINUTE|byminlist/1|repeat=0",
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|BYMINUTE",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108",
+    "20260109",
+    "20260110",
+    "20260111",
+    "20260112"
+   ],
+   "ignored_parts": [
+    "BYMINUTE"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T003000",
+     "20260106T003000",
+     "20260107T003000",
+     "20260108T003000",
+     "20260109T003000",
+     "20260110T003000",
+     "20260111T003000",
+     "20260112T003000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T003000",
+     "20260106T003000",
+     "20260107T003000",
+     "20260108T003000",
+     "20260109T003000",
+     "20260110T003000",
+     "20260111T003000",
+     "20260112T003000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260907T143049",
+     "20260908T143049",
+     "20260909T143049",
+     "20260910T143049",
+     "20260911T143049",
+     "20260912T143049",
+     "20260913T143049",
+     "20260914T143049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;BYMINUTE=30",
+   "rule_valid": true,
+   "why": "BYMINUTE must be ignored"
+  },
+  {
+   "branches": [
+    "BYSECOND|byseclist/1|repeat=0",
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|BYSECOND",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108",
+    "20260109",
+    "20260110",
+    "20260111",
+    "20260112"
+   ],
+   "ignored_parts": [
+    "BYSECOND"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000015",
+     "20260106T000015",
+     "20260107T000015",
+     "20260108T000015",
+     "20260109T000015",
+     "20260110T000015",
+     "20260111T000015",
+     "20260112T000015"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000015",
+     "20260106T000015",
+     "20260107T000015",
+     "20260108T000015",
+     "20260109T000015",
+     "20260110T000015",
+     "20260111T000015",
+     "20260112T000015"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260907T144015",
+     "20260908T144015",
+     "20260909T144015",
+     "20260910T144015",
+     "20260911T144015",
+     "20260912T144015",
+     "20260913T144015",
+     "20260914T144015"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;BYSECOND=15",
+   "rule_valid": true,
+   "why": "BYSECOND must be ignored"
+  },
+  {
+   "branches": [
+    "BYHOUR|byhrlist/1|repeat=1+",
+    "BYMINUTE|byminlist/1|repeat=1+",
+    "BYSECOND|byseclist/1|repeat=0",
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|BYHOUR",
+    "recur|recur-rule-part|BYMINUTE",
+    "recur|recur-rule-part|BYSECOND",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108",
+    "20260109",
+    "20260110",
+    "20260111",
+    "20260112"
+   ],
+   "ignored_parts": [
+    "BYSECOND",
+    "BYMINUTE",
+    "BYHOUR"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T090015",
+     "20260105T093015",
+     "20260105T170015",
+     "20260105T173015",
+     "20260106T090015",
+     "20260106T093015",
+     "20260106T170015",
+     "20260106T173015"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T090015",
+     "20260105T093015",
+     "20260105T170015",
+     "20260105T173015",
+     "20260106T090015",
+     "20260106T093015",
+     "20260106T170015",
+     "20260106T173015"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T170015",
+     "20260906T173015",
+     "20260907T090015",
+     "20260907T093015",
+     "20260907T170015",
+     "20260907T173015",
+     "20260908T090015",
+     "20260908T093015"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;BYHOUR=9,17;BYMINUTE=0,30;BYSECOND=15",
+   "rule_valid": true,
+   "why": "all three must be ignored; as written this is 12 instances a day"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|WE",
+    "BYHOUR|byhrlist/1|repeat=0",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYHOUR",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260107",
+    "20260112",
+    "20260114",
+    "20260119",
+    "20260121",
+    "20260126",
+    "20260128"
+   ],
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T080000",
+     "20260107T080000",
+     "20260112T080000",
+     "20260114T080000",
+     "20260119T080000",
+     "20260121T080000",
+     "20260126T080000",
+     "20260128T080000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T080000",
+     "20260107T080000",
+     "20260112T080000",
+     "20260114T080000",
+     "20260119T080000",
+     "20260121T080000",
+     "20260126T080000",
+     "20260128T080000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260907T084049",
+     "20260909T084049",
+     "20260914T084049",
+     "20260916T084049",
+     "20260921T084049",
+     "20260923T084049",
+     "20260928T084049",
+     "20260930T084049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=WEEKLY;BYDAY=MO,WE",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYHOUR=8",
+   "rule_valid": true,
+   "why": "the ignored part interacting with an expanding part"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=0",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "BYHOUR|byhrlist/1|repeat=0",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0/0|minus",
+    "BYSETPOS|yeardaynum/0|present",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYHOUR",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": false,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260126",
+    "20260223",
+    "20260330",
+    "20260427",
+    "20260525",
+    "20260629",
+    "20260727",
+    "20260831"
+   ],
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260126T090000",
+     "20260223T090000",
+     "20260330T090000",
+     "20260427T090000",
+     "20260525T090000",
+     "20260629T090000",
+     "20260727T090000",
+     "20260831T090000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260126T090000",
+     "20260223T090000",
+     "20260330T090000",
+     "20260427T090000",
+     "20260525T090000",
+     "20260629T090000",
+     "20260727T090000",
+     "20260831T090000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260928T094049",
+     "20261026T094049",
+     "20261130T094049",
+     "20261228T094049",
+     "20270125T094049",
+     "20270222T094049",
+     "20270329T094049",
+     "20270426T094049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": false,
+    "rrule.js-2.8.1 bare": false,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1;BYHOUR=9",
+   "rule_valid": true,
+   "why": "BYSETPOS selects from the reduced set, not the expanded one"
+  },
+  {
+   "branches": [
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=0"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108",
+    "20260109",
+    "20260110",
+    "20260111",
+    "20260112"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000",
+     "20260108T000000",
+     "20260109T000000",
+     "20260110T000000",
+     "20260111T000000",
+     "20260112T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000",
+     "20260108T000000",
+     "20260109T000000",
+     "20260110T000000",
+     "20260111T000000",
+     "20260112T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T144049",
+     "20260907T144049",
+     "20260908T144049",
+     "20260909T144049",
+     "20260910T144049",
+     "20260911T144049",
+     "20260912T144049",
+     "20260913T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY",
+   "rule_valid": true,
+   "why": "the plain case"
+  },
+  {
+   "branches": [
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260108",
+    "20260111",
+    "20260114",
+    "20260117",
+    "20260120",
+    "20260123",
+    "20260126"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260108T000000",
+     "20260111T000000",
+     "20260114T000000",
+     "20260117T000000",
+     "20260120T000000",
+     "20260123T000000",
+     "20260126T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000000",
+     "20260108T000000",
+     "20260111T000000",
+     "20260114T000000",
+     "20260117T000000",
+     "20260120T000000",
+     "20260123T000000",
+     "20260126T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T144049",
+     "20260909T144049",
+     "20260912T144049",
+     "20260915T144049",
+     "20260918T144049",
+     "20260921T144049",
+     "20260924T144049",
+     "20260927T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY;INTERVAL=3",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;INTERVAL=3",
+   "rule_valid": true,
+   "why": "INTERVAL"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|TH",
+    "BYDAY|weekday|TU",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260106",
+    "20260108",
+    "20260113",
+    "20260115",
+    "20260120",
+    "20260122",
+    "20260127",
+    "20260129"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260106T000000",
+     "20260108T000000",
+     "20260113T000000",
+     "20260115T000000",
+     "20260120T000000",
+     "20260122T000000",
+     "20260127T000000",
+     "20260129T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260106T000000",
+     "20260108T000000",
+     "20260113T000000",
+     "20260115T000000",
+     "20260120T000000",
+     "20260122T000000",
+     "20260127T000000",
+     "20260129T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260908T144049",
+     "20260910T144049",
+     "20260915T144049",
+     "20260917T144049",
+     "20260922T144049",
+     "20260924T144049",
+     "20260929T144049",
+     "20261001T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=WEEKLY;BYDAY=TU,TH",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=WEEKLY;BYDAY=TU,TH",
+   "rule_valid": true,
+   "why": "WEEKLY expansion"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|SA",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|WEEKLY",
+    "WKST|weekday|SU",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260110",
+    "20260118",
+    "20260124",
+    "20260201",
+    "20260207",
+    "20260215",
+    "20260221",
+    "20260301"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260110T000000",
+     "20260118T000000",
+     "20260124T000000",
+     "20260201T000000",
+     "20260207T000000",
+     "20260215T000000",
+     "20260221T000000",
+     "20260301T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260110T000000",
+     "20260118T000000",
+     "20260124T000000",
+     "20260201T000000",
+     "20260207T000000",
+     "20260215T000000",
+     "20260221T000000",
+     "20260301T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T144049",
+     "20260912T144049",
+     "20260920T144049",
+     "20260926T144049",
+     "20261004T144049",
+     "20261010T144049",
+     "20261018T144049",
+     "20261024T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=SU,SA",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=SU,SA",
+   "rule_valid": true,
+   "why": "WKST matters"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=1+",
+    "BYMONTHDAY|monthdaynum/0/0|minus",
+    "BYMONTHDAY|monthdaynum/0|absent",
+    "BYMONTHDAY|monthdaynum/0|present",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260131",
+    "20260201",
+    "20260228",
+    "20260301",
+    "20260331",
+    "20260401",
+    "20260430",
+    "20260501"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260131T000000",
+     "20260201T000000",
+     "20260228T000000",
+     "20260301T000000",
+     "20260331T000000",
+     "20260401T000000",
+     "20260430T000000",
+     "20260501T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260131T000000",
+     "20260201T000000",
+     "20260228T000000",
+     "20260301T000000",
+     "20260331T000000",
+     "20260401T000000",
+     "20260430T000000",
+     "20260501T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260930T144049",
+     "20261001T144049",
+     "20261031T144049",
+     "20261101T144049",
+     "20261130T144049",
+     "20261201T144049",
+     "20261231T144049",
+     "20270101T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=MONTHLY;BYMONTHDAY=1,-1",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,-1",
+   "rule_valid": true,
+   "why": "first and last of the month"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=0",
+    "BYDAY|weekdaynum/0/0/0/0|minus",
+    "BYDAY|weekdaynum/0/0/0|present",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|FR",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260130",
+    "20260227",
+    "20260327",
+    "20260424",
+    "20260529",
+    "20260626",
+    "20260731",
+    "20260828"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260130T000000",
+     "20260227T000000",
+     "20260327T000000",
+     "20260424T000000",
+     "20260529T000000",
+     "20260626T000000",
+     "20260731T000000",
+     "20260828T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260130T000000",
+     "20260227T000000",
+     "20260327T000000",
+     "20260424T000000",
+     "20260529T000000",
+     "20260626T000000",
+     "20260731T000000",
+     "20260828T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260925T144049",
+     "20261030T144049",
+     "20261127T144049",
+     "20261225T144049",
+     "20270129T144049",
+     "20270226T144049",
+     "20270326T144049",
+     "20270430T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=MONTHLY;BYDAY=-1FR",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=MONTHLY;BYDAY=-1FR",
+   "rule_valid": true,
+   "why": "last Friday"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=0",
+    "BYMONTHDAY|monthdaynum/0|absent",
+    "BYMONTH|bymolist/1|repeat=0",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20240226",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20240229",
+    "20280229",
+    "20320229",
+    "20360229",
+    "20400229",
+    "20440229",
+    "20480229",
+    "20520229"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20240229T000000",
+     "20280229T000000",
+     "20320229T000000",
+     "20360229T000000",
+     "20400229T000000",
+     "20440229T000000",
+     "20480229T000000",
+     "20520229T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20240229T000000",
+     "20280229T000000",
+     "20320229T000000",
+     "20360229T000000",
+     "20400229T000000",
+     "20440229T000000",
+     "20480229T000000",
+     "20520229T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20280229T144049",
+     "20320229T144049",
+     "20360229T144049",
+     "20400229T144049",
+     "20440229T144049",
+     "20480229T144049",
+     "20520229T144049",
+     "20560229T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29",
+   "rule_valid": true,
+   "why": "leap day, skips years"
+  },
+  {
+   "branches": [
+    "BYYEARDAY|byyrdaylist/1|repeat=1+",
+    "BYYEARDAY|yeardaynum/0/0|minus",
+    "BYYEARDAY|yeardaynum/0|absent",
+    "BYYEARDAY|yeardaynum/0|present",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20261231",
+    "20270101",
+    "20271231",
+    "20280101",
+    "20281231",
+    "20290101",
+    "20291231",
+    "20300101"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20261231T000000",
+     "20270101T000000",
+     "20271231T000000",
+     "20280101T000000",
+     "20281231T000000",
+     "20290101T000000",
+     "20291231T000000",
+     "20300101T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20261231T000000",
+     "20270101T000000",
+     "20271231T000000",
+     "20280101T000000",
+     "20281231T000000",
+     "20290101T000000",
+     "20291231T000000",
+     "20300101T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20261231T144049",
+     "20270101T144049",
+     "20271231T144049",
+     "20280101T144049",
+     "20281231T144049",
+     "20290101T144049",
+     "20291231T144049",
+     "20300101T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": true
+   },
+   "reduced_rrule": "FREQ=YEARLY;BYYEARDAY=1,-1",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=YEARLY;BYYEARDAY=1,-1",
+   "rule_valid": true,
+   "why": "BYYEARDAY"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=0",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20261228",
+    "20270104",
+    "20280103",
+    "20290101",
+    "20291231",
+    "20301230",
+    "20311229",
+    "20321227"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20261228T000000",
+     "20270104T000000",
+     "20280103T000000",
+     "20290101T000000",
+     "20291231T000000",
+     "20301230T000000",
+     "20311229T000000",
+     "20321227T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20261228T000000",
+     "20270104T000000",
+     "20280103T000000",
+     "20290101T000000",
+     "20291231T000000",
+     "20301230T000000",
+     "20311229T000000",
+     "20321227T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20261228T144049",
+     "20270104T144049",
+     "20280103T144049",
+     "20290101T144049",
+     "20291231T144049",
+     "20301230T144049",
+     "20311229T144049",
+     "20321227T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": true
+   },
+   "reduced_rrule": "FREQ=YEARLY;BYWEEKNO=1,53;BYDAY=MO",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=1,53;BYDAY=MO",
+   "rule_valid": true,
+   "why": "BYWEEKNO"
+  },
+  {
+   "branches": [
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|COUNT",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": [
+     "20260906T144049",
+     "20260907T144049",
+     "20260908T144049"
+    ]
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY;COUNT=3",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;COUNT=3",
+   "rule_valid": true,
+   "why": "COUNT"
+  },
+  {
+   "branches": [
+    "FREQ|freq|DAILY",
+    "UNTIL|enddate|date",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|UNTIL",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260106",
+    "20260107",
+    "20260108"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000",
+     "20260108T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000000",
+     "20260106T000000",
+     "20260107T000000",
+     "20260108T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": []
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=DAILY;UNTIL=20260108",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=DAILY;UNTIL=20260108",
+   "rule_valid": true,
+   "why": "UNTIL as a DATE -- required here, prohibited with a DATE-TIME DTSTART"
+  },
+  {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=0",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "FREQ|freq|WEEKLY",
+    "UNTIL|enddate|date",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|UNTIL",
+    "recur|recur/1|repeat=1+"
+   ],
+   "conformant_as_written": true,
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0 (on reduced_rrule, at 00:00:00)"
+   ],
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "expect": [
+    "20260105",
+    "20260112",
+    "20260119",
+    "20260126",
+    "20260202"
+   ],
+   "ignored_parts": [],
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260112T000000",
+     "20260119T000000",
+     "20260126T000000",
+     "20260202T000000"
+    ],
+    "rrule.js-2.8.1 bare": [
+     "20260105T000000",
+     "20260112T000000",
+     "20260119T000000",
+     "20260126T000000",
+     "20260202T000000"
+    ],
+    "rrule.js-2.8.1;VALUE=DATE": []
+   },
+   "observed_midnight_only": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "observed_same_days": {
+    "python-dateutil-2.9.0": true,
+    "rrule.js-2.8.1 bare": true,
+    "rrule.js-2.8.1;VALUE=DATE": false
+   },
+   "reduced_rrule": "FREQ=WEEKLY;BYDAY=MO;UNTIL=20260202",
+   "reduction": "RFC 5545 3.3.10: BYSECOND, BYMINUTE and BYHOUR MUST be ignored when DTSTART has a DATE value type",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO;UNTIL=20260202",
+   "rule_valid": true,
+   "why": "DATE UNTIL, weekly"
+  }
+ ],
+ "meta": {
+  "about": "RFC 5545 recurrence with a DATE-valued DTSTART.",
+  "cases": 18,
+  "occurrences_per_case": 8,
+  "reduction": "Expected values are the DATE-TIME expansion of reduced_rrule at 00:00:00, projected onto dates. The reduction is RFC 5545 3.3.10's own remedy for BYSECOND/BYMINUTE/BYHOUR under a DATE-valued DTSTART; it does not exist in RFC 2445.",
+  "undefined": 4
+ },
+ "undefined": [
+  {
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260105T010000",
+     "20260105T020000",
+     "20260105T030000",
+     "20260105T040000",
+     "20260105T050000",
+     "20260105T060000",
+     "20260105T070000"
+    ]
+   },
+   "refused": "FREQ=HOURLY with a DATE-valued DTSTART: RFC 5545 does not say what a sub-daily recurrence of a date-valued start means",
+   "rrule": "FREQ=HOURLY",
+   "why": "sub-daily FREQ: the RFC never connects FREQ to the DTSTART value type"
+  },
+  {
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260105T000100",
+     "20260105T000200",
+     "20260105T000300",
+     "20260105T000400",
+     "20260105T000500",
+     "20260105T000600",
+     "20260105T000700"
+    ]
+   },
+   "refused": "FREQ=MINUTELY with a DATE-valued DTSTART: RFC 5545 does not say what a sub-daily recurrence of a date-valued start means",
+   "rrule": "FREQ=MINUTELY",
+   "why": "sub-daily FREQ"
+  },
+  {
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "20260105T000000",
+     "20260105T000001",
+     "20260105T000002",
+     "20260105T000003",
+     "20260105T000004",
+     "20260105T000005",
+     "20260105T000006",
+     "20260105T000007"
+    ]
+   },
+   "refused": "FREQ=SECONDLY with a DATE-valued DTSTART: RFC 5545 does not say what a sub-daily recurrence of a date-valued start means",
+   "rrule": "FREQ=SECONDLY",
+   "why": "sub-daily FREQ"
+  },
+  {
+   "dtstart": "20260105",
+   "dtstart_value_type": "DATE",
+   "observed": {
+    "python-dateutil-2.9.0": [
+     "ERROR:RRULE UNTIL values must be specified in UTC when DTSTART is timezone-aware"
+    ]
+   },
+   "refused": "UNTIL is a DATE-TIME but DTSTART is a DATE: UNTIL=20260108T000000Z",
+   "rrule": "FREQ=DAILY;UNTIL=20260108T000000Z",
+   "why": "UNTIL's value type differs from DTSTART's, which 3.3.10 forbids and gives no remedy for"
+  }
+ ]
+}

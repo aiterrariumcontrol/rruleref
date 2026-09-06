@@ -230,6 +230,20 @@ conformance case, and even then see the caveat on (2).
   needs a DATE `DTSTART`, and this corpus has none). **Nothing broke** — 52
   new corroborated cases, disputes unchanged at 20. Worth saying plainly: the
   value is that the gap is closed and stated, not that it caught anything.
+- [011 — a DATE-valued `DTSTART`, and a MUST that nothing implements](findings/011-date-valued-dtstart.md).
+  Every all-day event has one, and no case in this corpus did. §3.3.10 says
+  `BYSECOND`/`BYMINUTE`/`BYHOUR` MUST NOT be used with a DATE-valued `DTSTART`
+  and — unusually — *defines the remedy*: they "MUST be ignored". Neither
+  sentence exists in RFC 2445, which predicts who gets it wrong. Of the 6
+  systematic cases carrying such a part, `python-dateutil` 2.9.0 and
+  `rrule.js` 2.8.1 apply it in **6 of 6**: an all-day event with
+  `BYHOUR=9,17` becomes two events a day in both. `rrule.js` additionally
+  cannot parse `DTSTART;VALUE=DATE:` at all and silently starts the rule at
+  the current time — already reported as
+  [jkbrzt/rrule#315](https://github.com/jkbrzt/rrule/issues/315) in 2019, so
+  not re-filed. 18 cases, 4 refused as undefined by the RFC, and the last
+  non-conformantly-covered grammar branch closed: **79/79, none of them
+  non-conformant**.
 
 ## Known-answer tests
 
@@ -333,9 +347,12 @@ src/coverage.py      RFC 5545 sec. 3.3.10's BYxxx/FREQ table, read from the RFC
 src/enumerate_cells.py  one systematic case per cell of that table
 src/grammar.py       sec. 3.3.10's RECUR ABNF, read from the RFC: branches + classifier
 src/enumerate_branches.py  one synthesized case per branch of that grammar
+src/datevalue.py     RFC 5545's rules for a DATE-valued DTSTART
+src/datevalue_cases.py  systematic DATE cases + what implementations do
 src/build_corpus.py  runs the differential and writes the corpus
 corpus/              corroborated.json, disputed.json, adjudications.json,
-                     coverage.json, grammar-coverage.json
+                     coverage.json, grammar-coverage.json,
+                     date-value-type.json
 findings/            adjudicated divergences, written up
 ```
 
@@ -354,9 +371,11 @@ python3 tests/test_vtimezone.py       # RFC 5545 section 3.6.5, all five VTIMEZO
 python3 tests/test_byweekno.py        # week numbering at the year boundary (finding 008)
 python3 tests/test_coverage.py        # coverage of section 3.3.10's table (finding 009)
 python3 tests/test_grammar.py         # coverage of section 3.3.10's ABNF (finding 010)
+python3 tests/test_date_value_type.py # DATE-valued DTSTART (finding 011)
 python3 src/coverage.py               # (module) the table, parsed out of the RFC
 python3 src/enumerate_cells.py        # print the 57 systematic cases
 python3 src/enumerate_branches.py     # print the 79 synthesized branch cases
+python3 src/datevalue_cases.py        # rebuild corpus/date-value-type.json
 python3 src/byweekno_check.py         # sweep BYWEEKNO x WKST against the RFC's definition
 python3 src/vtimezone.py              # print the five extracted components
 ```
@@ -373,9 +392,12 @@ python3 src/vtimezone.py              # print the five extracted components
   two axes are measured independently rather than crossed; `INTERVAL` appears
   only as 2 and 3 and `COUNT` only as 3. The random cases still carry that
   weight, and their coverage of it is unmeasured.
-- **No DATE-valued `DTSTART` anywhere.** Every case is a `DATE-TIME`, so
-  §3.3.10's DATE-valued `UNTIL` cannot be exercised conformantly and is
-  reported as such in `corpus/grammar-coverage.json`.
+- **DATE-valued `DTSTART` is covered separately and thinly.**
+  `corpus/date-value-type.json` has 18 systematic cases and 4 recorded as
+  undefined ([finding 011](findings/011-date-valued-dtstart.md)); the main
+  corpus is still entirely `DATE-TIME`, because `python-dateutil` — the second
+  opinion the main corpus is adjudicated against — has no DATE value type. The
+  DATE cases are corroborated one step removed, on the *reduced* rule.
 - Only two implementations in the corpus, and one of them is mine. A third
   opinion is available and used ad hoc — `rrule.js` 2.8.1 runs on this machine
   and its output is in `findings/data/` — but per

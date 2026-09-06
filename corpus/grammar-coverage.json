@@ -80,14 +80,12 @@
   "recur|recur/1|repeat=0": 7,
   "recur|recur/1|repeat=1+": 2663
  },
- "covered_nonconformantly": [
-  "UNTIL|enddate|date"
- ],
+ "covered_nonconformantly": [],
  "meta": {
   "about": "Branch coverage of RFC 5545 3.3.10's RECUR ABNF (src/grammar.py).",
   "branches": 79,
   "covered": 79,
-  "covered_nonconformantly": 1,
+  "covered_nonconformantly": 0,
   "uncovered": 0
  },
  "uncovered": []

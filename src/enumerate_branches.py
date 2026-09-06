@@ -54,6 +54,9 @@ EXTERNAL = {"date": "20260305", "date-time": "20260305T090000"}
 #: violates that MUST no matter which rule it is attached to. The case is
 #: still generated and adjudicated -- what the two expanders do with it is
 #: data -- but it is reported separately rather than counted as covered.
+#: Covered conformantly since 2026-09-06 by the DATE-valued corpus,
+#: `src/datevalue_cases.py` / `corpus/date-value-type.json`, which the main
+#: generator cannot produce because dateutil has no DATE value type.
 #:
 #: (The neighbouring question, whether a floating DTSTART may take
 #: `UNTIL=...Z`, is *not* open: RFC 5545 as printed says both "MUST also be

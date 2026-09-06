@@ -178,7 +178,17 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
             if k in bhits:
                 bhits[k] += 1
     bmiss = sorted(k for k, v in bhits.items() if v == 0)
-    nonconf = sorted(enumerate_branches.NEEDS_DATE_DTSTART - set(bmiss))
+    # Branches that need a DATE-valued DTSTART are covered by the separate
+    # DATE corpus (src/datevalue_cases.py), which the main generator cannot
+    # produce because `compare` adjudicates against dateutil, and dateutil has
+    # no DATE value type. A branch covered there is covered conformantly; only
+    # what is left counts as covered_nonconformantly.
+    try:
+        date_branches = set(json.load(open("corpus/date-value-type.json"))["branches"])
+    except FileNotFoundError:
+        date_branches = set()
+    nonconf = sorted(enumerate_branches.NEEDS_DATE_DTSTART - set(bmiss)
+                     - date_branches)
     json.dump({"meta": {"about": "Branch coverage of RFC 5545 3.3.10's RECUR "
                                  "ABNF (src/grammar.py).",
                         "branches": len(feats),

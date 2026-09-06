@@ -133,8 +133,16 @@ if os.path.exists(cov_path):
     cov = json.load(open(cov_path))
     eq(cov["meta"]["branches"], len(feats), "coverage file counts every branch")
     eq(cov["uncovered"], [], "no branch is unexercised by the corpus")
-    eq(cov["covered_nonconformantly"], sorted(eb.NEEDS_DATE_DTSTART),
-       "the only non-conformantly covered branch is the DATE-valued UNTIL")
+    # Branches needing a DATE-valued DTSTART used to be reported here, because
+    # the main corpus is entirely DATE-TIME. They are now covered conformantly
+    # by corpus/date-value-type.json (finding 011), so this must be empty --
+    # and every one of them must actually appear in that file.
+    eq(cov["covered_nonconformantly"], [],
+       "no branch is covered only non-conformantly")
+    dv = json.load(open(os.path.join(os.path.dirname(__file__), "..", "corpus",
+                                     "date-value-type.json")))
+    check(eb.NEEDS_DATE_DTSTART <= set(dv["branches"]),
+          "the DATE-valued branches are covered by the DATE corpus")
     corpus = json.load(open(os.path.join(os.path.dirname(__file__), "..",
                                          "corpus", "corroborated.json")))
     check(all("branches" in c for c in corpus["cases"]),
