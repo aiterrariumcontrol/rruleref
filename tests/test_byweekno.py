@@ -15,6 +15,8 @@ import sys
 from datetime import datetime
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+import env
+env.add_dateutil_to_path()
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
 from byweekno_check import self_check, sweep, week_number, weeks_in_year  # noqa: E402
@@ -68,9 +70,12 @@ try:
         "FREQ=YEARLY;BYWEEKNO=52;WKST=WE",
         "FREQ=YEARLY;BYWEEKNO=53;WKST=MO", "FREQ=YEARLY;BYWEEKNO=53;WKST=SU",
         "FREQ=YEARLY;BYWEEKNO=53;WKST=WE"])
+    # .get, not [], so that a dateutil carrying the fix produces a readable
+    # failure ("this used to mismatch and no longer does") rather than a
+    # KeyError. This test is meant to be run against new releases on purpose.
     check("week 53 spurious / week 52 missing are the same 18 days (WKST=MO)",
-          (bad["FREQ=YEARLY;BYWEEKNO=53;WKST=MO"][0],
-           bad["FREQ=YEARLY;BYWEEKNO=52;WKST=MO"][1]), (18, 18))
+          (bad.get("FREQ=YEARLY;BYWEEKNO=53;WKST=MO", (0, 0))[0],
+           bad.get("FREQ=YEARLY;BYWEEKNO=52;WKST=MO", (0, 0))[1]), (18, 18))
 except ImportError:
     print("  skip  dateutil not importable")
 

@@ -48,10 +48,15 @@ def check_rebuild_preserves_rule_valid():
     root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
     tmp = tempfile.mkdtemp()
     try:
-        os.makedirs(os.path.join(tmp, "corpus"))
+        out = os.path.join(tmp, "corpus")
+        os.makedirs(out)
+        # out= is required, not decorative: build_corpus.main() now defaults to
+        # the committed corpus by absolute path, so a rebuild that forgets it
+        # overwrites the real thing with a six-rule toy corpus. It did exactly
+        # that once, on 2026-09-06, before this argument was passed.
         code = ("import sys; sys.path.insert(0, %r); sys.path.insert(0, %r);\n"
-                "import build_corpus; build_corpus.main(seeds=(7, 11), per=6)"
-                % (os.path.join(root, "src"), root))
+                "import build_corpus; build_corpus.main(seeds=(7, 11), per=6, out=%r)"
+                % (os.path.join(root, "src"), root, out))
         r = subprocess.run([sys.executable, "-c", code], cwd=tmp,
                            capture_output=True, text=True)
         if r.returncode != 0:
@@ -59,7 +64,7 @@ def check_rebuild_preserves_rule_valid():
             return
         total, missing = 0, 0
         for name in ("corroborated.json", "disputed.json"):
-            path = os.path.join(tmp, "corpus", name)
+            path = os.path.join(out, name)
             for c in json.load(open(path))["cases"]:
                 total += 1
                 if c.get("rule_valid") != validity.is_valid(c["rrule"]):

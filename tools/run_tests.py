@@ -64,8 +64,12 @@ def main(argv):
         r = subprocess.run([sys.executable, os.path.join(TESTS, f)],
                            cwd=ROOT, capture_output=True, text=True)
         status = "ok  " if r.returncode == 0 else "FAIL"
+        # Skip lines are indented in most test files, so this must not
+        # anchor at column zero. It did, and as a result the first clean-clone
+        # run reported 11/11 "ok" while two files had silently dropped their
+        # dateutil half -- exactly the failure this runner exists to prevent.
         skips = sum(1 for line in r.stdout.splitlines()
-                    if line.startswith("skip"))
+                    if line.strip().lower().startswith("skip"))
         note = "  (%d skipped)" % skips if skips else ""
         print("%s %s%s" % (status, f, note))
         if r.returncode != 0:

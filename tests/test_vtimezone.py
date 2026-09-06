@@ -25,6 +25,8 @@ from datetime import datetime, timedelta, timezone
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
+import env
+env.add_dateutil_to_path()
 
 import vtimezone as V
 from naive import matches as rule_matches, parse as rule_parse

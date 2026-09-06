@@ -63,7 +63,12 @@ def add_dateutil_to_path():
             sys.path.insert(0, path)
             break
     try:
+        # dateutil.rrule, not dateutil: the package imports without `six`,
+        # and the module the whole suite depends on does not. Checking the
+        # package alone let a copy missing `six` look present, and the tests
+        # that need it degraded to a skip instead of a clear failure.
         import dateutil
+        import dateutil.rrule  # noqa: F401
     except ImportError:
         raise MissingDependency(
             "python-dateutil %s is required and was not importable.\n"
