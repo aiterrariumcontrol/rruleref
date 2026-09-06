@@ -205,6 +205,19 @@ conformance case, and even then see the caveat on (2).
   contradicting that example's prose. Example 5's second `DAYLIGHT` also has an
   unsynchronized `DTSTART` (1999-04-24, a Saturday, against `BYDAY=-1SU`).
   Both are inherited verbatim from RFC 2445 §4.6.5 and appear in no erratum.
+- [009 — what the corpus covers, said out loud](findings/009-corpus-coverage-of-the-3310-table.md).
+  Not a defect in the RFC or in `python-dateutil` — a finding about this
+  corpus. "2,541 cases" said nothing about what they *exercised*. Measured
+  against §3.3.10's own `BYxxx`/`FREQ` table (extracted from the RFC by
+  program, 57 cells once the two `BYDAY` notes are expanded, `N/A` cells
+  excluded), the corpus covered **21 of 57**. The random generator never
+  emitted a sub-daily `FREQ`, and never emitted `BYHOUR`/`BYMINUTE`/`BYSECOND`
+  at all. `src/enumerate_cells.py` now fills every cell deterministically —
+  **57/57**, all agreeing — and the gap turned out to be hiding a defect in
+  *this project's* expander: the `BYSETPOS` path buffered every period to the
+  30-year horizon, making three cells unreachable below `FREQ=DAILY`. Fixed,
+  with all 2,541 prior cases reproduced exactly. One case per cell is
+  presence, not exhaustiveness.
 
 ## Known-answer tests
 
@@ -304,8 +317,11 @@ src/naive.py         spec-derived brute-force expander
 tests/rfc_examples.py  known-answer tests from RFC 5545 sec. 3.8.5.3
 src/vtimezone.py     VTIMEZONE extraction from the RFC + offset resolution
 src/differ.py        random rule generator + differential comparison
+src/coverage.py      RFC 5545 sec. 3.3.10's BYxxx/FREQ table, read from the RFC
+src/enumerate_cells.py  one systematic case per cell of that table
 src/build_corpus.py  runs the differential and writes the corpus
-corpus/              corroborated.json, disputed.json, adjudications.json
+corpus/              corroborated.json, disputed.json, adjudications.json,
+                     coverage.json
 findings/            adjudicated divergences, written up
 ```
 
@@ -322,12 +338,20 @@ python3 tests/test_tz.py            # RFC 5545 section 3.8.5.3, all 39 worked ex
 python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zones
 python3 tests/test_vtimezone.py       # RFC 5545 section 3.6.5, all five VTIMEZONE examples
 python3 tests/test_byweekno.py        # week numbering at the year boundary (finding 008)
+python3 tests/test_coverage.py        # coverage of section 3.3.10's table (finding 009)
+python3 src/coverage.py               # (module) the table, parsed out of the RFC
+python3 src/enumerate_cells.py        # print the 57 systematic cases
 python3 src/byweekno_check.py         # sweep BYWEEKNO x WKST against the RFC's definition
 python3 src/vtimezone.py              # print the five extracted components
 ```
 
 ## Honest limits
 
+- **Coverage is stated but thin.** Every one of the 57 cells §3.3.10's table
+  permits now holds at least one case ([finding 009](findings/009-corpus-coverage-of-the-3310-table.md)),
+  which is a presence claim, not exhaustiveness. Nothing systematic covers
+  three-part interactions, `INTERVAL`, `WKST`, or `COUNT`/`UNTIL`; the random
+  cases still carry that weight, and their coverage of it is unmeasured.
 - Only two implementations in the corpus, and one of them is mine. A third
   opinion is available and used ad hoc — `rrule.js` 2.8.1 runs on this machine
   and its output is in `findings/data/` — but per

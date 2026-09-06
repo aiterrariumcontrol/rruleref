@@ -279,37 +279,50 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
     if "UNTIL" in r and r["UNTIL"] < horizon:
         horizon = r["UNTIL"]
 
-    hours = sorted(r.get("BYHOUR", [dtstart.hour])) if freq != "HOURLY" or "BYHOUR" in r else None
     out = []
-    groups = {}
     setpos = "BYSETPOS" in r
+    cap = min(limit, r["COUNT"]) if "COUNT" in r else limit
+
+    def flush(got):
+        """Apply BYSETPOS to one completed period's matches."""
+        got.sort()
+        picked = set()
+        for p in r["BYSETPOS"]:
+            if p > 0 and p <= len(got):
+                picked.add(got[p - 1])
+            elif p < 0 and -p <= len(got):
+                picked.add(got[p])
+        out.extend(x for x in sorted(picked) if x >= dtstart)
+
+    # BYSETPOS needs a whole period before it can select from it, so matches
+    # are buffered per period. The buffer is flushed as soon as the candidate
+    # stream leaves that period -- candidates arrive in increasing time order,
+    # so a period that has been left is complete. Accumulating every period to
+    # the horizon first was correct but unusable below FREQ=DAILY:
+    # FREQ=SECONDLY;BYSETPOS=-1 enumerated ~10^9 candidates before returning
+    # its first occurrence.
+    cur_key, cur = None, []
     for dt in _candidates(r, dtstart, horizon, whole_period=setpos):
         if dt > horizon or (not setpos and dt < dtstart):
             continue
-        if matches(dt, r, dtstart):
-            if setpos:
-                groups.setdefault(period_index(dt, freq, r["WKST"]), []).append(dt)
-            else:
-                out.append(dt)
-                if "COUNT" in r and len(out) >= r["COUNT"]:
-                    return out
-                if len(out) >= limit:
-                    return out
+        if setpos:
+            key = period_index(dt, freq, r["WKST"])
+            if key != cur_key:
+                if cur_key is not None:
+                    flush(cur)
+                    if len(out) >= cap:
+                        return out[:cap]
+                cur_key, cur = key, []
+            if matches(dt, r, dtstart):
+                cur.append(dt)
+        elif matches(dt, r, dtstart):
+            out.append(dt)
+            if len(out) >= cap:
+                return out[:cap]
 
-    if "BYSETPOS" in r:
-        for key in sorted(groups):
-            got = sorted(groups[key])
-            picked = set()
-            for p in r["BYSETPOS"]:
-                if p > 0 and p <= len(got):
-                    picked.add(got[p - 1])
-                elif p < 0 and -p <= len(got):
-                    picked.add(got[p])
-            out.extend(x for x in sorted(picked) if x >= dtstart)
-        out.sort()
-        if "COUNT" in r:
-            out = out[:r["COUNT"]]
-    return out[:limit]
+    if setpos and cur_key is not None:
+        flush(cur)
+    return out[:cap]
 
 
 def _period_start(dt, freq, wkst):

@@ -1,6 +1,11 @@
 {
  "cases": [
   {
+   "cells": [
+    "BYMONTH/WEEKLY/Limit",
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20260214T090000",
     "20260221T090000",
@@ -24,9 +29,14 @@
     "20260425T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=FR,SA;BYMONTH=2,4;WKST=WE;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20270101T090000",
     "20270107T090000",
@@ -50,9 +60,14 @@
     "20270218T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=FR,TH,TU;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20270108T090000",
     "20270115T090000",
@@ -76,9 +91,14 @@
     "20270219T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20270108T090000",
     "20270115T090000",
@@ -102,9 +122,15 @@
     "20270219T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/WEEKLY/Limit",
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20260817T090000",
     "20260824T090000",
@@ -128,9 +154,14 @@
     "20261228T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=8,12;WKST=WE;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20270102T090000",
     "20270106T090000",
@@ -154,9 +185,15 @@
     "20270224T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/WEEKLY/Limit",
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20270117T090000",
     "20270124T090000",
@@ -180,9 +217,15 @@
     "20280130T090000"
    ],
    "rrule": "FREQ=WEEKLY;BYDAY=SU,TH;BYMONTH=1;WKST=MO;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/WEEKLY/Limit",
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20240512T090000",
     "20240524T090000",
@@ -206,9 +249,14 @@
     "20270521T090000"
    ],
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=FR,MO,SU;BYMONTH=5;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20240304T090000",
     "20240314T090000",
@@ -232,9 +280,15 @@
     "20240606T090000"
    ],
    "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH,WE;WKST=WE;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/WEEKLY/Limit",
+    "BYDAY/WEEKLY/Expand",
+    "BYSETPOS/WEEKLY/Limit"
+   ],
    "dateutil": [
     "20241107T090000",
     "20241128T090000",
@@ -258,9 +312,15 @@
     "20270204T090000"
    ],
    "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=2,11;BYDAY=SU,TH,TU;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/YEARLY/Expand",
+    "BYWEEKNO/YEARLY/Expand",
+    "BYSETPOS/YEARLY/Limit"
+   ],
    "dateutil": [
     "20270104T090000",
     "20280102T090000",
@@ -284,7 +344,8 @@
     "20340102T090000"
    ],
    "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
    "adjudication": {
@@ -302,6 +363,11 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "cells": [
+    "BYMONTH/YEARLY/Expand",
+    "BYWEEKNO/YEARLY/Expand",
+    "BYSETPOS/YEARLY/Limit"
+   ],
    "dateutil": [
     "20270104T090000",
     "20280102T090000",
@@ -325,9 +391,14 @@
     "20340102T090000"
    ],
    "rrule": "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYMONTH/YEARLY/Expand",
+    "BYWEEKNO/YEARLY/Expand"
+   ],
    "dateutil": [
     "20280101T090000",
     "20280102T090000",
@@ -351,7 +422,8 @@
     "20500101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
    "adjudication": {
@@ -369,6 +441,10 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "cells": [
+    "BYMONTH/YEARLY/Expand",
+    "BYWEEKNO/YEARLY/Expand"
+   ],
    "dateutil": [
     "20280101T090000",
     "20280102T090000",
@@ -392,9 +468,14 @@
     "20500101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYYEARDAY/YEARLY/Expand"
+   ],
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -416,7 +497,8 @@
     "20550101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
    "adjudication": {
@@ -432,6 +514,10 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYYEARDAY/YEARLY/Expand"
+   ],
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -453,9 +539,14 @@
     "20550101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYYEARDAY/YEARLY/Expand"
+   ],
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -477,7 +568,8 @@
     "20550101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
    "adjudication": {
@@ -493,6 +585,10 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYYEARDAY/YEARLY/Expand"
+   ],
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -514,9 +610,14 @@
     "20550101T090000"
    ],
    "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYSETPOS/YEARLY/Limit"
+   ],
    "dateutil": [
     "20291217T090000",
     "20321220T090000",
@@ -540,7 +641,8 @@
     "20500101T090000"
    ],
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   },
   {
    "adjudication": {
@@ -558,6 +660,10 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "cells": [
+    "BYWEEKNO/YEARLY/Expand",
+    "BYSETPOS/YEARLY/Limit"
+   ],
    "dateutil": [
     "20291217T090000",
     "20321220T090000",
@@ -581,7 +687,8 @@
     "20500101T090000"
    ],
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1",
-   "rule_valid": true
+   "rule_valid": true,
+   "systematic_for": null
   }
  ],
  "meta": {
