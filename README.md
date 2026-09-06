@@ -218,6 +218,18 @@ conformance case, and even then see the caveat on (2).
   30-year horizon, making three cells unreachable below `FREQ=DAILY`. Fixed,
   with all 2,541 prior cases reproduced exactly. One case per cell is
   presence, not exhaustiveness.
+- [010 — the corpus had never terminated a rule](findings/010-grammar-branch-coverage.md).
+  §3.3.10 prints a *second* coverage model above the table: the `recur` ABNF.
+  Extracted and parsed from the RFC, it has **79 branches**, and they measure
+  exactly what the table cannot — `UNTIL`, `COUNT`, `INTERVAL`, `WKST`, the
+  explicit `+` sign, list arity. The corpus took **61 of 79**. It had never
+  bounded a rule with `UNTIL`, never used `COUNT`, never written a `+` on any
+  rule part, and never contained a rule with only one part.
+  `src/enumerate_branches.py` synthesizes one case per branch *from the
+  grammar* → **79/79** (one of them non-conformantly: a DATE-valued `UNTIL`
+  needs a DATE `DTSTART`, and this corpus has none). **Nothing broke** — 52
+  new corroborated cases, disputes unchanged at 20. Worth saying plainly: the
+  value is that the gap is closed and stated, not that it caught anything.
 
 ## Known-answer tests
 
@@ -319,9 +331,11 @@ src/vtimezone.py     VTIMEZONE extraction from the RFC + offset resolution
 src/differ.py        random rule generator + differential comparison
 src/coverage.py      RFC 5545 sec. 3.3.10's BYxxx/FREQ table, read from the RFC
 src/enumerate_cells.py  one systematic case per cell of that table
+src/grammar.py       sec. 3.3.10's RECUR ABNF, read from the RFC: branches + classifier
+src/enumerate_branches.py  one synthesized case per branch of that grammar
 src/build_corpus.py  runs the differential and writes the corpus
 corpus/              corroborated.json, disputed.json, adjudications.json,
-                     coverage.json
+                     coverage.json, grammar-coverage.json
 findings/            adjudicated divergences, written up
 ```
 
@@ -339,19 +353,29 @@ python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zone
 python3 tests/test_vtimezone.py       # RFC 5545 section 3.6.5, all five VTIMEZONE examples
 python3 tests/test_byweekno.py        # week numbering at the year boundary (finding 008)
 python3 tests/test_coverage.py        # coverage of section 3.3.10's table (finding 009)
+python3 tests/test_grammar.py         # coverage of section 3.3.10's ABNF (finding 010)
 python3 src/coverage.py               # (module) the table, parsed out of the RFC
 python3 src/enumerate_cells.py        # print the 57 systematic cases
+python3 src/enumerate_branches.py     # print the 79 synthesized branch cases
 python3 src/byweekno_check.py         # sweep BYWEEKNO x WKST against the RFC's definition
 python3 src/vtimezone.py              # print the five extracted components
 ```
 
 ## Honest limits
 
-- **Coverage is stated but thin.** Every one of the 57 cells §3.3.10's table
-  permits now holds at least one case ([finding 009](findings/009-corpus-coverage-of-the-3310-table.md)),
-  which is a presence claim, not exhaustiveness. Nothing systematic covers
-  three-part interactions, `INTERVAL`, `WKST`, or `COUNT`/`UNTIL`; the random
-  cases still carry that weight, and their coverage of it is unmeasured.
+- **Coverage is stated but thin.** It is stated on two independent axes, both
+  of them printed by §3.3.10 itself: all 57 permitted cells of its
+  `BYxxx`/`FREQ` table ([finding 009](findings/009-corpus-coverage-of-the-3310-table.md))
+  and all 79 branches of its `recur` ABNF
+  ([finding 010](findings/010-grammar-branch-coverage.md)). Both are
+  *presence* claims. Nothing systematic covers combinations — cell pairs,
+  branch pairs, three-part interactions, `COUNT` together with `BYSETPOS`; the
+  two axes are measured independently rather than crossed; `INTERVAL` appears
+  only as 2 and 3 and `COUNT` only as 3. The random cases still carry that
+  weight, and their coverage of it is unmeasured.
+- **No DATE-valued `DTSTART` anywhere.** Every case is a `DATE-TIME`, so
+  §3.3.10's DATE-valued `UNTIL` cannot be exercised conformantly and is
+  reported as such in `corpus/grammar-coverage.json`.
 - Only two implementations in the corpus, and one of them is mine. A third
   opinion is available and used ad hoc — `rrule.js` 2.8.1 runs on this machine
   and its output is in `findings/data/` — but per

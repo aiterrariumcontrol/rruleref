@@ -17,7 +17,9 @@ from differ import compare, gen, DTSTARTS, du_expand, HORIZON_DAYS
 from naive import expand
 import validity
 import coverage
+import grammar
 import enumerate_cells
+import enumerate_branches
 
 N = 8  # occurrences recorded per case
 
@@ -70,6 +72,10 @@ def record(rule, ds, cell, agreed, disputed, seen):
     # for every case, random or systematic, so coverage is measurable from the
     # corpus alone. See src/coverage.py and tests/test_coverage.py.
     cells = ["/".join(c) for c in coverage.classify(rule)]
+    # Which branches of 3.3.10's RECUR ABNF this case takes -- the second,
+    # orthogonal coverage axis. classify() raises if the rule is outside the
+    # grammar, which would itself be a finding. See src/grammar.py.
+    branches = sorted(grammar.classify(rule))
     diff = compare(rule, ds, N)
     if diff is None:
         occ = expand(rule, ds, limit=N)[:N]
@@ -81,6 +87,7 @@ def record(rule, ds, cell, agreed, disputed, seen):
             "dtstart_synchronized": synced,
             "rule_valid": rule_valid,
             "cells": cells,
+            "branches": branches,
             "systematic_for": cell,
             "corroborated_by": ["naive-bruteforce", "python-dateutil-2.9.0"],
         })
@@ -92,6 +99,7 @@ def record(rule, ds, cell, agreed, disputed, seen):
             "dtstart_synchronized": synced,
             "rule_valid": rule_valid,
             "cells": cells,
+            "branches": branches,
             "systematic_for": cell,
             "naive": mine if isinstance(mine, str) else [fmt(x) for x in mine],
             "dateutil": theirs if isinstance(theirs, str) else [fmt(x) for x in theirs],
@@ -105,6 +113,11 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
     # what the corpus covers does not depend on which seeds were used.
     for cell, rule, ds in enumerate_cells.cases():
         record(rule, ds, "/".join(cell), agreed, disputed, seen)
+    # ...and one per branch of the RECUR ABNF. The table says nothing about
+    # UNTIL, COUNT, INTERVAL, WKST, the explicit '+' sign or list arity, and
+    # before this the corpus had never exercised any of them.
+    for feature, rule, ds in enumerate_branches.cases():
+        record(rule, ds, "branch:" + feature, agreed, disputed, seen)
     for seed in seeds:
         rng = random.Random(seed)
         for _ in range(per):
@@ -157,6 +170,28 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                "uncovered": missing,
                "cases_per_cell": hits},
               open("corpus/coverage.json", "w"), indent=1, sort_keys=True)
+    # Coverage against 3.3.10's other printed model, the RECUR ABNF.
+    feats = grammar.features()
+    bhits = {f: 0 for f in feats}
+    for c in agreed + disputed:
+        for k in c["branches"]:
+            if k in bhits:
+                bhits[k] += 1
+    bmiss = sorted(k for k, v in bhits.items() if v == 0)
+    nonconf = sorted(enumerate_branches.NEEDS_DATE_DTSTART - set(bmiss))
+    json.dump({"meta": {"about": "Branch coverage of RFC 5545 3.3.10's RECUR "
+                                 "ABNF (src/grammar.py).",
+                        "branches": len(feats),
+                        "covered": len(feats) - len(bmiss),
+                        "uncovered": len(bmiss),
+                        "covered_nonconformantly": len(nonconf)},
+               "uncovered": bmiss,
+               "covered_nonconformantly": nonconf,
+               "cases_per_branch": bhits},
+              open("corpus/grammar-coverage.json", "w"), indent=1,
+              sort_keys=True)
+    print("branches covered=%d/%d (%d non-conformantly) uncovered=%s" % (
+        len(feats) - len(bmiss), len(feats), len(nonconf), bmiss or "none"))
     print("corroborated=%d disputed=%d (of %d generated)" % (len(agreed), len(disputed), len(seen)))
     print("cells covered=%d/%d uncovered=%s" % (len(all_cells) - len(missing),
                                                 len(all_cells), missing or "none"))

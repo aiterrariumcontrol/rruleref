@@ -1,6 +1,23 @@
 {
  "cases": [
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|FR",
+    "BYDAY|weekday|SA",
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "WKST|weekday|WE",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/WEEKLY/Limit",
     "BYDAY/WEEKLY/Expand",
@@ -33,6 +50,20 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|FR",
+    "BYDAY|weekday|TH",
+    "BYDAY|weekday|TU",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYDAY/WEEKLY/Expand",
     "BYSETPOS/WEEKLY/Limit"
@@ -64,6 +95,19 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|FR",
+    "BYDAY|weekday|WE",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYDAY/WEEKLY/Expand",
     "BYSETPOS/WEEKLY/Limit"
@@ -95,6 +139,19 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|FR",
+    "BYDAY|weekday|WE",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYDAY/WEEKLY/Expand",
     "BYSETPOS/WEEKLY/Limit"
@@ -126,6 +183,23 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|TH",
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "WKST|weekday|WE",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/WEEKLY/Limit",
     "BYDAY/WEEKLY/Expand",
@@ -158,6 +232,20 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|SA",
+    "BYDAY|weekday|SU",
+    "BYDAY|weekday|WE",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYDAY/WEEKLY/Expand",
     "BYSETPOS/WEEKLY/Limit"
@@ -189,6 +277,23 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|SU",
+    "BYDAY|weekday|TH",
+    "BYMONTH|bymolist/1|repeat=0",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "WKST|weekday|MO",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/WEEKLY/Limit",
     "BYDAY/WEEKLY/Expand",
@@ -221,6 +326,23 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|FR",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|SU",
+    "BYMONTH|bymolist/1|repeat=0",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/WEEKLY/Limit",
     "BYDAY/WEEKLY/Expand",
@@ -253,6 +375,23 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|TH",
+    "BYDAY|weekday|WE",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "WKST|weekday|WE",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYDAY/WEEKLY/Expand",
     "BYSETPOS/WEEKLY/Limit"
@@ -284,6 +423,23 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekday|SU",
+    "BYDAY|weekday|TH",
+    "BYDAY|weekday|TU",
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "FREQ|freq|WEEKLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/WEEKLY/Limit",
     "BYDAY/WEEKLY/Expand",
@@ -316,6 +472,21 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0|absent",
+    "FREQ|freq|YEARLY",
+    "WKST|weekday|SU",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/YEARLY/Expand",
     "BYWEEKNO/YEARLY/Expand",
@@ -363,6 +534,21 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "branches": [
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0|absent",
+    "FREQ|freq|YEARLY",
+    "WKST|weekday|SU",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|WKST",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/YEARLY/Expand",
     "BYWEEKNO/YEARLY/Expand",
@@ -395,6 +581,16 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/YEARLY/Expand",
     "BYWEEKNO/YEARLY/Expand"
@@ -441,6 +637,16 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "branches": [
+    "BYMONTH|bymolist/1|repeat=1+",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYMONTH",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYMONTH/YEARLY/Expand",
     "BYWEEKNO/YEARLY/Expand"
@@ -472,6 +678,17 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYWEEKNO|bywknolist/1|repeat=0",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYYEARDAY|byyrdaylist/1|repeat=1+",
+    "BYYEARDAY|yeardaynum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYYEARDAY/YEARLY/Expand"
@@ -514,6 +731,17 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "branches": [
+    "BYWEEKNO|bywknolist/1|repeat=0",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYYEARDAY|byyrdaylist/1|repeat=1+",
+    "BYYEARDAY|yeardaynum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYYEARDAY/YEARLY/Expand"
@@ -543,6 +771,19 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0/0|minus",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYWEEKNO|weeknum/0|present",
+    "BYYEARDAY|byyrdaylist/1|repeat=1+",
+    "BYYEARDAY|yeardaynum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYYEARDAY/YEARLY/Expand"
@@ -585,6 +826,19 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "branches": [
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0/0|minus",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYWEEKNO|weeknum/0|present",
+    "BYYEARDAY|byyrdaylist/1|repeat=1+",
+    "BYYEARDAY|yeardaynum/0|absent",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYYEARDAY/YEARLY/Expand"
@@ -614,6 +868,20 @@
    "systematic_for": null
   },
   {
+   "branches": [
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0/0|minus",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYWEEKNO|weeknum/0|present",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYSETPOS/YEARLY/Limit"
@@ -660,6 +928,20 @@
     "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
     "verdict": "naive"
    },
+   "branches": [
+    "BYSETPOS|bysplist/1|repeat=0",
+    "BYSETPOS|yeardaynum/0|absent",
+    "BYWEEKNO|bywknolist/1|repeat=1+",
+    "BYWEEKNO|weeknum/0/0|minus",
+    "BYWEEKNO|weeknum/0|absent",
+    "BYWEEKNO|weeknum/0|present",
+    "FREQ|freq|YEARLY",
+    "recur|recur-rule-part|BYSETPOS",
+    "recur|recur-rule-part|BYWEEKNO",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur-rule-part|INTERVAL",
+    "recur|recur/1|repeat=1+"
+   ],
    "cells": [
     "BYWEEKNO/YEARLY/Expand",
     "BYSETPOS/YEARLY/Limit"
