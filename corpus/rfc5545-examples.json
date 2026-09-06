@@ -1,0 +1,3193 @@
+{
+ "source": {
+  "document": "RFC 5545",
+  "section": "3.8.5.3",
+  "url": "https://www.rfc-editor.org/rfc/rfc5545.txt",
+  "sha256": "c256f809479d98aa23d71bbd1658b3800ea9f13f41ca56e59c8d2de1b31cbfcb",
+  "note": "Expected values extracted by program from the hashed text, never retyped. Skipped examples are listed, not guessed.",
+  "errata_checked": "https://www.rfc-editor.org/errata/rfc5545 (2026-09-06)"
+ },
+ "errata_applied": [
+  {
+   "id": 3883,
+   "status": "Verified",
+   "url": "https://www.rfc-editor.org/errata/eid3883",
+   "verified": "2014-02-14",
+   "reported_by": "Bruce Florman",
+   "why": "DTSTART is 09:00 in America/New_York, which was UTC-04:00 on 1997-09-02, so the printed UNTIL=19970902T170000Z is 13:00 local -- before the 15:00 occurrence the example itself prints. RFC 5545 section 3.3.10 requires UNTIL to be a UTC value when DTSTART carries a TZID, so the value is wrong, not the expected output.",
+   "match_rrule": "FREQ=HOURLY;INTERVAL=3;UNTIL=19970902T170000Z",
+   "replace_rrule": "FREQ=HOURLY;INTERVAL=3;UNTIL=19970902T210000Z"
+  }
+ ],
+ "counts": {
+  "examples_found": 39,
+  "usable": 39,
+  "skipped": 0,
+  "with_tzid": 39,
+  "prefix_only": 13,
+  "complete": 26,
+  "crossing_dst": 20,
+  "errata_applied": 1
+ },
+ "examples": [
+  {
+   "desc": "Daily for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=DAILY;COUNT=10"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970903T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970905T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970906T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970907T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970908T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970910T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970911T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Daily until December 24, 1997:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=DAILY;UNTIL=19971224T000000Z"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970903T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970905T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970906T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970907T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970908T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970910T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970911T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970912T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970913T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970914T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970915T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970917T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970918T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970919T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970920T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970921T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970922T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970923T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970924T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970925T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970926T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970927T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970928T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970929T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971001T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971002T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971003T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971004T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971005T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971006T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971007T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971008T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971009T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971010T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971011T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971012T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971013T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971014T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971015T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971016T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971017T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971018T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971019T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971020T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971021T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971022T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971023T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971024T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971025T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971026T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971027T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971028T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971029T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971030T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971031T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971103T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971105T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971108T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971109T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971112T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971114T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971116T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971117T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971119T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971121T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971122T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971123T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971124T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971126T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971201T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971202T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971203T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971204T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971205T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971206T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971207T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971208T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971209T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971210T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971211T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971212T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971213T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971214T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971215T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971216T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971217T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971218T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971219T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971220T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971221T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971222T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971223T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every other day - forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=DAILY;INTERVAL=2"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970906T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970908T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every 10 days, 5 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=DAILY;INTERVAL=10;COUNT=5"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970912T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970922T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971002T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971012T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every day in January, for 3 years:",
+   "tzid": "America/New_York",
+   "dtstart": "19980101T090000",
+   "rrules": [
+    "FREQ=YEARLY;UNTIL=20000131T140000Z;BYMONTH=1;BYDAY=SU,MO,TU,WE,TH,FR,SA",
+    "FREQ=DAILY;UNTIL=20000131T140000Z;BYMONTH=1"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19980101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980103T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980105T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980108T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980109T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980112T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980114T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980116T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980117T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980119T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980121T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980122T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980123T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980124T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980126T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980131T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990103T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990105T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990108T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990109T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990112T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990114T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990116T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990117T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990119T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990121T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990122T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990123T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990124T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990126T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990131T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000103T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000105T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000108T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000109T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000112T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000114T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000116T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000117T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000119T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000121T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000122T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000123T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000124T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000126T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000131T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Weekly for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=WEEKLY;COUNT=10"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970923T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971007T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971014T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971021T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971028T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Weekly until December 24, 1997:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=WEEKLY;UNTIL=19971224T000000Z"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970923T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971007T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971014T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971021T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971028T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971202T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971209T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971216T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971223T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every other week - forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=WEEKLY;INTERVAL=2;WKST=SU"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971014T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971028T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971209T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971223T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980203T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980217T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Weekly on Tuesday and Thursday for five weeks:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=WEEKLY;UNTIL=19971007T000000Z;WKST=SU;BYDAY=TU,TH",
+    "FREQ=WEEKLY;COUNT=10;WKST=SU;BYDAY=TU,TH"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970911T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970918T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970923T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970925T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971002T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "24, 1997, starting on Monday, September 1, 1997:",
+   "tzid": "America/New_York",
+   "dtstart": "19970901T090000",
+   "rrules": [
+    "FREQ=WEEKLY;INTERVAL=2;UNTIL=19971224T000000Z;WKST=SU;BYDAY=MO,WE,FR"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970901T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970903T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970905T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970915T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970917T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970919T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970929T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971001T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971003T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971013T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971015T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971017T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971027T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971029T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971031T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971112T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971114T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971124T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971126T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971208T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971210T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971212T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971222T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every other week on Tuesday and Thursday, for 8 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=WEEKLY;INTERVAL=2;COUNT=8;WKST=SU;BYDAY=TU,TH"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970918T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971002T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971014T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971016T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the first Friday for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970905T090000",
+   "rrules": [
+    "FREQ=MONTHLY;COUNT=10;BYDAY=1FR"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970905T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971003T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971205T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980206T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980306T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980403T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980501T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980605T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the first Friday until December 24, 1997:",
+   "tzid": "America/New_York",
+   "dtstart": "19970905T090000",
+   "rrules": [
+    "FREQ=MONTHLY;UNTIL=19971224T000000Z;BYDAY=1FR"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970905T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971003T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971205T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970907T090000",
+   "rrules": [
+    "FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970907T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970928T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980301T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980329T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980503T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980531T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the second-to-last Monday of the month for 6 months:",
+   "tzid": "America/New_York",
+   "dtstart": "19970922T090000",
+   "rrules": [
+    "FREQ=MONTHLY;COUNT=6;BYDAY=-2MO"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970922T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971020T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971117T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971222T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980119T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980216T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the third-to-the-last day of the month, forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970928T090000",
+   "rrules": [
+    "FREQ=MONTHLY;BYMONTHDAY=-3"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970928T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971029T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971128T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971229T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980226T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the 2nd and 15th of the month for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=MONTHLY;COUNT=10;BYMONTHDAY=2,15"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970915T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971002T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971015T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971202T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971215T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Monthly on the first and last day of the month for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970930T090000",
+   "rrules": [
+    "FREQ=MONTHLY;COUNT=10;BYMONTHDAY=1,-1"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971001T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971031T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971201T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971231T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980131T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980201T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970910T090000",
+   "rrules": [
+    "FREQ=MONTHLY;INTERVAL=18;COUNT=10;BYMONTHDAY=10,11,12,13,14,15"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970910T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970911T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970912T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970913T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970914T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970915T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990311T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990312T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990313T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every Tuesday, every other month:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=MONTHLY;INTERVAL=2;BYDAY=TU"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970909T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970916T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970923T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970930T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971104T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971111T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971118T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971125T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980120T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980303T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980317T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980324T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980331T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Yearly in June and July for 10 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970610T090000",
+   "rrules": [
+    "FREQ=YEARLY;COUNT=10;BYMONTH=6,7"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20000610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20000710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20010610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20010710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970310T090000",
+   "rrules": [
+    "FREQ=YEARLY;INTERVAL=2;COUNT=10;BYMONTH=1,2,3"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990210T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20010110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20010210T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20010310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20030110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20030210T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20030310T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970101T090000",
+   "rrules": [
+    "FREQ=YEARLY;INTERVAL=3;COUNT=10;BYYEARDAY=1,100,200"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19970410T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970719T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20000101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20000409T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20000718T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20030101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20030410T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20030719T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20060101T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every 20th Monday of the year, forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970519T090000",
+   "rrules": [
+    "FREQ=YEARLY;BYDAY=20MO"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970519T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980518T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990517T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Monday), forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970512T090000",
+   "rrules": [
+    "FREQ=YEARLY;BYWEEKNO=20;BYDAY=MO"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970512T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980511T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990517T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every Thursday in March, forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970313T090000",
+   "rrules": [
+    "FREQ=YEARLY;BYMONTH=3;BYDAY=TH"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970313T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19970320T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19970327T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980305T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980312T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980319T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980326T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990304T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990311T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990318T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990325T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every Thursday, but only during June, July, and August, forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970605T090000",
+   "rrules": [
+    "FREQ=YEARLY;BYDAY=TH;BYMONTH=6,7,8"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970605T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970612T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970619T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970626T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970703T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970710T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970717T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970724T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970731T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970807T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970814T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970821T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970828T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980604T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980611T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980618T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980625T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980702T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980709T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980716T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980723T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980730T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980806T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980813T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980820T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980827T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990603T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990610T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990617T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990624T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990701T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990708T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990715T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990722T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990729T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990805T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990812T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990819T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19990826T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every Friday the 13th, forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=MONTHLY;BYDAY=FR;BYMONTHDAY=13"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19980213T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980313T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19981113T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19990813T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20001013T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "forever:",
+   "tzid": "America/New_York",
+   "dtstart": "19970913T090000",
+   "rrules": [
+    "FREQ=MONTHLY;BYDAY=SA;BYMONTHDAY=7,8,9,10,11,12,13"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970913T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971011T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971108T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971213T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980110T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980207T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980307T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980411T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980509T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19980613T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "forever (U.S. Presidential Election day):",
+   "tzid": "America/New_York",
+   "dtstart": "19961105T090000",
+   "rrules": [
+    "FREQ=YEARLY;INTERVAL=4;BYMONTH=11;BYDAY=TU;BYMONTHDAY=2,3,4,5,6,7,8"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19961105T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20001107T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20041102T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Thursday, for the next 3 months:",
+   "tzid": "America/New_York",
+   "dtstart": "19970904T090000",
+   "rrules": [
+    "FREQ=MONTHLY;COUNT=3;BYDAY=TU,WE,TH;BYSETPOS=3"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970904T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971007T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971106T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "The second-to-last weekday of the month:",
+   "tzid": "America/New_York",
+   "dtstart": "19970929T090000",
+   "rrules": [
+    "FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-2"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970929T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19971030T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971127T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19971230T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980129T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980226T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "19980330T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    }
+   ]
+  },
+  {
+   "desc": "Every 3 hours from 9:00 AM to 5:00 PM on a specific day:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=HOURLY;INTERVAL=3;UNTIL=19970902T210000Z"
+   ],
+   "errata_applied": [
+    3883
+   ],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T120000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T150000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every 15 minutes for 6 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=MINUTELY;INTERVAL=15;COUNT=6"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T091500",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T093000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T094500",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T100000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T101500",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every hour and a half for 4 occurrences:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=MINUTELY;INTERVAL=90;COUNT=4"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T103000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T120000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T133000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "Every 20 minutes from 9:00 AM to 4:40 PM every day:",
+   "tzid": "America/New_York",
+   "dtstart": "19970902T090000",
+   "rrules": [
+    "FREQ=DAILY;BYHOUR=9,10,11,12,13,14,15,16;BYMINUTE=0,20,40",
+    "FREQ=MINUTELY;INTERVAL=20;BYHOUR=9,10,11,12,13,14,15,16"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": true,
+   "expected": [
+    {
+     "local": "19970902T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T092000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T094000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T100000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970902T102000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "WKST:",
+   "tzid": "America/New_York",
+   "dtstart": "19970805T090000",
+   "rrules": [
+    "FREQ=WEEKLY;INTERVAL=2;COUNT=4;BYDAY=TU,SU;WKST=MO"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970805T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970810T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970819T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970824T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "changing only WKST from MO to SU, yields different results...",
+   "tzid": "America/New_York",
+   "dtstart": "19970805T090000",
+   "rrules": [
+    "FREQ=WEEKLY;INTERVAL=2;COUNT=4;BYDAY=TU,SU;WKST=SU"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "19970805T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970817T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970819T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "19970831T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  },
+  {
+   "desc": "An example where an invalid date (i.e., February 30) is ignored.",
+   "tzid": "America/New_York",
+   "dtstart": "20070115T090000",
+   "rrules": [
+    "FREQ=MONTHLY;BYMONTHDAY=15,30;COUNT=5"
+   ],
+   "errata_applied": [],
+   "expected_is_prefix_only": false,
+   "expected": [
+    {
+     "local": "20070115T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20070130T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20070215T090000",
+     "tz_abbrev": "EST",
+     "utc_offset_minutes": -300
+    },
+    {
+     "local": "20070315T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    },
+    {
+     "local": "20070330T090000",
+     "tz_abbrev": "EDT",
+     "utc_offset_minutes": -240
+    }
+   ]
+  }
+ ],
+ "skipped": []
+}

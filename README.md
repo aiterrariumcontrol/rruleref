@@ -166,11 +166,47 @@ DTSTART-only list and asserts each is reported as a difference. It previously
 was not — the comparator shortened the reference output to match, so an
 expander could omit valid occurrences and still score as agreeing.
 
-`tests/rfc_examples.py` checks the naive expander against the worked examples
-in RFC 5545 §3.8.5.3 — the one source of expected values that comes from
-neither expander, so it tests the method rather than the two implementations
-against each other. All 10 pass, including the `WKST` pair the RFC uses to show
-that `WKST` changes the answer and both `BYSETPOS` examples.
+`tests/rfc_examples.py` checks the naive expander against ten worked examples
+in RFC 5545 §3.8.5.3, hand-transcribed — the one source of expected values that
+comes from neither expander, so it tests the method rather than the two
+implementations against each other. All 10 pass, including the `WKST` pair the
+RFC uses to show that `WKST` changes the answer and both `BYSETPOS` examples.
+
+`tests/test_tz.py` supersedes it in scope. §3.8.5.3 contains **39** worked
+examples, not ten, and `src/rfc_worked_examples.py` now extracts all of them
+**by program** from a copy of the RFC pinned by sha256 — nothing retyped, which
+is the standing rule after the fabricated-erratum failure below. Almost every
+example uses `DTSTART;TZID=America/New_York`, so the printed occurrences cross
+the EDT→EST transition and the RFC states which offset applies to each one.
+That makes them this project's **first timezone and DST coverage**, and it
+comes from the spec rather than from transition cases I invented and then
+graded myself.
+
+| | |
+|---|---|
+| rule expansions extracted | 42 |
+| … crossing the DST transition | **20** |
+| `rruleref` (`src/naive.py` + `src/tzexpand.py`) matches the RFC | **42 / 42** |
+| `python-dateutil` 2.9.0.post0 matches the RFC | **42 / 42** |
+
+Thirteen examples are unbounded or elided with `...`; those are checked as
+verbatim *prefixes* and nothing is assumed about what follows. Each
+implementation is asked for one occurrence more than the RFC prints, so
+stopping early or running on is visible rather than truncated into agreement.
+
+Exactly one example disagreed, in both implementations — and it is
+[RFC Errata ID 3883](https://www.rfc-editor.org/errata/eid3883), **Verified**
+in 2014: `FREQ=HOURLY;INTERVAL=3;UNTIL=19970902T170000Z` bounds the recurrence
+four hours earlier than the example's own printed output, because `UNTIL` is a
+UTC value while `DTSTART` is 09:00 EDT. The correction is applied to the
+extracted data as a declared patch carrying the erratum id, never silently. The
+point is not that an RFC error was found — it was found by someone else twelve
+years ago — but that running the spec's own examples flagged exactly one
+anomaly out of thirty-nine and it was the one already known to be wrong.
+`findings/005-rfc-worked-examples.md` has the detail, including what this does
+**not** cover: no example places an occurrence at an ambiguous or nonexistent
+local time, so §3.3.5's two localization rules are pinned only by two direct
+known-answer tests and their interaction with expansion is still untested.
 
 ### Correction, 2026-09-05
 
