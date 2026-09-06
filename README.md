@@ -155,6 +155,17 @@ conformance case, and even then see the caveat on (2).
   divergence, with the mechanism and the citation the existing report lacks.
   It is **not** a demonstrated specification violation: whether §3.8.5.3's
   "undefined" clause applies is itself decided by the reading under dispute.
+- [005 — the RFC's own worked examples as a known-answer suite](findings/005-rfc-worked-examples.md).
+  Not a defect report. All 39 worked `RRULE` examples in §3.8.5.3, extracted by
+  program from a hashed RFC copy; 42/42 expansions match for both expanders, 20
+  of them across a DST transition. The single anomaly is Verified Errata 3883.
+- [006 — recurrence instances that land in a DST gap or repeat](findings/006-dst-gap-and-repeat-instances.md).
+  Not a defect report. §3.3.10 says a computed instance at a nonexistent or
+  twice-occurring local time is interpreted under §3.3.5; 30 assertions across
+  four zones confirm both expanders do that. Records two counterintuitive but
+  spec-mandated consequences for `FREQ=HOURLY`, and one open question the RFC
+  may not answer: whether two instances that coincide in real time are
+  "duplicate instances" under §3.8.5.
 
 ## Known-answer tests
 
@@ -203,10 +214,25 @@ extracted data as a declared patch carrying the erratum id, never silently. The
 point is not that an RFC error was found — it was found by someone else twelve
 years ago — but that running the spec's own examples flagged exactly one
 anomaly out of thirty-nine and it was the one already known to be wrong.
-`findings/005-rfc-worked-examples.md` has the detail, including what this does
-**not** cover: no example places an occurrence at an ambiguous or nonexistent
-local time, so §3.3.5's two localization rules are pinned only by two direct
-known-answer tests and their interaction with expansion is still untested.
+`findings/005-rfc-worked-examples.md` has the detail.
+
+### Instances in a DST gap or repeat
+
+None of those 39 examples places an occurrence at an ambiguous or nonexistent
+local time, so their interaction with expansion needed its own suite:
+`tests/test_dst_recurrence.py`, **30 assertions, all passing for both
+expanders**. RFC 5545 §3.3.10 states the rule outright — a computed instance
+whose local start time "does not exist, or occurs more than once" is
+interpreted exactly as a literal `DATE-TIME` under §3.3.5 — so the expected
+values are derived from quoted text plus the installed tz database, not from
+either implementation. Four zones, chosen for what they can catch:
+`America/New_York`, `Australia/Sydney` (southern hemisphere), a
+**30-minute** shift in `Australia/Lord_Howe`, and `Europe/Dublin` (transitions
+at 01:00 local). Two consequences worth knowing before you rely on
+`FREQ=HOURLY`: it **skips an hour of real time** at the autumn transition, and
+it emits **two instances at the same instant** at the spring one, so the
+sequence of UTC instants is non-decreasing but not strictly increasing.
+`findings/006-dst-gap-and-repeat-instances.md`.
 
 ### Correction, 2026-09-05
 
@@ -251,19 +277,26 @@ corpus itself is plain JSON and can be consumed by anything.
 ```sh
 python3 src/differ.py 7 300      # differential run, seed 7, 300 rules
 python3 src/build_corpus.py      # rebuild corpus/ (slow; minutes)
-python3 tests/rfc_examples.py    # known-answer tests, no dependencies
+python3 tests/rfc_examples.py       # known-answer tests, no dependencies
+python3 tests/test_tz.py            # RFC 5545 section 3.8.5.3, all 39 worked examples
+python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zones
 ```
 
 ## Honest limits
 
-- Only two implementations, and one of them is mine. Two independent expanders
-  agreeing is real evidence but a third would be worth more than doubling the
-  case count. No other runtime is installed here yet; that is a thing to fix,
-  not a boundary. A pure-Python implementation from PyPI is the cheapest third
-  opinion and is the next planned step.
-- Everything here is naive-datetime. No timezones, no DST, no `VTIMEZONE`.
-  That is a deliberate scope cut, not an oversight: DST transitions deserve
-  their own corpus and would otherwise contaminate this one.
+- Only two implementations in the corpus, and one of them is mine. A third
+  opinion is available and used ad hoc — `rrule.js` 2.8.1 runs on this machine
+  and its output is in `findings/data/` — but per
+  [finding 003](findings/003-implementation-lineage.md) most RRULE
+  implementations descend from `python-dateutil`, so agreement between them is
+  weak evidence about the *specification*. Use third implementations as
+  cross-checks, not as adjudication.
+- **The corpus** is naive-datetime: no timezones, no DST, no `VTIMEZONE`. That
+  is a deliberate scope cut so transitions do not contaminate it. Timezone and
+  DST behaviour is covered separately and from the spec's own answers, by
+  `tests/test_tz.py` and `tests/test_dst_recurrence.py` (findings 005 and 006).
+  `VTIMEZONE` — a calendar carrying its own transition rules rather than naming
+  an IANA zone — remains uncovered.
 - The generator does not yet emit `FREQ=HOURLY/MINUTELY/SECONDLY`, `UNTIL`, or
   `COUNT` combinations, so the corpus says nothing about them.
 - Coverage is random, not systematic. It is not yet a claim of completeness.
