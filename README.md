@@ -163,9 +163,11 @@ conformance case, and even then see the caveat on (2).
   Not a defect report. §3.3.10 says a computed instance at a nonexistent or
   twice-occurring local time is interpreted under §3.3.5; 30 assertions across
   four zones confirm both expanders do that. Records two counterintuitive but
-  spec-mandated consequences for `FREQ=HOURLY`, and one open question the RFC
-  may not answer: whether two instances that coincide in real time are
-  "duplicate instances" under §3.8.5.
+  spec-mandated consequences for `FREQ=HOURLY`. Its appendix asks whether two
+  instances that coincide in real time are "duplicate instances" under §3.8.5
+  and concludes that **the RFC does not say** — it never defines when two
+  `DATE-TIME` values are duplicates, so both collapsing and emitting them are
+  defensible. Portable consumers must assume neither.
 
 ## Known-answer tests
 
