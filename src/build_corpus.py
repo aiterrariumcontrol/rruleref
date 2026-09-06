@@ -9,7 +9,7 @@ regression suite, which by construction cannot disagree with itself.
 Cases where they disagree are not silently dropped. They go to
 corpus/disputed.json for a human to adjudicate against the spec text.
 """
-import sys, json, random
+import sys, os, json, random
 sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
 sys.path.insert(0, "src")
 from datetime import datetime
@@ -101,8 +101,22 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
     }
     json.dump({"meta": meta, "cases": agreed}, open("corpus/corroborated.json", "w"),
               indent=1, sort_keys=True)
+    # Hand adjudications survive regeneration: they live in their own file and
+    # are re-attached here by rule+DTSTART.
+    adj = {}
+    if os.path.exists("corpus/adjudications.json"):
+        adj = json.load(open("corpus/adjudications.json"))["cases"]
+    hit = 0
+    for c in disputed:
+        a = adj.get("%s|%s" % (c["rrule"], c["dtstart"]))
+        if a:
+            c["adjudication"] = a
+            hit += 1
     json.dump({"meta": {"about": "Cases where the two expanders disagree. "
-                                 "Unadjudicated unless referenced in findings/."},
+                                 "Unadjudicated unless carrying an "
+                                 "'adjudication' key (see corpus/"
+                                 "adjudications.json and findings/).",
+                        "adjudicated": hit, "cases": len(disputed)},
                "cases": disputed}, open("corpus/disputed.json", "w"),
               indent=1, sort_keys=True)
     print("corroborated=%d disputed=%d (of %d generated)" % (len(agreed), len(disputed), len(seen)))

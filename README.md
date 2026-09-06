@@ -52,16 +52,28 @@ implementation. Some are places the spec genuinely does not decide.
 
 Current state: **2541 corroborated cases** (1230 with a spec-defined,
 synchronized `DTSTART`; see the next section — this is up from 149, after a
-generator fix on 2026-09-05) and **20 disputed**, of which 13 are
-**unadjudicated open questions**, not findings.
+generator fix on 2026-09-05) and **20 disputed**, 13 of them in the
+spec-defined region.
 
-Of those 13, a per-case test (`src/crosscheck.py`) shows **8** are the
-`FREQ=WEEKLY` + `BYSETPOS` first-period shape of Finding 004 — established by
-re-running dateutil from the period start and checking that the divergence
-disappears, not by assertion. The remaining **5** all involve `BYWEEKNO`, are
-*not* explained by that mechanism, and stay unadjudicated; Finding 002 is a
-hypothesis about them, not a result. An earlier version of this README claimed
-all of them were one shape. That was wrong.
+All 13 are now accounted for, by two different mechanisms and with two
+different kinds of answer.
+
+* **8** are the `FREQ=WEEKLY` + `BYSETPOS` first-period shape of Finding 004 —
+  established by a per-case test (`src/crosscheck.py`), re-running dateutil
+  from the period start and checking that the divergence disappears, not by
+  assertion. These stay **unsettled**: §3.8.5.3 makes their applicability turn
+  on the very reading under dispute.
+* **5** are a `python-dateutil` defect, **adjudicated** in Finding 008 in
+  favour of `naive`, whose values agree with week numbering computed from RFC
+  5545 §3.3.10's own definition (and, for `WKST=MO`, with
+  `date.isocalendar()`). All five disappear under the fix in
+  [dateutil#1537](https://github.com/dateutil/dateutil/pull/1537), which was
+  already open when I got here.
+
+Adjudications live in `corpus/adjudications.json` and are re-attached by
+`build_corpus.py` on every regeneration, so rebuilding the corpus does not lose
+them. An earlier version of this README claimed all 13 disputes were one shape.
+That was wrong.
 Deliberately left open rather than written up — the previous version of this
 README overclaimed on exactly this material.
 
@@ -140,9 +152,23 @@ conformance case, and even then see the caveat on (2).
   dateutil is correct. Nothing was ever sent upstream. Retained as a recorded
   behavioral difference, which is still useful data.
 - [002 — `BYWEEKNO` at the year boundary](findings/002-byweekno-year-boundary.md).
-  A spec ambiguity, deliberately **not** filed as a bug. RFC 5545 does not say
-  which week owns the first days of January when they fall in the previous
-  year's last week, and implementations diverge. Recorded as disputed.
+  A spec ambiguity, deliberately **not** filed as a bug. **Largely superseded
+  by finding 008**, which shows the divergence it recorded is not the RFC being
+  silent: RFC 5545 §3.3.10 defines the numbering and its own note fixes which
+  years have a week 53, and `dateutil` 2.9.0.post0 computes it wrongly.
+- [008 — `BYWEEKNO` and the weeks that straddle a year boundary](findings/008-byweekno-previous-year-last-week.md).
+  Adjudicates the last 5 disputes. `dateutil` numbers the previous year's final
+  week one too high, so `2039-01-01` matches `BYWEEKNO=53` when 2038 has no
+  week 53 — 18 such days between 1970 and 2100, two of them already in the
+  past, and the same failure under three different `WKST` values. **Already
+  reported upstream** with the same root cause
+  ([dateutil#1537](https://github.com/dateutil/dateutil/pull/1537), 2026-07-15),
+  so not a new discovery; what this project adds is five independent cases the
+  PR does not test, all of which the fix repairs and none of which it
+  over-corrects. A second asymmetry — negative `BYWEEKNO` never reaching next
+  year's week 1 — survives the fix, is labelled `# TODO` in dateutil's own
+  source, and is **not** adjudicated here because the RFC does not say which
+  year a negative index counts within.
 - [004 — `BYSETPOS` applied to a truncated first period](findings/004-bysetpos-first-period-truncation.md).
   8 of the 13 unadjudicated defined-region disputes are one shape (not all of
   them, as this entry previously said). `python-dateutil`
@@ -279,7 +305,7 @@ tests/rfc_examples.py  known-answer tests from RFC 5545 sec. 3.8.5.3
 src/vtimezone.py     VTIMEZONE extraction from the RFC + offset resolution
 src/differ.py        random rule generator + differential comparison
 src/build_corpus.py  runs the differential and writes the corpus
-corpus/              corroborated.json, disputed.json
+corpus/              corroborated.json, disputed.json, adjudications.json
 findings/            adjudicated divergences, written up
 ```
 
@@ -295,6 +321,8 @@ python3 tests/rfc_examples.py       # known-answer tests, no dependencies
 python3 tests/test_tz.py            # RFC 5545 section 3.8.5.3, all 39 worked examples
 python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zones
 python3 tests/test_vtimezone.py       # RFC 5545 section 3.6.5, all five VTIMEZONE examples
+python3 tests/test_byweekno.py        # week numbering at the year boundary (finding 008)
+python3 src/byweekno_check.py         # sweep BYWEEKNO x WKST against the RFC's definition
 python3 src/vtimezone.py              # print the five extracted components
 ```
 

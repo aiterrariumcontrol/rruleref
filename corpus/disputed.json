@@ -287,6 +287,21 @@
    "rule_valid": true
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270102T090000",
+     "20280102T090000",
+     "20290102T090000",
+     "20300102T090000",
+     "20310102T090000",
+     "20320105T090000",
+     "20330102T090000",
+     "20340102T090000"
+    ],
+    "finding": "008-byweekno-previous-year-last-week",
+    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
+    "verdict": "naive"
+   },
    "dateutil": [
     "20270104T090000",
     "20280102T090000",
@@ -339,6 +354,21 @@
    "rule_valid": true
   },
   {
+   "adjudication": {
+    "expected": [
+     "20280101T090000",
+     "20280102T090000",
+     "20340101T090000",
+     "20390101T090000",
+     "20390102T090000",
+     "20400101T090000",
+     "20450101T090000",
+     "20500101T090000"
+    ],
+    "finding": "008-byweekno-previous-year-last-week",
+    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
+    "verdict": "naive"
+   },
    "dateutil": [
     "20280101T090000",
     "20280102T090000",
@@ -389,6 +419,19 @@
    "rule_valid": true
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270101T090000",
+     "20330101T090000",
+     "20380101T090000",
+     "20440101T090000",
+     "20490101T090000",
+     "20550101T090000"
+    ],
+    "finding": "008-byweekno-previous-year-last-week",
+    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
+    "verdict": "naive"
+   },
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -437,6 +480,19 @@
    "rule_valid": true
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270101T090000",
+     "20330101T090000",
+     "20380101T090000",
+     "20440101T090000",
+     "20490101T090000",
+     "20550101T090000"
+    ],
+    "finding": "008-byweekno-previous-year-last-week",
+    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
+    "verdict": "naive"
+   },
    "dateutil": [
     "20270101T090000",
     "20330101T090000",
@@ -487,6 +543,21 @@
    "rule_valid": true
   },
   {
+   "adjudication": {
+    "expected": [
+     "20291217T090000",
+     "20321220T090000",
+     "20351217T090000",
+     "20381220T090000",
+     "20411216T090000",
+     "20441219T090000",
+     "20471216T090000",
+     "20500101T090000"
+    ],
+    "finding": "008-byweekno-previous-year-last-week",
+    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
+    "verdict": "naive"
+   },
    "dateutil": [
     "20291217T090000",
     "20321220T090000",
@@ -514,6 +585,8 @@
   }
  ],
  "meta": {
-  "about": "Cases where the two expanders disagree. Unadjudicated unless referenced in findings/."
+  "about": "Cases where the two expanders disagree. Unadjudicated unless carrying an 'adjudication' key (see corpus/adjudications.json and findings/).",
+  "adjudicated": 5,
+  "cases": 20
  }
 }
