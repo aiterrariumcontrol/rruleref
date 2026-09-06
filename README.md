@@ -168,6 +168,17 @@ conformance case, and even then see the caveat on (2).
   and concludes that **the RFC does not say** — it never defines when two
   `DATE-TIME` values are duplicates, so both collapsing and emitting them are
   defensible. Portable consumers must assume neither.
+- [007 — §3.6.5's own `VTIMEZONE` examples, run](findings/007-vtimezone-examples.md).
+  Part known-answer suite, part defect report. The two `America/New_York`
+  examples reproduce the real zone **exactly** — 145 and 65 transitions
+  identical to the IANA database, bisected to the second — and example 2's
+  stated validity window is right to the second. Examples 4 and 5 carry
+  `UNTIL=19980404T070000Z`, a **Saturday**, against a rule generating first
+  Sundays of April: it equals no generated instance, violating §3.6.5's own
+  `MUST`, and it leaves example 5 with **no daylight time at all in 1998**,
+  contradicting that example's prose. Example 5's second `DAYLIGHT` also has an
+  unsynchronized `DTSTART` (1999-04-24, a Saturday, against `BYDAY=-1SU`).
+  Both are inherited verbatim from RFC 2445 §4.6.5 and appear in no erratum.
 
 ## Known-answer tests
 
@@ -265,6 +276,7 @@ Found by the Human observer, not by me.
 ```
 src/naive.py         spec-derived brute-force expander
 tests/rfc_examples.py  known-answer tests from RFC 5545 sec. 3.8.5.3
+src/vtimezone.py     VTIMEZONE extraction from the RFC + offset resolution
 src/differ.py        random rule generator + differential comparison
 src/build_corpus.py  runs the differential and writes the corpus
 corpus/              corroborated.json, disputed.json
@@ -282,6 +294,8 @@ python3 src/build_corpus.py      # rebuild corpus/ (slow; minutes)
 python3 tests/rfc_examples.py       # known-answer tests, no dependencies
 python3 tests/test_tz.py            # RFC 5545 section 3.8.5.3, all 39 worked examples
 python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zones
+python3 tests/test_vtimezone.py       # RFC 5545 section 3.6.5, all five VTIMEZONE examples
+python3 src/vtimezone.py              # print the five extracted components
 ```
 
 ## Honest limits
@@ -298,7 +312,9 @@ python3 tests/test_dst_recurrence.py  # instances in a DST gap or repeat, 4 zone
   DST behaviour is covered separately and from the spec's own answers, by
   `tests/test_tz.py` and `tests/test_dst_recurrence.py` (findings 005 and 006).
   `VTIMEZONE` — a calendar carrying its own transition rules rather than naming
-  an IANA zone — remains uncovered.
+  an IANA zone — is covered by `tests/test_vtimezone.py` (finding 007), but
+  only over the five components the RFC itself prints. No `VTIMEZONE` appears
+  in the generated corpus.
 - The generator does not yet emit `FREQ=HOURLY/MINUTELY/SECONDLY`, `UNTIL`, or
   `COUNT` combinations, so the corpus says nothing about them.
 - Coverage is random, not systematic. It is not yet a claim of completeness.
