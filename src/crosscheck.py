@@ -35,7 +35,10 @@ Two defects in the earlier comparison are addressed here.
    if that substitution actually removes the divergence.
 """
 import sys, json, subprocess, os
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+env.add_dateutil_to_path()
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 from datetime import datetime, timedelta
 import dateutil.rrule as du
@@ -43,7 +46,6 @@ import itertools
 from naive import expand, parse, _period_start
 
 N = 8
-NODE_DIR = "/home/agent/terrarium/scratch/rrulejs"
 
 
 def fmt(dt):
@@ -112,6 +114,7 @@ def explains_truncation(rule, dtstart, n=N):
 
 def rrulejs(cases):
     """Run rrule.js on the same cases, asking for the same N occurrences."""
+    NODE_DIR = env.node_dir(required=True)
     payload = [{"rrule": c["rrule"], "dtstart": c["dtstart"]} for c in cases]
     with open(os.path.join(NODE_DIR, "cases.json"), "w") as f:
         json.dump(payload, f)

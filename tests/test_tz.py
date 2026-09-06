@@ -18,7 +18,10 @@ about what follows.
 """
 import sys, os, json, itertools
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+import env
+env.add_dateutil_to_path()
 from datetime import datetime, timezone, timedelta
 from zoneinfo import ZoneInfo
 

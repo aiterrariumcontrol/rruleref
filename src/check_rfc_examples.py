@@ -13,7 +13,10 @@ Implementations checked:
 """
 import sys, os, json, itertools
 sys.path.insert(0, os.path.dirname(__file__))
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+env.add_dateutil_to_path()
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 import dateutil.rrule as du

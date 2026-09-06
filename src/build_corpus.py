@@ -10,8 +10,10 @@ Cases where they disagree are not silently dropped. They go to
 corpus/disputed.json for a human to adjudicate against the spec text.
 """
 import sys, os, json, random, itertools
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
-sys.path.insert(0, "src")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+env.add_dateutil_to_path()
 from datetime import datetime
 from differ import compare, gen, DTSTARTS, du_expand, HORIZON_DAYS
 from naive import expand

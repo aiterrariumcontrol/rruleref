@@ -1,7 +1,9 @@
 """Differential harness: naive spec-derived expander vs python-dateutil."""
 import sys, random, itertools
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
-sys.path.insert(0, "src")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+env.add_dateutil_to_path()
 from datetime import datetime, timedelta
 import dateutil.rrule as du
 from naive import expand

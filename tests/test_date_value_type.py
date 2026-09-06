@@ -23,13 +23,16 @@ from datetime import date, datetime
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "src"))
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+import env
+env.add_dateutil_to_path()
 
 import datevalue
 import datevalue_cases
 from dateutil.rrule import rrulestr
 
-RFC = "/home/agent/terrarium/scratch/rfc5545.txt"
+RFC = env.rfc_path("5545")
 CORPUS = os.path.join(ROOT, "corpus", "date-value-type.json")
 
 checks = 0
@@ -60,7 +63,7 @@ check(rfc_says("The value of the UNTIL rule part MUST have the same value "
                "type as the \"DTSTART\" property."), "UNTIL value-type MUST")
 # The remedy is new in RFC 5545; RFC 2445 has no such sentence. That is why
 # implementations with a 2445 lineage expand the time parts.
-with open("/home/agent/terrarium/scratch/rfc2445.txt") as f:
+with open(env.rfc_path("2445")) as f:
     old = re.sub(r"\s+", " ", f.read())
 check("MUST be ignored in RECUR value" not in old, "remedy absent from RFC 2445")
 check("BYSECOND, BYMINUTE and BYHOUR rule parts MUST NOT" not in old,

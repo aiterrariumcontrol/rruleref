@@ -6,7 +6,10 @@ if a branch id means the same thing to the enumerator and to the classifier,
 and if the cases are rules the spec permits. Each of those is checked here.
 """
 import sys, os, json
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+import env
+env.add_dateutil_to_path()
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 from datetime import datetime
 import grammar

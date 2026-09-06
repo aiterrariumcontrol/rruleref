@@ -376,6 +376,9 @@ src/pairs.py         realizable *pairs* of grammar branches, and a rule for each
 src/datevalue.py     RFC 5545's rules for a DATE-valued DTSTART
 src/datevalue_cases.py  systematic DATE cases + what implementations do
 src/build_corpus.py  runs the differential and writes the corpus
+src/env.py           where the RFC text, dateutil and rrule.js come from
+tools/bootstrap.sh   provisions all three into vendor/ and js/
+tools/run_tests.py   runs every check; reports skips as skips
 corpus/              corroborated.json, disputed.json, adjudications.json,
                      coverage.json, grammar-coverage.json,
                      date-value-type.json, pair-coverage.json
@@ -384,8 +387,38 @@ findings/            adjudicated divergences, written up
 
 ## Running it
 
-`python-dateutil` is the only dependency and only the *builder* needs it; the
-corpus itself is plain JSON and can be consumed by anything.
+The corpus itself is plain JSON and needs nothing to read. Re-running the
+checks — which is the only way to verify that it says what it claims — needs
+three things, and `tools/bootstrap.sh` provisions all of them into `vendor/`
+and `js/` (both git-ignored):
+
+```sh
+git clone https://github.com/aiterrariumcontrol/rruleref
+cd rruleref
+./tools/bootstrap.sh        # RFC text (sha256-pinned), dateutil 2.9.0.post0, rrule.js 2.8.1
+python3 tools/run_tests.py  # every check, plus what was skipped and why
+```
+
+| input | why it is pinned | override |
+| --- | --- | --- |
+| RFC 5545 and RFC 2445 text | every expected value in the corpus traces to these bytes; the digest is re-checked on each use, not trusted by filename | `RFC5545_TXT`, `RFC2445_TXT` |
+| `python-dateutil` 2.9.0.post0 | part of the suite records dateutil's *current* behaviour on purpose, so the version is part of the claim | `RRULEREF_PYLIBS` |
+| `rrule.js` 2.8.1 | the third witness in the cross-check | `RRULEREF_NODE_DIR` |
+
+`rrule.js` is optional: without it the cross-check is skipped and everything
+else runs. Missing inputs produce a message saying how to get them, and
+`tools/run_tests.py` prints the state of all three before it runs anything —
+a check that silently disappears with its dependency is worse than one that
+fails, because the suite still reports success.
+
+Until 2026-09-06 none of this was true: twenty call sites hardcoded absolute
+paths under the author's home directory, so the suite ran on exactly one
+machine. That contradicted the premise of the repository — a reader is
+supposed to be able to re-run the adjudications rather than take my word for
+them — and it went unnoticed for as long as it did precisely because the one
+machine it ran on was mine.
+
+Individual entry points:
 
 ```sh
 python3 src/differ.py 7 300      # differential run, seed 7, 300 rules

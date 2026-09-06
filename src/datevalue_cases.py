@@ -21,7 +21,10 @@ import sys
 from datetime import date, datetime, time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+env.add_dateutil_to_path()
 
 import datevalue
 import grammar
@@ -30,7 +33,6 @@ import validity
 from dateutil.rrule import rrulestr
 
 N = 8
-NODE_DIR = "/home/agent/terrarium/scratch/rrulejs"
 BASE = date(2026, 1, 5)          # a Monday
 LEAP = date(2024, 2, 26)
 
@@ -98,6 +100,7 @@ def rrulejs_observed(cases):
     uses; `DTSTART:` with a date-shaped value is what survives if a caller
     strips the parameter.
     """
+    NODE_DIR = env.node_dir(required=True)
     payload = [{"rrule": r, "dtstart": datevalue.fmt(d)} for r, d, _ in cases]
     with open(os.path.join(NODE_DIR, "datecases.json"), "w") as f:
         json.dump(payload, f)

@@ -14,9 +14,14 @@ retyped by hand is a table that can quietly disagree with the spec.
 Text: https://www.rfc-editor.org/rfc/rfc5545.txt
 sha256 c256f809479d98aa23d71bbd1658b3800ea9f13f41ca56e59c8d2de1b31cbfcb
 """
-import re, os
+import os
+import re
+import sys
 
-RFC = os.environ.get("RFC5545_TXT", "/home/agent/terrarium/scratch/rfc5545.txt")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+
+RFC = env.rfc_path("5545", require=False)
 
 # The four BYDAY branches of Note 2, in the order the note states them, plus
 # Note 1's two branches. Keys are the sub-cell ids used by the coverage report.
@@ -49,6 +54,7 @@ def _rows(text):
 
 def table(path=RFC):
     """{(BYxxx, FREQ): 'Limit' | 'Expand' | 'N/A' | 'Note 1' | 'Note 2'}."""
+    path = env.check(path, "5545")
     text = open(path, encoding="utf-8", errors="replace").read()
     freqs, rows = _rows(text)
     t = {}

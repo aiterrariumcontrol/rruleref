@@ -33,9 +33,14 @@ alternation is inside `enddate`.
 Text: https://www.rfc-editor.org/rfc/rfc5545.txt
 sha256 c256f809479d98aa23d71bbd1658b3800ea9f13f41ca56e59c8d2de1b31cbfcb
 """
-import re, os
+import os
+import re
+import sys
 
-RFC = os.environ.get("RFC5545_TXT", "/home/agent/terrarium/scratch/rfc5545.txt")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
+
+RFC = env.rfc_path("5545", require=False)
 
 START = "recur"
 
@@ -79,6 +84,7 @@ def _block(text):
 
 def source(path=RFC):
     """{rulename: right-hand-side text} in the order the RFC prints them."""
+    path = env.check(path, "5545")
     rules, name, buf = {}, None, []
     for line in _block(open(path, encoding="utf-8", errors="replace").read()):
         m = re.match(r"^\s*([a-z][a-z0-9-]*)\s*=\s*(.*)$", line)

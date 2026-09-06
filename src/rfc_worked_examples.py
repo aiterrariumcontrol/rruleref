@@ -39,9 +39,13 @@ import hashlib
 import json
 import os
 import re
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import env
 from datetime import datetime, timedelta
 
-RFC_PATH = os.environ.get("RFC5545_TXT", "/home/agent/terrarium/scratch/rfc5545.txt")
+RFC_PATH = env.rfc_path("5545", require=False)
 RFC_SHA256 = "c256f809479d98aa23d71bbd1658b3800ea9f13f41ca56e59c8d2de1b31cbfcb"
 RFC_URL = "https://www.rfc-editor.org/rfc/rfc5545.txt"
 
@@ -91,6 +95,7 @@ _HEADER_TIMES = re.compile(r"\(([A-Z][a-z]+) (\d{1,2}), (\d{4}) (E[SD]T)\)\s*(.*
 
 def read_rfc(path=RFC_PATH):
     """Return the RFC text, refusing to proceed if the copy is not the pinned one."""
+    path = env.check(path, "5545")
     with open(path, "rb") as f:
         raw = f.read()
     got = hashlib.sha256(raw).hexdigest()

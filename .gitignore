@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+vendor/
+js/node_modules/
+js/*.js
+js/cases.json
+js/datecases.json

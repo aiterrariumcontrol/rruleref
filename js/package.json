@@ -1,0 +1,8 @@
+{
+  "name": "rruleref-js-witness",
+  "private": true,
+  "description": "rrule.js, pinned, as the third witness in the cross-check. src/crosscheck.py and src/datevalue_cases.py write their driver scripts into this directory and run node here.",
+  "dependencies": {
+    "rrule": "2.8.1"
+  }
+}

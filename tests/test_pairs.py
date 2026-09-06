@@ -8,7 +8,10 @@ realized, and every rejection carries a reason traceable to the spec rather
 than to this synthesizer.
 """
 import sys, os, json, itertools
-sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
+import os, sys
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+import env
+env.add_dateutil_to_path()
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "src"))
 import grammar
 import pairs
