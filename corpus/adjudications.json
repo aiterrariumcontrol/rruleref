@@ -1,5 +1,95 @@
 {
  "cases": {
+  "FREQ=MONTHLY;BYDAY=+2SU,MO|20260302T090000": {
+   "expected": [
+    "20260302T090000",
+    "20260308T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260412T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
+  "FREQ=MONTHLY;BYDAY=+2SU,SU|20260302T090000": {
+   "expected": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
+  "FREQ=MONTHLY;BYDAY=-2SU,MO|20260302T090000": {
+   "expected": [
+    "20260302T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260322T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260413T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
+  "FREQ=MONTHLY;BYDAY=-2SU,SU|20260302T090000": {
+   "expected": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
+  "FREQ=MONTHLY;BYDAY=2SU,MO|20260302T090000": {
+   "expected": [
+    "20260302T090000",
+    "20260308T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260412T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
+  "FREQ=MONTHLY;BYDAY=2SU,SU|20260302T090000": {
+   "expected": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "finding": "013-byday-mixed-signed-and-unsigned",
+   "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+   "verdict": "naive"
+  },
   "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2|20270102T090000": {
    "expected": [
     "20270102T090000",

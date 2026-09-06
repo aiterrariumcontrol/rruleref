@@ -1,6 +1,322 @@
 {
  "cases": [
   {
+   "adjudication": {
+    "expected": [
+     "20260302T090000",
+     "20260308T090000",
+     "20260309T090000",
+     "20260316T090000",
+     "20260323T090000",
+     "20260330T090000",
+     "20260406T090000",
+     "20260412T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0/0|plus",
+    "BYDAY|weekdaynum/0/0/0|present",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": true,
+   "naive": [
+    "20260302T090000",
+    "20260308T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260412T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=+2SU,MO",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|bywdaylist/1|repeat=1+ + BYDAY|weekdaynum/0/0/0/0|plus"
+  },
+  {
+   "adjudication": {
+    "expected": [
+     "20260308T090000",
+     "20260315T090000",
+     "20260322T090000",
+     "20260329T090000",
+     "20260405T090000",
+     "20260412T090000",
+     "20260419T090000",
+     "20260426T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0/0|plus",
+    "BYDAY|weekdaynum/0/0/0|present",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [
+    "20260308T090000",
+    "20260412T090000",
+    "20260510T090000",
+    "20260614T090000",
+    "20260712T090000",
+    "20260809T090000",
+    "20260913T090000",
+    "20261011T090000"
+   ],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": false,
+   "naive": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=+2SU,SU",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|weekdaynum/0/0/0/0|plus + BYDAY|weekdaynum/0|absent"
+  },
+  {
+   "adjudication": {
+    "expected": [
+     "20260302T090000",
+     "20260309T090000",
+     "20260316T090000",
+     "20260322T090000",
+     "20260323T090000",
+     "20260330T090000",
+     "20260406T090000",
+     "20260413T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0/0|minus",
+    "BYDAY|weekdaynum/0/0/0|present",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": true,
+   "naive": [
+    "20260302T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260322T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260413T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=-2SU,MO",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|bywdaylist/1|repeat=1+ + BYDAY|weekdaynum/0/0/0/0|minus"
+  },
+  {
+   "adjudication": {
+    "expected": [
+     "20260308T090000",
+     "20260315T090000",
+     "20260322T090000",
+     "20260329T090000",
+     "20260405T090000",
+     "20260412T090000",
+     "20260419T090000",
+     "20260426T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0/0|minus",
+    "BYDAY|weekdaynum/0/0/0|present",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [
+    "20260322T090000",
+    "20260419T090000",
+    "20260524T090000",
+    "20260621T090000",
+    "20260719T090000",
+    "20260823T090000",
+    "20260920T090000",
+    "20261018T090000"
+   ],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": false,
+   "naive": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=-2SU,SU",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|weekdaynum/0/0/0/0|minus + BYDAY|weekdaynum/0|absent"
+  },
+  {
+   "adjudication": {
+    "expected": [
+     "20260302T090000",
+     "20260308T090000",
+     "20260309T090000",
+     "20260316T090000",
+     "20260323T090000",
+     "20260330T090000",
+     "20260406T090000",
+     "20260412T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0|absent",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|MO",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": true,
+   "naive": [
+    "20260302T090000",
+    "20260308T090000",
+    "20260309T090000",
+    "20260316T090000",
+    "20260323T090000",
+    "20260330T090000",
+    "20260406T090000",
+    "20260412T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=2SU,MO",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|bywdaylist/1|repeat=1+ + BYDAY|weekdaynum/0/0/0|absent"
+  },
+  {
+   "adjudication": {
+    "expected": [
+     "20260308T090000",
+     "20260315T090000",
+     "20260322T090000",
+     "20260329T090000",
+     "20260405T090000",
+     "20260412T090000",
+     "20260419T090000",
+     "20260426T090000"
+    ],
+    "finding": "013-byday-mixed-signed-and-unsigned",
+    "note": "A BYDAY list mixing a signed weekdaynum with an unsigned one is a union of its elements, not an intersection. RFC 5545 3.3.10's own example FREQ=MONTHLY;INTERVAL=2;COUNT=10;BYDAY=1SU,-1SU expands to the first *and* the last Sunday, and 'BYDAY=MO ... represents all Mondays within the month'; nothing in 3.3.10 makes the elements of the list constrain each other. python-dateutil 2.9.0.post0 splits BYDAY into _byweekday (unsigned) and _bynweekday (signed) and then applies the two as separate exclusion clauses, so a day must match both -- yielding an empty recurrence set when the weekdays differ. Its own BYMONTHDAY handling, three lines below in the same condition, gets the signed/unsigned union right. See finding 013.",
+    "verdict": "naive"
+   },
+   "branches": [
+    "BYDAY|bywdaylist/1|repeat=1+",
+    "BYDAY|weekdaynum/0/0/0|absent",
+    "BYDAY|weekdaynum/0|absent",
+    "BYDAY|weekdaynum/0|present",
+    "BYDAY|weekday|SU",
+    "FREQ|freq|MONTHLY",
+    "recur|recur-rule-part|BYDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYDAY/MONTHLY/MONTHLY/BYDAY-special-expand"
+   ],
+   "dateutil": [
+    "20260308T090000",
+    "20260412T090000",
+    "20260510T090000",
+    "20260614T090000",
+    "20260712T090000",
+    "20260809T090000",
+    "20260913T090000",
+    "20261011T090000"
+   ],
+   "dtstart": "20260302T090000",
+   "dtstart_synchronized": false,
+   "naive": [
+    "20260308T090000",
+    "20260315T090000",
+    "20260322T090000",
+    "20260329T090000",
+    "20260405T090000",
+    "20260412T090000",
+    "20260419T090000",
+    "20260426T090000"
+   ],
+   "rrule": "FREQ=MONTHLY;BYDAY=2SU,SU",
+   "rule_valid": true,
+   "systematic_for": "pair:BYDAY|weekdaynum/0/0/0|absent + BYDAY|weekdaynum/0|absent"
+  },
+  {
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -975,7 +1291,7 @@
  ],
  "meta": {
   "about": "Cases where the two expanders disagree. Unadjudicated unless carrying an 'adjudication' key (see corpus/adjudications.json and findings/).",
-  "adjudicated": 5,
-  "cases": 20
+  "adjudicated": 11,
+  "cases": 26
  }
 }

@@ -50,9 +50,9 @@ by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
 implementation. Some are places the spec genuinely does not decide.
 
-Current state: **2541 corroborated cases** (1230 with a spec-defined,
-synchronized `DTSTART`; see the next section — this is up from 149, after a
-generator fix on 2026-09-05) and **20 disputed**, 13 of them in the
+Current state: **3813 corroborated cases** (1722 with a spec-defined,
+synchronized `DTSTART`; see the next section) and **26 disputed**, 11 of them
+adjudicated in `findings/`. 13 of the remaining disputes are in the
 spec-defined region.
 
 All 13 are now accounted for, by two different mechanisms and with two
@@ -245,6 +245,31 @@ conformance case, and even then see the caveat on (2).
   non-conformantly-covered grammar branch closed: **79/79, none of them
   non-conformant**.
 
+- [012 — two coverage models at 100%, and an interaction model at 54%](findings/012-branch-pair-coverage.md).
+  Both single-branch models had saturated, and a saturated presence measure has
+  stopped measuring. The bugs this corpus has caught were *interactions*:
+  `BYSETPOS` **under** `WEEKLY`, `BYWEEKNO` **at** a year boundary. So the
+  third model is the pair: of the C(79,2) = **3081** branch pairs, **2751 are
+  realizable** — each demonstrated by a rule the ABNF parses, `validity.py`
+  accepts, and the classifier confirms takes both — and the other 330 are
+  refused with a recorded reason (`no-common-freq`, `arity-conflict`,
+  `invalid:count-until-exclusive`, …). The corpus covered **1485 of 2751**.
+  Building the denominator found two bugs of my own: a greedy host frequency
+  that invented 70 false gaps, and a list-varying step that turned
+  `BYDAY=SU,MO` into `BYDAY=SU,TU` and hid all 21 two-weekday pairs.
+  **2751/2751** now.
+- [013 — `BYDAY=+2SU,MO` expands to nothing](findings/013-byday-mixed-signed-and-unsigned.md).
+  The first thing the pair model asked for that the corpus had never held: a
+  `BYDAY` list mixing a signed element with an unsigned one. `python-dateutil`
+  2.9.0 returns **no occurrences at all**; `2SU,SU` silently drops the
+  unsigned `SU`. §3.3.10's own example `BYDAY=1SU,-1SU` → "the first *and* the
+  last Sunday" makes the list a union, and `dateutil`'s `BYMONTHDAY` handling —
+  three lines below in the same condition — unions signed and unsigned
+  correctly. Only `BYDAY` intersects them. `rrule.js` inherits it, and it has
+  been reported *there* since 2014
+  ([jkbrzt/rrule#71](https://github.com/jkbrzt/rrule/issues/71), still open,
+  zero comments) but seemingly never against `dateutil`. Six cases adjudicated.
+
 ## Known-answer tests
 
 `tests/test_validity.py` checks `src/validity.py` against hand-picked valid and
@@ -347,12 +372,13 @@ src/coverage.py      RFC 5545 sec. 3.3.10's BYxxx/FREQ table, read from the RFC
 src/enumerate_cells.py  one systematic case per cell of that table
 src/grammar.py       sec. 3.3.10's RECUR ABNF, read from the RFC: branches + classifier
 src/enumerate_branches.py  one synthesized case per branch of that grammar
+src/pairs.py         realizable *pairs* of grammar branches, and a rule for each
 src/datevalue.py     RFC 5545's rules for a DATE-valued DTSTART
 src/datevalue_cases.py  systematic DATE cases + what implementations do
 src/build_corpus.py  runs the differential and writes the corpus
 corpus/              corroborated.json, disputed.json, adjudications.json,
                      coverage.json, grammar-coverage.json,
-                     date-value-type.json
+                     date-value-type.json, pair-coverage.json
 findings/            adjudicated divergences, written up
 ```
 
@@ -372,9 +398,12 @@ python3 tests/test_byweekno.py        # week numbering at the year boundary (fin
 python3 tests/test_coverage.py        # coverage of section 3.3.10's table (finding 009)
 python3 tests/test_grammar.py         # coverage of section 3.3.10's ABNF (finding 010)
 python3 tests/test_date_value_type.py # DATE-valued DTSTART (finding 011)
+python3 tests/test_pairs.py           # pairwise branch coverage (finding 012)
+python3 tests/test_byday_mixed.py     # signed + unsigned BYDAY list (finding 013)
 python3 src/coverage.py               # (module) the table, parsed out of the RFC
 python3 src/enumerate_cells.py        # print the 57 systematic cases
 python3 src/enumerate_branches.py     # print the 79 synthesized branch cases
+python3 src/pairs.py                  # realizable/unrealizable pair counts by reason
 python3 src/datevalue_cases.py        # rebuild corpus/date-value-type.json
 python3 src/byweekno_check.py         # sweep BYWEEKNO x WKST against the RFC's definition
 python3 src/vtimezone.py              # print the five extracted components
@@ -386,11 +415,13 @@ python3 src/vtimezone.py              # print the five extracted components
   of them printed by §3.3.10 itself: all 57 permitted cells of its
   `BYxxx`/`FREQ` table ([finding 009](findings/009-corpus-coverage-of-the-3310-table.md))
   and all 79 branches of its `recur` ABNF
-  ([finding 010](findings/010-grammar-branch-coverage.md)). Both are
-  *presence* claims. Nothing systematic covers combinations — cell pairs,
-  branch pairs, three-part interactions, `COUNT` together with `BYSETPOS`; the
-  two axes are measured independently rather than crossed; `INTERVAL` appears
-  only as 2 and 3 and `COUNT` only as 3. The random cases still carry that
+  ([finding 010](findings/010-grammar-branch-coverage.md)), and all 2751
+  realizable *pairs* of those branches
+  ([finding 012](findings/012-branch-pair-coverage.md)). What is still
+  unmeasured: triples and beyond; pairs that cross the two axes (a table cell
+  together with a grammar branch); `INTERVAL` appears only as 2 and 3 and
+  `COUNT` only as 3, so the pair model covers "`COUNT` is present with a
+  negative `BYSETPOS`" and not "`COUNT=1`". The random cases still carry that
   weight, and their coverage of it is unmeasured.
 - **DATE-valued `DTSTART` is covered separately and thinly.**
   `corpus/date-value-type.json` has 18 systematic cases and 4 recorded as

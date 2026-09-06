@@ -41,7 +41,12 @@ check("2026 has 53 weeks (Jan 1 is a Thursday)", weeks_in_year(2026, "MO"), 53)
 check("2039-01-01 is week 52 of 2038", week_number(datetime(2039, 1, 1).date(), "MO"), (2038, 52))
 
 print("naive agrees with the adjudicated expectations (corpus/adjudications.json)")
-adj = json.load(open(os.path.join(ROOT, "corpus", "adjudications.json")))["cases"]
+# adjudications.json is shared across findings, so select this one's rather
+# than asserting the file's total size -- a count that another finding can
+# change is a test that fails for reasons that have nothing to do with it.
+adj = {k: a for k, a in
+       json.load(open(os.path.join(ROOT, "corpus", "adjudications.json")))["cases"].items()
+       if a.get("finding") == "008-byweekno-previous-year-last-week"}
 check("five adjudicated BYWEEKNO cases", len(adj), 5)
 for key, a in sorted(adj.items()):
     rule, ds = key.split("|")

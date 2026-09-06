@@ -99,33 +99,41 @@ ANCHOR = {
 
 
 def _synth(node, target, rule, path, ctx, g):
-    """(text, reached) for `node`, taking the branch that reaches `target`.
+    """(text, reached) for `node`, taking the branches that reach `target`.
 
-    `reached` is True when the emitted text exercises `target`. When no branch
-    can reach it the shortest available branch is taken, so every call still
-    produces a legal string.
+    `target` is a set of feature ids (or None). `reached` is the subset of
+    them the emitted text exercises. When no branch can reach any of them the
+    shortest available branch is taken, so every call still produces a legal
+    string.
+
+    More than one target at a time is what src/pairs.py needs: a case for
+    `BYDAY|weekdaynum/0|present` *and* `BYDAY|bywdaylist/1|repeat=1+` has to
+    reach both inside one rule part. For a single target the result is
+    unchanged -- a feature id names exactly one branch, so at most one
+    alternative can ever reach it.
     """
+    if target is None:
+        target = frozenset()
     kind = node[0]
     if kind == "lit":
-        return node[1], False
+        return node[1], frozenset()
     if kind == "ref":
         name = node[1]
         if name in EXTERNAL:
-            return EXTERNAL[name], False
+            return EXTERNAL[name], frozenset()
         sub = g.get(name)
         if sub is None or grammar._is_leaf_rule(sub):
-            return VALUE_IN.get((ctx, name), VALUE.get(name, VALUE["DIGIT"])), False
+            return VALUE_IN.get((ctx, name), VALUE.get(name, VALUE["DIGIT"])), frozenset()
         return _synth(sub, target, name, "", ctx, g)
     if kind == "seq":
-        out, got = [], False
+        out, got = [], frozenset()
         for i, b in enumerate(node[1]):
-            # Once a child has reached the target, later siblings synthesize
-            # with no target, so they take their own shortest branch: the case
-            # for `BYDAY|weekday|MO` is `BYDAY=MO`, not a two-element list.
-            t, r = _synth(b, None if got else target, rule,
-                          path + "/%d" % i, ctx, g)
+            # A target a child has already reached is dropped for later
+            # siblings, so they take their own shortest branch: the case for
+            # `BYDAY|weekday|MO` is `BYDAY=MO`, not a two-element list.
+            t, r = _synth(b, target - got, rule, path + "/%d" % i, ctx, g)
             out.append(t)
-            got = got or r
+            got |= r
         return "".join(out), got
     if kind == "alt":
         best = None
@@ -133,8 +141,9 @@ def _synth(node, target, rule, path, ctx, g):
             fid = grammar._fid(ctx, rule, path, grammar._lit_label(node, i))
             nctx = grammar._branch_ctx(rule, node, i) or ctx
             t, r = _synth(b, target, rule, path + "/%d" % i, nctx, g)
-            if fid == target or r:
-                return t, True
+            hit = r | (target & {fid})
+            if hit:
+                return t, hit
             # A branch that cannot be taken conformantly is never the default;
             # otherwise the case for `recur-rule-part|UNTIL` would inherit
             # `enddate`'s DATE form and be non-conformant for a reason that
@@ -143,24 +152,31 @@ def _synth(node, target, rule, path, ctx, g):
                 continue
             if best is None or len(t) < len(best):
                 best = t
-        return best, False
+        return best, frozenset()
     if kind == "opt":
         here = grammar._fid(ctx, rule, path, "present")
         t, r = _synth(node[1], target, rule, path + "/0", ctx, g)
-        if target == here or r:
-            return t, True
-        return "", target == grammar._fid(ctx, rule, path, "absent")
+        hit = r | (target & {here})
+        if hit:
+            return t, hit
+        return "", target & {grammar._fid(ctx, rule, path, "absent")}
     if kind == "rep":
         one, r = _synth(node[3], target, rule, path + "/0", ctx, g)
         if grammar._is_leaf_rule(node):
-            return one * max(1, node[1]), False
-        want_many = target == grammar._fid(ctx, rule, path, "repeat=1+")
+            return one * max(1, node[1]), frozenset()
+        many = grammar._fid(ctx, rule, path, "repeat=1+")
+        want_many = target & {many}
         if not (want_many or r):
-            return "", target == grammar._fid(ctx, rule, path, "repeat=0")
+            return "", target & {grammar._fid(ctx, rule, path, "repeat=0")}
         # One repeat is enough for the `1+` branch. The repeated copy must
         # differ from the element before it, or the list carries a duplicate
-        # rather than two members, so its numeric leaf is moved.
-        return _vary(one), True
+        # rather than two members, so its numeric leaf is moved -- unless the
+        # copy is there to reach a target of its own, in which case moving it
+        # is exactly what must not happen. `BYDAY=SU,MO` reaches `weekday|SU`
+        # in the head and `weekday|MO` in the tail; varying the tail would
+        # turn it into `BYDAY=SU,TU` and silently lose the branch it was
+        # built for.
+        return (one if r else _vary(one)), r | want_many
     raise RuntimeError("unknown node %r" % (kind,))
 
 
@@ -210,8 +226,8 @@ def cases(path=grammar.RFC):
             rule = one if feature.endswith("repeat=0") else one + ";INTERVAL=2"
             out.append((feature, rule, ANCHOR["DAILY"]))
             continue
-        text, reached = _synth(part_rule, feature, "recur-rule-part", "",
-                               None, g)
+        text, reached = _synth(part_rule, frozenset([feature]),
+                               "recur-rule-part", "", None, g)
         freq, extra = HOST[part]
         if part == "FREQ":
             rule = text

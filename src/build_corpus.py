@@ -9,7 +9,7 @@ regression suite, which by construction cannot disagree with itself.
 Cases where they disagree are not silently dropped. They go to
 corpus/disputed.json for a human to adjudicate against the spec text.
 """
-import sys, os, json, random
+import sys, os, json, random, itertools
 sys.path.insert(0, "/home/agent/terrarium/scratch/pylibs")
 sys.path.insert(0, "src")
 from datetime import datetime
@@ -20,6 +20,7 @@ import coverage
 import grammar
 import enumerate_cells
 import enumerate_branches
+import pairs
 
 N = 8  # occurrences recorded per case
 
@@ -118,6 +119,12 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
     # before this the corpus had never exercised any of them.
     for feature, rule, ds in enumerate_branches.cases():
         record(rule, ds, "branch:" + feature, agreed, disputed, seen)
+    # ...and one per *realizable pair* of branches. Both single-branch models
+    # read 100%, and a presence measure that is saturated has stopped
+    # measuring: the bugs this corpus has caught (findings 001, 004) were
+    # interactions between parts, not parts appearing at all. See src/pairs.py.
+    for pair, rule, ds in pairs.cases():
+        record(rule, ds, "pair:" + pair, agreed, disputed, seen)
     for seed in seeds:
         rng = random.Random(seed)
         for _ in range(per):
@@ -200,6 +207,37 @@ def main(seeds=(7, 11, 13, 17, 23), per=300):
                "cases_per_branch": bhits},
               open("corpus/grammar-coverage.json", "w"), indent=1,
               sort_keys=True)
+    # Interaction coverage: pairs of ABNF branches. Pairs no conformant rule
+    # can take are excluded by construction and reported with the reason, so
+    # "unrealizable" never silently absorbs a gap. src/pairs.py.
+    realizable, unrealizable = pairs.report()
+    seen_pairs = set()
+    for c in agreed + disputed:
+        seen_pairs |= set(itertools.combinations(sorted(c["branches"]), 2))
+    try:
+        for c in json.load(open("corpus/date-value-type.json"))["cases"]:
+            seen_pairs |= set(itertools.combinations(sorted(c["branches"]), 2))
+    except (FileNotFoundError, KeyError):
+        pass
+    pmiss = sorted(p for p in realizable if p not in seen_pairs)
+    reasons = {}
+    for p, why in unrealizable.items():
+        reasons.setdefault(why, []).append(list(p))
+    json.dump({"meta": {"about": "Pairwise coverage of RFC 5545 3.3.10's "
+                                 "RECUR ABNF branches (src/pairs.py).",
+                        "branches": len(feats),
+                        "pairs": len(realizable) + len(unrealizable),
+                        "realizable": len(realizable),
+                        "covered": len(realizable) - len(pmiss),
+                        "uncovered": len(pmiss),
+                        "unrealizable": len(unrealizable)},
+               "uncovered": [list(p) for p in pmiss],
+               "unrealizable_by_reason": {k: sorted(v)
+                                          for k, v in sorted(reasons.items())}},
+              open("corpus/pair-coverage.json", "w"), indent=1, sort_keys=True)
+    print("pairs realizable=%d covered=%d uncovered=%d unrealizable=%d" % (
+        len(realizable), len(realizable) - len(pmiss), len(pmiss),
+        len(unrealizable)))
     print("branches covered=%d/%d (%d non-conformantly) uncovered=%s" % (
         len(feats) - len(bmiss), len(feats), len(nonconf), bmiss or "none"))
     print("corroborated=%d disputed=%d (of %d generated)" % (len(agreed), len(disputed), len(seen)))
