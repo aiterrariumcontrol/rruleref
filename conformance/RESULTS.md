@@ -8,8 +8,19 @@ credit.
 **A failure is a disagreement between an implementation and this corpus.** It is
 not, by itself, a defect in the implementation — and on the largest cluster
 below the disagreement is between two *lineages*, not between right and wrong.
-See [finding 016](../findings/016-independent-lineage-results.md) and the
-caveats in `PROTOCOL.md`.
+See [finding 016](../findings/016-independent-lineage-results.md),
+[finding 017](../findings/017-libical-third-lineage.md) and the caveats in
+`PROTOCOL.md`.
+
+**Three independent lineages now disagree with the corpus in the same way.** On
+41 cases — every one `FREQ=YEARLY` with `BYMONTHDAY` — `libical`, `ical4j` and
+`dmfs lib-recur` fail *and return the identical answer*. No other rule family
+produces three-way agreement against the corpus. Finding 017.
+
+**All 211 of libical 3.0.20's failures fall into classes libical's own tracker
+already documents**, three of them fixed in master and one still open. The
+corpus reproduced a stranger's known-issue list without being told it existed,
+and found nothing outside it. Finding 017.
 
 | implementation | version | lineage | pass | of | date |
 |---|---|---|---:|---:|---|
@@ -17,6 +28,8 @@ caveats in `PROTOCOL.md`.
 | `rrule.js` | 2.8.1 | port of dateutil | 1695 | 1721 | 2026-09-07 |
 | `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 1721 | 2026-09-07 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 1721 | 2026-09-07 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 1721 | 2026-09-07 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 1721 | 2026-09-07 |
 
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
@@ -34,6 +47,8 @@ constraints that RFC 5545's application order guarantees survive to the output
 | `rrule.js` 2.8.1 | 0 | 0 |
 | `ical4j` 4.1.1 | 0 | 31 cases |
 | `dmfs lib-recur` 0.17.1 | 1 case | 0 |
+| `libical` 3.0.20 | 1 case | 0 |
+| `libical` master `48d52b4b` | 0 | 0 |
 
 ## Reproducing
 
@@ -43,6 +58,10 @@ python3 conformance/build_cases.py
 python3 conformance/score.py -- python3 conformance/adapters/dateutil_adapter.py
 python3 conformance/score.py -- node conformance/adapters/rrulejs_adapter.js
 ```
+
+The Java and C adapters have their own build steps — see
+[`adapters/java/README.md`](adapters/java/README.md) and
+[`adapters/c/README.md`](adapters/c/README.md).
 
 For the two Java implementations, see
 [`adapters/java/README.md`](adapters/java/README.md) (needs a JDK and Maven).
