@@ -276,11 +276,28 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
     freq = r["FREQ"]
     if horizon is None:
         horizon = dtstart + timedelta(days=365 * 30 + 8)
-    if "UNTIL" in r and r["UNTIL"] < horizon:
-        horizon = r["UNTIL"]
-
     out = []
     setpos = "BYSETPOS" in r
+    until = r.get("UNTIL")
+    # RFC 5545 3.3.10 fixes the order: "... BYSECOND and BYSETPOS; then COUNT
+    # and UNTIL are evaluated." Folding UNTIL into the candidate horizon
+    # evaluates it *before* BYSETPOS, which truncates the final period and can
+    # therefore change which instance BYSETPOS selects. Without BYSETPOS the
+    # two orders coincide and clipping is a large speedup; with it, candidates
+    # run to the end of the period containing UNTIL and UNTIL is applied after
+    # the selection. Found by property P3 (src/properties.py), 2026-09-07;
+    # this is the last-period twin of finding 004's first-period truncation.
+    if until is not None and not setpos and until < horizon:
+        horizon = until
+    # The caller's horizon is subject to exactly the same ordering argument as
+    # UNTIL: cutting the candidate stream at it truncates the period BYSETPOS
+    # is selecting from, so the last occurrence returned could be one no
+    # complete expansion would ever contain. Under BYSETPOS the period
+    # containing the horizon is therefore completed and the horizon applied
+    # afterwards. `stop` is the cut the caller asked for; `scan` is how far
+    # candidates must run to answer it.
+    stop = horizon
+    scan = horizon + _period_span(freq) if setpos else horizon
     cap = min(limit, r["COUNT"]) if "COUNT" in r else limit
 
     def flush(got):
@@ -292,7 +309,9 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
                 picked.add(got[p - 1])
             elif p < 0 and -p <= len(got):
                 picked.add(got[p])
-        out.extend(x for x in sorted(picked) if x >= dtstart)
+        out.extend(x for x in sorted(picked)
+                   if x >= dtstart and x <= stop
+                   and (until is None or x <= until))
 
     # BYSETPOS needs a whole period before it can select from it, so matches
     # are buffered per period. The buffer is flushed as soon as the candidate
@@ -302,8 +321,8 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
     # FREQ=SECONDLY;BYSETPOS=-1 enumerated ~10^9 candidates before returning
     # its first occurrence.
     cur_key, cur = None, []
-    for dt in _candidates(r, dtstart, horizon, whole_period=setpos):
-        if dt > horizon or (not setpos and dt < dtstart):
+    for dt in _candidates(r, dtstart, scan, whole_period=setpos):
+        if dt > scan or (not setpos and dt < dtstart):
             continue
         if setpos:
             key = period_index(dt, freq, r["WKST"])
@@ -312,6 +331,10 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
                     flush(cur)
                     if len(out) >= cap:
                         return out[:cap]
+                # Candidates arrive in increasing time order, so a period
+                # whose first candidate is past UNTIL cannot contribute.
+                if dt > stop or (until is not None and dt > until):
+                    return out[:cap]
                 cur_key, cur = key, []
             if matches(dt, r, dtstart):
                 cur.append(dt)
@@ -323,6 +346,19 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
     if setpos and cur_key is not None:
         flush(cur)
     return out[:cap]
+
+
+#: An upper bound on the length of one FREQ period, used only to finish the
+#: period a horizon falls inside. Deliberately generous; it bounds scanning,
+#: it does not define any answer.
+_SPAN = {"YEARLY": timedelta(days=400), "MONTHLY": timedelta(days=40),
+         "WEEKLY": timedelta(days=10), "DAILY": timedelta(days=2),
+         "HOURLY": timedelta(hours=2), "MINUTELY": timedelta(minutes=2),
+         "SECONDLY": timedelta(seconds=2)}
+
+
+def _period_span(freq):
+    return _SPAN[freq]
 
 
 def _period_start(dt, freq, wkst):

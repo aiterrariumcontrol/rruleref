@@ -1,0 +1,7 @@
+{
+ "cap": 3000,
+ "divergences": [],
+ "horizon_days": 1095,
+ "n_rules": 1722,
+ "note": "horizon and cap bound the harness, not the rules"
+}

@@ -1,0 +1,1549 @@
+{
+ "bounds": {
+  "cap": 3000,
+  "horizon_days": 1095,
+  "note": "harness bounds, not properties of the rules"
+ },
+ "elapsed_seconds": 92.0,
+ "failures": [
+  {
+   "a": [
+    "20270101T090000",
+    "20270108T090000",
+    "20270115T090000"
+   ],
+   "b": [
+    "20270104T090000",
+    "20270111T090000",
+    "20270118T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20270101T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270101T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270628T090000",
+    "20280131T090000",
+    "20290129T090000"
+   ],
+   "n_lost": 3,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20270101T090000",
+    "20270108T090000",
+    "20270115T090000"
+   ],
+   "b": [
+    "20270104T090000",
+    "20270111T090000",
+    "20270118T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20270101T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270101T090000",
+   "expander": "naive",
+   "lost": [
+    "20270628T090000",
+    "20280131T090000",
+    "20290129T090000"
+   ],
+   "n_lost": 3,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260102T090000",
+    "20260107T090000",
+    "20260114T090000",
+    "20260121T090000"
+   ],
+   "b": [
+    "20260102T090000",
+    "20260109T090000",
+    "20260116T090000",
+    "20260123T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260102T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260102T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270101T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260102T090000",
+    "20260107T090000",
+    "20260114T090000",
+    "20260121T090000"
+   ],
+   "b": [
+    "20260102T090000",
+    "20260109T090000",
+    "20260116T090000",
+    "20260123T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260102T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260102T090000",
+   "expander": "naive",
+   "lost": [
+    "20260102T090000",
+    "20270101T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260705T090000",
+    "20260706T090000",
+    "20260713T090000",
+    "20260720T090000"
+   ],
+   "b": [
+    "20260705T090000",
+    "20260707T090000",
+    "20260714T090000",
+    "20260721T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260705T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260705T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270704T090000",
+    "20280702T090000",
+    "20290701T090000"
+   ],
+   "n_lost": 3,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260705T090000",
+    "20260706T090000",
+    "20260713T090000",
+    "20260720T090000"
+   ],
+   "b": [
+    "20260705T090000",
+    "20260707T090000",
+    "20260714T090000",
+    "20260721T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260705T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260705T090000",
+   "expander": "naive",
+   "lost": [
+    "20260705T090000",
+    "20270704T090000",
+    "20280702T090000",
+    "20290701T090000"
+   ],
+   "n_lost": 4,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260402T090000",
+    "20260406T090000",
+    "20260413T090000",
+    "20260420T090000"
+   ],
+   "b": [
+    "20260402T090000",
+    "20260409T090000",
+    "20260416T090000",
+    "20260423T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260402T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260402T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270401T090000",
+    "20281102T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260402T090000",
+    "20260406T090000",
+    "20260413T090000",
+    "20260420T090000"
+   ],
+   "b": [
+    "20260402T090000",
+    "20260409T090000",
+    "20260416T090000",
+    "20260423T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260402T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260402T090000",
+   "expander": "naive",
+   "lost": [
+    "20260402T090000",
+    "20270401T090000",
+    "20281102T090000"
+   ],
+   "n_lost": 3,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000"
+   ],
+   "b": [
+    "20260810T090000",
+    "20260817T090000",
+    "20260824T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260804T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260804T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20260831T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000"
+   ],
+   "b": [
+    "20260810T090000",
+    "20260817T090000",
+    "20260824T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260804T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260804T090000",
+   "expander": "naive",
+   "lost": [
+    "20260831T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260601T090000",
+    "20260608T090000",
+    "20260615T090000"
+   ],
+   "b": [
+    "20260603T090000",
+    "20260610T090000",
+    "20260617T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260601T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "a": [
+    "20260601T090000",
+    "20260608T090000",
+    "20260615T090000"
+   ],
+   "b": [
+    "20260603T090000",
+    "20260610T090000",
+    "20260617T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260601T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "a": [
+    "20260902T090000",
+    "20260907T090000",
+    "20260914T090000",
+    "20260921T090000"
+   ],
+   "b": [
+    "20260902T090000",
+    "20260909T090000",
+    "20260916T090000",
+    "20260923T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260902T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260902T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270901T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260902T090000",
+    "20260907T090000",
+    "20260914T090000",
+    "20260921T090000"
+   ],
+   "b": [
+    "20260902T090000",
+    "20260909T090000",
+    "20260916T090000",
+    "20260923T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260902T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260902T090000",
+   "expander": "naive",
+   "lost": [
+    "20260902T090000",
+    "20270901T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20270106T090000",
+    "20270113T090000",
+    "20270120T090000",
+    "20270127T090000"
+   ],
+   "b": [
+    "20270106T090000",
+    "20270109T090000",
+    "20270116T090000",
+    "20270123T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20270106T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20270106T090000",
+    "20270113T090000",
+    "20270120T090000"
+   ],
+   "b": [
+    "20270109T090000",
+    "20270116T090000",
+    "20270123T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20270106T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20260801T090000",
+    "20260808T090000",
+    "20260815T090000"
+   ],
+   "b": [
+    "20260802T090000",
+    "20260809T090000",
+    "20260816T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU;BYMONTH=8;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260801T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYMONTH=8;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "a": [
+    "20260801T090000",
+    "20260808T090000",
+    "20260815T090000"
+   ],
+   "b": [
+    "20260802T090000",
+    "20260809T090000",
+    "20260816T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU;BYMONTH=8;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260801T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYMONTH=8;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "a": [
+    "20260517T090000",
+    "20260524T090000",
+    "20260531T090000"
+   ],
+   "b": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260517T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "a": [
+    "20260517T090000",
+    "20260524T090000",
+    "20260531T090000"
+   ],
+   "b": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260517T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "a": [
+    "20260521T090000",
+    "20260528T090000",
+    "20260604T090000"
+   ],
+   "b": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TH,TU;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260521T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH,TU;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "a": [
+    "20260521T090000",
+    "20260528T090000",
+    "20260604T090000"
+   ],
+   "b": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TH,TU;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260521T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH,TU;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "a": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "b": [
+    "20260528T090000",
+    "20260604T090000",
+    "20260611T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TH;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260523T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "FR"
+  },
+  {
+   "a": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "b": [
+    "20260528T090000",
+    "20260604T090000",
+    "20260611T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TH;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260523T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TH;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "FR"
+  },
+  {
+   "a": [
+    "20260331T090000",
+    "20260407T090000",
+    "20260414T090000",
+    "20260421T090000"
+   ],
+   "b": [
+    "20260331T090000",
+    "20260404T090000",
+    "20260411T090000",
+    "20260418T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TU;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260331T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TU;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "a": [
+    "20260331T090000",
+    "20260407T090000",
+    "20260414T090000"
+   ],
+   "b": [
+    "20260404T090000",
+    "20260411T090000",
+    "20260418T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,TU;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260331T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,TU;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "a": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "b": [
+    "20260527T090000",
+    "20260603T090000",
+    "20260610T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,WE;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260523T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,WE;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20260523T090000",
+    "20260530T090000",
+    "20260606T090000"
+   ],
+   "b": [
+    "20260527T090000",
+    "20260603T090000",
+    "20260610T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SA,WE;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260523T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,WE;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20240306T090000",
+    "20240313T090000",
+    "20240320T090000"
+   ],
+   "b": [
+    "20240310T090000",
+    "20240317T090000",
+    "20240324T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SU,WE;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20240306T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SU,WE;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20240306T090000",
+    "20240313T090000",
+    "20240320T090000"
+   ],
+   "b": [
+    "20240310T090000",
+    "20240317T090000",
+    "20240324T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=SU,WE;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20240306T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=SU,WE;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20261001T090000",
+    "20261008T090000",
+    "20261015T090000"
+   ],
+   "b": [
+    "20261006T090000",
+    "20261013T090000",
+    "20261020T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20261001T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20261001T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20271130T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20261001T090000",
+    "20261008T090000",
+    "20261015T090000"
+   ],
+   "b": [
+    "20261006T090000",
+    "20261013T090000",
+    "20261020T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20261001T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20261001T090000",
+   "expander": "naive",
+   "lost": [
+    "20271130T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,TU;BYMONTH=10,11;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20240229T090000",
+    "20240307T090000",
+    "20240314T090000"
+   ],
+   "b": [
+    "20240306T090000",
+    "20240313T090000",
+    "20240320T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=TH,WE;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20240229T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,WE;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20240229T090000",
+    "20240307T090000",
+    "20240314T090000"
+   ],
+   "b": [
+    "20240306T090000",
+    "20240313T090000",
+    "20240320T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYDAY=TH,WE;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20240229T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,WE;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20261004T090000",
+    "20261011T090000",
+    "20261018T090000"
+   ],
+   "b": [
+    "20261010T090000",
+    "20261017T090000",
+    "20261024T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20261004T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20261004T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20261031T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20261004T090000",
+    "20261011T090000",
+    "20261018T090000"
+   ],
+   "b": [
+    "20261010T090000",
+    "20261017T090000",
+    "20261024T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20261004T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "SU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20261004T090000",
+   "expander": "naive",
+   "lost": [
+    "20261031T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20240607T090000",
+    "20240614T090000",
+    "20240621T090000"
+   ],
+   "b": [
+    "20240608T090000",
+    "20240615T090000",
+    "20240622T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20240607T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "FR"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20240607T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20260730T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20240607T090000",
+    "20240614T090000",
+    "20240621T090000"
+   ],
+   "b": [
+    "20240608T090000",
+    "20240615T090000",
+    "20240622T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20240607T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "FR"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20240607T090000",
+   "expander": "naive",
+   "lost": [
+    "20260730T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=6,7;BYDAY=FR,SA,TH;BYSETPOS=-2",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260807T090000",
+    "20260814T090000",
+    "20260821T090000"
+   ],
+   "b": [
+    "20260808T090000",
+    "20260815T090000",
+    "20260822T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8,9;BYDAY=FR,SA,WE;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260807T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8,9;BYDAY=FR,SA,WE;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20260807T090000",
+    "20260814T090000",
+    "20260821T090000"
+   ],
+   "b": [
+    "20260808T090000",
+    "20260815T090000",
+    "20260822T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8,9;BYDAY=FR,SA,WE;BYSETPOS=-2",
+   "bounded": false,
+   "dtstart": "20260807T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8,9;BYDAY=FR,SA,WE;BYSETPOS=-2",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TH"
+  },
+  {
+   "a": [
+    "20260803T090000",
+    "20260810T090000",
+    "20260817T090000",
+    "20260824T090000"
+   ],
+   "b": [
+    "20260803T090000",
+    "20260806T090000",
+    "20260813T090000",
+    "20260820T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260803T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260803T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20280803T090000",
+    "20290802T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260803T090000",
+    "20260810T090000",
+    "20260817T090000",
+    "20260824T090000"
+   ],
+   "b": [
+    "20260803T090000",
+    "20260806T090000",
+    "20260813T090000",
+    "20260820T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20260803T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "TU"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260803T090000",
+   "expander": "naive",
+   "lost": [
+    "20280803T090000",
+    "20290802T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260802T090000",
+    "20260809T090000",
+    "20260816T090000"
+   ],
+   "b": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260802T090000",
+   "expander": "dateutil",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260802T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20270831T090000",
+    "20280829T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20260802T090000",
+    "20260809T090000",
+    "20260816T090000"
+   ],
+   "b": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "bounded": false,
+   "dtstart": "20260802T090000",
+   "expander": "naive",
+   "first_diff_index": 0,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20260802T090000",
+   "expander": "naive",
+   "lost": [
+    "20270831T090000",
+    "20280829T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20270904T090000",
+    "20270907T090000",
+    "20270914T090000",
+    "20270921T090000"
+   ],
+   "b": [
+    "20270904T090000",
+    "20270911T090000",
+    "20270918T090000",
+    "20270925T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20270904T090000",
+   "expander": "dateutil",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270904T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20271102T090000",
+    "20300901T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "a": [
+    "20270904T090000",
+    "20270907T090000",
+    "20270914T090000",
+    "20270921T090000"
+   ],
+   "b": [
+    "20270904T090000",
+    "20270911T090000",
+    "20270918T090000",
+    "20270925T090000"
+   ],
+   "base": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;BYSETPOS=1",
+   "bounded": false,
+   "dtstart": "20270904T090000",
+   "expander": "naive",
+   "first_diff_index": 1,
+   "property": "P5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "status": "fail",
+   "wkst_a": "MO",
+   "wkst_b": "WE"
+  },
+  {
+   "base": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270904T090000",
+   "expander": "naive",
+   "lost": [
+    "20271102T090000",
+    "20300901T090000"
+   ],
+   "n_lost": 2,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "status": "fail"
+  },
+  {
+   "base": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270307T090000",
+   "expander": "dateutil",
+   "lost": [
+    "20290331T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+   "status": "fail"
+  },
+  {
+   "base": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+   "bounded": false,
+   "dropped": "BYMONTH",
+   "dtstart": "20270307T090000",
+   "expander": "naive",
+   "lost": [
+    "20290331T090000"
+   ],
+   "n_lost": 1,
+   "property": "P6",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+   "status": "fail"
+  }
+ ],
+ "generated_by": "src/run_properties.py",
+ "n_rules": 1722,
+ "properties": [
+  {
+   "hedged": false,
+   "id": "P1",
+   "name": "p1_ordered",
+   "quote": "The \"DTSTART\" property value always counts as the first occurrence.",
+   "rfc_lines": "5545:2273-2274"
+  },
+  {
+   "hedged": false,
+   "id": "P2",
+   "name": "p2_count_prefix",
+   "quote": "The COUNT rule part defines the number of occurrences at which to range-bound the recurrence.",
+   "rfc_lines": "5545:2272-2274"
+  },
+  {
+   "hedged": false,
+   "id": "P3",
+   "name": "p3_until_truncates",
+   "quote": "The UNTIL rule part defines a DATE or DATE-TIME value that bounds the recurrence rule in an inclusive manner.",
+   "rfc_lines": "5545:2255-2259"
+  },
+  {
+   "hedged": false,
+   "id": "P4",
+   "name": "p4_setpos_subset",
+   "quote": "The BYSETPOS rule part specifies a COMMA-separated list of values that corresponds to the nth occurrence within the set of recurrence instances specified by the rule.",
+   "rfc_lines": "5545:2364-2366"
+  },
+  {
+   "hedged": true,
+   "id": "P5",
+   "name": "p5_wkst_inert",
+   "quote": "[WKST] is significant when a WEEKLY \"RRULE\" has an interval greater than 1, and a BYDAY rule part is specified.  This is also significant when in a YEARLY \"RRULE\" when a BYWEEKNO rule part is specified.",
+   "rfc_lines": "5545:2349-2362"
+  },
+  {
+   "hedged": true,
+   "id": "P6",
+   "name": "p6_limit_superset",
+   "quote": "BYxxx rule parts for a period of time that is the same or greater than the frequency generally reduce or limit the number of occurrences of the recurrence generated.",
+   "rfc_lines": "5545:2395-2398"
+  },
+  {
+   "hedged": true,
+   "id": "P7",
+   "name": "p7_interval_subset",
+   "quote": "The INTERVAL rule part contains a positive integer representing at which intervals the recurrence rule repeats.",
+   "rfc_lines": "5545:2247-2253"
+  }
+ ],
+ "tally": {
+  "dateutil": {
+   "P1": {
+    "pass": 1722
+   },
+   "P2": {
+    "pass": 1722
+   },
+   "P3": {
+    "n/a": 253,
+    "pass": 1469
+   },
+   "P4": {
+    "n/a": 1431,
+    "pass": 291
+   },
+   "P5": {
+    "fail": 23,
+    "n/a": 131,
+    "pass": 1568
+   },
+   "P6": {
+    "fail": 13,
+    "n/a": 708,
+    "pass": 1001
+   },
+   "P7": {
+    "n/a": 291,
+    "pass": 1431
+   }
+  },
+  "naive": {
+   "P1": {
+    "pass": 1722
+   },
+   "P2": {
+    "pass": 1722
+   },
+   "P3": {
+    "n/a": 253,
+    "pass": 1469
+   },
+   "P4": {
+    "n/a": 1431,
+    "pass": 291
+   },
+   "P5": {
+    "fail": 23,
+    "n/a": 131,
+    "pass": 1568
+   },
+   "P6": {
+    "fail": 13,
+    "n/a": 708,
+    "pass": 1001
+   },
+   "P7": {
+    "n/a": 291,
+    "pass": 1431
+   }
+  }
+ }
+}

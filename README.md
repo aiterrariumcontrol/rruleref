@@ -269,6 +269,25 @@ conformance case, and even then see the caveat on (2).
   been reported *there* since 2014
   ([jkbrzt/rrule#71](https://github.com/jkbrzt/rrule/issues/71), still open,
   zero comments) but seemingly never against `dateutil`. Six cases adjudicated.
+- [014 — seven properties instead of expected
+  values](findings/014-metamorphic-properties.md). Every case in this corpus
+  is an expected value you have to trust me for, describing one eight-occurrence
+  window. A *property* is a relation between the outputs of two rules
+  (`COUNT=n` is the first n of the unbounded rule; dropping a `Limit` part
+  cannot lose occurrences; `WKST` is inert outside the two situations
+  §3.3.10 names), so it needs no expected value from anyone and costs nothing
+  to run over years. Seven of them, each carrying the RFC sentence it derives
+  from and a test that re-reads the pinned bytes to confirm the quote is real.
+  Run over all 1,722 synchronized rules they caught **a defect in my own
+  expander** — `naive` folded `UNTIL`, and separately the caller's horizon,
+  into the candidate stream, truncating the last period *before* `BYSETPOS`
+  selected from it, which §3.3.10 forbids in as many words ("BYSETPOS; then
+  COUNT and UNTIL are evaluated"). That is finding 004's first-period
+  truncation, at the other end, in my code. They also produced two documented
+  counterexamples to readings the RFC invites: `WKST` **is** significant for
+  `FREQ=WEEKLY;INTERVAL=1` when `BYSETPOS` is present, a third situation the
+  RFC's list does not name, and a `Limit` part can *add* occurrences when
+  `BYSETPOS` follows it. Both hold identically in both expanders.
 
 ## Known-answer tests
 
@@ -376,6 +395,10 @@ src/pairs.py         realizable *pairs* of grammar branches, and a rule for each
 src/datevalue.py     RFC 5545's rules for a DATE-valued DTSTART
 src/datevalue_cases.py  systematic DATE cases + what implementations do
 src/build_corpus.py  runs the differential and writes the corpus
+src/properties.py    seven metamorphic properties, each quoting its RFC sentence
+src/expanders.py     one bounded interface both expanders are asked through
+src/run_properties.py  every property over every synchronized corpus rule
+src/longrun.py       three-year differential, far past the corpus window
 src/env.py           where the RFC text, dateutil and rrule.js come from
 tools/bootstrap.sh   provisions all three into vendor/ and js/
 tools/run_tests.py   runs every check; reports skips as skips
@@ -436,6 +459,10 @@ python3 tests/test_grammar.py         # coverage of section 3.3.10's ABNF (findi
 python3 tests/test_date_value_type.py # DATE-valued DTSTART (finding 011)
 python3 tests/test_pairs.py           # pairwise branch coverage (finding 012)
 python3 tests/test_byday_mixed.py     # signed + unsigned BYDAY list (finding 013)
+python3 tests/test_properties.py      # the seven properties, and that their quotes are real
+python3 tests/test_setpos_bounds.py   # a bound must not truncate BYSETPOS's period
+python3 src/run_properties.py         # every property over every synchronized rule (~2 min)
+python3 src/longrun.py                # three-year differential, past the corpus window
 python3 src/coverage.py               # (module) the table, parsed out of the RFC
 python3 src/enumerate_cells.py        # print the 57 systematic cases
 python3 src/enumerate_branches.py     # print the 79 synthesized branch cases
@@ -480,6 +507,14 @@ python3 src/vtimezone.py              # print the five extracted components
   an IANA zone — is covered by `tests/test_vtimezone.py` (finding 007), but
   only over the five components the RFC itself prints. No `VTIMEZONE` appears
   in the generated corpus.
-- The generator does not yet emit `FREQ=HOURLY/MINUTELY/SECONDLY`, `UNTIL`, or
-  `COUNT` combinations, so the corpus says nothing about them.
-- Coverage is random, not systematic. It is not yet a claim of completeness.
+- **`UNTIL` and `COUNT` are present but shallow.** 51 and 50 cases
+  respectively out of 3,813, and where they meet `BYSETPOS` (4 cases) the
+  candidate set has one member and the bound sits exactly on an occurrence —
+  which is precisely why a `BYSETPOS` truncation defect survived in
+  `src/naive.py` until a property found it
+  ([finding 014](findings/014-metamorphic-properties.md)).
+- **Every expected value describes an eight-occurrence window.** Agreement
+  further out is now checked separately rather than assumed: `src/longrun.py`
+  runs both expanders over all 1,722 synchronized rules for three years and
+  reports 0 divergences. That is agreement, not correctness, and it is two
+  expanders, one of them mine.
