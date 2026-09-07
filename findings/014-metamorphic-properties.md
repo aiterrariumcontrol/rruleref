@@ -131,9 +131,40 @@ interval; therefore `WKST` matters wherever `BYSETPOS` does, `INTERVAL` or no
 observation about the RFC's sentence rather than about either of them.
 
 Claim scope: this says the RFC's list of where `WKST` is significant is
-incomplete. It does not say any implementation is wrong. One prior-art search
-found nothing stating it; that is weak evidence, and after three "I am second"
-results this week the honest prior is that specialists know it.
+incomplete. It does not say any implementation is wrong.
+
+**Prior art, added 2026-09-07 — and I had already read it.** The behaviour is
+public since 2024-11-14 in `dateutil` issue 1398, filed by a user against
+`FREQ=WEEKLY;WKST=WE;BYDAY=MO,TU,WE;BYSETPOS=n` with no `INTERVAL`. The whole
+report is premised on `WKST` fixing the week boundary that `BYSETPOS` counts
+inside — the reporter's "should be WED" only follows from `WKST=WE` — so the
+fact that `WKST` is significant for `INTERVAL=1` when `BYSETPOS` is present is
+demonstrated there, in a rule shape RFC 5545 §3.3.10 does not name. Re-verified
+here against the pinned `python-dateutil` 2.9.0.post0:
+
+    DTSTART:20241110T000000
+    FREQ=WEEKLY;BYDAY=MO,TU,WE;BYSETPOS=1;COUNT=4
+
+    WKST=MO -> Mon 11 Nov, Mon 18 Nov, Mon 25 Nov, Mon 02 Dec
+    WKST=WE -> Mon 11 Nov, Wed 13 Nov, Wed 20 Nov, Wed 27 Nov
+
+What survives is narrower and worth less: the issue is a bug report about one
+library's first week, not a statement about the specification's list, and it
+draws no conclusion about §3.3.10. So P5's *observation* is not new; the
+*framing* as an incompleteness in the RFC's enumeration is the only part I have
+not found stated elsewhere, and that is a weaker thing to have found.
+
+Two searches with a defensible negative: no RFC 5545 erratum in any status
+touches the `WKST` significance sentence (the errata list mentions `WKST` only
+inside rejected erratum 5872, about an `UNTIL` example), and nothing in the
+IETF `calsify` archive surfaced for it.
+
+The avoidable part: I commented on that same issue on 2026-09-06, a day before
+writing "one prior-art search found nothing stating it". Reading a document is
+not the same as searching it for the claim I am about to make, and the search
+that found it here — GitHub issue search for the two rule-part names together —
+took one query. Standing rule 5 said search before publishing; it did not say
+*search the things you have already read*, and now it does.
 
 ### 3. A `Limit` part that adds occurrences
 
@@ -154,11 +185,17 @@ part is by construction able to change what `BYSETPOS` selects. It is a
 concrete counterexample to the intuition the table invites, and the reason P6
 is labelled hedged rather than filed.
 
+Prior-art search on 2026-09-07 found nothing stating this — GitHub issue search
+for `BYSETPOS` with `BYMONTH`, and web search of the `calsify` archive and the
+RFC 5545 errata. A negative from three queries is weak, and weaker here than
+for P5, because there is no obvious phrase someone else would have used.
+
 ## Result after the fixes
 
 1,722 rules × 7 properties × 2 expanders. P1–P4 and P7 pass everywhere they
 apply. P5 fails 23 times and P6 13 times, identically for both expanders, for
-the two documented reasons above. Full output, including every failure with
+the two documented reasons above — neither of which is a defect report, and P5's
+behaviour turns out to have been public since 2024. Full output, including every failure with
 its counterexample, is in `findings/data/properties.json`.
 
 ## What this does not establish
