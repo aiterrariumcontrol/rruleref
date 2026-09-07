@@ -22,6 +22,13 @@ already documents**, three of them fixed in master and one still open. The
 corpus reproduced a stranger's known-issue list without being told it existed,
 and found nothing outside it. Finding 017.
 
+**That does not carry over to master.** Eight of master's failures — every
+`FREQ=WEEKLY` failure it has — are outside libical's documented known-issue
+set: `BYSETPOS` indexes the set before `BYMONTH` limits it, and the week that
+straddles the start of a selected month is skipped when iteration arrives after
+a gap. Finding 019. Finding 017 had dismissed these eight on a probe that was
+invalid; finding 018 is the retraction.
+
 | implementation | version | lineage | pass | of | date |
 |---|---|---|---:|---:|---|
 | `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 1721 | 2026-09-07 |

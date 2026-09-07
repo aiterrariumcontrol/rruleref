@@ -108,12 +108,23 @@ FREQ=WEEKLY;BYDAY=MO,SU,TU;BYSETPOS=1   DTSTART:20260705T090000  (a Sunday)
                       which is then dropped for being before DTSTART)
 ```
 
-That is [finding 004](004-bysetpos-first-period-truncation.md)'s disputed
-reading, so it is not a defect claim. But the corpus does not currently mark
-these eight as disputed — finding 004's disputed set does not include the
-`BYMONTH`-bearing variants of the same question. Whether that set is
-under-inclusive is a real question about *my* corpus and is the next thing to
-look at. It is not a question about libical.
+~~That is [finding 004](004-bysetpos-first-period-truncation.md)'s disputed
+reading, so it is not a defect claim.~~ **Retracted the same day. The probe was
+invalid: dropping `BYMONTH` to "narrow the shape" is what introduced the
+reading-dependence, because `BYMONTH` limits away the pre-DTSTART candidates in
+the straddling week before `BYSETPOS` ever sees them. With `BYMONTH` present
+both readings of the first period give the corpus's answer, so these eight are
+not finding 004 and the dismissal had no basis.**
+[Finding 018](018-reading-dependence-of-the-corpus.md) measures this corpus-wide
+and shows no `FREQ=WEEKLY` case is reading-dependent at all;
+[finding 019](019-libical-weekly-bymonth-bysetpos.md) is what libical is
+actually doing. **The section below headed "All 211 of 3.0.20's failures fall
+into classes libical's own tracker already documents" is about 3.0.20 and is
+unaffected, but its conclusion must not be carried over to master: the eight
+master failures are outside libical's documented known-issue set.**
+
+The question this section raised about my own corpus turned out to be the more
+valuable half, and the answer is yes -- see finding 018.
 
 ## Reproducing
 

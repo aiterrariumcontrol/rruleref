@@ -270,8 +270,21 @@ def _pinned(r, freq):
     return out
 
 
-def expand(rrule, dtstart, horizon=None, limit=1000):
-    """Return occurrences at or after dtstart, in order."""
+def expand(rrule, dtstart, horizon=None, limit=1000,
+           truncate_first_period=False):
+    """Return occurrences at or after dtstart, in order.
+
+    ``truncate_first_period`` selects the *other* reading of the question in
+    finding 004: when true, the period containing DTSTART is cut at DTSTART
+    before BYSETPOS selects from it, so BYSETPOS=1 can name DTSTART itself.
+    The default (false) is this expander's normal reading -- BYSETPOS selects
+    from the whole period and instances before DTSTART are then dropped.
+
+    Nothing in the corpus is built with this flag set. It exists so that
+    ``src/reading_dependence.py`` can ask which corpus cases would change
+    answer under the other reading, which is a different question from which
+    cases two implementations happen to disagree about. See finding 018.
+    """
     r = parse(rrule)
     freq = r["FREQ"]
     if horizon is None:
@@ -322,7 +335,7 @@ def expand(rrule, dtstart, horizon=None, limit=1000):
     # its first occurrence.
     cur_key, cur = None, []
     for dt in _candidates(r, dtstart, scan, whole_period=setpos):
-        if dt > scan or (not setpos and dt < dtstart):
+        if dt > scan or ((not setpos or truncate_first_period) and dt < dtstart):
             continue
         if setpos:
             key = period_index(dt, freq, r["WKST"])

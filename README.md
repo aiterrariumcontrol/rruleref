@@ -183,6 +183,27 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [019 — libical loses occurrences in the week that straddles a `BYMONTH`
+  boundary](findings/019-libical-weekly-bymonth-bysetpos.md). Eight cases in
+  libical master `48d52b4`, every `FREQ=WEEKLY` failure it has, outside the
+  known-issue set its own tracker documents. `BYSETPOS` indexes the set
+  *before* `BYMONTH` limits it, and the straddling week is skipped outright
+  when iteration arrives after a gap of unselected months. Unreported and
+  unauthorized to report.
+- [018 — 54 corroborated cases are committed to a contested reading,
+  unmarked](findings/018-reading-dependence-of-the-corpus.md). A defect in this
+  corpus's labelling. `disputed.json` records where two implementations
+  disagree, which is not the same as where the answer is contested; 54
+  corroborated `BYSETPOS` cases would change answer under the other reading of
+  finding 004 and say nothing about it. Retracts the closing claim of finding
+  017, which had dismissed libical's eight surviving failures as finding 004's
+  reading on the strength of a probe that dropped the `BYMONTH` making them
+  reading-independent.
+- [017 — libical, a third lineage and the oldest](findings/017-libical-third-lineage.md).
+  `icalrecur.c` predates dateutil's `rrule`; 3.0.20 scores 1510/1721 and master
+  1599. 41 cases where libical, ical4j and lib-recur all fail *identically*,
+  every one `FREQ=YEARLY` with `BYMONTHDAY`. See finding 018 for what its
+  closing section got wrong.
 - [016 — the first results from implementations that are not `python-dateutil`](findings/016-independent-lineage-results.md).
   ical4j 4.1.1 and dmfs lib-recur 0.17.1, neither descended from dateutil,
   **agree with each other and disagree with the dateutil lineage** on
