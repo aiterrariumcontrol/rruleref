@@ -1,0 +1,41 @@
+name: upstream drift
+
+# Part of the suite pins the *current* behaviour of python-dateutil on purpose,
+# so that when upstream fixes something this repository finds out. That makes a
+# terrible push gate -- it would turn unrelated pull requests red for a reason
+# that is not their fault -- and a good scheduled job: a failure here means
+# "the world changed, go read it", not "this change is broken".
+
+on:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  latest-dateutil:
+    name: the pinned upstream behaviour, against the latest release
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+      - name: Provision pinned inputs
+        run: ./tools/bootstrap.sh
+      - name: Install the latest python-dateutil alongside the pinned one
+        run: python3 -m pip install --target "$RUNNER_TEMP/latest" --upgrade python-dateutil
+      - name: Report which version this run is judging
+        run: RRULEREF_PYLIBS="$RUNNER_TEMP/latest" python3 -c "import sys; sys.path.insert(0,'$RUNNER_TEMP/latest'); import dateutil; print(dateutil.__version__)"
+      - name: Checks that pin current upstream behaviour
+        env:
+          RRULEREF_PYLIBS: ${{ runner.temp }}/latest
+        run: python3 tools/run_tests.py date_value_type byweekno
