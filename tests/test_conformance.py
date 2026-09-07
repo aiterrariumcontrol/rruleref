@@ -13,6 +13,10 @@ cannot drift silently. It pins:
 3. Case ids are stable and collision-free.
 4. The dateutil adapter scores every case. It must: dateutil corroborated them
    all. A failure here is a harness defect, not a dateutil defect.
+5. invariants.py's transcription of the sec. 3.3.10 table and its `survives`
+   rule, and the fact that dateutil violates nothing it checks. The first
+   version of that module checked every part unconditionally and would have
+   published 31 false claims against ical4j (finding 016).
 """
 import sys, os, json, subprocess
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -44,6 +48,41 @@ def unbounded(rule, ds, cap):
         if len(out) >= cap:
             break
     return out
+
+
+def _check_invariants():
+    """invariants.py against RFC 5545 lines 2418 and 2431-2459, and dateutil."""
+    import invariants as I
+    tab = [("BYMONTH", "WEEKLY", {}, "Limit"),
+           ("BYMONTH", "YEARLY", {}, "Expand"),
+           ("BYWEEKNO", "DAILY", {}, None),
+           ("BYYEARDAY", "WEEKLY", {}, None),
+           ("BYMONTHDAY", "WEEKLY", {}, None),
+           ("BYMONTHDAY", "MONTHLY", {}, "Expand"),
+           ("BYDAY", "WEEKLY", {}, "Expand"),
+           ("BYDAY", "MONTHLY", {"BYMONTHDAY"}, "Limit"),      # Note 1
+           ("BYDAY", "MONTHLY", {}, "Expand"),
+           ("BYDAY", "YEARLY", {"BYYEARDAY"}, "Limit"),        # Note 2
+           ("BYDAY", "YEARLY", {}, "Expand"),
+           ("BYHOUR", "DAILY", {}, "Expand"),
+           ("BYHOUR", "HOURLY", {}, "Limit")]
+    bad = [(p, f, got) for p, f, pr, want in tab
+           if (got := I.classify(p, f, pr)) != want]
+    check("invariants.py transcribes the 3.3.10 table", not bad, str(bad))
+    # A later Expand on the same component destroys the guarantee; a later
+    # Limit, or an Expand on another component, does not.
+    surv = [(not I.survives("BYMONTH", "WEEKLY", {"BYDAY", "BYMONTH"})),
+            I.survives("BYMONTH", "WEEKLY", {"BYMONTH"}),
+            I.survives("BYMONTH", "DAILY", {"BYMONTH", "BYHOUR"}),
+            I.survives("BYDAY", "YEARLY", {"BYWEEKNO", "BYDAY"}),
+            not I.survives("BYYEARDAY", "YEARLY", {"BYYEARDAY", "BYMONTHDAY"})]
+    check("invariants.py's survives() follows the application order", all(surv))
+    v = list(I.violations("FREQ=WEEKLY;BYDAY=MO;BYMONTH=7", ["20270628T090000"]))
+    check("a known order-dependent mismatch is not reported as guaranteed",
+          v and not v[0][3], str(v))
+    v = list(I.violations("FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE", ["20290102T090000"]))
+    check("a BYDAY weekday mismatch is reported as guaranteed",
+          v and v[0][3] and v[0][1] == "BYDAY", str(v))
 
 
 def main():
@@ -83,8 +122,13 @@ def main():
     dropped = [c for c in corpus
                if c["rule_valid"] and c["dtstart_synchronized"]
                and build_cases.case_id(c["rrule"], c["dtstart"]) not in set(ids0)]
-    check("the only cases dropped are vacuous ones",
-          all(c["expect_bound"] == "horizon" and not c["expect"] for c in dropped),
+    check("every selected case's UNTIL matches DTSTART's value type",
+          not [r for r in rows
+               if build_cases.until_type_mismatch(r["rrule"], r["dtstart"])])
+    check("the only cases dropped are vacuous or UNTIL-type mismatches",
+          all((c["expect_bound"] == "horizon" and not c["expect"])
+              or build_cases.until_type_mismatch(c["rrule"], c["dtstart"])
+              for c in dropped),
           "%d dropped" % len(dropped))
     bad = [r for r in rows if r["expect_bound"] == "horizon" and not r["expect"]]
     check("no vacuous case (empty expect at the horizon)", not bad, str(len(bad)))
@@ -114,6 +158,7 @@ def main():
     adapter = os.path.join(ROOT, "conformance", "adapters", "dateutil_adapter.py")
     p = subprocess.run([sys.executable, score, "--", sys.executable, adapter],
                        capture_output=True, text=True)
+    _check_invariants()
     check("dateutil adapter passes every case", p.returncode == 0,
           p.stdout.strip().replace("\n", " | ")[:300])
 

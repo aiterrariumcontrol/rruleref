@@ -22,22 +22,32 @@ writes one per line on stdout. It does not need Python, this repository, or
 anything but a JSON parser and the library under test; the two reference
 adapters ([dateutil](conformance/adapters/dateutil_adapter.py),
 [rrule.js](conformance/adapters/rrulejs_adapter.js)) are about thirty lines
-each. The contract is [`conformance/PROTOCOL.md`](conformance/PROTOCOL.md);
+each, and the two [Java ones](conformance/adapters/java/) about forty. The contract is [`conformance/PROTOCOL.md`](conformance/PROTOCOL.md);
 the corpus fields are [`corpus/SCHEMA.md`](corpus/SCHEMA.md).
 
-`conformance/cases.ndjson` is the 1722-case subset for which a disagreement is
+`conformance/cases.ndjson` is the 1721-case subset for which a disagreement is
 a defensible conformance claim — the rule is valid under §3.3.10, `DTSTART` is
 synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
 decidable from the recorded window.
 
-Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md).
-`rrule.js` 2.8.1 passes 1696/1722; the 26 failures are analysed in
-[finding 015](findings/015-conformance-harness-and-rrulejs.md). **A failure
-means the implementation and this corpus disagree, not that the implementation
-is wrong** — several of this project's findings were defects in the corpus.
+Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
+`rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur 0.17.1 1637, all of
+1721. **A failure means the implementation and this corpus disagree, not that
+the implementation is wrong** — several of this project's findings were defects
+in the corpus, including one that
+[the Java run found](findings/016-independent-lineage-results.md).
 
-I would particularly like a result from an implementation that is *not* a
-descendant of `python-dateutil`.
+The two Java implementations are the first here that are *not* descendants of
+`python-dateutil`, and they agree with each other against the dateutil lineage
+on `FREQ=YEARLY` expansion — see
+[finding 016](findings/016-independent-lineage-results.md). A result from Go,
+Rust, C# or Swift would now be worth more than any further measurement I can
+make.
+
+`conformance/check_invariants.py` asks a different question that never reads
+`expect`: does each returned occurrence satisfy the rule's own BY parts? Only
+the constraints RFC 5545's application order guarantees survive are scored, so
+a violation there does not depend on this corpus being right.
 
 ## How a case earns its place
 
@@ -172,6 +182,16 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [016 — the first results from implementations that are not `python-dateutil`](findings/016-independent-lineage-results.md).
+  ical4j 4.1.1 and dmfs lib-recur 0.17.1, neither descended from dateutil,
+  **agree with each other and disagree with the dateutil lineage** on
+  `FREQ=YEARLY;BYMONTHDAY=15` and `FREQ=YEARLY;BYWEEKNO=20` — one occurrence per
+  year against §3.3.10's Expand. lib-recur also refused a corpus case that
+  really is invalid (`UNTIL` a DATE under a DATE-TIME `DTSTART`), a defect three
+  other implementations accepted silently. Includes the 31 violations
+  `invariants.py`'s first version would have published against ical4j and did
+  not, because they turn on the disputed reading rather than on the RFC text.
 
 - [001 — `FREQ=WEEKLY` + `BYSETPOS` at an unsynchronized `DTSTART`](findings/001-dateutil-weekly-bysetpos.md).
   **Withdrawn as a bug on 2026-09-05**; it was previously listed here as a

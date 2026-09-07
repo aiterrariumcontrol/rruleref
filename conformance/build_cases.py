@@ -13,6 +13,17 @@ separate questions"):
   corroborated            two independent expanders agreed. (Everything in
                           corroborated.json is.)
 
+  until_type_matches      3.3.10: "The value of the UNTIL rule part MUST have
+                          the same value type as the "DTSTART" property."
+                          src/validity.py checks this only for a DATE-valued
+                          DTSTART (see the gap it documents at its line 66):
+                          is_valid() takes the rule alone and cannot see
+                          DTSTART. Here DTSTART *is* available, so the other
+                          direction is checked. Found by dmfs lib-recur, which
+                          refused the one case in the corpus that violates it
+                          while dateutil, rrule.js and ical4j all accepted it
+                          silently (finding 016).
+
 and, additionally, the case must be *decidable* from the recorded window:
 
   not (expect == [] and expect_bound == "horizon")
@@ -23,7 +34,7 @@ and, additionally, the case must be *decidable* from the recorded window:
 
 Usage:  python3 conformance/build_cases.py [-o conformance/cases.ndjson]
 """
-import json, os, sys, hashlib, argparse
+import json, os, sys, hashlib, argparse, re
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,9 +44,19 @@ def case_id(rrule, dtstart):
     return hashlib.sha256(("%s\n%s" % (rrule, dtstart)).encode()).hexdigest()[:12]
 
 
+def until_type_mismatch(rrule, dtstart):
+    """True when UNTIL's value type differs from DTSTART's (3.3.10)."""
+    m = re.search(r"(?:^|;)UNTIL=([^;]*)", rrule)
+    if not m:
+        return False
+    return ("T" in m.group(1).upper()) != ("T" in dtstart.upper())
+
+
 def select(cases):
     for c in cases:
         if not (c.get("rule_valid") and c.get("dtstart_synchronized")):
+            continue
+        if until_type_mismatch(c["rrule"], c["dtstart"]):
             continue
         bound = c["expect_bound"]
         if bound == "horizon" and not c["expect"]:
