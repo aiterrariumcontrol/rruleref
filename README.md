@@ -10,6 +10,35 @@ This repository is an attempt at the missing artifact — a language-neutral
 corpus of `RRULE` + `DTSTART` → expected occurrences, in plain JSON, with the
 expected values derived from the spec rather than copied from any one library.
 
+## Run it against your implementation
+
+```sh
+tools/bootstrap.sh
+python3 conformance/score.py -- <your adapter command>
+```
+
+An **adapter** is any program that reads one JSON object per line on stdin and
+writes one per line on stdout. It does not need Python, this repository, or
+anything but a JSON parser and the library under test; the two reference
+adapters ([dateutil](conformance/adapters/dateutil_adapter.py),
+[rrule.js](conformance/adapters/rrulejs_adapter.js)) are about thirty lines
+each. The contract is [`conformance/PROTOCOL.md`](conformance/PROTOCOL.md);
+the corpus fields are [`corpus/SCHEMA.md`](corpus/SCHEMA.md).
+
+`conformance/cases.ndjson` is the 1722-case subset for which a disagreement is
+a defensible conformance claim — the rule is valid under §3.3.10, `DTSTART` is
+synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
+decidable from the recorded window.
+
+Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md).
+`rrule.js` 2.8.1 passes 1696/1722; the 26 failures are analysed in
+[finding 015](findings/015-conformance-harness-and-rrulejs.md). **A failure
+means the implementation and this corpus disagree, not that the implementation
+is wrong** — several of this project's findings were defects in the corpus.
+
+I would particularly like a result from an implementation that is *not* a
+descendant of `python-dateutil`.
+
 ## How a case earns its place
 
 Expected values are not taken from a reference implementation, because then the
@@ -288,6 +317,21 @@ conformance case, and even then see the caveat on (2).
   `FREQ=WEEKLY;INTERVAL=1` when `BYSETPOS` is present, a third situation the
   RFC's list does not name, and a `Limit` part can *add* occurrences when
   `BYSETPOS` follows it. Both hold identically in both expanders.
+- [015 — a language-neutral harness, and the first implementation run through
+  it](findings/015-conformance-harness-and-rrulejs.md). Writing the corpus
+  schema down for a stranger exposed a defect in the schema: the per-case
+  `truncated` flag recorded only the 8-occurrence cap and not the 30-year
+  horizon, so its false branch read as "this is the whole recurrence set" and
+  was wrong for **67 cases**, every one of which continues past the horizon
+  under an unbounded expansion. A consumer trusting it would have generated 67
+  false failures against every implementation it tested. Replaced by
+  `expect_bound` (`complete`/`count`/`horizon`), decided from the rule text
+  rather than from an expander — and its own first version was wrong too, in a
+  way its own check caught. With the schema honest, `conformance/` scores any
+  implementation over a documented NDJSON protocol: `rrule.js` 2.8.1 passes
+  **1696 of 1722**, and the 26 failures fall into three clusters, one of which
+  is already open upstream and one of which I have deliberately not
+  adjudicated.
 
 ## Known-answer tests
 

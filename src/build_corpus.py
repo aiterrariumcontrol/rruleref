@@ -9,12 +9,12 @@ regression suite, which by construction cannot disagree with itself.
 Cases where they disagree are not silently dropped. They go to
 corpus/disputed.json for a human to adjudicate against the spec text.
 """
-import sys, os, json, random, itertools
+import sys, os, json, random, itertools, re
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import env
 env.add_dateutil_to_path()
-from datetime import datetime
+from datetime import datetime, timedelta
 from differ import compare, gen, DTSTARTS, du_expand, HORIZON_DAYS
 from naive import expand
 import validity
@@ -66,6 +66,40 @@ def dtstart_variants(rule, base):
     return out
 
 
+def expect_bound(rule, dtstart, occ):
+    """Why `expect` stops where it does. Decided from the rule text and the two
+    caps this builder imposes -- never from an expander -- because a cap I chose
+    is not a property of the recurrence.
+
+    "complete"  the rule provably terminates inside the recorded window, so
+                `expect` is the *entire* recurrence set and a consumer may
+                assert there is nothing after it.
+    "count"     stopped at the N-occurrence cap; the set continues.
+    "horizon"   stopped at the HORIZON_DAYS cap with fewer than N occurrences.
+                The set may still continue *after* the horizon, and for 67
+                cases in the 2026-09-06 corpus it demonstrably did -- which is
+                why this is not merged with "complete".
+
+    Before 2026-09-07 this was a boolean `truncated` (= len(occ) == N), whose
+    false branch was read as "complete" and was wrong for those 67 cases.
+    """
+    m = re.search(r"(?:^|;)COUNT=(\d+)(?:;|$)", rule)
+    if m and int(m.group(1)) <= len(occ):
+        return "complete"
+    # The N-occurrence cap is checked *before* UNTIL: if it bit first, an
+    # in-horizon UNTIL says nothing about whether the set ends at occurrence N.
+    # Three FREQ=HOURLY/MINUTELY/SECONDLY cases proved that empirically.
+    if len(occ) >= N:
+        return "count"
+    m = re.search(r"(?:^|;)UNTIL=([0-9TZ]+)(?:;|$)", rule)
+    if m:
+        raw = m.group(1).rstrip("Z")
+        fmtstr = "%Y%m%dT%H%M%S" if "T" in raw else "%Y%m%d"
+        if datetime.strptime(raw, fmtstr) <= dtstart + timedelta(days=HORIZON_DAYS):
+            return "complete"
+    return "horizon"
+
+
 def record(rule, ds, cell, agreed, disputed, seen):
     """Adjudicate one (rule, DTSTART) and file it. Returns False if a duplicate."""
     if (rule, ds) in seen:
@@ -92,7 +126,7 @@ def record(rule, ds, cell, agreed, disputed, seen):
             "rrule": rule,
             "dtstart": fmt(ds),
             "expect": [fmt(x) for x in occ],
-            "truncated": len(occ) == N,
+            "expect_bound": expect_bound(rule, ds, occ),
             "dtstart_synchronized": synced,
             "rule_valid": rule_valid,
             "cells": cells,
