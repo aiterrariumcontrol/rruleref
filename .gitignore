@@ -5,3 +5,4 @@ js/node_modules/
 js/*.js
 js/cases.json
 js/datecases.json
+conformance/adapters/c/libical_adapter
