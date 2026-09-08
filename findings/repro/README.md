@@ -35,3 +35,28 @@ cases.
 
 Every `DTSTART` in the file is the first instance of its own recurrence set, so
 RFC 5545 §3.8.5.3 synchronization holds and the recurrence set is well defined.
+
+## `016-lib-recur-byweekno-53.java`
+
+Finding [016](../016-independent-lineage-results.md). Needs only dmfs lib-recur
+0.17.1 and its runtime dependencies.
+
+```sh
+mvn dependency:get -Dartifact=org.dmfs:lib-recur:0.17.1
+mvn dependency:copy-dependencies -DoutputDirectory=libs   # from a pom naming it
+javac -cp 'libs/*' -d out findings/repro/016-lib-recur-byweekno-53.java
+java  -cp 'out:libs/*' Repro
+```
+
+Exit status is 0 when every case matched and every `BYDAY` invariant held, and 1
+otherwise; the printed `FAIL` and `!!` lines say what differed. Captured output
+at 0.17.1: [`016-output-0.17.1.txt`](016-output-0.17.1.txt).
+
+Three cases: the `BYWEEKNO=53;BYDAY=WE` rule, plus two controls — the same week
+number without `BYDAY`, and `BYDAY` with a week number that exists in every ISO
+year. Both controls pass, which is what localises the defect to the
+combination. Expected values come from the ISO 8601 week date `(year, 53, 3)`,
+not from another RRULE implementation.
+
+Every `DTSTART` in the file is the first instance of its own recurrence set, so
+RFC 5545 3.8.5.3 synchronization holds and the recurrence set is well defined.

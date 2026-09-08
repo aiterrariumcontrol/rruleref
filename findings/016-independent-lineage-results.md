@@ -128,27 +128,58 @@ sample — is what caught this, one step before it was written down as a result.
 
 ## The one violation that does not depend on the corpus
 
+**Corrected 2026-09-08.** The example first written here used
+`DTSTART:20180101`, and 2018 has only 52 ISO weeks — so `DTSTART` was not an
+instance of its own recurrence set, the rule was unsynchronized, and under
+RFC 5545 3.8.5.3 the recurrence set is undefined. Whatever any implementation
+returned for it was evidence of nothing. The finding survives on a
+*synchronized* seed, and writing that seed sharpened it.
+
+`DTSTART:20201230T090000` is the Wednesday of ISO week 53 of 2020, so it is the
+first instance and the recurrence set is well defined. The years in 2020..2060
+that have a week 53 are 2020, 2026, 2032, 2037, 2043, 2048, 2054, 2060; the
+Wednesday of each is read straight off the ISO week date, not off another RRULE
+engine.
+
 ```
-RRULE:FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE   DTSTART:20180101
-lib-recur 0.17.1:
-  2026-12-30 (Wed)  2027-12-29 (Wed)  2029-01-02 (Tue)  2030-01-01 (Tue) ...
+RRULE:FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE    DTSTART:20201230T090000
+  ISO 8601:          2020-12-30  2026-12-30  2032-12-29  2037-12-30 ...
+  lib-recur 0.17.1:  2020-12-30  2021-12-29  2022-12-28  2024-01-02 ...
+                                                         ^ a Tuesday
+
+RRULE:FREQ=YEARLY;BYWEEKNO=53             DTSTART:20201230T090000   (control)
+  lib-recur 0.17.1:  2020-12-30  2026-12-30  2032-12-29  2037-12-30 ...  correct
+
+RRULE:FREQ=YEARLY;BYWEEKNO=52;BYDAY=WE    DTSTART:20201223T090000   (control)
+  lib-recur 0.17.1:  correct throughout
 ```
 
-2028 and 2029 have 52 ISO weeks, so `BYWEEKNO=53` selects nothing in them.
-lib-recur produces an occurrence anyway, and the day it produces is a **Tuesday**
-under `BYDAY=WE`. `BYDAY` is the last date part in the application order, so
-nothing can re-expand after it: whether `BYDAY` limited or expanded, every
-surviving occurrence must fall on a listed weekday. This one needs no view on
-the table at all.
+The controls are what the synchronized seed bought. `BYWEEKNO=53` **on its own**
+skips the years that have no week 53, exactly as it should; and `BYDAY=WE` with
+a week number that exists every year is also right. The defect appears only when
+the two are combined — with `BYDAY` present, a missing week 53 stops being
+skipped and becomes some nearby week instead.
 
-`dateutil` and `rrule.js` return nothing for those years.
+`2024-01-02` is a Tuesday under `BYDAY=WE`. `BYDAY` is the last date part in the
+3.3.10 application order, so nothing can re-expand after it: whether `BYDAY`
+limited or expanded, every surviving occurrence must fall on a listed weekday.
+That much needs no view on the table at all, and no view on ISO weeks either.
+
+`dateutil` and `rrule.js` return only the week-53 years.
 
 **Prior art** (standing rule 5, searched before writing): dmfs/lib-recur issue
 38, *"error in BYWEEKNO expansion"*, closed 2018-07-01, is the same family — a
 `BYWEEKNO` expansion inheriting the wrong day of week across a year boundary.
 Its own example is **fixed** in 0.17.1 (`FREQ=YEARLY;BYWEEKNO=1` from 20180101
 now returns Mondays throughout). The case above is a distinct input class: a
-week number that does not exist in the target year. Reported here, not upstream.
+week number that does not exist in the target year.
+
+A standalone reproducer that depends only on lib-recur, with the two controls
+and an explicit `BYDAY` check, is
+[`repro/016-lib-recur-byweekno-53.java`](repro/016-lib-recur-byweekno-53.java);
+captured output at 0.17.1 is
+[`repro/016-output-0.17.1.txt`](repro/016-output-0.17.1.txt). Not yet reported
+upstream — that needs its own Human request.
 
 ## Reproducing
 
