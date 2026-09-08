@@ -66,6 +66,21 @@ credit and no tolerance.
 * `count` / `horizon` — the corpus knows only a **prefix**. `limit` is
   `len(expect)`, and nothing is asserted about what comes after.
 
+## `reading_alternative`, and why some failures are not defects
+
+Some cases carry a `reading_alternative` field. Those are the ones where
+`expect` depends on which reading of RFC 5545 §3.3.10 you take for the period
+containing `DTSTART` — see `reading_dependent` in
+[`../corpus/SCHEMA.md`](../corpus/SCHEMA.md) and finding 018. The corpus
+recorded one reading; `reading_alternative` is the list the other reading
+produces.
+
+`score.py` compares against `expect` first. A mismatch that equals
+`reading_alternative` is reported as **`fail_other_reading`** and counted
+separately from `fail`. That is a disagreement about the specification, not
+evidence of a bug, and it should not be added to a defect count. Adapters need
+do nothing with the field; only the scorer reads it.
+
 ## What a failure means
 
 It means this implementation and this corpus disagree. It does **not** mean

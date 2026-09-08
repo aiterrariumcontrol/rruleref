@@ -7,7 +7,10 @@ The adapter is an ordinary process. It reads one JSON object per line on
 stdin and writes one JSON object per line on stdout. See PROTOCOL.md.
 
 Scoring is deliberately blunt: a case passes only if the adapter's occurrence
-list equals `expect` exactly. Read a failure as "this implementation and this
+list equals `expect` exactly. The one exception is bookkeeping, not leniency:
+a mismatch that equals the case's `reading_alternative` is reported as
+`fail_other_reading`, because the corpus knows that case has two defensible
+answers and recorded one of them (finding 018). Read a failure as "this implementation and this
 corpus disagree", not as "this implementation is wrong" -- the corpus can be
 wrong too, and has been (findings 001, 009, 014 are all defects of mine).
 """
@@ -61,6 +64,13 @@ def score(cases, replies):
             continue
         if got == c["expect"]:
             res["pass"] += 1
+        elif got == c.get("reading_alternative"):
+            # Not a defect claim. The case is reading-dependent (finding 018)
+            # and this implementation took the reading the corpus did not.
+            # Counted apart from `fail` so a bare failure count cannot be read
+            # as a defect count.
+            res["fail_other_reading"] += 1
+            failures.append((c, r, "other reading of 3.3.10 first period"))
         else:
             res["fail"] += 1
             failures.append((c, r, "mismatch"))
@@ -84,7 +94,7 @@ def main(argv=None):
     total = sum(res.values())
     print("adapter: %s" % " ".join(adapter))
     print("cases:   %d" % total)
-    for k in ("pass", "fail", "error", "missing", "malformed"):
+    for k in ("pass", "fail", "fail_other_reading", "error", "missing", "malformed"):
         if res[k]:
             print("  %-9s %5d  (%5.1f%%)" % (k, res[k], 100.0 * res[k] / total))
     by_bound = collections.Counter(c["expect_bound"] for c, _, _ in failures)

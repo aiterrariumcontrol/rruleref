@@ -34,10 +34,45 @@ Each case:
 | `expect_bound` | `"complete"`, `"count"` or `"horizon"` — see below |
 | `dtstart_synchronized` | `DTSTART` is itself the rule's first occurrence. When false, RFC 5545 §3.8.5.3 declares the recurrence set **undefined** and the case is an interop observation, not a conformance expectation. Computed by `naive`, so it is implementation-relative exactly where the two expanders disagree. |
 | `rule_valid` | no `MUST NOT` of §3.3.10 that `src/validity.py` checks is violated. A *detector*, not a guarantee: `validity.NOT_CHECKED` lists what it does not test. |
+| `reading_dependent` | `expect` would differ under the *other* reading of §3.3.10's first period. Always present; see below. |
+| `reading_alternative` | present **only** when `reading_dependent`: what `expect` would have been under that other reading. |
 | `corroborated_by` | the expanders that agreed. Always both, since disagreement files the case elsewhere. |
 | `cells` | which cells of §3.3.10's `BYxxx`/`FREQ` table the rule exercises (`src/coverage.py`) |
 | `branches` | which branches of §3.3.10's `RECUR` ABNF it takes (`src/grammar.py`) |
 | `systematic_for` | the cell or branch this case was generated to cover, or `null` for a random case |
+
+### `reading_dependent`
+
+`corroborated_by` says two expanders agreed. It does **not** say the answer is
+uncontested, because both expanders share a reading of §3.3.10: when `BYSETPOS`
+selects from the period containing `DTSTART`, does it index the whole period
+(instances before `DTSTART` are dropped afterwards) or the period cut at
+`DTSTART`? Finding 004 argues the text does not settle it. `disputed.json`
+cannot answer this either — it records *implementation disagreement*, and
+implementations agreeing on a contested reading land in `corroborated.json`.
+
+So the builder asks the question directly. Every `BYSETPOS` case is expanded
+under both readings; `reading_dependent` is true when the first `len(expect)`
+occurrences differ, and `reading_alternative` then records the other answer.
+
+A consumer that treats `expect` as ground truth without looking at this flag
+silently inherits my position on finding 004. `conformance/cases.ndjson`
+carries `reading_alternative` through for the same reason, and
+`conformance/score.py` counts an implementation matching it as
+`fail_other_reading` rather than `fail` — a disagreement about the
+specification, not a defect.
+
+One consequence is sharper than the flag itself. All 25 reading-dependent cases
+that are also `dtstart_synchronized` have `DTSTART` as their first occurrence
+*because of* the reading taken — expanding them under the other reading, 24 of
+the 25 no longer start at `DTSTART`, and §3.8.5.3 would then declare their
+recurrence set undefined. So those cases are scorable conformance evidence only
+under one reading. They are kept and marked rather than dropped: dropping them
+would shrink the corpus by a decision the reader could no longer see.
+
+`reading_dependent` is false for every case without `BYSETPOS`: the question
+does not arise there. It is present on every case so that its absence can never
+be mistaken for "not checked".
 
 ### `expect_bound`
 

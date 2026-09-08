@@ -72,6 +72,13 @@ def select(cases):
             "limit": limit,
             "expect": c["expect"],
             "expect_bound": bound,
+            # Finding 018: `expect` is one reading of 3.3.10's first period.
+            # When the two readings differ, an implementation matching
+            # `reading_alternative` is not wrong, it chose the other one, and
+            # score.py counts it separately. Absent means the readings agree
+            # (or the rule has no BYSETPOS and the question does not arise).
+            **({"reading_alternative": c["reading_alternative"]}
+               if c.get("reading_dependent") else {}),
         }
 
 

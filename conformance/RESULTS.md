@@ -29,14 +29,22 @@ straddles the start of a selected month is skipped when iteration arrives after
 a gap. Finding 019. Finding 017 had dismissed these eight on a probe that was
 invalid; finding 018 is the retraction.
 
-| implementation | version | lineage | pass | of | date |
-|---|---|---|---:|---:|---|
-| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 1721 | 2026-09-07 |
-| `rrule.js` | 2.8.1 | port of dateutil | 1695 | 1721 | 2026-09-07 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 1721 | 2026-09-07 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 1721 | 2026-09-07 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 1721 | 2026-09-07 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 1721 | 2026-09-07 |
+`score.py` now reports a failure that matches the case's `reading_alternative`
+as `fail_other_reading` rather than `fail` (finding 018, and
+[`PROTOCOL.md`](PROTOCOL.md)). It fires exactly once so far: **3 of dmfs
+lib-recur's 76 non-passing cases are not defects**, they are the other reading
+of §3.3.10's first period. `rrule.js`, `ical4j` and both `libical` builds have
+none — every failure they have is reading-independent, which is a stronger
+statement about those failures than I could make yesterday.
+
+| implementation | version | lineage | pass | of | other reading | date |
+|---|---|---|---:|---:|---:|---|
+| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 1721 | 0 | 2026-09-07 |
+| `rrule.js` | 2.8.1 | port of dateutil | 1695 | 1721 | 0 | 2026-09-08 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 1721 | 0 | 2026-09-08 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 1721 | 3 | 2026-09-08 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 1721 | not rerun | 2026-09-07 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 1721 | 0 | 2026-09-08 |
 
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.

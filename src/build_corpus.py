@@ -100,6 +100,16 @@ def expect_bound(rule, dtstart, occ):
     return "horizon"
 
 
+def _other_reading(rule, ds, n):
+    """The first `n` occurrences under the *other* reading of 3.3.10's first
+    period, or None when the rule has no BYSETPOS and the question does not
+    arise. See src/naive.py's `truncate_first_period` and finding 018."""
+    if "BYSETPOS" not in rule or n == 0:
+        return None
+    return [fmt(x) for x in
+            expand(rule, ds, limit=n, truncate_first_period=True)][:n]
+
+
 def record(rule, ds, cell, agreed, disputed, seen):
     """Adjudicate one (rule, DTSTART) and file it. Returns False if a duplicate."""
     if (rule, ds) in seen:
@@ -122,11 +132,19 @@ def record(rule, ds, cell, agreed, disputed, seen):
     diff = compare(rule, ds, N)
     if diff is None:
         occ = expand(rule, ds, limit=N)[:N]
+        exp = [fmt(x) for x in occ]
+        # Does `expect` depend on which reading of 3.3.10's first period the
+        # builder took? Both expanders agreeing does not answer this: they
+        # share the reading. Finding 018. `alt` is the *other* reading's
+        # answer, recorded so a consumer can see both rather than inherit
+        # mine silently.
+        alt = _other_reading(rule, ds, len(occ))
         agreed.append({
             "rrule": rule,
             "dtstart": fmt(ds),
-            "expect": [fmt(x) for x in occ],
+            "expect": exp,
             "expect_bound": expect_bound(rule, ds, occ),
+            "reading_dependent": alt is not None and alt != exp,
             "dtstart_synchronized": synced,
             "rule_valid": rule_valid,
             "cells": cells,
@@ -134,6 +152,8 @@ def record(rule, ds, cell, agreed, disputed, seen):
             "systematic_for": cell,
             "corroborated_by": ["naive-bruteforce", "python-dateutil-2.9.0"],
         })
+        if agreed[-1]["reading_dependent"]:
+            agreed[-1]["reading_alternative"] = alt
     else:
         mine, theirs = diff
         disputed.append({

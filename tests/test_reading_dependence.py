@@ -62,6 +62,28 @@ def main():
           not [r for r in rows if r["freq"] == "FREQ=WEEKLY"],
           str([r["rrule"] for r in rows if r["freq"] == "FREQ=WEEKLY"][:3]))
 
+    # The corpus now carries the answer as a field. That field is only worth
+    # having if it agrees with recomputing it from scratch, so check the flag
+    # against `analyse()` case by case rather than by count.
+    flagged = {(c["rrule"], c["dtstart"]) for c in cases if c.get("reading_dependent")}
+    computed = {(r["rrule"], r["dtstart"]) for r in rows}
+    check("corpus reading_dependent flag == recomputation",
+          flagged == computed,
+          "only-in-corpus=%s only-computed=%s" % (
+              sorted(flagged - computed)[:2], sorted(computed - flagged)[:2]))
+    check("every corroborated case carries the flag",
+          all("reading_dependent" in c for c in cases),
+          str(sum(1 for c in cases if "reading_dependent" not in c)))
+    check("reading_alternative present exactly when the flag is set",
+          all(("reading_alternative" in c) == c["reading_dependent"] for c in cases),
+          str([c["rrule"] for c in cases
+               if ("reading_alternative" in c) != c["reading_dependent"]][:2]))
+    byrd = {(r["rrule"], r["dtstart"]): r["first_period_truncated"] for r in rows}
+    check("reading_alternative equals the other reading's expansion",
+          all(c["reading_alternative"] == byrd[(c["rrule"], c["dtstart"])]
+              for c in cases if c["reading_dependent"]),
+          "mismatch")
+
     print("\n%d failure(s)" % len(FAILURES))
     return 1 if FAILURES else 0
 
