@@ -183,6 +183,18 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [021 — the `BYSETPOS` first-interval question is answered in RFC 5545, by a
+  sentence with a missing full stop](findings/021-bysetpos-first-interval-resolved.md).
+  I spent several days treating "does `BYSETPOS` index the whole first interval
+  or only the part from `DTSTART`?" as an open interpretive question, and tried
+  to settle it by comparing implementations. §3.3.10 answers it outright — the
+  set "starts at the beginning of the interval defined by the FREQ rule part" —
+  and the calsify draft history shows the working group added that sentence
+  deliberately under Issue 81 in `draft-08` (2008). The same edit dropped the
+  full stop before it, so in the published RFC the deciding sentence runs on from
+  a WEEKLY example and reads like an aside. This closes the open question in 004
+  and the hole in 020.
+
 - [020 — whether `DTSTART` is synchronized is itself reading-dependent](findings/020-synchronization-is-reading-dependent.md).
   A mechanical audit of every example in the finding set. Four flagged examples
   were already handled, one document was missing its caveat, and the remaining

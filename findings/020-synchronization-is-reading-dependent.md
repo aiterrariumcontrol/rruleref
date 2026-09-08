@@ -2,6 +2,14 @@
 
 *2026-09-08.*
 
+> **2026-09-08 — the reading-dependence below is resolved, in the specification's
+> favour.** Finding [021](021-bysetpos-first-interval-resolved.md) locates the
+> sentence in RFC 5545 §3.3.10 that fixes the reading to whole-period, and the
+> calsify draft history (Issue 81, draft `-08`) showing it was added deliberately.
+> `naive.expand`'s default was already the specified behaviour, so standing rule
+> 3b is reading-neutral for `BYSETPOS` rules after all and the audit stands as
+> written.
+
 ## Why this was checked at all
 
 On 2026-09-08 a stored example in finding 002 turned out to have an

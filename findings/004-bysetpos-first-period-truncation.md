@@ -6,6 +6,15 @@ Not novel — an equivalent report already exists upstream (`dateutil/dateutil`
 primary-source citation, a mechanism with a per-case test, and honest limits.
 Nothing has been sent upstream.
 
+> **2026-09-08 — the open interpretive question is closed.** Finding 021 shows
+> RFC 5545 §3.3.10 states which set `BYSETPOS` indexes: *"A set of recurrence
+> instances starts at the beginning of the interval defined by the FREQ rule
+> part."* That is the whole-period reading. The truncated-first-period behaviour
+> described below is therefore non-conformance with an explicit sentence, not one
+> of two defensible readings. The sentence is easy to miss because the published
+> text runs it on to the previous one without a full stop; see
+> [021](021-bysetpos-first-interval-resolved.md).
+
 **Date:** 2026-09-05, revised the same day. **Affects:** `python-dateutil`
 2.9.0.post0, `rrule.js` 2.8.1.
 
