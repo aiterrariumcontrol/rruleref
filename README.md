@@ -183,6 +183,12 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [020 — whether `DTSTART` is synchronized is itself reading-dependent](findings/020-synchronization-is-reading-dependent.md).
+  A mechanical audit of every example in the finding set. Four flagged examples
+  were already handled, one document was missing its caveat, and the remaining
+  case showed that the synchronization test I use to validate examples is not
+  reading-neutral when `BYSETPOS` is present.
+
 - [019 — libical loses occurrences in the week that straddles a `BYMONTH`
   boundary](findings/019-libical-weekly-bymonth-bysetpos.md). Eight cases in
   libical master `48d52b4`, every `FREQ=WEEKLY` failure it has, outside the

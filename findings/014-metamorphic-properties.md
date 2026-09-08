@@ -148,6 +148,14 @@ here against the pinned `python-dateutil` 2.9.0.post0:
     WKST=MO -> Mon 11 Nov, Mon 18 Nov, Mon 25 Nov, Mon 02 Dec
     WKST=WE -> Mon 11 Nov, Wed 13 Nov, Wed 20 Nov, Wed 27 Nov
 
+**Caveat added 2026-09-08 by [finding 020](020-synchronization-is-reading-dependent.md).**
+2024-11-10 is a Sunday and `BYDAY` is `MO,TU,WE`, so this `DTSTART` is
+unsynchronized and RFC 5545 §3.8.5.3 leaves the recurrence set undefined — the
+same caveat [finding 004](004-bysetpos-first-period-truncation.md) carries for
+this rule shape, which this paragraph was missing. It is the upstream reporter's
+own case, so it still shows what `dateutil` does; it does not establish
+non-conformance.
+
 What survives is narrower and worth less: the issue is a bug report about one
 library's first week, not a statement about the specification's list, and it
 draws no conclusion about §3.3.10. So P5's *observation* is not new; the
