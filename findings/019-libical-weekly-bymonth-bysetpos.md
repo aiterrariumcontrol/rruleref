@@ -1,10 +1,11 @@
 # 019 — libical loses occurrences in the week that straddles a BYMONTH boundary
 
 **Status:** Open. Reproduced against libical master, unreported, and
-**unauthorized to report** — sending it upstream is a HUMAN_ACTION request that
-has not been made.
+**unauthorized to report**. REQ-0007 asked for permission to post it upstream
+and was answered NEEDS_INFO on 2026-09-08; the evidence was revised in response
+(see "Correction" below) and re-submitted as REQ-0008. Nothing is authorized.
 
-**Date:** 2026-09-07.
+**Date:** 2026-09-07, revised 2026-09-08.
 **Affects:** libical master `48d52b4`, built from source; also present in
 Debian trixie's 3.0.20 inside a much larger `BYSETPOS` failure class.
 **Supersedes:** the closing section of
@@ -43,39 +44,77 @@ Sun 07-05; `BYMONTH=7` limits that to `{07-05}`; position 1 is 07-05. libical
 takes position 1 of the un-limited three and gets 06-29, which `BYMONTH` then
 rejects, so the week yields nothing.
 
-The same rule with `BYSETPOS=2` shows the shift rather than the loss:
+The same rule shape with `BYSETPOS=2` shows the shift rather than the loss:
 
 ```
-RRULE:FREQ=WEEKLY;BYMONTH=7;BYDAY=SU,TU;BYSETPOS=2   DTSTART:20260705T090000
-  corpus  : 20260712, 20260719, ...
-  libical : 20260705, 20260712, ...
+RRULE:FREQ=WEEKLY;BYMONTH=7;BYDAY=SU,TU;BYSETPOS=2   DTSTART:20260712T090000
+  expected: ..., 20260726, 20270711, 20270718, ...    (not a corpus case)
+  libical : ..., 20260726, 20270704, 20270711, ...
 ```
 
-Position 2 of `{Tue 06-30, Sun 07-05}` is 07-05, which survives `BYMONTH`; the
-limited set `{07-05}` has no position 2 and the week correctly yields nothing.
+The 2027 week is Mon 06-28 .. Sun 07-04. `BYDAY` gives Tue 06-29 and Sun 07-04;
+`BYMONTH=7` limits that to `{07-04}`, which has no position 2, so the week
+should yield nothing. libical takes position 2 of the un-limited pair, gets
+07-04, and `BYMONTH` lets it through.
 
 Two controls: with a single `BYDAY` value the un-limited and limited sets
 coincide and libical agrees (`FREQ=WEEKLY;BYDAY=SU;BYMONTH=7;BYSETPOS=1` from
-the same DTSTART returns 20260705). Without `BYSETPOS` libical also agrees.
+20260705 returns 20260705 ...). Without `BYSETPOS` libical also agrees.
 So this is `BYSETPOS`-specific and not a `BYMONTH` filtering bug.
 
 **(b) The straddling week is skipped outright when arriving from a gap.**
 
 ```
-RRULE:FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1
-  DTSTART:20270727T090000  -> 20270801, 20270808, ...   (correct)
-  DTSTART:20260802T090000  -> ..., 20260830, 20270808   (20270801 lost)
+RRULE:FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1  DTSTART:20260802T090000
+  corpus  : ..., 20260830, 20270801, 20270808, ...
+  libical : ..., 20260830, 20270808, 20270815, ...
 ```
 
-Same rule, same week Mon 2027-07-26 .. Sun 08-01, two different answers
-depending on whether iteration entered that week from DTSTART or arrived at it
-after eleven non-selected months. Path (a) does not explain this one:
-`BYSETPOS=-1` of the un-limited `{Tue 07-27, Sun 08-01}` is 08-01, which
-`BYMONTH` accepts. `FREQ=WEEKLY;BYMONTH=7,8;BYDAY=SU,TU;BYSETPOS=-1` from
-20260802 skips Sun 2027-07-04 the same way and resumes at 07-11.
+The week is Mon 2027-07-26 .. Sun 08-01, reached after eleven months in which
+`BYMONTH=8` selects nothing. Path (a) does not explain this one: `BYSETPOS=-1`
+of the un-limited `{Tue 07-27, Sun 08-01}` is 08-01, which `BYMONTH` accepts.
+The week straddling the start of the next selected month appears to be skipped
+outright when iteration resumes after a gap.
 
 I have not read the libical source for either path and make no claim about
 where in `icalrecur.c` they live. Both are stated as observed behaviour.
+
+## Correction, 2026-09-08
+
+An earlier draft of this finding, and the first version of the upstream report
+in REQ-0007, supported (a) and (b) with two examples whose `DTSTART` was **not**
+an instance of its own recurrence set:
+
+- `FREQ=WEEKLY;BYMONTH=7;BYDAY=SU,TU;BYSETPOS=2` from `20260705T090000`;
+- `FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1` from `20270727T090000`.
+
+RFC 5545 §3.8.5.3 says the recurrence set is undefined when `DTSTART` is not
+synchronized with the rule, so neither is on its own evidence of a violation.
+Both are replaced above by synchronized examples that show the same two
+behaviours; the replacements were run, not assumed. The unsynchronized pair is
+still useful as an *iterator diagnostic* — the same rule and the same week give
+two different answers depending on whether iteration entered the week from
+`DTSTART` (`20270727` -> `20270801`, the correct instance) or arrived after a
+gap (`20260802` -> `20270801` missing) — but that is a localization hint, not
+an independent defect claim.
+
+I also checked the eight corpus failures themselves rather than assuming:
+**all eight have a `DTSTART` equal to their own first instance**, so none of
+them depends on undefined behaviour. The audit is one pass of
+`naive.expand(rule, dtstart, limit=1)` over the `FREQ=WEEKLY` entries of
+[`data/019-libical-master-score.json`](data/019-libical-master-score.json).
+
+## A reproducer that does not need the corpus
+
+[`repro/019-weekly-bymonth-bysetpos.c`](repro/019-weekly-bymonth-bysetpos.c)
+depends only on libical. It runs the three cases above plus the two controls,
+and expands each one twice: through `icalrecur_iterator_new`/`_next` and through
+`icalcomponent_foreach_recurrence` over a `VEVENT` carrying the same `DTSTART`
+and `RRULE`. The two paths agree with each other on all five cases, so the
+difference is not an artifact of using the low-level iterator. Build and run
+instructions and captured output at `48d52b4` are in
+[`repro/README.md`](repro/README.md) and
+[`repro/019-output-48d52b4.txt`](repro/019-output-48d52b4.txt).
 
 ## Prior art
 
