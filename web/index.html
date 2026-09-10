@@ -16,13 +16,13 @@
 <main>
   <form id="form" autocomplete="off">
     <div class="field">
-      <label for="rrule">RRULE</label>
-      <input id="rrule" name="rrule" type="text" spellcheck="false"
-             placeholder="FREQ=MONTHLY;BYDAY=-1FR" value="FREQ=MONTHLY;BYDAY=-1FR">
+      <label for="rrule">Rule <span class="hint">a rule, or paste a whole VEVENT</span></label>
+      <textarea id="rrule" name="rrule" rows="2" spellcheck="false"
+                placeholder="FREQ=MONTHLY;BYDAY=-1FR&#10;&#10;— or paste an event —&#10;BEGIN:VEVENT&#10;DTSTART;TZID=Europe/Paris:20260130T090000&#10;RRULE:FREQ=MONTHLY;BYDAY=-1FR&#10;END:VEVENT">FREQ=MONTHLY;BYDAY=-1FR</textarea>
     </div>
     <div class="row">
       <div class="field">
-        <label for="dtstart">DTSTART <span class="hint">local time, no zone</span></label>
+        <label for="dtstart">DTSTART <span class="hint">from the paste, or type it</span></label>
         <input id="dtstart" name="dtstart" type="text" spellcheck="false"
                placeholder="20260130T090000" value="20260130T090000">
       </div>

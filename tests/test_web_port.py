@@ -170,8 +170,18 @@ def test_every_quoted_rfc_sentence_is_in_the_pinned_rfc():
     appear in the pinned RFC text, modulo whitespace and page furniture. An
     ellipsis splits a quotation into fragments, each of which must appear.
     """
-    text = open(os.path.join(ROOT, "web", "src", "diagnostics.js"),
-                encoding="utf-8").read()
+    # Every file that puts prose in front of the user, not just diagnostics.js.
+    # The check was written for diagnostics.js because that is where the
+    # fabricated citation happened; a citation in any other file was
+    # unexamined, which is the same exposure with a different filename.
+    sources = [os.path.join(ROOT, "web", "app.js")]
+    srcdir = os.path.join(ROOT, "web", "src")
+    sources += sorted(os.path.join(srcdir, f) for f in os.listdir(srcdir)
+                      if f.endswith(".js"))
+    # One file at a time, deliberately. Concatenating them lets an unmatched
+    # curly quote in one file pair with a quote in the next and swallow
+    # everything between -- which is exactly what happened when this check was
+    # first widened past diagnostics.js. Per-file also names the culprit.
     try:
         rfc = open(env.rfc_path("5545"), encoding="utf-8", errors="replace").read()
     except env.MissingDependency as e:
@@ -187,22 +197,25 @@ def test_every_quoted_rfc_sentence_is_in_the_pinned_rfc():
     # marks is the point -- an earlier version filtered out any quote whose
     # enclosing expression contained a `${`, which silently skipped the
     # longest citation in the file.
-    flat = re.sub(r"\$\{[^{}]*\}", "", text)
-    flat = re.sub(r"[\"`]\s*\+\s*\n?\s*[\"`]", " ", flat)
-
     checked = 0
-    for quote in re.findall(r"\u201c(.+?)\u201d", flat, re.S):
-        q = re.sub(r"\s+", " ", quote).strip()
-        # Short runs are the UI's own scare quotes ("the same rule gives
-        # different results"), not citations. Cited sentences are long.
-        if len(q) < 60:
-            continue
-        checked += 1
-        for frag in [f.strip() for f in q.split("\u2026")]:
-            frag = frag.strip(" .").replace("\u2018", '"').replace("\u2019", '"')
-            if frag and frag not in hay:
-                fails.append("quoted as RFC 5545 but not found in it: %r" % frag)
-    print("  quotes: %d cited sentences checked against the pinned RFC" % checked)
+    for path in sources:
+        text = open(path, encoding="utf-8").read()
+        flat = re.sub(r"\$\{[^{}]*\}", "", text)
+        flat = re.sub(r"[\"`]\s*\+\s*\n?\s*[\"`]", " ", flat)
+        for quote in re.findall(r"\u201c(.+?)\u201d", flat, re.S):
+            q = re.sub(r"\s+", " ", quote).strip()
+            # Short runs are the UI's own scare quotes ("the same rule gives
+            # different results"), not citations. Cited sentences are long.
+            if len(q) < 60:
+                continue
+            checked += 1
+            for frag in [f.strip() for f in q.split("\u2026")]:
+                frag = frag.strip(" .").replace("\u2018", '"').replace("\u2019", '"')
+                if frag and frag not in hay:
+                    fails.append("%s: quoted as RFC 5545 but not found in it: %r"
+                                 % (os.path.basename(path), frag))
+    print("  quotes: %d cited sentences in %d files checked against the pinned RFC"
+          % (checked, len(sources)))
 
 
 if __name__ == "__main__":

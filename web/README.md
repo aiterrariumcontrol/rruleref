@@ -20,7 +20,29 @@ measurement.
 | `src/naive.js` | a port of [`../src/naive.py`](../src/naive.py), the spec-derived brute-force expander |
 | `src/validity.js` | a port of [`../src/validity.py`](../src/validity.py), the §3.3.10 `MUST NOT` checks |
 | `src/diagnostics.js` | the divergence notes, each backed by a file in [`../findings/`](../findings/) |
+| `src/icalinput.js` | reads the input box: a bare rule, or a pasted `VEVENT`/`VCALENDAR` |
 | `test/adapter.mjs` | conformance adapter, so the port is scored like any other implementation |
+
+## What you can paste
+
+The input box takes a bare rule (`FREQ=MONTHLY;BYDAY=-1FR`), a prefixed one
+(`RRULE:...`), loose `DTSTART`/`RRULE` lines, or a whole `VEVENT` or
+`VCALENDAR` straight out of a `.ics` file. `DTSTART` is filled in from the
+paste and stays editable. Folded lines are unfolded first, as RFC 5545 §3.1
+requires.
+
+Nothing recognised is silently discarded. `EXDATE`, `RDATE`, `EXRULE`, a second
+`RRULE`, a `TZID` that cannot be honoured — each one says so on the page,
+because a tool that quietly ignores half your event still shows you a
+confident list of dates.
+
+Two cases are refused rather than guessed at: a paste with more than one
+`VEVENT` (which one did you mean?), and a paste with only a `VTIMEZONE`. That
+second one is the reason the parser tracks the component stack rather than
+taking the first `RRULE` it sees — a real `VCALENDAR` carries a `VTIMEZONE`
+whose `STANDARD` and `DAYLIGHT` subcomponents hold their *own* `DTSTART` and
+`RRULE`, describing daylight-saving transitions. Handing the user those, as
+though they were their event, is a wrong answer that looks entirely plausible.
 
 Nothing is sent anywhere. There is no server, no analytics and no cookie; the
 whole state of a session is in the URL fragment, so a case can be shared by
@@ -52,11 +74,26 @@ every run of the suite:
 * every diagnostic must still fire on the case its finding was written about.
   That last one matters most: this tool's failure mode is falling silent, and
   silence here is indistinguishable from "no known problem".
+* every sentence in quotation marks attributed to RFC 5545, in *any* of these
+  files, must appear in the pinned RFC text verbatim. This check exists
+  because a plausible paraphrase once acquired quotation marks between reading
+  and writing and nearly shipped.
+
+[`../tests/test_ical_input.py`](../tests/test_ical_input.py) covers the input
+parser separately: fourteen paste shapes, plus an end-to-end case asserting
+that a pasted `VCALENDAR` expands to the event's weekly rule and not to the
+timezone's yearly DST rule.
 
 ## What it deliberately does not do
 
-Floating local time only. No time zones, no DST, no `EXDATE`/`RDATE`/`EXRULE`,
-no `VEVENT` parsing. Timezone behaviour is covered in
+Floating local time only. No time zones, no DST, no `EXDATE`/`RDATE`/`EXRULE`.
+A `VEVENT` can be *read*, but only its `DTSTART` and `RRULE` are used, and the
+page says what it set aside. A `TZID` is read and reported, not applied: the
+dates shown are the wall-clock dates in that zone, which is what the rule is
+evaluated against, but they are never converted to UTC instants. Where that
+omission actually changes an answer is `UNTIL`, which RFC 5545 §3.3.10
+requires to be UTC when `DTSTART` has a zone — so the page flags that
+combination specifically. Timezone behaviour is covered in
 [findings 005–007](../findings/) and is a much larger surface than one page can
 honestly claim; a rule that is wrong in floating time is wrong in every zone,
 and that is the part this can settle.

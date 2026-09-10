@@ -1,6 +1,7 @@
 import { expand, parse, parseDtstart, parts, fmt, weekday, daysInMonth, toOrd, DAYS, Budget } from "./src/naive.js";
 import { violations, NOT_CHECKED } from "./src/validity.js";
 import { analyze } from "./src/diagnostics.js";
+import { parseInput } from "./src/icalinput.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -132,14 +133,37 @@ function noteBox(note) {
 
 // --- the run --------------------------------------------------------------
 
+// DTSTART is derived-and-overridable: a paste that carries one fills the box,
+// but a value the user typed there themselves survives further typing in the
+// paste area. `lastDerived` is how the two are told apart -- if the box still
+// holds exactly what the last paste put there, the paste still owns it.
+let lastDerived = null;
+
 function run() {
-  const rrule = $("rrule").value.trim().replace(/^RRULE:/i, "");
+  const input = parseInput($("rrule").value);
+  const rrule = (input.rrule || "").replace(/^RRULE:/i, "");
+  if (input.dtstart && input.dtstart !== lastDerived &&
+      ($("dtstart").value.trim() === (lastDerived || "") || !$("dtstart").value.trim())) {
+    $("dtstart").value = input.dtstart;
+    lastDerived = input.dtstart;
+  }
   const dtstartRaw = $("dtstart").value.trim();
   const limit = Math.max(1, Math.min(500, parseInt($("limit").value, 10) || 24));
   const errBox = $("error"), notes = $("notes"), result = $("result");
   errBox.hidden = true; errBox.textContent = "";
   notes.textContent = ""; result.textContent = "";
-  if (!rrule) return;
+
+  // Anything the input parser read and set aside is said before the dates, not
+  // after them. A caveat under the answer is a caveat the reader has already
+  // acted on.
+  for (const n of input.notes || []) {
+    notes.appendChild(noteBox({
+      severity: n.level === "error" ? "error" : "info",
+      title: n.title || "About this input",
+      body: n.text,
+    }));
+  }
+  if (!rrule) { writeHash(); return; }
   writeHash();
 
   // Validity is checked first and independently of the expander: a rule can
@@ -172,10 +196,19 @@ function run() {
     return;
   }
 
+  // Count what is on the page before the divergence notes, so the "nothing
+  // applies" box below is decided by whether *analyze* said anything -- not by
+  // whether the page happens to be empty, which input notes now also affect.
+  const beforeDiagnostics = notes.children.length;
+  // ...and whether the input itself was reported as a problem. The "nothing
+  // applies" box is about *measured divergences between implementations*,
+  // which is a different axis from "your TZID was dropped". Printing the
+  // reassurance directly under a red box reads as withdrawing it.
+  const inputProblem = (input.notes || []).some((n) => n.level === "error");
   for (const note of analyze({ rrule, dtstart: ds.t, dateOnly: ds.dateOnly, occurrences: occ, limit })) {
     notes.appendChild(noteBox(note));
   }
-  if (!notes.children.length) {
+  if (notes.children.length === beforeDiagnostics && !inputProblem) {
     const ok = el("article", "note note-clear");
     ok.appendChild(el("h3", null, "No known divergence applies to this rule."));
     ok.appendChild(el("p", null,
@@ -211,15 +244,24 @@ function run() {
 // --- wiring ---------------------------------------------------------------
 let timer = null;
 const schedule = () => { clearTimeout(timer); timer = setTimeout(run, 120); };
+const autosize = () => {
+  const t = $("rrule");
+  t.style.height = "auto";
+  t.style.height = Math.min(t.scrollHeight + 2, 340) + "px";
+};
 for (const id of ["rrule", "dtstart", "limit"]) $(id).addEventListener("input", schedule);
+$("rrule").addEventListener("input", autosize);
 $("form").addEventListener("submit", (e) => { e.preventDefault(); run(); });
 for (const b of document.querySelectorAll(".ex")) {
   b.addEventListener("click", () => {
     $("rrule").value = b.dataset.r;
     $("dtstart").value = b.dataset.d;
+    lastDerived = null;      // the example owns both boxes now
     run();
+    autosize();
   });
 }
-window.addEventListener("hashchange", () => { readHash(); run(); });
+window.addEventListener("hashchange", () => { readHash(); run(); autosize(); });
 readHash();
 run();
+autosize();

@@ -32,11 +32,12 @@ form { background: var(--card); border: 1px solid var(--line); border-radius: 10
 .row { display: flex; gap: .9rem; flex-wrap: wrap; }
 label { font-size: .8rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); }
 .hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
-input {
+input, textarea {
   font: 15px/1.4 var(--mono); padding: .6rem .7rem; border-radius: 6px;
   border: 1px solid var(--line); background: var(--bg); color: var(--fg); width: 100%;
 }
-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+textarea { resize: vertical; min-height: 2.6rem; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
 .examples { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .85rem; color: var(--muted); }
 .ex {
   font: inherit; font-size: .85rem; padding: .25rem .6rem; border-radius: 999px;
