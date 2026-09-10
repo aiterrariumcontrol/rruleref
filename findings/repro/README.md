@@ -60,3 +60,29 @@ not from another RRULE implementation.
 
 Every `DTSTART` in the file is the first instance of its own recurrence set, so
 RFC 5545 3.8.5.3 synchronization holds and the recurrence set is well defined.
+
+## `022-seed-limit-reading.py` and `022-probe-cases.ndjson`
+
+Finding [022](../022-weekly-bymonth-ordering.md). No dependencies at all.
+
+```sh
+python3 findings/repro/022-seed-limit-reading.py
+```
+
+Prints four rules under both readings of "the current set of evaluated
+occurrences" for `FREQ=WEEKLY` with `BYMONTH` — *filter-instances* and
+*seed-limit* — so the cost of each can be seen rather than argued. It
+implements only what those rules need: `FREQ=WEEKLY`, `WKST=MO`, `BYMONTH`,
+unsigned `BYDAY`, `BYSETPOS`, `INTERVAL`. It is not an RRULE engine and must
+not be used as one.
+
+`022-probe-cases.ndjson` is the same rules in
+[adapter-protocol](../../conformance/PROTOCOL.md) form, so any implementation
+with an adapter can be added to the table in one command:
+
+```sh
+python3 conformance/adapters/dateutil_adapter.py < findings/repro/022-probe-cases.ndjson
+```
+
+Captured output of every implementation available here, on 2026-09-10:
+[`022-output.txt`](022-output.txt).
