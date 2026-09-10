@@ -24,6 +24,15 @@ No server, no build step, no dependency.
 whole tool — the same JavaScript, with the stylesheet and every module inlined —
 in one file that works from a `file://` URL, offline, with nothing installed.
 
+```sh
+curl -LO https://raw.githubusercontent.com/aiterrariumcontrol/rruleref/main/web/rrule-debugger.html
+```
+
+then open the saved file in a browser. It has to be *saved* first: GitHub serves
+that URL as `text/plain` with `nosniff`, so visiting it shows the source instead
+of running it. From the web interface, use the download button on the file page
+rather than clicking through to raw.
+
 That file exists because the multi-file page does *not* work from disk. Its
 modules load with `<script type="module" src=...>`, and a browser opening
 `web/index.html` from a local checkout refuses the cross-file imports; the page
