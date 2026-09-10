@@ -151,7 +151,7 @@ export function periodIndex(t, freq, wkst) {
 
 // --- BY-rule predicates ---------------------------------------------------
 
-function monthdayMatches(p, vals) {
+export function monthdayMatches(p, vals) {
   const last = daysInMonth(p.y, p.mo);
   for (const v of vals) {
     if (v > 0 && p.d === v) return true;
@@ -159,7 +159,7 @@ function monthdayMatches(p, vals) {
   }
   return false;
 }
-function yeardayMatches(p, vals) {
+export function yeardayMatches(p, vals) {
   const n = isLeap(p.y) ? 366 : 365;
   const doy = yearDay(p.y, p.mo, p.d);
   for (const v of vals) {
@@ -168,7 +168,7 @@ function yeardayMatches(p, vals) {
   }
   return false;
 }
-function weekStart(ord, wkst) {
+export function weekStart(ord, wkst) {
   const shift = (weekday(ord) - DAYS.indexOf(wkst) + 7) % 7;
   return ord - shift;
 }
@@ -191,7 +191,7 @@ export function weekNumber(ord, wkst) {
   }
   return null;
 }
-function weeknoMatches(p, vals, wkst) {
+export function weeknoMatches(p, vals, wkst) {
   const got = weekNumber(p.ord, wkst);
   if (got === null) return false;
   const total = weeksInYear(got[0], wkst);
@@ -205,7 +205,7 @@ function nthInSpan(ord, lo, hi) {
   const first = lo + ((weekday(ord) - weekday(lo) + 7) % 7);
   return [Math.floor((ord - first) / 7) + 1, Math.floor((hi - first) / 7) + 1];
 }
-function bydayMatches(p, vals, freq, hasBymonth) {
+export function bydayMatches(p, vals, freq, hasBymonth) {
   const wd = DAYS[weekday(p.ord)];
   for (const [ordinal, day] of vals) {
     if (day !== wd) continue;
@@ -231,14 +231,14 @@ function bydayMatches(p, vals, freq, hasBymonth) {
 const FINER_ORDER = ["YEARLY", "MONTHLY", "DAILY", "HOURLY", "MINUTELY", "SECONDLY"];
 const FINER_COMP = { YEARLY: "mo", MONTHLY: "d", DAILY: "h", HOURLY: "mi", MINUTELY: "s" };
 
-function finer(freq) {
+export function finer(freq) {
   if (freq === "WEEKLY") return ["h", "mi", "s"];
   const i = FINER_ORDER.indexOf(freq);
   const out = [];
   for (let j = i; j < FINER_ORDER.length - 1; j++) out.push(FINER_COMP[FINER_ORDER[j]]);
   return out;
 }
-function pinned(r, freq) {
+export function pinned(r, freq) {
   const out = new Set();
   if ("BYMONTH" in r) out.add("mo");
   if (["BYMONTHDAY", "BYYEARDAY", "BYDAY", "BYWEEKNO"].some((k) => k in r)) {
@@ -287,7 +287,7 @@ const DAY = 86400;
 const SPAN = { YEARLY: 400 * DAY, MONTHLY: 40 * DAY, WEEKLY: 10 * DAY, DAILY: 2 * DAY,
                HOURLY: 2 * 3600, MINUTELY: 120, SECONDLY: 2 };
 
-function periodStart(t, freq, wkst) {
+export function periodStart(t, freq, wkst) {
   const p = parts(t);
   const tod = t - p.ord * DAY;
   if (freq === "YEARLY") return toOrd(p.y, 1, 1) * DAY + tod;

@@ -2,6 +2,7 @@ import { expand, parse, parseDtstart, parts, fmt, weekday, daysInMonth, toOrd, D
 import { violations, NOT_CHECKED } from "./src/validity.js";
 import { analyze } from "./src/diagnostics.js";
 import { parseInput } from "./src/icalinput.js";
+import { why, parseQuery, resolveQuery } from "./src/why.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -25,13 +26,18 @@ function readHash() {
   if (p.get("rrule")) $("rrule").value = p.get("rrule");
   if (p.get("dtstart")) $("dtstart").value = p.get("dtstart");
   if (p.get("limit")) $("limit").value = p.get("limit");
+  if (p.get("why")) $("why").value = p.get("why");
 }
 function writeHash() {
-  const p = new URLSearchParams({
+  const fields = {
     rrule: $("rrule").value.trim(),
     dtstart: $("dtstart").value.trim(),
     limit: $("limit").value,
-  });
+  };
+  // Only carried when it is asked, so an ordinary expansion still shares as a
+  // short link.
+  if ($("why").value.trim()) fields.why = $("why").value.trim();
+  const p = new URLSearchParams(fields);
   history.replaceState(null, "", "#" + p.toString());
 }
 
@@ -131,6 +137,83 @@ function noteBox(note) {
   return box;
 }
 
+// --- the date explainer ---------------------------------------------------
+
+function whyBox(w) {
+  const box = el("article", "why " + (w.status === "occurrence" ? "yes"
+    : w.status === "inconsistent" ? "broken" : "no"));
+  box.appendChild(el("h3", null, w.headline));
+  if (w.body) box.appendChild(el("p", null, w.body));
+  if (w.checks && w.checks.length) {
+    const ul = el("ul", "checks");
+    for (const c of w.checks) {
+      const li = el("li", c.ok === false ? "check-no" : "check-yes");
+      li.appendChild(el("span", "mark", c.ok === false ? "\u2717" : "\u2713"));
+      const text = el("span");
+      // Rule parts are set in code type; the checks that are prose ("the
+      // minute comes from DTSTART") are a sentence, not a token, and reading
+      // them as code makes them look like something the user could have typed.
+      text.appendChild(el("span", /^(FREQ|INTERVAL|BY)/.test(c.title) ? "check-part" : "check-name", c.title));
+      text.appendChild(document.createTextNode(" \u2014 "));
+      text.appendChild(el("span", "check-detail", c.detail));
+      li.appendChild(text);
+      ul.appendChild(li);
+    }
+    box.appendChild(ul);
+  }
+  if (w.evidence && w.evidence.length) {
+    const ev = el("p", "evidence");
+    ev.appendChild(document.createTextNode("Evidence: "));
+    w.evidence.forEach((e, i) => {
+      if (i) ev.appendChild(document.createTextNode(" \u00b7 "));
+      const a = el("a", null, e.label);
+      a.href = e.url; a.rel = "noopener"; a.target = "_blank";
+      ev.appendChild(a);
+    });
+    box.appendChild(ev);
+  }
+  return box;
+}
+
+// The answer goes ABOVE the divergence notes and the dates. Someone who typed
+// a date into this box asked one question, and it is the only thing on the
+// page they are looking for.
+function runWhy(rrule, ds, r) {
+  const box = $("why-out");
+  box.textContent = "";
+  const raw = $("why").value.trim();
+  if (!raw) return;
+  let q;
+  try {
+    q = parseQuery(raw, ds.dateOnly);
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      body: "Dates go in as 20260227 or 20260227T090000; a hyphenated 2026-02-27 works too.",
+      checks: [], evidence: [] }));
+    return;
+  }
+  // A DATE-valued DTSTART has no time of day to compare against, so a time
+  // typed here would be measured against a midnight that is an artefact of
+  // the value type rather than anything the user wrote.
+  const dropped = ds.dateOnly && q.hadTime;
+  let w, resolved;
+  try {
+    resolved = resolveQuery(r, ds.t, { ...q, t: ds.dateOnly ? Math.floor(q.t / 86400) * 86400 : q.t },
+                            ds.dateOnly);
+    w = why(r, ds.t, resolved.t, { dateOnly: ds.dateOnly, maxSteps: 2e6 });
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      checks: [], evidence: [] }));
+    return;
+  }
+  if (resolved.note) w = { ...w, body: `${resolved.note} ${w.body || ""}`.trim() };
+  if (dropped) {
+    w = { ...w, body: (w.body || "") + " (DTSTART is a DATE, with no time of day, so the time " +
+          "you typed was not used \u2014 this rule can only produce whole dates.)" };
+  }
+  box.appendChild(whyBox(w));
+}
+
 // --- the run --------------------------------------------------------------
 
 // DTSTART is derived-and-overridable: a paste that carries one fills the box,
@@ -151,7 +234,7 @@ function run() {
   const limit = Math.max(1, Math.min(500, parseInt($("limit").value, 10) || 24));
   const errBox = $("error"), notes = $("notes"), result = $("result");
   errBox.hidden = true; errBox.textContent = "";
-  notes.textContent = ""; result.textContent = "";
+  notes.textContent = ""; result.textContent = ""; $("why-out").textContent = "";
 
   // Anything the input parser read and set aside is said before the dates, not
   // after them. A caveat under the answer is a caveat the reader has already
@@ -196,6 +279,8 @@ function run() {
     return;
   }
 
+  runWhy(rrule, ds, r);
+
   // Count what is on the page before the divergence notes, so the "nothing
   // applies" box below is decided by whether *analyze* said anything -- not by
   // whether the page happens to be empty, which input notes now also affect.
@@ -236,6 +321,10 @@ function run() {
   ul.appendChild(el("li", null,
     "EXDATE, RDATE and EXRULE, and any other component of the recurrence set besides this one RRULE"));
   ul.appendChild(el("li", null,
+    "anything more than about thirty years after DTSTART \u2014 the list stops there even when " +
+    "fewer occurrences than you asked for have been found. \u201cExplain one date\u201d is not " +
+    "bounded that way and will answer past it."));
+  ul.appendChild(el("li", null,
     "divergences that no finding has measured yet. Absence of a note is not agreement."));
   caveat.appendChild(ul);
   result.appendChild(caveat);
@@ -249,13 +338,16 @@ const autosize = () => {
   t.style.height = "auto";
   t.style.height = Math.min(t.scrollHeight + 2, 340) + "px";
 };
-for (const id of ["rrule", "dtstart", "limit"]) $(id).addEventListener("input", schedule);
+for (const id of ["rrule", "dtstart", "limit", "why"]) $(id).addEventListener("input", schedule);
 $("rrule").addEventListener("input", autosize);
 $("form").addEventListener("submit", (e) => { e.preventDefault(); run(); });
 for (const b of document.querySelectorAll(".ex")) {
   b.addEventListener("click", () => {
     $("rrule").value = b.dataset.r;
     $("dtstart").value = b.dataset.d;
+    // An example may carry the question it is an example of; otherwise a
+    // question about the previous rule is not about this one.
+    $("why").value = b.dataset.w || "";
     lastDerived = null;      // the example owns both boxes now
     run();
     autosize();

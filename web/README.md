@@ -21,6 +21,7 @@ measurement.
 | `src/validity.js` | a port of [`../src/validity.py`](../src/validity.py), the §3.3.10 `MUST NOT` checks |
 | `src/diagnostics.js` | the divergence notes, each backed by a file in [`../findings/`](../findings/) |
 | `src/icalinput.js` | reads the input box: a bare rule, or a pasted `VEVENT`/`VCALENDAR` |
+| `src/why.js` | the date explainer: why one date is, or is not, in the recurrence set |
 | `test/adapter.mjs` | conformance adapter, so the port is scored like any other implementation |
 
 ## What you can paste
@@ -47,6 +48,43 @@ though they were their event, is a wrong answer that looks entirely plausible.
 Nothing is sent anywhere. There is no server, no analytics and no cookie; the
 whole state of a session is in the URL fragment, so a case can be shared by
 copying the address bar.
+
+## Explaining one date
+
+The commonest question about a recurrence rule is not what it expands to. It
+is why one particular date is missing, or why one that should not be there is.
+Look at [jkbrzt/rrule#621](https://github.com/jkbrzt/rrule/issues/621): the
+reporter's whole description of the bug is "it skips the correct one and gives
+me the one after". The rule and the dates were both in front of them; nothing
+said which rule part did it.
+
+Type a date into **Explain one date** and the page answers that one, part by
+part, in the order RFC 5545 §3.3.10 applies them — and then, if every part
+holds, in terms of the machinery that runs afterwards:
+
+* **it is an occurrence** — and which one, by index;
+* **it is before `DTSTART`** — which no rule part can undo;
+* **a rule part excludes it** — every part is listed with a tick or a cross,
+  including the ones that are not written down. `FREQ=DAILY;BYHOUR=19` does
+  not free the minutes: they stay at `DTSTART`'s, and that is the answer to
+  rrule#621;
+* **`BYSETPOS` drops it** — with the whole set it selected from, this date's
+  position in that set, and why the given positions miss it;
+* **`UNTIL` or `COUNT` cuts it** — with the index it would have had.
+
+`why()` reaches its verdict by a different route from `expand()`: predicate by
+predicate rather than by generating candidates. Two routes to one answer is
+the arrangement that goes quietly wrong, so it is checked both ways. At
+runtime, if the part-by-part result disagrees with `matches()`, the page says
+it cannot explain the date rather than choosing one of them. In the suite,
+[`../tests/test_why.py`](../tests/test_why.py) replays every corpus rule
+through both: each published occurrence must come back as an occurrence at its
+own index, and a spread of near-miss neighbours must not. That is 526,460
+verdicts over 3,857 rules at the time of writing, all agreeing.
+
+Asking about a bare date when the rule works in times of day resolves to a
+time on that day — the one the rule's parts point at, or `DTSTART`'s — and the
+answer says which, because it is then about an instant you did not type.
 
 ## Running it
 

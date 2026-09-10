@@ -94,3 +94,20 @@ h2 .hint { color: var(--muted); font-weight: 400; font-size: .9rem; }
 
 footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
 footer p { margin: .5rem 0; }
+
+/* the date explainer */
+.why { border-radius: 8px; padding: .9rem 1.1rem; border: 1px solid var(--line); background: var(--card); }
+.why h3 { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.4; }
+.why p { margin: .4rem 0; font-size: .93rem; }
+.why.yes { background: var(--ok-bg); border-color: var(--ok-line); }
+.why.no { background: var(--warn-bg); border-color: var(--warn-line); }
+.why.broken { background: var(--err-bg); border-color: var(--err-line); }
+.checks { list-style: none; margin: .7rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.checks li { display: flex; gap: .6rem; align-items: baseline; font-size: .89rem; }
+.mark { flex: 0 0 1.1rem; font-family: var(--mono); font-weight: 700; text-align: center; }
+.check-yes .mark { color: var(--hit); }
+.check-no .mark { color: var(--err-line); }
+.check-no { font-weight: 600; }
+.check-part { font-family: var(--mono); font-size: .84rem; }
+.check-name { }
+.check-detail { font-weight: 400; color: var(--muted); }
