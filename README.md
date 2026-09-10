@@ -19,6 +19,27 @@ the same expander as `src/naive.py`, ported to JavaScript and scored against the
 same corpus by the same scorer ([`tests/test_web_port.py`](tests/test_web_port.py)).
 No server, no build step, no dependency.
 
+**To use it without cloning anything, download the single file
+[`web/rrule-debugger.html`](web/rrule-debugger.html) and open it.** It is the
+whole tool — the same JavaScript, with the stylesheet and every module inlined —
+in one file that works from a `file://` URL, offline, with nothing installed.
+
+That file exists because the multi-file page does *not* work from disk. Its
+modules load with `<script type="module" src=...>`, and a browser opening
+`web/index.html` from a local checkout refuses the cross-file imports; the page
+then draws its form and silently produces nothing at all — no results, no error.
+It needs a web server. The single file needs nothing.
+
+Being one readable local file is also the honest answer to a fair objection: a
+recurrence rule pasted out of a real calendar can carry a summary, an organiser
+and an attendee list. You can read this file end to end before you trust it with
+that, and it cannot phone home from a `file://` page with no network code in it.
+
+It is built by [`tools/build_single_file.py`](tools/build_single_file.py) and
+checked by [`tests/test_single_file.py`](tests/test_single_file.py), which fails
+if it has drifted from `web/`, if it still references anything external, or if
+the copy loaded from disk renders anything different from the served page.
+
 ## Run it against your implementation
 
 ```sh
