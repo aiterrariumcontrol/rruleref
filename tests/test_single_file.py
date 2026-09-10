@@ -18,7 +18,9 @@ Two checks, and the second is the one that matters:
     emitted app.js before the modules it destructures from, which passes every
     static check and dies in the browser. Only executing it catches that.
 
-Skips, loudly, when no browser is installed.
+Skips, loudly, when no browser is installed -- but fails instead of skipping
+under CI, where a check that quietly stops running is indistinguishable from one
+that passes.
 """
 import http.server
 import os
@@ -97,8 +99,14 @@ def main():
 
     exe = browser()
     if exe is None:
-        print("SKIP: no browser found (%s); the file:// behaviour was not checked"
-              % ", ".join(BROWSERS))
+        # A skip is fine on a developer machine and not fine on CI: the whole
+        # point of this file is the browser check, and a check that silently
+        # stops running looks exactly like a check that passes.
+        msg = "no browser found (%s); the file:// behaviour was NOT checked" % ", ".join(BROWSERS)
+        if os.environ.get("CI"):
+            fails.append(msg + " -- install one on the runner or this test is decorative")
+        else:
+            print("SKIP: " + msg)
         return
 
     srv = http.server.ThreadingHTTPServer(
