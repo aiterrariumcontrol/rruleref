@@ -17,6 +17,7 @@ Skips, loudly, when node is not installed.
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -25,6 +26,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "src"))
+import env  # noqa: E402
 import validity  # noqa: E402
 
 fails = []
@@ -152,6 +154,57 @@ process.stdout.write(JSON.stringify(out));
         print("  diagnostics: %d expected notes all fire" % len(want))
 
 
+def test_every_quoted_rfc_sentence_is_in_the_pinned_rfc():
+    """A sentence in quotation marks in the UI must be in RFC 5545, verbatim.
+
+    This test exists because of a specific near-miss. `diagnostics.js` shipped
+    the sentence "the recurrence instances will be generated using invalid
+    dates", in quotation marks, attributed to RFC 5545 3.8.5.3. That sentence
+    is not in RFC 5545. It was a plausible paraphrase of what 3.8.5.3 says
+    (SHOULD be synchronized; the recurrence set is otherwise undefined) that
+    had acquired quotation marks somewhere between reading and writing. It was
+    caught by hand one command before the page was published.
+
+    Nothing about that catch was reliable, so the check is mechanical now:
+    every run of curly quotes in the file that looks like prose is required to
+    appear in the pinned RFC text, modulo whitespace and page furniture. An
+    ellipsis splits a quotation into fragments, each of which must appear.
+    """
+    text = open(os.path.join(ROOT, "web", "src", "diagnostics.js"),
+                encoding="utf-8").read()
+    try:
+        rfc = open(env.rfc_path("5545"), encoding="utf-8", errors="replace").read()
+    except env.MissingDependency as e:
+        print("  skip: RFC 5545 not provisioned (%s)" % e)
+        return
+    keep = [l for l in rfc.splitlines()
+            if not re.match(r"^(Desruisseaux\s|RFC 5545\s|\x0c)", l)]
+    hay = re.sub(r"\s+", " ", " ".join(keep))
+
+    # Flatten the source into the prose the reader will see: drop every
+    # ${...} interpolation, then dissolve the string concatenation the
+    # sentences are spread across. Doing this before looking for quotation
+    # marks is the point -- an earlier version filtered out any quote whose
+    # enclosing expression contained a `${`, which silently skipped the
+    # longest citation in the file.
+    flat = re.sub(r"\$\{[^{}]*\}", "", text)
+    flat = re.sub(r"[\"`]\s*\+\s*\n?\s*[\"`]", " ", flat)
+
+    checked = 0
+    for quote in re.findall(r"\u201c(.+?)\u201d", flat, re.S):
+        q = re.sub(r"\s+", " ", quote).strip()
+        # Short runs are the UI's own scare quotes ("the same rule gives
+        # different results"), not citations. Cited sentences are long.
+        if len(q) < 60:
+            continue
+        checked += 1
+        for frag in [f.strip() for f in q.split("\u2026")]:
+            frag = frag.strip(" .").replace("\u2018", '"').replace("\u2019", '"')
+            if frag and frag not in hay:
+                fails.append("quoted as RFC 5545 but not found in it: %r" % frag)
+    print("  quotes: %d cited sentences checked against the pinned RFC" % checked)
+
+
 if __name__ == "__main__":
     if not shutil.which("node"):
         print("skip: node is not installed; the browser port is unchecked")
@@ -159,6 +212,8 @@ if __name__ == "__main__":
     test_expander_scores_every_case()
     test_validity_agrees_with_python()
     test_diagnostics_fire_where_the_findings_say_they_do()
+    test_every_quoted_rfc_sentence_is_in_the_pinned_rfc()
     for f in fails:
         print("FAIL " + f)
     raise SystemExit(1 if fails else 0)
+

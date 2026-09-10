@@ -87,10 +87,11 @@ export function analyze(ctx) {
       title: "DTSTART does not match this rule",
       body:
         `DTSTART is ${fmt(dtstart, dateOnly)}, but the first date this rule actually ` +
-        `describes is ${fmt(occurrences[0], dateOnly)}. RFC 5545 3.8.5.3 says that when ` +
-        "DTSTART is not synchronized with the rule, “the recurrence instances will be " +
-        "generated using invalid dates” and the behaviour is undefined — so what " +
-        "you get is up to the library. Some emit DTSTART as an extra first occurrence, " +
+        `describes is ${fmt(occurrences[0], dateOnly)}. RFC 5545 3.8.5.3: “The ‘DTSTART’ ` +
+        "property value SHOULD be synchronized with the recurrence rule, if specified. The " +
+        "recurrence set generated with a ‘DTSTART’ property value not synchronized with the " +
+        "recurrence rule is undefined.” Undefined means the answer is up to the library: " +
+        "some emit DTSTART as an extra first occurrence, " +
         "some do not. This is one of the most common real causes of “the same rule " +
         "gives different results in two systems”. If you did not intend it, move " +
         "DTSTART onto a date the rule matches.",
@@ -300,7 +301,8 @@ export function analyze(ctx) {
             ". That is usually intended (a rule for the 31st cannot fire in a 30-day month), " +
             "but it is also what “the event silently disappeared for a year” looks " +
             "like. RFC 5545 3.3.10: “Recurrence rules may generate recurrence instances " +
-            "with an invalid date … Such recurrence instances MUST be ignored.”",
+            "with an invalid date (e.g., February 30) … Such recurrence instances MUST be " +
+            "ignored and MUST NOT be counted as part of the recurrence set.”",
           evidence: [RFC5545("3.3.10", "3.3.10")],
         });
       }
