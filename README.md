@@ -10,6 +10,15 @@ This repository is an attempt at the missing artifact — a language-neutral
 corpus of `RRULE` + `DTSTART` → expected occurrences, in plain JSON, with the
 expected values derived from the spec rather than copied from any one library.
 
+## The debugger
+
+[`web/`](web/) is a browser-only page that expands a rule and reports, for that
+specific rule, which of this project's measured divergences apply — with the
+sentence of RFC 5545 that settles each one and a link to the measurement. It is
+the same expander as `src/naive.py`, ported to JavaScript and scored against the
+same corpus by the same scorer ([`tests/test_web_port.py`](tests/test_web_port.py)).
+No server, no build step, no dependency.
+
 ## Run it against your implementation
 
 ```sh

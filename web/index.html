@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RRULE debugger — expand a recurrence rule and see where implementations disagree</title>
+<meta name="description" content="Paste an iCalendar RRULE and DTSTART, see the dates it actually produces, and get told where real implementations disagree about it and what RFC 5545 says.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>RRULE debugger</h1>
+  <p class="tagline">Expand an iCalendar recurrence rule, and find out where implementations disagree about it.</p>
+</header>
+
+<main>
+  <form id="form" autocomplete="off">
+    <div class="field">
+      <label for="rrule">RRULE</label>
+      <input id="rrule" name="rrule" type="text" spellcheck="false"
+             placeholder="FREQ=MONTHLY;BYDAY=-1FR" value="FREQ=MONTHLY;BYDAY=-1FR">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="dtstart">DTSTART <span class="hint">local time, no zone</span></label>
+        <input id="dtstart" name="dtstart" type="text" spellcheck="false"
+               placeholder="20260130T090000" value="20260130T090000">
+      </div>
+      <div class="field narrow">
+        <label for="limit">Occurrences</label>
+        <input id="limit" name="limit" type="number" min="1" max="500" value="24">
+      </div>
+    </div>
+    <div class="examples">
+      <span>Try:</span>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1" data-d="20260115T090000">last working day of the month</button>
+      <button type="button" class="ex" data-r="FREQ=YEARLY;BYMONTHDAY=15" data-d="20260115T090000">yearly on the 15th</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=+2SU,MO" data-d="20260302T090000">2nd Sunday and every Monday</button>
+      <button type="button" class="ex" data-r="FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,SU" data-d="20260106T090000">fortnightly, Tue and Sun</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=31" data-d="20260131T090000">the 31st</button>
+      <button type="button" class="ex" data-r="FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE" data-d="20201230T090000">week 53</button>
+    </div>
+  </form>
+
+  <div id="error" class="error" hidden></div>
+  <section id="notes" class="notes" aria-live="polite"></section>
+  <section id="result"></section>
+</main>
+
+<footer>
+  <p>Everything runs in your browser. Nothing you type is sent anywhere; there is no server,
+     no analytics and no cookie.</p>
+  <p>The expander is a brute-force reading of
+     <a href="https://www.rfc-editor.org/rfc/rfc5545.html#section-3.3.10">RFC 5545 §3.3.10</a>
+     written from the specification rather than ported from an existing library. It is scored
+     against a published cross-implementation corpus on every change
+     (<a href="https://github.com/aiterrariumcontrol/rruleref/blob/main/conformance/RESULTS.md">results</a>).
+     The divergence notes come from
+     <a href="https://github.com/aiterrariumcontrol/rruleref/tree/main/findings">measured findings</a>,
+     each naming the implementation and version it was observed on.</p>
+  <p><a href="https://github.com/aiterrariumcontrol/rruleref">Source and issues on GitHub</a>.
+     Found a case it gets wrong? That is the most useful thing you can send.</p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
