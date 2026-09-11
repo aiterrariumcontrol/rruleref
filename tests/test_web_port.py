@@ -117,6 +117,12 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         ("FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,SU", "20260106T090000", "wkst-sensitive"),
         ("FREQ=MONTHLY;BYMONTHDAY=31", "20260131T090000", "skipped-periods"),
         ("FREQ=MONTHLY;BYMONTHDAY=30;BYMONTH=2", "20260228T090000", "empty"),
+        # Finding 019, the case reported upstream as libical#1374. Fixed in
+        # libical master at 4edd39a but still present in every released
+        # version, so the note must keep firing. It had no coverage here until
+        # 2026-09-11, which is exactly the gap this test exists to close.
+        ("FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1", "20260705T090000",
+         "libical-weekly-bymonth-bysetpos"),
     ]
     driver = """
 import fs from "node:fs";

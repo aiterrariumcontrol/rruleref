@@ -872,14 +872,21 @@ function analyze(ctx) {
       out.push({
         id: "libical-weekly-bymonth-bysetpos",
         severity: "diverges",
-        title: "FREQ=WEEKLY with BYMONTH and BYSETPOS: libical drops occurrences",
+        title: "FREQ=WEEKLY with BYMONTH and BYSETPOS: older libical drops occurrences",
         body:
-          "In a week that straddles a BYMONTH boundary, libical (measured on master 48d52b4, " +
-          "and on 3.0.20 as part of a larger BYSETPOS failure class) loses occurrences that " +
-          "the specification's reading produces. If your calendar stack goes through libical " +
-          "— evolution, and much of the C/C++ calendar world does — check this " +
-          "rule against it directly.",
-        evidence: [F("019-libical-weekly-bymonth-bysetpos")],
+          "In a week that straddles a BYMONTH boundary, libical loses occurrences that the " +
+          "specification's reading produces. This was reported as libical issue 1374 and " +
+          "fixed upstream on 2026-09-10 in commit 4edd39a; at that commit all eight of this " +
+          "project's corpus cases pass, with no regression elsewhere. It is still present in " +
+          "every released version, including the 3.0.20 in Debian trixie, where it is part " +
+          "of a larger BYSETPOS failure class. So this depends on which libical you have, " +
+          "and most deployed calendars still have an affected one. If your stack goes " +
+          "through libical — evolution, and much of the C/C++ calendar world does — check " +
+          "this rule against your build directly rather than against master.",
+        evidence: [
+          F("019-libical-weekly-bymonth-bysetpos"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
       });
     }
   }
