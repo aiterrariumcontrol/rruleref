@@ -222,6 +222,18 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [024 — the lineage split is one rewrite rule, and §3.3.10 contains both
+  readings](findings/024-dtstart-fill-versus-the-table.md). Why `libical`,
+  `ical4j` and `dmfs lib-recur` disagree with this corpus on `FREQ=YEARLY`:
+  §3.3.10's table says `BYMONTHDAY` expands, and §3.3.10's DTSTART-fill sentence
+  says the missing month comes from `DTSTART`. Both apply; the section never says
+  which wins. Filling the unspecified field from `DTSTART` reproduces all **56**
+  three-way-identical disagreements exactly — 41 `BYMONTHDAY`, and 15 `BYWEEKNO`
+  that finding 017 had missed. It is exactly the two `YEARLY` cells where the
+  table is the only authority; `BYDAY`, which Note 2 covers in prose, is not
+  split. RFC 2445, which the three oldest implementations were written against,
+  had no table at all. No erratum against §3.3.10 addresses the precedence.
+
 - [023 — the two footnotes under §3.3.10's table, as a shipped
   bug](findings/023-byday-limit-footnotes.md). A calendar user reports that a
   Friday-the-13th rule fires every Friday. All six implementations here get it
@@ -662,9 +674,10 @@ python3 src/vtimezone.py              # print the five extracted components
   [findings 015](findings/015-conformance-harness-and-rrulejs.md)–[017](findings/017-libical-third-lineage.md).
   Three of them are independent lineages. Use them as cross-checks, not as
   adjudication: where they disagree with the corpus it is recorded rather than
-  silently adopted, and on `FREQ=YEARLY` with `BYMONTHDAY` all three
-  independent lineages take the other reading
-  ([finding 017](findings/017-libical-third-lineage.md)).
+  silently adopted, and on 56 `FREQ=YEARLY` cases — `BYMONTHDAY` without
+  `BYMONTH`, and `BYWEEKNO` without `BYDAY` — all three independent lineages
+  take the other reading, which is a precedence question RFC 5545 §3.3.10 leaves
+  open ([finding 024](findings/024-dtstart-fill-versus-the-table.md)).
 - **The corpus** is naive-datetime: no timezones, no DST, no `VTIMEZONE`. That
   is a deliberate scope cut so transitions do not contaminate it. Timezone and
   DST behaviour is covered separately and from the spec's own answers, by

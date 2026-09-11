@@ -1,0 +1,33 @@
+{
+  "by_shape": {
+    "bymonthday": {
+      "disagreed": 0,
+      "reproduced": 41
+    },
+    "byweekno": {
+      "disagreed": 0,
+      "reproduced": 15
+    }
+  },
+  "cases_scored": 1721,
+  "misses": [],
+  "model": {
+    "disagreed": 0,
+    "out_of_shape": 0,
+    "reproduced": 56
+  },
+  "shapes": {
+    "FREQ=YEARLY BYDAY,BYMONTHDAY": 8,
+    "FREQ=YEARLY BYDAY,BYMONTHDAY,BYSETPOS": 1,
+    "FREQ=YEARLY BYMONTHDAY": 32,
+    "FREQ=YEARLY BYWEEKNO": 15
+  },
+  "superset": {
+    "disagreed": 0,
+    "identical_and_agreeing_with_corpus": 5,
+    "not_identical": 49,
+    "reproduced": 61,
+    "shape_total": 110
+  },
+  "three_way_identical_disagreements": 56
+}

@@ -67,8 +67,16 @@ passes 89 of the 90 cases in the three fixed classes.
 
 Scoring three implementations against the corpus and asking where **all three
 fail and return the identical answer** gives **41 cases**. Every one of them is
-`FREQ=YEARLY` with `BYMONTHDAY`. No other rule family produces three-way
-agreement against the corpus at all.
+`FREQ=YEARLY` with `BYMONTHDAY`. ~~No other rule family produces three-way
+agreement against the corpus at all.~~
+
+> **Correction, 2026-09-11.** That last sentence is wrong, and the 41 is an
+> undercount. Recomputing the same query finds **56** three-way-identical
+> disagreements: these 41, plus **15 `FREQ=YEARLY;BYWEEKNO` cases with no
+> `BYDAY`** that this finding missed. The count is 56 under both libical builds
+> scored here, so the omission was mine and not a build difference.
+> [Finding 024](024-dtstart-fill-versus-the-table.md) has both clusters, and
+> explains them with a single rewrite rule.
 
 ```
 FREQ=YEARLY;BYMONTHDAY=15   DTSTART:20260115T090000
@@ -95,6 +103,12 @@ is not covered by it. But the sentence generalises: three independent lineages
 have converged on limiting where the table says expand, and at least one of them
 did so with the table in front of them. This does not adjudicate the split. It
 does mean the split is a choice the ecosystem made, not an accident of descent.
+
+**Since resolved as a precedence question, not a disagreement about the table.**
+[Finding 024](024-dtstart-fill-versus-the-table.md) identifies the competing
+sentence — §3.3.10's DTSTART-fill clause, which names `BYMONTHDAY` and `BYMONTH`
+— shows that RFC 2445 had no table at all, and reproduces all 56 cases exactly
+from it.
 
 ## What survives in master, unexplained
 

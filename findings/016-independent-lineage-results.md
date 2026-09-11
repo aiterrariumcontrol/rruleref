@@ -109,7 +109,7 @@ RFC 5545 fixes an application order (line 2418) — `BYMONTH`, `BYWEEKNO`,
 
 `FREQ=WEEKLY;BYDAY=MO,SA;BYMONTH=7` returning a Monday in June is therefore not
 a neutral violation: `BYDAY` expands for `WEEKLY` and is applied *after*
-`BYMONTH`, so this is [finding 004](004-weekly-bysetpos-first-period.md)'s
+`BYMONTH`, so this is [finding 004](004-bysetpos-first-period-truncation.md)'s
 disputed reading, arrived at from the other side. Likewise `BYYEARDAY` combined
 with `BYMONTHDAY` under `YEARLY`: both expand, the later one can add dates the
 earlier excludes, and "intersect" is a reading rather than a requirement.

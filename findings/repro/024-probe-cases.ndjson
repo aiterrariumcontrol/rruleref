@@ -1,0 +1,10 @@
+{"id":"P1-bymd-jan","rrule":"FREQ=YEARLY;BYMONTHDAY=15","dtstart":"20260115T090000","limit":6}
+{"id":"P2-bymd-mar","rrule":"FREQ=YEARLY;BYMONTHDAY=15","dtstart":"20260315T090000","limit":6}
+{"id":"P3-byday-jan","rrule":"FREQ=YEARLY;BYDAY=MO","dtstart":"20260105T090000","limit":6}
+{"id":"P4-byday-mar","rrule":"FREQ=YEARLY;BYDAY=TU","dtstart":"20260303T090000","limit":6}
+{"id":"P5-bymd-list","rrule":"FREQ=YEARLY;BYMONTHDAY=15,20","dtstart":"20260315T090000","limit":6}
+{"id":"P6-bymd-neg","rrule":"FREQ=YEARLY;BYMONTHDAY=-1","dtstart":"20260131T090000","limit":6}
+{"id":"P7-ctl-byhour","rrule":"FREQ=YEARLY;BYHOUR=9,10","dtstart":"20260305T090000","limit":6}
+{"id":"P8-ctl-bymonth","rrule":"FREQ=YEARLY;BYMONTHDAY=15;BYMONTH=3","dtstart":"20260315T090000","limit":4}
+{"id":"P9-byday-signed","rrule":"FREQ=YEARLY;BYDAY=2MO","dtstart":"20260112T090000","limit":4}
+{"id":"P10-byyearday","rrule":"FREQ=YEARLY;BYYEARDAY=200","dtstart":"20260719T090000","limit":3}

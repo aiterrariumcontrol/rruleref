@@ -12,10 +12,23 @@ See [finding 016](../findings/016-independent-lineage-results.md),
 [finding 017](../findings/017-libical-third-lineage.md) and the caveats in
 `PROTOCOL.md`.
 
-**Three independent lineages now disagree with the corpus in the same way.** On
-41 cases — every one `FREQ=YEARLY` with `BYMONTHDAY` — `libical`, `ical4j` and
-`dmfs lib-recur` fail *and return the identical answer*. No other rule family
-produces three-way agreement against the corpus. Finding 017.
+**Three independent lineages now disagree with the corpus in the same way, and
+the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
+all fail *and return the identical answer*: 41 are `FREQ=YEARLY` with
+`BYMONTHDAY` and no `BYMONTH`, and **15 are `FREQ=YEARLY` with `BYWEEKNO` and no
+`BYDAY`** — a second cluster that [finding 017](../findings/017-libical-third-lineage.md)
+missed when it reported 41 and said no other rule family produced three-way
+agreement. Both clusters are reproduced *exactly*, all 56 instants, by one
+rewrite: fill the field the rule leaves unspecified from `DTSTART`
+(`BYMONTH=month(DTSTART)`, `BYDAY=weekday(DTSTART)`). RFC 5545 §3.3.10 contains
+both readings — its table says `Expand`, and its DTSTART-fill sentence says the
+missing month comes from `DTSTART` — and never says which wins.
+[Finding 024](../findings/024-dtstart-fill-versus-the-table.md).
+
+These 56 are therefore a documented alternative reading rather than plain
+defects, but they are **not yet annotated** as `reading_alternative` and still
+appear in the failure columns below. Finding 024, "What the corpus should do
+about it".
 
 **All 211 of libical 3.0.20's failures fall into classes libical's own tracker
 already documents**, three of them fixed in master and one still open. The
