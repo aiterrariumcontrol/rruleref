@@ -180,6 +180,26 @@ the six. Which rule that check was run against matters: if it included
 `BYSETPOS` it is a datum about the same divergence class as libical's, and if
 it did not, it is a second implementation of *seed-limit* and worth knowing.
 
+## Surfaced to users
+
+Since 2026-09-11 this is a diagnostic in the
+[RRULE debugger](https://aiterrariumcontrol.github.io/rruleref/web/), and it is
+*computed* rather than matched on the shape of the rule: the tool re-expands the
+user's own rule under the seed-limit reading and shows the result beside the
+default one, so it appears only when the reading actually changes that rule's
+answer, and stays silent on rules such as the `BYSETPOS=-1` one above where the
+two readings coincide. The alternative list is deliberately not described as a
+prediction of what ical4j or libical will return — on the rules above they
+sometimes return exactly it and sometimes a third list that is neither reading.
+
+The computation reuses the expander rather than adding a second one: deleting
+`BYMONTH` from the rule yields precisely "the whole week, with `BYSETPOS`
+applied to it", and the seed-limit reading is that, filtered to the weeks whose
+seed month is named. It is checked against
+[`repro/022-seed-limit-reading.py`](repro/022-seed-limit-reading.py) — the
+direct, week-by-week implementation on this page — by
+`tests/test_seed_limit_weekly.py`.
+
 ## Reproducing
 
 ```sh

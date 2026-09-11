@@ -773,7 +773,7 @@ __M['src/diagnostics.js'] = (() => {
 //     measured. Where it cannot be computed from the rule alone, the note says
 //     which implementations were tested and does not generalise past them.
 
-const { expand, parse, parts, fmt, weekday, DAYS } = __M['src/naive.js'];
+const { expand, parse, parts, fmt, weekday, weekStart, fromOrd, DAYS } = __M['src/naive.js'];
 const F = (name) => ({
   label: `finding ${name.slice(0, 3)}`,
   url: `https://github.com/aiterrariumcontrol/rruleref/blob/main/findings/${name}.md`,
@@ -799,6 +799,48 @@ function sameList(a, b) {
 }
 function tryExpand(rrule, dtstart, opts) {
   try { return expand(rrule, dtstart, opts); } catch { return null; }
+}
+
+/** Rebuild an RRULE string with the named parts removed. */
+function withoutParts(rrule, keys) {
+  return rrule.split(";")
+    .filter((c) => c && !keys.includes(c.split("=")[0].trim().toUpperCase()))
+    .join(";");
+}
+
+/**
+ * Finding 022's *seed-limit* reading of RFC 5545 3.3.10, for FREQ=WEEKLY.
+ *
+ * 3.3.10 applies BYMONTH before BYDAY, and for FREQ=WEEKLY BYMONTH is a limit
+ * while BYDAY is an expand -- so BYMONTH runs while "the current set of
+ * evaluated occurrences" is still the single DTSTART-derived seed for the
+ * week. Under that reading BYMONTH selects *weeks*, by the month of their
+ * seed; a selected week is then expanded by BYDAY across the whole week,
+ * including into months BYMONTH does not name.
+ *
+ * That is computed here by re-expanding the rule with BYMONTH deleted -- which
+ * is exactly "the week, unrestricted, with BYSETPOS applied to it" -- and then
+ * keeping only the occurrences whose week's seed falls in a named month.
+ * COUNT and UNTIL are deleted first and reapplied afterwards, because they are
+ * evaluated after BYSETPOS and would otherwise be spent on filtered-out weeks.
+ */
+function seedLimitWeekly(r, rrule, dtstart, limit) {
+  if (!("BYMONTH" in r) || !("BYDAY" in r) || r.FREQ !== "WEEKLY") return null;
+  const inner = Math.min(4000, limit * 12 + 60);
+  const alt = tryExpand(withoutParts(rrule, ["BYMONTH", "COUNT", "UNTIL"]),
+                        dtstart, { limit: inner });
+  if (!alt) return null;
+  const iv = r.INTERVAL, stride = 7 * iv;
+  const dsOrd = parts(dtstart).ord;
+  const dsWeek = weekStart(dsOrd, r.WKST);
+  const months = new Set(r.BYMONTH);
+  const kept = alt.filter((t) => {
+    const n = Math.floor((weekStart(parts(t).ord, r.WKST) - dsWeek) / stride);
+    return months.has(fromOrd(dsOrd + n * stride)[1]);
+  });
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  return (until === null ? kept : kept.filter((t) => t <= until)).slice(0, cap);
 }
 
 /**
@@ -913,6 +955,62 @@ function analyze(ctx) {
           F("019-libical-weekly-bymonth-bysetpos"),
           { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
         ],
+      });
+    }
+  }
+
+  // --- FREQ=WEEKLY: what does BYMONTH limit? ----------------------------
+  // Finding 022. Computed, not syntactic: the seed-limit expansion is built
+  // and compared, so this fires only on rules the reading actually changes.
+  if (r.FREQ === "WEEKLY" && has("BYMONTH") && has("BYDAY")) {
+    const alt = seedLimitWeekly(r, rrule, dtstart, limit);
+    const k = alt ? Math.min(alt.length, occurrences.length) : 0;
+    const differs = k > 0 && !sameList(alt.slice(0, k), occurrences.slice(0, k));
+    if (differs) {
+      const dropsDtstart = occurrences[0] === dtstart && alt[0] !== dtstart;
+      const named = r.BYMONTH.map((m) => MONTHS[m - 1]).join(", ");
+      out.push({
+        id: "weekly-bymonth-seed-limit",
+        severity: has("BYSETPOS") ? "diverges" : "note",
+        title: "FREQ=WEEKLY with BYMONTH: two readings of what BYMONTH limits",
+        body:
+          "RFC 5545 3.3.10 applies BYMONTH before BYDAY, and under FREQ=WEEKLY BYMONTH " +
+          "limits while BYDAY expands — so BYMONTH runs before the week has become days. " +
+          "What it limits is not stated. On one reading it restricts the instants the week " +
+          `finally yields, so nothing outside ${named} survives; that is the list above. On ` +
+          "the other it applies to the single DTSTART-derived seed of each week, selecting " +
+          "whole weeks, which BYDAY then expands across the week — " +
+          `including into months outside ${named}. That is the list beside it.` +
+          (has("BYSETPOS")
+            ? " Your rule has BYSETPOS, which is where the readings have been seen to part " +
+              "company in shipped code. python-dateutil 2.9.0.post0, rrule.js and dmfs " +
+              "lib-recur 0.17.1 produce the list above. ical4j 4.1.1 and libical master do " +
+              "not: on some rules of this shape each returns exactly the seed-limit list, " +
+              "and on others a third list that is neither reading, so the alternative here " +
+              "is not a prediction of what they will do with your rule. It is what the " +
+              "other reading of 3.3.10 would cost, computed on your rule. This is a " +
+              "separate question from the released-libical defect noted above, which is a " +
+              "bug in versions rather than a disagreement about the text."
+            : " Without BYSETPOS this is a reading question rather than a measured split: " +
+              "all six implementations this project runs — including libical master and " +
+              "ical4j 4.1.1 — produce the list above. The other reading is shown because it " +
+              "was argued for on libical issue 1374 by a maintainer, and because the price " +
+              "of it is visible beside your own rule rather than in the abstract.") +
+          (dropsDtstart
+            ? " Note what the seed-limit list costs here: DTSTART itself is not in it. " +
+              "RFC 5545 3.8.5.3 says DTSTART defines the first instance of the recurrence " +
+              "set, and excuses an implementation only when DTSTART is not synchronised " +
+              "with the rule — which is itself decided by whichever reading you take."
+            : ""),
+        evidence: [
+          F("022-weekly-bymonth-ordering"),
+          RFC5545("3.3.10", "3.3.10"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
+        compare: {
+          label: "seed-limit reading — BYMONTH selects whole weeks by the month of their seed",
+          occurrences: show(alt),
+        },
       });
     }
   }
