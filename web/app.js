@@ -3,6 +3,7 @@ import { violations, NOT_CHECKED } from "./src/validity.js";
 import { analyze } from "./src/diagnostics.js";
 import { parseInput } from "./src/icalinput.js";
 import { why, parseQuery, resolveQuery } from "./src/why.js";
+import { describe } from "./src/describe.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -139,6 +140,34 @@ function noteBox(note) {
 
 // --- the date explainer ---------------------------------------------------
 
+/**
+ * "Is this what you meant?" -- the rule as one English sentence.
+ *
+ * Shown above the dates, because it is the thing a reader can check against
+ * their own intention without reading a list of timestamps. The qualifying
+ * notes are kept visually separate from the headline: the headline is the
+ * rule, the notes are the parts of the behaviour the rule does not state.
+ *
+ * What makes this safe to show is not the wording but
+ * `tests/test_describe.py`, which requires that no two corpus rules with
+ * different occurrences ever get the same sentence.
+ */
+function sayIt(rrule, r, ds) {
+  const box = $("say-out");
+  let d;
+  try { d = describe(r, rrule, ds.t, { dateOnly: ds.dateOnly }); }
+  catch { return; }
+  const art = el("article", "say");
+  art.appendChild(el("h2", "say-head", d.headline));
+  const notes = d.clauses.filter((c) => c.kind === "note" || c.kind === "stop");
+  if (notes.length) {
+    const ul = el("ul", "say-notes");
+    for (const c of notes) ul.appendChild(el("li", null, c.text));
+    art.appendChild(ul);
+  }
+  box.appendChild(art);
+}
+
 function whyBox(w) {
   const box = el("article", "why " + (w.status === "occurrence" ? "yes"
     : w.status === "inconsistent" ? "broken" : "no"));
@@ -235,6 +264,7 @@ function run() {
   const errBox = $("error"), notes = $("notes"), result = $("result");
   errBox.hidden = true; errBox.textContent = "";
   notes.textContent = ""; result.textContent = ""; $("why-out").textContent = "";
+  $("say-out").textContent = "";
 
   // Anything the input parser read and set aside is said before the dates, not
   // after them. A caveat under the answer is a caveat the reader has already
@@ -279,6 +309,7 @@ function run() {
     return;
   }
 
+  sayIt(rrule, r, ds);
   runWhy(rrule, ds, r);
 
   // Count what is on the page before the divergence notes, so the "nothing

@@ -102,6 +102,63 @@ Asking about a bare date when the rule works in times of day resolves to a
 time on that day — the one the rule's parts point at, or `DTSTART`'s — and the
 answer says which, because it is then about an instant you did not type.
 
+## Saying the rule back to you
+
+Above the dates, the rule appears as one English sentence:
+
+```
+FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1     DTSTART:20260802T090000
+
+  Every week, but only in August, on Sunday and Tuesday, and then only the
+  last of the times that week produces.
+  · Nothing in the rule fixes the hour, minute and second, so they stay at
+    DTSTART's: hour 09, minute 00 and second 00.
+  · Repeats forever.
+```
+
+This is not a new idea — `rrule.js` has shipped `toText()` for years — but a
+rendering is only useful if you can trust it to be complete, and completeness
+is the thing these are usually not checked for. Over this repository's 1613
+distinct corpus rules, `rrule.js` reports 1583 as fully convertible to text,
+and among those, 301 rules fall into 35 groups where two rules with
+**different occurrence sets** are given the identical sentence — compared from
+one common `DTSTART` of `20260101T090000`, since "the same rule" is only a
+meaningful question once they start from the same place. Rerun it yourself
+with [`../tools/measure_totext.py`](../tools/measure_totext.py). The shortest
+example:
+
+```
+FREQ=DAILY;BYHOUR=9,8              -> "every day at 9 and 8"   (twice a day)
+FREQ=DAILY;BYHOUR=9,8;BYSETPOS=-1  -> "every day at 9 and 8"   (once a day)
+```
+
+A sentence that cannot tell those apart cannot be used to settle an argument
+about `BYSETPOS`, which is exactly what someone tried to use one for on
+[libical/libical#1374](https://github.com/libical/libical/issues/1374). None of
+this is a defect report against `rrule.js`: this corpus was built to exercise
+RFC 5545 §3.3.10 and is far denser in `BYSETPOS` and `BYWEEKNO` than ordinary
+calendar data, and `toText()` was written for the ordinary kind.
+
+So the description here is built around a property that can be checked rather
+than admired. [`../tests/test_describe.py`](../tests/test_describe.py) requires,
+over every corpus case:
+
+* **injectivity** — if two rules get the same sentence from the same
+  `DTSTART`, they must have the same expansion, as computed by the expander
+  itself;
+* **coverage** — every `RRULE` part present in the text is claimed by some
+  clause, and no clause claims a part the rule does not state.
+
+Neither property says the English reads well; you have to judge that. They say
+it is not quietly incomplete, which is the failure that makes a description
+worse than no description.
+
+The bullets under the sentence are deliberately separate from it. They are the
+parts of the behaviour the rule does **not** state — the components inherited
+from `DTSTART`, a `WKST` that cannot change anything, the weekday a
+`FREQ=WEEKLY` rule takes from `DTSTART` without saying so. Those are the
+commonest surprises, and they are not in the rule text to be read.
+
 ## Running it
 
 Any static file server. ES modules will not load over `file://`.
