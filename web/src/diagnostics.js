@@ -281,9 +281,15 @@ export function analyze(ctx) {
 
   // --- FREQ=YEARLY: expand over the year, or inherit from DTSTART? ------
   // RFC 5545 3.3.10's table classes BYMONTHDAY and BYWEEKNO as Expand for
-  // YEARLY. Two implementations sharing no code (ical4j 4.1.1, dmfs lib-recur
-  // 0.17.1) instead inherit the unspecified component from DTSTART. This was
-  // the largest single failure family in both.
+  // YEARLY. Three implementations sharing no code (libical, ical4j 4.1.1, dmfs
+  // lib-recur 0.17.1) instead inherit the unspecified component from DTSTART.
+  // This was the largest single failure family in all three.
+  //
+  // This said "two" until 2026-09-11, which was written before libical was
+  // adapted and never revisited. Finding 017 had already counted three: 41
+  // BYMONTHDAY cases where all three agree against the corpus, and a check of
+  // the BYWEEKNO branch adds 15 of 42. Undercounting mattered because the
+  // whole point of the sentence is how much weight the other reading carries.
   if (r.FREQ === "YEARLY") {
     let pinKey = null, pinVal = null, what = null;
     if (has("BYMONTHDAY") && !has("BYMONTH")) {
@@ -306,15 +312,18 @@ export function analyze(ctx) {
           title: `FREQ=YEARLY with ${pinKey === "BYMONTH" ? "BYMONTHDAY" : "BYWEEKNO"}: two readings, and both are in use`,
           body:
             `Under FREQ=YEARLY, ${what} RFC 5545 3.3.10's table classifies this part as ` +
-            "“Expand”, which is the left-hand answer, and it is what python-dateutil " +
-            "and rrule.js produce. ical4j 4.1.1 and dmfs lib-recur 0.17.1 — two " +
-            "implementations that share no code — both produce the right-hand answer " +
-            "instead. Whether that is a defect in two libraries or a widely-taken pragmatic " +
-            "reading of an awkward table is not settled. If it matters to you, say so " +
-            `explicitly by adding ${pinKey} to the rule.`,
-          evidence: [F("016-independent-lineage-results"), RFC5545("3.3.10", "3.3.10")],
+            "“Expand”, which is the left-hand answer. python-dateutil and rrule.js " +
+            "produce it, but those two are one lineage: rrule.js is a documented port. " +
+            "Three implementations that share no code with it or with each other — " +
+            "libical, ical4j 4.1.1 and dmfs lib-recur 0.17.1 — produce the right-hand " +
+            "answer instead, and a libical maintainer has argued in public for reading " +
+            "these parts as limiting each other. Whether that is a defect in three " +
+            "libraries or a widely-taken pragmatic reading of an awkward table is not " +
+            `settled. If it matters to you, say so explicitly by adding ${pinKey} to the rule.`,
+          evidence: [F("016-independent-lineage-results"), F("017-libical-third-lineage"),
+                     RFC5545("3.3.10", "3.3.10")],
           compare: {
-            label: `component inherited from DTSTART (ical4j / lib-recur reading, shown here by pinning ${pinKey}=${pinVal})`,
+            label: `component inherited from DTSTART (the libical / ical4j / lib-recur reading, shown here by pinning ${pinKey}=${pinVal})`,
             occurrences: show(alt),
           },
         });

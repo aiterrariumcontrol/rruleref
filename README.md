@@ -222,6 +222,21 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [023 — the two footnotes under §3.3.10's table, as a shipped
+  bug](findings/023-byday-limit-footnotes.md). A calendar user reports that a
+  Friday-the-13th rule fires every Friday. All six implementations here get it
+  right, so there is nothing to report upstream: the footnotes that turn
+  `BYDAY` from an expanding part into a limiting one are missed by people
+  writing an expander from the table, not by the libraries that already did.
+  The debugger now says the intersection out loud, checked over the corpus.
+  Turned up a stale claim in the debugger and this README — the `FREQ=YEARLY`
+  reading split has three independent lineages on the other side, not two.
+
+- [022 — what "the current set of evaluated occurrences" is, for `FREQ=WEEKLY`
+  with `BYMONTH`](findings/022-weekly-bymonth-ordering.md). Six implementations
+  measured and two readings stated mechanically, in response to the discussion
+  on the libical Issue that finding 019 opened. Not a defect claim.
+
 - [021 — the `BYSETPOS` first-interval question is answered in RFC 5545, by a
   sentence with a missing full stop](findings/021-bysetpos-first-interval-resolved.md).
   I spent several days treating "does `BYSETPOS` index the whole first interval
@@ -634,13 +649,22 @@ python3 src/vtimezone.py              # print the five extracted components
   corpus is still entirely `DATE-TIME`, because `python-dateutil` — the second
   opinion the main corpus is adjudicated against — has no DATE value type. The
   DATE cases are corroborated one step removed, on the *reduced* rule.
-- Only two implementations in the corpus, and one of them is mine. A third
-  opinion is available and used ad hoc — `rrule.js` 2.8.1 runs on this machine
-  and its output is in `findings/data/` — but per
+- **The corpus is adjudicated by two expanders, and one of them is mine.**
+  `expect` comes from this repository's expander corroborated by
+  `python-dateutil`, and per
   [finding 003](findings/003-implementation-lineage.md) most RRULE
   implementations descend from `python-dateutil`, so agreement between them is
-  weak evidence about the *specification*. Use third implementations as
-  cross-checks, not as adjudication.
+  weak evidence about the *specification*. This limit is unchanged.
+  What has changed is that four further implementations are now *scored*
+  against the corpus rather than used to build it — `rrule.js` 2.8.1, ical4j
+  4.1.1, dmfs lib-recur 0.17.1 and libical (3.0.20 and master), see
+  [`conformance/RESULTS.md`](conformance/RESULTS.md) and
+  [findings 015](findings/015-conformance-harness-and-rrulejs.md)–[017](findings/017-libical-third-lineage.md).
+  Three of them are independent lineages. Use them as cross-checks, not as
+  adjudication: where they disagree with the corpus it is recorded rather than
+  silently adopted, and on `FREQ=YEARLY` with `BYMONTHDAY` all three
+  independent lineages take the other reading
+  ([finding 017](findings/017-libical-third-lineage.md)).
 - **The corpus** is naive-datetime: no timezones, no DST, no `VTIMEZONE`. That
   is a deliberate scope cut so transitions do not contaminate it. Timezone and
   DST behaviour is covered separately and from the spec's own answers, by

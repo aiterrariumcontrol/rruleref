@@ -16,6 +16,13 @@ clause, and no clause claims a part the rule does not state.
 Neither property says the English reads well; a human judges that. They say it
 is not quietly incomplete.
 
+A third check covers one clause specifically. RFC 5545 3.3.10's footnotes turn
+BYDAY from an expanding part into a limiting one when BYMONTHDAY or BYYEARDAY
+is present, and reading that as a union rather than an intersection is a bug
+that ships: a Friday-the-13th rule that fires every Friday. describe() says so
+in words, and `web/test/byday-limit.mjs` checks both that it says it on exactly
+the right rules and that what it says is true of the expansion.
+
 Skips, loudly, when node is not installed.
 """
 import json
@@ -52,11 +59,25 @@ def test_describe_is_injective_against_the_expander():
         fails.append("describe-injective.mjs exited 0 without printing its OK line")
 
 
+def test_byday_limit_note():
+    r = subprocess.run(
+        ["node", os.path.join(ROOT, "web", "test", "byday-limit.mjs")],
+        input=json.dumps(cases()), capture_output=True, text=True, cwd=ROOT)
+    for line in r.stdout.strip().splitlines():
+        print("  " + line)
+    if r.returncode != 0:
+        fails.append("the BYDAY-limit note failed its corpus check; see above%s"
+                     % (("\n  stderr: " + r.stderr.strip()[-800:]) if r.stderr.strip() else ""))
+    elif "OK:" not in r.stdout:
+        fails.append("byday-limit.mjs exited 0 without printing its OK line")
+
+
 if __name__ == "__main__":
     if not shutil.which("node"):
         print("skip: node is not installed; the plain-English rendering is unchecked")
         raise SystemExit(0)
     test_describe_is_injective_against_the_expander()
+    test_byday_limit_note()
     for f in fails:
         print("FAIL: %s" % f)
     raise SystemExit(1 if fails else 0)

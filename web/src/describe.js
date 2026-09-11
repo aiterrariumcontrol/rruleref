@@ -176,6 +176,30 @@ export function describe(r, rrule, dtstart = null, opts = {}) {
   }
   if (present.has("BYDAY")) {
     restrict(`on ${and(r.BYDAY.map((v) => bydayTerm(v, freq, present.has("BYMONTH"))))}`, "BYDAY");
+    // BYDAY beside BYMONTHDAY or BYYEARDAY is the one place the table in
+    // 3.3.10 turns an expanding part into a limiting one (its Notes 1 and 2),
+    // and a comma-separated list of restrictions reads as a union to anyone
+    // who has not memorised that table. Reading it as a union is a mistake
+    // that ships: it is what makes a Friday-the-13th rule fire on every
+    // Friday. Say the intersection out loud.
+    const limiters = ["BYMONTHDAY", "BYYEARDAY"].filter(
+      (k) => present.has(k) && (k === "BYMONTHDAY" ? freq === "MONTHLY" || freq === "YEARLY"
+                                                   : freq === "YEARLY"));
+    if (limiters.length) {
+      // With BYSETPOS the narrowed set is then selected from, so "only
+      // removes" would be false of the output: dropping BYDAY changes which
+      // member BYSETPOS lands on. The claim that survives either way is about
+      // the candidate set, so say which one applies.
+      note(`BYDAY narrows here rather than adding. With ${and(limiters)} present, `
+         + `RFC 5545 section 3.3.10 makes BYDAY limit rather than expand: it contributes `
+         + `no dates of its own, `
+         + (present.has("BYSETPOS")
+            ? `it only narrows the dates ${and(limiters)} chose, and BYSETPOS then selects `
+              + `from what is left — so a change to BYDAY can move which date is picked.`
+            : `and only removes ones ${and(limiters)} already chose, so a date has to `
+              + `satisfy both.`),
+           "BYDAY", ...limiters);
+    }
   } else if (freq === "WEEKLY" && dtstart) {
     // The rule pins the weekday even though it never mentions one.
     restrict(`on ${DAYNAMES[DAYS[weekday(parts(dtstart).ord)]]}`, "FREQ");
