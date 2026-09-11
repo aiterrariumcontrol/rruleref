@@ -72,12 +72,16 @@ def select(cases):
             "limit": limit,
             "expect": c["expect"],
             "expect_bound": bound,
-            # Finding 018: `expect` is one reading of 3.3.10's first period.
-            # When the two readings differ, an implementation matching
-            # `reading_alternative` is not wrong, it chose the other one, and
-            # score.py counts it separately. Absent means the readings agree
-            # (or the rule has no BYSETPOS and the question does not arise).
-            **({"reading_alternative": c["reading_alternative"]}
+            # `expect` is one reading of 3.3.10. Where a rival reading of the
+            # same text gives a different answer, the corpus records that
+            # answer too, by name, and an implementation matching one is not
+            # wrong -- it chose the other reading, and score.py counts it
+            # separately. Two are known: `first_period_truncated` (finding 018,
+            # BYSETPOS and the first period) and `dtstart_fill` (finding 024,
+            # the two YEARLY cells where the expand/limit table is the sole
+            # authority and leaves a coarser field to DTSTART). Absent means
+            # the readings coincide here, or none applies.
+            **({"reading_alternatives": c["reading_alternatives"]}
                if c.get("reading_dependent") else {}),
         }
 

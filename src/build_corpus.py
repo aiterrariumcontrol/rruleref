@@ -110,6 +110,78 @@ def _other_reading(rule, ds, n):
             expand(rule, ds, limit=n, truncate_first_period=True)][:n]
 
 
+WEEKDAY = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
+
+
+def _dtstart_fill_rewrite(rule, ds):
+    """The rival reading of 3.3.10 written as a source-to-source rewrite, or
+    None when the rule is not one of the two shapes it applies to.
+
+    Finding 024. In exactly two YEARLY cells the expand/limit table is the sole
+    authority *and* leaves a coarser date field unspecified, and 3.3.10's own
+    DTSTART-fill sentence then says where that field comes from. The table says
+    expand; the sentence says the field is already determined. Neither says
+    which wins, and three independent lineages (libical, ical4j, dmfs
+    lib-recur) behave exactly as if the field had been filled from DTSTART:
+
+        FREQ=YEARLY + BYMONTHDAY, no BYMONTH  ->  add BYMONTH=month(DTSTART)
+        FREQ=YEARLY + BYWEEKNO,   no BYDAY    ->  add BYDAY=weekday(DTSTART)
+
+    BYDAY under YEARLY is the same collision, but Note 2 spells it out in prose
+    and all six implementations expand it -- which is why this is a rewrite of
+    two cells and not of a column.
+    """
+    parts = dict(p.split("=", 1) for p in rule.split(";") if "=" in p)
+    if parts.get("FREQ") != "YEARLY":
+        return None
+    if "BYMONTHDAY" in parts and "BYMONTH" not in parts:
+        return rule + ";BYMONTH=%d" % ds.month
+    if "BYWEEKNO" in parts and "BYDAY" not in parts:
+        return rule + ";BYDAY=" + WEEKDAY[ds.weekday()]
+    return None
+
+
+def _dtstart_fill_reading(rule, ds, n):
+    """The first `n` occurrences under the DTSTART-fill reading, or None.
+
+    Two conditions beyond the shape, both deliberately conservative:
+
+      * the rewritten rule must survive the same corroboration the corpus
+        demands of everything else -- naive and dateutil agreeing on it. An
+        alternative reading recorded on one expander's word would be weaker
+        evidence than the `expect` it sits next to.
+      * it must yield exactly `n` occurrences. The DTSTART-fill reading fires
+        strictly less often, so it can run out inside the expander's horizon
+        where `expect` did not, and a shorter list is not "the same answer read
+        differently" -- it is an artifact of a cap I chose (and an adapter,
+        which has no horizon, would not produce it).
+    """
+    if n == 0:
+        return None
+    alt_rule = _dtstart_fill_rewrite(rule, ds)
+    if alt_rule is None:
+        return None
+    if compare(alt_rule, ds, n) is not None:
+        return None
+    occ = expand(alt_rule, ds, limit=n)[:n]
+    if len(occ) != n:
+        return None
+    return [fmt(x) for x in occ]
+
+
+def _readings(rule, ds, n, expect):
+    """Every alternative reading of 3.3.10 that gives this case a *different*
+    answer, by name. Empty dict means the readings coincide here (or none of
+    them applies), which is the common case and is not the same as the question
+    not existing."""
+    out = {}
+    for name, alt in (("first_period_truncated", _other_reading(rule, ds, n)),
+                      ("dtstart_fill", _dtstart_fill_reading(rule, ds, n))):
+        if alt is not None and alt != expect:
+            out[name] = alt
+    return out
+
+
 def record(rule, ds, cell, agreed, disputed, seen):
     """Adjudicate one (rule, DTSTART) and file it. Returns False if a duplicate."""
     if (rule, ds) in seen:
@@ -133,18 +205,19 @@ def record(rule, ds, cell, agreed, disputed, seen):
     if diff is None:
         occ = expand(rule, ds, limit=N)[:N]
         exp = [fmt(x) for x in occ]
-        # Does `expect` depend on which reading of 3.3.10's first period the
-        # builder took? Both expanders agreeing does not answer this: they
-        # share the reading. Finding 018. `alt` is the *other* reading's
-        # answer, recorded so a consumer can see both rather than inherit
-        # mine silently.
-        alt = _other_reading(rule, ds, len(occ))
+        # Does `expect` depend on which reading of 3.3.10 the builder took?
+        # Both expanders agreeing does not answer this: they share the
+        # reading. `alts` maps each rival reading that would give a *different*
+        # answer to that answer, so a consumer can see both rather than inherit
+        # mine silently. Two are known: the first-period question (finding 018)
+        # and the DTSTART-fill question (finding 024).
+        alts = _readings(rule, ds, len(occ), exp)
         agreed.append({
             "rrule": rule,
             "dtstart": fmt(ds),
             "expect": exp,
             "expect_bound": expect_bound(rule, ds, occ),
-            "reading_dependent": alt is not None and alt != exp,
+            "reading_dependent": bool(alts),
             "dtstart_synchronized": synced,
             "rule_valid": rule_valid,
             "cells": cells,
@@ -152,8 +225,8 @@ def record(rule, ds, cell, agreed, disputed, seen):
             "systematic_for": cell,
             "corroborated_by": ["naive-bruteforce", "python-dateutil-2.9.0"],
         })
-        if agreed[-1]["reading_dependent"]:
-            agreed[-1]["reading_alternative"] = alt
+        if alts:
+            agreed[-1]["reading_alternatives"] = alts
     else:
         mine, theirs = diff
         disputed.append({

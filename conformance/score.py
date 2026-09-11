@@ -8,11 +8,12 @@ stdin and writes one JSON object per line on stdout. See PROTOCOL.md.
 
 Scoring is deliberately blunt: a case passes only if the adapter's occurrence
 list equals `expect` exactly. The one exception is bookkeeping, not leniency:
-a mismatch that equals the case's `reading_alternative` is reported as
-`fail_other_reading`, because the corpus knows that case has two defensible
-answers and recorded one of them (finding 018). Read a failure as "this implementation and this
-corpus disagree", not as "this implementation is wrong" -- the corpus can be
-wrong too, and has been (findings 001, 009, 014 are all defects of mine).
+a mismatch that equals one of the case's `reading_alternatives` is reported as
+`fail_other_reading`, because the corpus knows that case has more than one
+defensible answer and recorded one of them as `expect` (findings 018 and 024).
+Read a failure as "this implementation and this corpus disagree", not as "this
+implementation is wrong" -- the corpus can be wrong too, and has been (findings
+001, 009, 014 are all defects of mine).
 """
 import json, os, sys, subprocess, argparse, collections
 
@@ -44,6 +45,16 @@ def run(adapter, cases, timeout):
     return out, p.stderr
 
 
+def _matching_reading(case, got):
+    """The name of the rival reading this answer is, or None. Deterministic
+    when more than one matches: the names are compared in sorted order, so a
+    rescore of the same data names the same reading."""
+    for name, occ in sorted(case.get("reading_alternatives", {}).items()):
+        if got == occ:
+            return name
+    return None
+
+
 def score(cases, replies):
     res = collections.Counter()
     failures = []
@@ -64,13 +75,15 @@ def score(cases, replies):
             continue
         if got == c["expect"]:
             res["pass"] += 1
-        elif got == c.get("reading_alternative"):
-            # Not a defect claim. The case is reading-dependent (finding 018)
-            # and this implementation took the reading the corpus did not.
+        elif _matching_reading(c, got):
+            # Not a defect claim. The case is reading-dependent and this
+            # implementation took a reading of 3.3.10 the corpus did not.
             # Counted apart from `fail` so a bare failure count cannot be read
-            # as a defect count.
+            # as a defect count. The reading is named rather than merely
+            # counted, because "some other reading" is not a checkable claim.
             res["fail_other_reading"] += 1
-            failures.append((c, r, "other reading of 3.3.10 first period"))
+            failures.append((c, r, "other reading of 3.3.10: %s"
+                             % _matching_reading(c, got)))
         else:
             res["fail"] += 1
             failures.append((c, r, "mismatch"))
@@ -97,6 +110,13 @@ def main(argv=None):
     for k in ("pass", "fail", "fail_other_reading", "error", "missing", "malformed"):
         if res[k]:
             print("  %-9s %5d  (%5.1f%%)" % (k, res[k], 100.0 * res[k] / total))
+    # Which rival reading, not merely how many. "Some other reading" is not a
+    # checkable claim; "41 cases read BYMONTHDAY under YEARLY as limiting" is.
+    by_reading = collections.Counter(
+        _matching_reading(c, r["occurrences"])
+        for c, r, w in failures if r and w.startswith("other reading"))
+    for name, n in sorted(by_reading.items()):
+        print("      %-24s %5d" % (name, n))
     by_bound = collections.Counter(c["expect_bound"] for c, _, _ in failures)
     if by_bound:
         print("failures by expect_bound: %s" % dict(by_bound))
@@ -110,6 +130,7 @@ def main(argv=None):
         print("\n  ... %d more" % (len(failures) - a.show))
     if a.json:
         json.dump({"adapter": adapter, "counts": dict(res),
+                   "by_reading": dict(by_reading),
                    "failures": [{"case": c, "reply": r, "why": w} for c, r, w in failures]},
                   open(a.json, "w"), indent=1, sort_keys=True)
         print("\nfull result -> %s" % a.json)

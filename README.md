@@ -233,6 +233,10 @@ conformance case, and even then see the caveat on (2).
   table is the only authority; `BYDAY`, which Note 2 covers in prose, is not
   split. RFC 2445, which the three oldest implementations were written against,
   had no table at all. No erratum against §3.3.10 addresses the precedence.
+  The corpus now records this as a named alternative reading, `dtstart_fill`,
+  and [`conformance/RESULTS.md`](conformance/RESULTS.md) scores a match as
+  `fail_other_reading`: `ical4j`'s plain failures fall 253 → 195, `libical`
+  master's 79 → 22, `dmfs lib-recur`'s 76 → 13. No pass count moved.
 
 - [023 — the two footnotes under §3.3.10's table, as a shipped
   bug](findings/023-byday-limit-footnotes.md). A calendar user reports that a
@@ -286,8 +290,9 @@ conformance case, and even then see the caveat on (2).
 - [017 — libical, a third lineage and the oldest](findings/017-libical-third-lineage.md).
   `icalrecur.c` predates dateutil's `rrule`; 3.0.20 scores 1510/1721 and master
   1599. 41 cases where libical, ical4j and lib-recur all fail *identically*,
-  every one `FREQ=YEARLY` with `BYMONTHDAY`. See finding 018 for what its
-  closing section got wrong.
+  every one `FREQ=YEARLY` with `BYMONTHDAY`. Both of those closing claims were
+  wrong: see finding 018 for the dismissal it should not have made, and finding
+  024 for the count, which is 56 rather than 41.
 - [016 — the first results from implementations that are not `python-dateutil`](findings/016-independent-lineage-results.md).
   ical4j 4.1.1 and dmfs lib-recur 0.17.1, neither descended from dateutil,
   **agree with each other and disagree with the dateutil lineage** on

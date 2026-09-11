@@ -66,20 +66,26 @@ credit and no tolerance.
 * `count` / `horizon` — the corpus knows only a **prefix**. `limit` is
   `len(expect)`, and nothing is asserted about what comes after.
 
-## `reading_alternative`, and why some failures are not defects
+## `reading_alternatives`, and why some failures are not defects
 
-Some cases carry a `reading_alternative` field. Those are the ones where
-`expect` depends on which reading of RFC 5545 §3.3.10 you take for the period
-containing `DTSTART` — see `reading_dependent` in
-[`../corpus/SCHEMA.md`](../corpus/SCHEMA.md) and finding 018. The corpus
-recorded one reading; `reading_alternative` is the list the other reading
-produces.
+Some cases carry a `reading_alternatives` field: a map from the name of a rival
+reading of RFC 5545 §3.3.10 to the occurrence list that reading produces. The
+corpus recorded one reading as `expect` and these are the others. See
+`reading_dependent` in [`../corpus/SCHEMA.md`](../corpus/SCHEMA.md). Two
+readings are named today:
 
-`score.py` compares against `expect` first. A mismatch that equals
-`reading_alternative` is reported as **`fail_other_reading`** and counted
-separately from `fail`. That is a disagreement about the specification, not
-evidence of a bug, and it should not be added to a defect count. Adapters need
-do nothing with the field; only the scorer reads it.
+* **`first_period_truncated`** — whether `BYSETPOS` indexes the whole period
+  containing `DTSTART` or that period cut at `DTSTART` (findings 004, 018).
+* **`dtstart_fill`** — whether, in the two `YEARLY` cells where §3.3.10's
+  expand/limit table is the sole authority and leaves a coarser field
+  unspecified, that field is expanded over or filled from `DTSTART`
+  (finding 024).
+
+`score.py` compares against `expect` first. A mismatch that equals one of these
+is reported as **`fail_other_reading`**, counted separately from `fail`, and
+broken down by reading name. That is a disagreement about the specification,
+not evidence of a bug, and it should not be added to a defect count. Adapters
+need do nothing with the field; only the scorer reads it.
 
 ## What a failure means
 

@@ -173,15 +173,39 @@ and checkable if it is ever wanted.
 
 ## What the corpus should do about it
 
-Nothing yet, deliberately. [Finding 018](018-reading-dependence-of-the-corpus.md)
-added `reading_alternative`, and `score.py` reports a matching failure as
-`fail_other_reading` rather than `fail`. On the evidence here these 56 cases are
-the strongest candidate in the project for that annotation: three independent
-lineages, a named sentence of the specification, and an exact model. Annotating
-them would move 56 cases out of the failure columns for `libical`, `ical4j` and
-`dmfs lib-recur` — a visible change to every published score — and so it needs
-the corpus regenerated and all six implementations rescored in one pass, not a
-hand edit. Recorded as the next step; the corpus reading is unchanged until then.
+**Done, 2026-09-11.** [Finding 018](018-reading-dependence-of-the-corpus.md)
+had added a single `reading_alternative` field for one rival reading. That slot
+could not hold this one as well — 15 corroborated cases carry *both* questions —
+so the field is now `reading_alternatives`, a map from the name of a rival
+reading to the answer it gives. Two are named: `first_period_truncated` (018)
+and `dtstart_fill` (this finding). `score.py` reports a match as
+`fail_other_reading` and says which reading. See
+[`../corpus/SCHEMA.md`](../corpus/SCHEMA.md) and
+[`../conformance/PROTOCOL.md`](../conformance/PROTOCOL.md).
+
+Three things about how it was applied are worth stating, because each of them
+could have made the result circular or too generous:
+
+* **Shape-selected, not failure-selected.** Every corroborated case of the two
+  shapes was expanded under the rewrite, not only the cases observed to fail.
+  201 of 3813 carry the reading; 28 more have it coincide with `expect`.
+* **The rewritten rule has to clear the same bar as everything else.** Both
+  expanders must agree on it, or nothing is recorded.
+* **And it has to yield a full `len(expect)` occurrences.** The `dtstart_fill`
+  reading fires strictly less often, so it can run out inside the builder's
+  ~30-year horizon where `expect` did not, and a list cut short by a cap I chose
+  is not the same answer read differently. 175 shape-matching cases are left
+  unannotated by that rule alone.
+
+The corpus reading of every case is unchanged; `expect` did not move and no pass
+count moved. What moved is how many of the *remaining* cases are called defects:
+`ical4j` 253 → 195, `libical` master `4edd39a3` 79 → 22, `dmfs lib-recur`
+76 → 13. The three lineages do not land on the annotation identically (58, 57
+and 60 respectively), and the set where all three do is exactly **56** — this
+finding's count, re-derived through the scorer rather than through the model
+script below. Released `libical` 3.0.20 scores only 41, because it rejects 9 of
+the `BYWEEKNO` rules as `MALFORMEDDATA` and answers 7 more in a third way.
+[`../conformance/RESULTS.md`](../conformance/RESULTS.md) has the full table.
 
 ## Reproduce
 

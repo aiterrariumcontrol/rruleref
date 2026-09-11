@@ -25,13 +25,32 @@ both readings — its table says `Expand`, and its DTSTART-fill sentence says th
 missing month comes from `DTSTART` — and never says which wins.
 [Finding 024](../findings/024-dtstart-fill-versus-the-table.md).
 
-These 56 are therefore a documented alternative reading rather than plain
-defects, but they are **not yet annotated** as `reading_alternative` and still
-appear in the failure columns below. Finding 024, "What the corpus should do
-about it".
+**Those 56 are now annotated, and every number below moved.** The corpus
+records the `dtstart_fill` reading beside `expect` on 65 of these cases, and
+`score.py` reports an implementation matching it as `fail_other_reading` rather
+than `fail` — see [`PROTOCOL.md`](PROTOCOL.md) and
+[`../corpus/SCHEMA.md`](../corpus/SCHEMA.md). No pass count changed; what
+changed is how many of the remaining cases are being called defects.
+`ical4j`'s plain failures fall 253 → 195, `libical` master `4edd39a3`'s 79 → 22,
+and `dmfs lib-recur`'s 76 → 13.
 
-**All 211 of libical 3.0.20's failures fall into classes libical's own tracker
-already documents**, three of them fixed in master and one still open. The
+The annotation is **shape-selected, not failure-selected**: it is applied to
+every corroborated case of the two shapes where the rewritten rule is itself
+corroborated by both expanders, not to the cases that were observed to fail. So
+the three lineages landing on it is a result rather than a restatement — and
+independently, the set of cases where `ical4j`, `dmfs lib-recur` and `libical`
+`4edd39a3` **all** score `dtstart_fill` is exactly **56**, reproducing finding
+024's count through the scorer instead of through its model script.
+
+They do not land on it identically. `ical4j` scores 58, `dmfs lib-recur` 60,
+both `libical` master builds 57, and released `libical` 3.0.20 only 41. All 16
+of that last gap are `BYWEEKNO` rules: `3.0.20` rejects 9 of them outright as
+`MALFORMEDDATA`, and answers the other 7 in a third way that is neither
+reading. An error is not a reading, and the recurrence rewrite between 3.0 and
+master is exactly where one would expect this to move.
+
+**All 211 of libical 3.0.20's non-passing cases fall into classes libical's own
+tracker already documents**, three of them fixed in master and one still open. The
 corpus reproduced a stranger's known-issue list without being told it existed,
 and found nothing outside it. Finding 017.
 
@@ -44,26 +63,33 @@ invalid; finding 018 is the retraction.
 
 **Those eight are now fixed upstream.** Reported as libical/libical#1374; fixed
 by commit `4edd39a` ("BYSETPOS issue fix", #1387). Retested 2026-09-11 over the
-whole corpus: 8 fixed, 0 regressions, 1599 → 1607 pass. The remaining 79 are
-`FREQ=YEARLY` shapes. Finding 019, "Retest".
+whole corpus: 8 fixed, 0 regressions, 1599 → 1607 pass. The remaining
+non-passing cases are `FREQ=YEARLY` shapes, and 57 of them are now scored as
+the other reading rather than as failures. Finding 019, "Retest".
 
-`score.py` now reports a failure that matches the case's `reading_alternative`
-as `fail_other_reading` rather than `fail` (finding 018, and
-[`PROTOCOL.md`](PROTOCOL.md)). It fires exactly once so far: **3 of dmfs
-lib-recur's 76 non-passing cases are not defects**, they are the other reading
-of §3.3.10's first period. `rrule.js`, `ical4j` and both `libical` builds have
-none — every failure they have is reading-independent, which is a stronger
-statement about those failures than I could make yesterday.
+`score.py` reports a failure that matches one of a case's `reading_alternatives`
+as `fail_other_reading` rather than `fail`, broken down by which reading
+(finding 018 for `first_period_truncated`, finding 024 for `dtstart_fill`, and
+[`PROTOCOL.md`](PROTOCOL.md)). **`rrule.js` is now the only implementation here
+with no reading-dependent failures at all** — every failure it has is a
+disagreement about behaviour rather than about the text.
 
-| implementation | version | lineage | pass | of | other reading | date |
-|---|---|---|---:|---:|---:|---|
-| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 1721 | 0 | 2026-09-07 |
-| `rrule.js` | 2.8.1 | port of dateutil | 1695 | 1721 | 0 | 2026-09-08 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 1721 | 0 | 2026-09-08 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 1721 | 3 | 2026-09-08 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 1721 | not rerun | 2026-09-07 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 1721 | 0 | 2026-09-08 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 1721 | 0 | 2026-09-11 |
+All rows rescored 2026-09-11 against the annotated corpus. `pass` is unchanged
+from the previous run of each; annotation only moves cases between `fail` and
+`other reading`.
+
+| implementation | version | lineage | pass | fail | other reading | error |
+|---|---|---|---:|---:|---:|---:|
+| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 0 | 0 | 0 |
+| `rrule.js` | 2.8.1 | port of dateutil | 1695 | 26 | 0 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 195 | 58 | 0 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 13 | 63 | 8 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 30 | 57 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 22 | 57 | 35 |
+
+Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
+`dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
