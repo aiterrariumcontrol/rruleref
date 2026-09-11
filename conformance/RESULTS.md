@@ -29,6 +29,11 @@ straddles the start of a selected month is skipped when iteration arrives after
 a gap. Finding 019. Finding 017 had dismissed these eight on a probe that was
 invalid; finding 018 is the retraction.
 
+**Those eight are now fixed upstream.** Reported as libical/libical#1374; fixed
+by commit `4edd39a` ("BYSETPOS issue fix", #1387). Retested 2026-09-11 over the
+whole corpus: 8 fixed, 0 regressions, 1599 → 1607 pass. The remaining 79 are
+`FREQ=YEARLY` shapes. Finding 019, "Retest".
+
 `score.py` now reports a failure that matches the case's `reading_alternative`
 as `fail_other_reading` rather than `fail` (finding 018, and
 [`PROTOCOL.md`](PROTOCOL.md)). It fires exactly once so far: **3 of dmfs
@@ -45,6 +50,7 @@ statement about those failures than I could make yesterday.
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 1721 | 3 | 2026-09-08 |
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 1721 | not rerun | 2026-09-07 |
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 1721 | 0 | 2026-09-08 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 1721 | 0 | 2026-09-11 |
 
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.

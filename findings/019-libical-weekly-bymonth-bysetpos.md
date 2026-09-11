@@ -1,9 +1,13 @@
 # 019 — libical loses occurrences in the week that straddles a BYMONTH boundary
 
-**Status:** Open. Reproduced against libical master, unreported, and
-**unauthorized to report**. REQ-0007 asked for permission to post it upstream
-and was answered NEEDS_INFO on 2026-09-08; the evidence was revised in response
-(see "Correction" below) and re-submitted as REQ-0008. Nothing is authorized.
+**Status:** **Resolved upstream.** Reported as
+[libical/libical#1374](https://github.com/libical/libical/issues/1374) under
+REQ-0008, and fixed by libical commit `4edd39a` ("BYSETPOS issue fix", #1387).
+Retested 2026-09-11: all five reproducer cases pass on both expansion paths and
+all eight corpus cases are fixed with no regression. See "Retest" at the end.
+(History: REQ-0007 asked for permission to post it upstream and was answered
+NEEDS_INFO on 2026-09-08; the evidence was revised in response — see
+"Correction" below — and re-submitted as REQ-0008, which was approved.)
 
 **Date:** 2026-09-07, revised 2026-09-08.
 **Affects:** libical master `48d52b4`, built from source; also present in
@@ -153,3 +157,62 @@ finding 004's contested choice. What they do rest on is the ordering of
 `BYMONTH` before `BYSETPOS`, which §3.3.10 states directly. If that reading of
 the ordering is wrong, all eight are mine and finding 018's retraction of 017
 still stands on its own.
+
+## Retest: fixed upstream at `4edd39a` (2026-09-11)
+
+libical commit
+[`4edd39a34a7b67ca6ab68667c84ac19ae890dd43`](https://github.com/libical/libical/commit/4edd39a34a7b67ca6ab68667c84ac19ae890dd43)
+("BYSETPOS issue fix (#1387)") **resolves every case in this finding.** Built
+from source with the same options as `48d52b4`.
+
+The five-case reproducer now passes on both expansion paths — the `RRULE`
+iterator and `icalcomponent_foreach_recurrence` over a `VEVENT`:
+
+```
+0 of 5 cases differ from the expected set.
+```
+
+Full output: [`repro/019-output-4edd39a.txt`](repro/019-output-4edd39a.txt).
+
+**The reproducer was confirmed still able to fail.** The same binary run
+against the `48d52b4` shared library reports `3 of 5 cases differ`, so the pass
+is a property of the new library and not of a broken build.
+
+### Corpus: eight fixed, nothing regressed
+
+| | `48d52b4` | `4edd39a` |
+|---|---|---|
+| pass | 1599 | **1607** |
+| fail | 87 | **79** |
+| error | 35 | 35 |
+
+Compared case by case over all 1721 cases: **8 fixed, 0 regressions**, and no
+case that still fails changed its answer. The eight are exactly the eight this
+finding named — every `FREQ=WEEKLY` failure libical had:
+
+```
+FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1                  DTSTART:20260802T090000
+FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1        DTSTART:20270101T090000
+FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1                DTSTART:20260705T090000
+FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1        DTSTART:20260402T090000
+FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1                   DTSTART:20260902T090000
+FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1    DTSTART:20270307T090000
+FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1     DTSTART:20270904T090000
+FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1                DTSTART:20260102T090000
+```
+
+The remaining 79 failures are `FREQ=YEARLY` shapes (`BYWEEKNO`, `BYDAY` with
+`BYMONTHDAY`) that this finding never covered and that the fix did not touch.
+
+### The ordering question from finding 022 is answered in passing
+
+Finding [022](022-weekly-bymonth-ordering.md) recorded that on the probe cases
+libical matched **neither** reading of §3.3.10 — case `Q2`
+(`FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;BYMONTH=7;BYSETPOS=-1`, `DTSTART:20260703T090000`),
+where both readings coincide, returned `20270709` where both predicted
+`20270702`. At `4edd39a` it returns `20270702`.
+
+Re-run of all six probe cases at `4edd39a`: libical now agrees with
+python-dateutil, rrule.js, dmfs lib-recur and this project's expander on all
+six. ical4j still differs on `P3` and `Q1`; that is the *seed-limit* reading
+and is a separate, pre-existing divergence unaffected by this fix.
