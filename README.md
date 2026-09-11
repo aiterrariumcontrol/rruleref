@@ -222,6 +222,16 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [025 — §3.3.10 contradicts itself about nonexistent local times, and a Verified
+  errata decides it](findings/025-nonexistent-local-time-errata.md). §3.3.10 says
+  an instance at a nonexistent local time `MUST be ignored`, and 110 lines later
+  says it is localized per §3.3.5 — shifted forward through the gap and kept.
+  **Errata ID 4271, status Verified**, splits the paragraph: an invalid date like
+  30 February is still dropped, a gap local time is shifted and *counted*. So the
+  two now differ in `COUNT`. This corrects [finding 006](findings/006-dst-gap-and-repeat-instances.md),
+  whose conclusion was right but which quoted only one of the two sentences and
+  called the question settled.
+
 - [024 — the lineage split is one rewrite rule, and §3.3.10 contains both
   readings](findings/024-dtstart-fill-versus-the-table.md). Why `libical`,
   `ical4j` and `dmfs lib-recur` disagree with this corpus on `FREQ=YEARLY`:
@@ -345,9 +355,11 @@ conformance case, and even then see the caveat on (2).
   program from a hashed RFC copy; 42/42 expansions match for both expanders, 20
   of them across a DST transition. The single anomaly is Verified Errata 3883.
 - [006 — recurrence instances that land in a DST gap or repeat](findings/006-dst-gap-and-repeat-instances.md).
-  Not a defect report. §3.3.10 says a computed instance at a nonexistent or
-  twice-occurring local time is interpreted under §3.3.5; 30 assertions across
-  four zones confirm both expanders do that. Records two counterintuitive but
+  Not a defect report. A computed instance at a nonexistent or twice-occurring
+  local time is interpreted under §3.3.5 — per one sentence of §3.3.10 and, after
+  [finding 025](findings/025-nonexistent-local-time-errata.md), per Verified
+  errata 4271 rather than the body text, which contradicts itself here; 30
+  assertions across four zones confirm both expanders do that. Records two counterintuitive but
   spec-mandated consequences for `FREQ=HOURLY`. Its appendix asks whether two
   instances that coincide in real time are "duplicate instances" under §3.8.5
   and concludes that **the RFC does not say** — it never defines when two

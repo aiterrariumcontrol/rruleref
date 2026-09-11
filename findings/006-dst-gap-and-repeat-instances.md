@@ -6,6 +6,13 @@ specification on all 15 constructed cases, in four time zones.
 checked and conformant.
 **Test:** `tests/test_dst_recurrence.py` (30 assertions, run it directly).
 
+> **Correction, 2026-09-11 ([finding 025](025-nonexistent-local-time-errata.md)).**
+> The section below claims §3.3.10 "settles the question completely" in one
+> quoted sentence. It does not: §3.3.10 *also* says a nonexistent local time
+> `MUST be ignored`, 110 lines earlier. The conclusion reached here is correct,
+> but the authority for it is RFC 5545 **errata ID 4271 (Verified)**, not the
+> body text. See finding 025.
+
 ## The gap this closes
 
 Finding 005 added the project's first timezone coverage by running RFC 5545
