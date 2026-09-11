@@ -32,6 +32,10 @@
       </div>
     </div>
     <div class="field">
+      <label for="cmp">Compare with <span class="hint">optional — a second rule, to see exactly what an edit changed</span></label>
+      <input id="cmp" name="cmp" type="text" spellcheck="false" placeholder="FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3">
+    </div>
+    <div class="field">
       <label for="why">Explain one date <span class="hint">optional — why is this date in the list, or missing from it?</span></label>
       <input id="why" name="why" type="text" spellcheck="false" placeholder="20260227">
     </div>
@@ -44,11 +48,13 @@
       <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=31" data-d="20260131T090000">the 31st</button>
       <button type="button" class="ex" data-r="FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE" data-d="20201230T090000">week 53</button>
       <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=19" data-d="20240301T190000" data-w="20240302T193000">why is 19:30 missing?</button>
+      <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=9,17" data-d="20260105T090000" data-c="FREQ=DAILY;BYHOUR=9">what did that edit drop?</button>
     </div>
   </form>
 
   <div id="error" class="error" hidden></div>
   <section id="say-out" aria-live="polite"></section>
+  <section id="cmp-out" aria-live="polite"></section>
   <section id="why-out" class="notes" aria-live="polite"></section>
   <section id="notes" class="notes" aria-live="polite"></section>
   <section id="result"></section>

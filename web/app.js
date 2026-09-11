@@ -4,6 +4,7 @@ import { analyze } from "./src/diagnostics.js";
 import { parseInput } from "./src/icalinput.js";
 import { why, parseQuery, resolveQuery } from "./src/why.js";
 import { describe } from "./src/describe.js";
+import { compareRules, summarize } from "./src/compare.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -28,6 +29,7 @@ function readHash() {
   if (p.get("dtstart")) $("dtstart").value = p.get("dtstart");
   if (p.get("limit")) $("limit").value = p.get("limit");
   if (p.get("why")) $("why").value = p.get("why");
+  if (p.get("cmp")) $("cmp").value = p.get("cmp");
 }
 function writeHash() {
   const fields = {
@@ -38,6 +40,7 @@ function writeHash() {
   // Only carried when it is asked, so an ordinary expansion still shares as a
   // short link.
   if ($("why").value.trim()) fields.why = $("why").value.trim();
+  if ($("cmp").value.trim()) fields.cmp = $("cmp").value.trim();
   const p = new URLSearchParams(fields);
   history.replaceState(null, "", "#" + p.toString());
 }
@@ -243,6 +246,72 @@ function runWhy(rrule, ds, r) {
   box.appendChild(whyBox(w));
 }
 
+// --- comparing two rules ---------------------------------------------------
+
+/**
+ * "What did that edit actually do?"
+ *
+ * A schedule picker that round-trips a rule through a simplified model can
+ * hand back a different rule, and both look like reasonable RRULEs; the user
+ * finds out when a run does not happen. This box answers it in dates.
+ *
+ * The qualification carried in `summarize()` is not decoration. Both
+ * expansions stop at the occurrence count asked for, so a comparison that ran
+ * past the earlier of the two last occurrences would report the more frequent
+ * rule as gaining dates it does not gain. See `tests/test_compare.py`.
+ */
+function dateColumn(title, occ, cls, dateOnly) {
+  const col = el("div", "cmp-col " + cls);
+  col.appendChild(el("h4", null, title));
+  const list = el("div", "cmp-dates");
+  for (const t of occ.slice(0, 24)) {
+    const p = parts(t);
+    list.appendChild(el("code", null,
+      `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}` +
+      (dateOnly ? "" : ` ${String(p.h).padStart(2, "0")}:${String(p.mi).padStart(2, "0")}`)));
+  }
+  if (occ.length > 24) list.appendChild(el("span", "more", `…and ${occ.length - 24} more`));
+  col.appendChild(list);
+  return col;
+}
+
+function runCompare(a, ds, limit) {
+  const box = $("cmp-out");
+  box.textContent = "";
+  const raw = $("cmp").value.trim();
+  if (!raw) return;
+  const other = (parseInput(raw).rrule || raw).replace(/^RRULE:/i, "").trim();
+  let b, c;
+  try {
+    b = parse(other);
+    c = compareRules(a, b, ds.t, { limit, maxSteps: 8e6 });
+  } catch (e) {
+    const bad = el("article", "cmp bad");
+    bad.appendChild(el("h3", null, "The second rule could not be expanded"));
+    bad.appendChild(el("p", null, String(e.message || e)));
+    box.appendChild(bad);
+    return;
+  }
+  const art = el("article", "cmp " + (c.same ? "cmp-same" : "cmp-diff"));
+  const sum = summarize(c, (t) => {
+    const p = parts(t);
+    return `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+  });
+  art.appendChild(el("h2", null, sum.headline));
+  for (const n of sum.notes) art.appendChild(el("p", null, n));
+  if (!c.same) {
+    const cols = el("div", "cmp-cols");
+    if (c.onlyA.length) cols.appendChild(dateColumn("Dropped", c.onlyA, "dropped", ds.dateOnly));
+    if (c.onlyB.length) cols.appendChild(dateColumn("Added", c.onlyB, "added", ds.dateOnly));
+    art.appendChild(cols);
+  }
+  art.appendChild(el("p", "cmp-foot",
+    "Both rules are expanded from the same DTSTART — the one above. A second " +
+    "DTSTART in anything pasted here is ignored, because two rules starting at " +
+    "different instants are not the same edit."));
+  box.appendChild(art);
+}
+
 // --- the run --------------------------------------------------------------
 
 // DTSTART is derived-and-overridable: a paste that carries one fills the box,
@@ -264,7 +333,7 @@ function run() {
   const errBox = $("error"), notes = $("notes"), result = $("result");
   errBox.hidden = true; errBox.textContent = "";
   notes.textContent = ""; result.textContent = ""; $("why-out").textContent = "";
-  $("say-out").textContent = "";
+  $("say-out").textContent = ""; $("cmp-out").textContent = "";
 
   // Anything the input parser read and set aside is said before the dates, not
   // after them. A caveat under the answer is a caveat the reader has already
@@ -310,6 +379,7 @@ function run() {
   }
 
   sayIt(rrule, r, ds);
+  runCompare(r, ds, limit);
   runWhy(rrule, ds, r);
 
   // Count what is on the page before the divergence notes, so the "nothing
@@ -369,7 +439,7 @@ const autosize = () => {
   t.style.height = "auto";
   t.style.height = Math.min(t.scrollHeight + 2, 340) + "px";
 };
-for (const id of ["rrule", "dtstart", "limit", "why"]) $(id).addEventListener("input", schedule);
+for (const id of ["rrule", "dtstart", "limit", "why", "cmp"]) $(id).addEventListener("input", schedule);
 $("rrule").addEventListener("input", autosize);
 $("form").addEventListener("submit", (e) => { e.preventDefault(); run(); });
 for (const b of document.querySelectorAll(".ex")) {
@@ -379,6 +449,7 @@ for (const b of document.querySelectorAll(".ex")) {
     // An example may carry the question it is an example of; otherwise a
     // question about the previous rule is not about this one.
     $("why").value = b.dataset.w || "";
+    $("cmp").value = b.dataset.c || "";
     lastDerived = null;      // the example owns both boxes now
     run();
     autosize();

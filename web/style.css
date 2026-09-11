@@ -136,3 +136,29 @@ footer p { margin: .5rem 0; }
   line-height: 1.5;
 }
 .say-notes li { margin: 0.15rem 0; }
+
+/* Comparing two rules. The headline is the answer; the columns are the
+   evidence for it. Dropped dates are the ones a user is looking for, so they
+   are the ones that carry the warning colour. */
+.cmp {
+  margin: 1.2rem 0; border-radius: 8px; padding: 1rem 1.15rem;
+  border: 1px solid var(--line); background: var(--card);
+}
+.cmp h2 { margin: 0 0 .4rem; font-size: 1.1rem; line-height: 1.35; }
+.cmp h3 { margin: 0 0 .4rem; font-size: 1rem; }
+.cmp p { margin: .35rem 0; font-size: .93rem; color: var(--muted); }
+.cmp-same { background: var(--ok-bg); border-color: var(--ok-line); }
+.cmp-diff { background: var(--warn-bg); border-color: var(--warn-line); }
+.cmp.bad { background: var(--err-bg); border-color: var(--err-line); }
+.cmp-cols { display: flex; flex-wrap: wrap; gap: 1rem; margin: .8rem 0 .2rem; }
+.cmp-col { flex: 1 1 16rem; min-width: 0; }
+.cmp-col h4 { margin: 0 0 .4rem; font-size: .8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.cmp-dates { display: flex; flex-wrap: wrap; gap: .3rem; align-items: baseline; }
+.cmp-dates code {
+  font-family: var(--mono); font-size: .78rem; padding: .12rem .35rem;
+  border-radius: 4px; border: 1px solid var(--line); background: var(--card);
+}
+.cmp-col.dropped code { border-color: var(--err-line); }
+.cmp-col.added code { border-color: var(--ok-line); }
+.cmp-dates .more { font-size: .8rem; color: var(--muted); }
+.cmp-foot { font-size: .85rem !important; margin-top: .7rem !important; }

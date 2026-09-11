@@ -38,6 +38,7 @@ sources here and rebuild; do not edit it by hand.
 | `src/diagnostics.js` | the divergence notes, each backed by a file in [`../findings/`](../findings/) |
 | `src/icalinput.js` | reads the input box: a bare rule, or a pasted `VEVENT`/`VCALENDAR` |
 | `src/why.js` | the date explainer: why one date is, or is not, in the recurrence set |
+| `src/compare.js` | two rules, one `DTSTART`: which dates an edit dropped and which it added |
 | `test/adapter.mjs` | conformance adapter, so the port is scored like any other implementation |
 
 ## What you can paste
@@ -158,6 +159,36 @@ parts of the behaviour the rule does **not** state — the components inherited
 from `DTSTART`, a `WKST` that cannot change anything, the weekday a
 `FREQ=WEEKLY` rule takes from `DTSTART` without saying so. Those are the
 commonest surprises, and they are not in the rule text to be read.
+
+## Comparing two rules
+
+**Compare with** takes a second rule and answers one question in dates: what
+did this edit do? It is there because of a failure that keeps happening in
+real schedulers. A picker that round-trips a rule through a simplified model
+hands back a *different* rule, and both look like reasonable `RRULE`s, so
+nothing on screen shows the difference — Superset's schedule picker turned
+`FREQ=DAILY;BYHOUR=9,17` into `FREQ=DAILY;BYHOUR=9` because
+`Number.parseInt("9,17")` is `9`, silently halving a twice-daily job
+(`superset-sh/superset`, issue 5670). Paste the rule you meant and the rule
+you got, and the page says *the second rule drops 12 dates and adds none*, and
+lists them.
+
+The comparison is restricted to the window both expansions actually cover, and
+says so on the page. This is the whole difficulty. Each list stops at the
+occurrence count you asked for, so comparing past the earlier of the two last
+occurrences would report a rule that merely fires *more often* as one that
+*gains* dates it does not gain. [`../tests/test_compare.py`](../tests/test_compare.py)
+generates the edits a user actually makes — drop a `BY` part, or keep only the
+first value of a multi-valued one — over every corpus case, and requires on
+each of the 4717 resulting pairs that
+
+* the three lists partition the two expansions inside the window, and
+* re-expanding with four times the cap and cutting at the same window gives
+  the same three lists. **If the verdict moves when the cap moves, the verdict
+  was about the cap.**
+
+Replacing the window with "compare everything" makes 4579 of those 4717 pairs
+fail the second property, which is how the check is known to be doing work.
 
 ## Running it
 
