@@ -1,0 +1,25 @@
+1. The DTSTART fill, in the two branches RFC 5545 §3.3.10 leaves open
+
+   FREQ=YEARLY;BYMONTHDAY=-1  DTSTART 2026-03-31
+     2026-03-31 2027-03-31 2028-03-31 2029-03-31
+     (all March: BYMONTH filled from DTSTART, not expanded)
+
+   FREQ=YEARLY;BYWEEKNO=-2,-1  DTSTART 2026-12-21 (a Monday)
+     2026-12-21 2026-12-28 2027-12-20 2027-12-27
+     (all Mondays: BYDAY filled from DTSTART, not expanded over the week)
+     ISO 2026 has 53 weeks and 2027 has 52, and both are counted from the
+     end correctly, so this is the fill and not a week-arithmetic bug.
+
+2. The same fill, crashing, when the filled day does not exist
+
+   FREQ=MONTHLY;BYMONTH=11,12  DTSTART 2026-12-31
+     ERROR: Can't call method "is_infinite" on an undefined value at /usr/share/perl5/DateTime/Event/Recurrence.pm line 822.
+   FREQ=MONTHLY;BYMONTH=11,12  DTSTART 2026-12-30
+     2026-12-30 2027-11-30 2027-12-30
+
+   BYMONTHDAY is filled with day-of-month 31 from DTSTART; November has
+   no 31st; the resulting set is undefined and the iterator dies.
+   This is the smallest reproducer of the crash site, not the whole
+   story: 65 corpus cases die at Recurrence.pm line 822, and only 8 of
+   them have a selected day that cannot exist. The other 57 share the
+   crash site with a different route to an undefined set.

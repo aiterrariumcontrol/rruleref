@@ -71,7 +71,8 @@ decidable from the recorded window.
 
 Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
 `rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur
-0.17.1 1637, `sabre/vobject` 4.6.1 831, all of 1721. **A failure means the implementation and this corpus disagree, not that
+0.17.1 1637, `sabre/vobject` 4.6.1 831, `DateTime::Event::ICal` 0.13 1176, all
+of 1721. **A failure means the implementation and this corpus disagree, not that
 the implementation is wrong** — several of this project's findings were defects
 in the corpus, including one that
 [the Java run found](findings/016-independent-lineage-results.md).
@@ -99,9 +100,20 @@ inside Nextcloud, ownCloud and Baïkal, claiming no ancestry anywhere in its
 README, `lib/Recur/` or `composer.json` — and it still cannot settle anything,
 because it scores 831 of 1721, has four rules that **never terminate**, and is
 wrong in exactly the `BYWEEKNO`/`BYYEARDAY` branches the dispute is about.
-**What is wanted is an implementation descended from neither
-`python-dateutil` nor `libical` that also implements the whole of §3.3.10.**
 Independence is necessary and not sufficient.
+
+[Finding 030](findings/030-a-fifth-lineage-that-writes-the-fill-down.md) found
+one that is both. `DateTime::Event::ICal` 0.13 (Perl, 2003) scores 1176 — low,
+and honestly so — but has **0** guaranteed invariant violations, counts
+negative `BYWEEKNO` correctly across both a 53-week and a 52-week year, and
+takes the `dtstart_fill` reading on **51** of the 65 contested cases. What is
+new is not the vote but its provenance: the fill is two literal lines of its
+`_yearly_recurrence`, not an inference from output. Four lineages can now
+arbitrate §3.3.10.
+
+**Still wanted:** a sixth lineage, descended from neither `python-dateutil` nor
+`libical`, that covers `FREQ=WEEKLY` with `BYMONTH` and `BYSETPOS` — the two
+places every independent lineage measured here is weakest.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -241,6 +253,21 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [030 — a fifth lineage, and the first one that writes the DTSTART fill
+  down](findings/030-a-fifth-lineage-that-writes-the-fill-down.md).
+  `DateTime::Event::ICal` 0.13 (Perl, Flavio Soibelmann Glock, 2003) scores
+  **1176 of 1721** with **0** guaranteed invariant violations and **0**
+  order-dependent mismatches, and takes the `dtstart_fill` reading on **51** of
+  the 65 contested cases. Unlike the three lineages that were *observed* to
+  agree with that reading, this one states it: `_yearly_recurrence` fills
+  `BYDAY` from `DTSTART`'s weekday when `BYWEEKNO` has none, and `BYMONTH` from
+  `DTSTART`'s month when nothing else selects one — the two rewrites of
+  [finding 024](findings/024-dtstart-fill-versus-the-table.md), in source, from
+  an implementer reading RFC 2445 §4.3.10 in 2003. Evidence about how the text
+  reads to an implementer, not about what it means. Its 386 mismatches are
+  concentrated in `FREQ=WEEKLY` with `BYMONTH` (179, all of them), and 27 of
+  its 108 errors are `BYSETPOS` rules that do not terminate.
 
 - [029 — the fourth independent lineage, and a loop that does not
   end](findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md).

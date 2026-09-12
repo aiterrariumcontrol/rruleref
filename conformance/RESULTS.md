@@ -90,6 +90,7 @@ from the previous run of each; annotation only moves cases between `fail` and
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 30 | 57 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 22 | 57 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 831 | 863 | 23 | 4 |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1176 | 386 | 51 | 108 |
 
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
@@ -113,8 +114,9 @@ written ports reproducing dateutil to the case — and zero overlap with
 `rrule.js` is the outlier, and those 122 are its own behaviour rather than an
 inherited subtlety.
 
-Four independent lineages are measured here, not eight: dateutil (with its
-three ports), the Java pair, `libical`, and `sabre/vobject`.
+Five independent lineages are measured here, not nine: dateutil (with its
+three ports), the Java pair, `libical`, `sabre/vobject`, and
+`DateTime::Event::ICal`.
 [Finding 029](../findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md)
 has the PHP one — the first candidate in four attempts that claims no ancestry
 anywhere in its README, `lib/Recur/` or `composer.json`. It is also the lowest
@@ -123,6 +125,21 @@ terminate**, and its 414 guaranteed-invariant violations are two orders of
 magnitude above every other row. On the two contested readings of §3.3.10 it
 therefore casts no usable vote: the number of lineages that can arbitrate that
 table is still three.
+
+**The fifth lineage can arbitrate, and it writes its answer down.**
+[`DateTime::Event::ICal`](https://metacpan.org/pod/DateTime::Event::ICal) 0.13
+(Perl, 2003) scores 1176 — second-lowest here — but **0** guaranteed invariant
+violations and **0** order-dependent mismatches, and its `FREQ=YEARLY` handling
+is sound: it counts negative `BYWEEKNO` correctly across a 53-week and a
+52-week year. On the 65 contested `dtstart_fill` cases it takes the rival
+reading on **51**. What makes it different from the other three votes is that
+the fill is not inferred from its output. `_yearly_recurrence` contains
+`$by{days} = $dtstart->day_of_week unless exists $by{days};` in the `BYWEEKNO`
+branch and `$by{months} = $dtstart->month;` in the branch with no `BY` part to
+expand — the two rewrites of finding 024, written out by an implementer working
+from RFC 2445 §4.3.10 in 2003.
+[Finding 030](../findings/030-a-fifth-lineage-that-writes-the-fill-down.md).
+Lineages that can arbitrate §3.3.10: **four**.
 
 ## Corpus-independent checks
 
@@ -142,6 +159,7 @@ constraints that RFC 5545's application order guarantees survive to the output
 | `libical` 3.0.20 | 1 case | 0 |
 | `libical` master `48d52b4b` | 0 | 0 |
 | `sabre/vobject` 4.6.1 | 414 cases | 176 cases |
+| `DateTime::Event::ICal` 0.13 | 0 | 0 |
 
 ## Reproducing
 
@@ -155,6 +173,9 @@ python3 conformance/score.py -- node conformance/adapters/rrulejs_adapter.js
 The Go and Rust adapters have their own build steps — see
 [`adapters/go/README.md`](adapters/go/README.md) and
 [`adapters/rust/README.md`](adapters/rust/README.md).
+
+The Perl adapter needs only `libdatetime-event-ical-perl` and `libjson-perl`
+from apt — see [`adapters/perl/README.md`](adapters/perl/README.md).
 
 The PHP adapter needs `php-cli`, `php-xml` and `composer`, and gives each case
 a wall-clock deadline because four of them never finish — see
@@ -186,5 +207,22 @@ Language was never the variable. Lineage is necessary and not sufficient:
 finding 016 showed the known lineages disagree systematically on `FREQ=YEARLY`
 expansion, and breaking that tie needs an implementation that is both
 independent **and** competent on `FREQ=YEARLY`.
+
+**Perl's `DateTime::Event::ICal` met that bar**
+([030](../findings/030-a-fifth-lineage-that-writes-the-fill-down.md)), so the
+§3.3.10 question is no longer the open one. What is wanted now is narrower:
+
+- A **sixth lineage** that covers `FREQ=WEEKLY` with `BYMONTH` and `BYSETPOS`.
+  Every independent lineage measured here is weak in exactly those two places —
+  179 of the Perl row's mismatches and all 27 of its non-terminating cases live
+  there, `libical` master's only `FREQ=WEEKLY` failures were a `BYSETPOS`
+  ordering bug ([019](../findings/019-libical-weekly-bymonth-bysetpos.md)), and
+  `ical4j`'s 31 order-dependent mismatches are the same neighbourhood. A
+  measurement that separates "hard to implement" from "under-specified" there
+  would be worth more than another `FREQ=YEARLY` vote.
+- Candidate origins not yet lineage-checked: Ruby, Erlang/Elixir, Swift, Common
+  Lisp, and calendar servers with their own expanders (Radicale, SOGo, Cyrus,
+  DAViCal). Read the README first — that one minute has disqualified four
+  candidates so far.
 
 An adapter is about forty lines; `PROTOCOL.md` is the whole contract.
