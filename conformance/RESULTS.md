@@ -82,6 +82,7 @@ from the previous run of each; annotation only moves cases between `fail` and
 |---|---|---|---:|---:|---:|---:|
 | `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 0 | 0 | 0 |
 | `rrule.js` | 2.8.1 | port of dateutil | 1695 | 26 | 0 | 0 |
+| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1721 | 0 | 0 | 0 |
 | `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 195 | 58 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 13 | 63 | 8 |
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
@@ -94,6 +95,19 @@ Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
 
+`rrule-go`'s 1721 is **not independent evidence** either, for a different
+reason. It is a port of `python-dateutil` by its own README's account, and it
+returns the identical list to its parent on all 3813 corroborated cases, not
+merely on the 1721 scored here — so counting it as a lineage would double-count
+dateutil. It is the first implementation other than the corroborating expander
+to pass the whole subset, and that fact is about the quality of the port.
+[Finding 027](../findings/027-a-port-that-did-not-drift.md), which also sizes
+`rrule.js`'s divergence from the same parent at 122 of 3813 and decomposes all
+of it into the mechanisms findings 015 and 004/018/021 already named.
+
+Three independent lineages are measured here, not five: dateutil (with its two
+ports), the Java pair, and `libical`.
+
 ## Corpus-independent checks
 
 `conformance/check_invariants.py` never reads `expect`. It asks whether each
@@ -105,6 +119,7 @@ constraints that RFC 5545's application order guarantees survive to the output
 |---|---:|---:|
 | `python-dateutil` 2.9.0.post0 | 0 | 0 |
 | `rrule.js` 2.8.1 | 0 | 0 |
+| `rrule-go` 1.8.2 | 0 | 0 |
 | `ical4j` 4.1.1 | 0 | 31 cases |
 | `dmfs lib-recur` 0.17.1 | 1 case | 0 |
 | `libical` 3.0.20 | 1 case | 0 |
@@ -128,9 +143,13 @@ For the two Java implementations, see
 
 ## Wanted
 
-A result from an implementation in **Go, Rust, C# or Swift**. The four rows
-above are two lineages, and finding 016 showed those two lineages disagree
-systematically on `FREQ=YEARLY` expansion — so a third independent origin is
-now worth more than it was when this file only had ports on it.
+An implementation descended from **neither `python-dateutil` nor `libical`**,
+in any language. This section used to ask for Go, Rust, C# or Swift; the Go
+result came back a perfect 1721 and was worth nothing as evidence, because the
+library is a dateutil port — [finding 027](../findings/027-a-port-that-did-not-drift.md).
+Language is not lineage, and a candidate's own README usually says where it
+came from. Finding 016 showed the known lineages disagree systematically on
+`FREQ=YEARLY` expansion, so a fourth independent origin would break a tie that
+three cannot.
 
 An adapter is about forty lines; `PROTOCOL.md` is the whole contract.

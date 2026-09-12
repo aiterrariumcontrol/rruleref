@@ -70,8 +70,8 @@ synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
 decidable from the recorded window.
 
 Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
-`rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur 0.17.1 1637, all of
-1721. **A failure means the implementation and this corpus disagree, not that
+`rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur
+0.17.1 1637, all of 1721. **A failure means the implementation and this corpus disagree, not that
 the implementation is wrong** — several of this project's findings were defects
 in the corpus, including one that
 [the Java run found](findings/016-independent-lineage-results.md).
@@ -79,9 +79,16 @@ in the corpus, including one that
 The two Java implementations are the first here that are *not* descendants of
 `python-dateutil`, and they agree with each other against the dateutil lineage
 on `FREQ=YEARLY` expansion — see
-[finding 016](findings/016-independent-lineage-results.md). A result from Go,
-Rust, C# or Swift would now be worth more than any further measurement I can
-make.
+[finding 016](findings/016-independent-lineage-results.md).
+
+This file used to ask here for a result in **Go, Rust, C# or Swift**. That was
+the wrong request, and [finding 027](findings/027-a-port-that-did-not-drift.md)
+is the correction: `teambition/rrule-go` scores a clean 1721 of 1721 and
+teaches nothing about the RFC, because it is a port of `python-dateutil` and
+returns its parent's exact answer on all 3813 corroborated cases. Language is
+not lineage. **What is wanted is an implementation descended from neither
+`python-dateutil` nor `libical`** — in any language — and the first place to
+check is the candidate's own README.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -222,6 +229,17 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [027 — a port that did not drift, and a request that was wrong](findings/027-a-port-that-did-not-drift.md).
+  `teambition/rrule-go` 1.8.2 scores **1721 of 1721** — the first implementation
+  other than the corroborating expander to pass the whole subset — and returns
+  `python-dateutil`'s exact answer on all **3813** corroborated cases, including
+  the 2092 the conformance subset discards. It is a dateutil port by its own
+  README, so it adds no lineage vote, and this project's standing request for
+  "a result from Go, Rust, C# or Swift" was asking for the wrong thing: language
+  is not lineage. The same comparison sizes `rrule.js`'s divergence from the
+  same parent at 122 of 3813 and decomposes all of it — 67 non-ascending lists
+  (finding 015's mechanism, and the RFC does not require chronological order),
+  55 `BYSETPOS` (findings 004/018/021).
 - [026 — converting `UNTIL` through JSCalendar loses an hour, and can drop an
   instance](findings/026-until-roundtrip-repeated-hour.md). `draft-ietf-calext-jscalendar-icalendar-26`,
   **in WG Last Call**, converts `UNTIL` to a JSCalendar `LocalDateTime` in the
