@@ -222,6 +222,17 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [026 — converting `UNTIL` through JSCalendar loses an hour, and can drop an
+  instance](findings/026-until-roundtrip-repeated-hour.md). `draft-ietf-calext-jscalendar-icalendar-26`,
+  **in WG Last Call**, converts `UNTIL` to a JSCalendar `LocalDateTime` in the
+  event's zone. With a TZID-form `DTSTART`, RFC 5545 requires `UNTIL` to be a UTC
+  *instant*, and in the repeated hour at the end of daylight saving two instants
+  share one wall-clock label. RFC 5545 §3.3.5 and `jscalendarbis` §1.5.5 both resolve
+  that label to the *first* occurrence, so the round trip deterministically moves
+  `UNTIL` one hour earlier and can silently shorten the recurrence set. Worked
+  `Europe/Berlin` example: two instances become one. The draft's §1.4 treats
+  losslessness purely as element coverage, so this is invisible to it.
+
 - [025 — §3.3.10 contradicts itself about nonexistent local times, and a Verified
   errata decides it](findings/025-nonexistent-local-time-errata.md). §3.3.10 says
   an instance at a nonexistent local time `MUST be ignored`, and 110 lines later

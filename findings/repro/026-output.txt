@@ -1,0 +1,20 @@
+DTSTART;TZID=Europe/Berlin:20241026T024500
+RRULE:FREQ=DAILY;UNTIL=20241027T013000Z
+
+generated instances (local -> instant):
+  2024-10-26T02:45:00 CEST  -> 2024-10-26T00:45:00+00:00
+  2024-10-27T02:45:00 CEST  -> 2024-10-27T00:45:00+00:00
+
+UNTIL is inclusive, so before conversion the recurrence set has 2 instance(s).
+
+iCalendar -> JSCalendar:  "until": "2024-10-27T02:30:00"
+JSCalendar -> iCalendar:  UNTIL=20241027T003000Z
+
+after the round trip the recurrence set has 1 instance(s).
+
+UNTIL moved 1:00:00 earlier.
+instances lost: 2024-10-27T00:45:00+00:00
+
+cause: 20241027T003000Z and 20241027T013000Z are distinct instants one hour apart that both convert to
+       the single LocalDateTime 2024-10-27T02:30:00; the map is not injective on the
+       repeated local hour, and the inverse mandated by both RFCs picks the first.
