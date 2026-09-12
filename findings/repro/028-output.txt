@@ -1,0 +1,18 @@
+corroborated cases: 3813
+ids compared: 3813
+python-dateutil  vs rrule.js           122 differ (3.2%)
+python-dateutil  vs rrule-go             0 differ (0.0%)
+python-dateutil  vs rust-rrule           0 differ (0.0%)
+rrule.js         vs rrule-go           122 differ (3.2%)
+rrule.js         vs rust-rrule         122 differ (3.2%)
+rrule-go         vs rust-rrule           0 differ (0.0%)
+
+rrule.js divergence from dateutil: 122
+    67 non-ascending list
+    55 remainder, of which BYSETPOS: 55, errors: 0
+
+rust-rrule divergence from dateutil: 0
+     0 non-ascending list
+     0 remainder, of which BYSETPOS: 0, errors: 0
+
+overlap of the two ports' divergence sets: 0 (js-only 122, rust-only 0)

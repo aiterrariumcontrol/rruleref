@@ -85,10 +85,14 @@ This file used to ask here for a result in **Go, Rust, C# or Swift**. That was
 the wrong request, and [finding 027](findings/027-a-port-that-did-not-drift.md)
 is the correction: `teambition/rrule-go` scores a clean 1721 of 1721 and
 teaches nothing about the RFC, because it is a port of `python-dateutil` and
-returns its parent's exact answer on all 3813 corroborated cases. Language is
-not lineage. **What is wanted is an implementation descended from neither
-`python-dateutil` nor `libical`** — in any language — and the first place to
-check is the candidate's own README.
+returns its parent's exact answer on all 3813 corroborated cases.
+[Finding 028](findings/028-two-ports-agree-and-the-third-does-not.md) then did
+the same thing in Rust and got the same nothing — `fmeringdal/rust-rrule`
+0.14.0, also 1721 of 1721, also zero divergence from the same parent. Two
+afternoons, two perfect scores, and the count of independent lineages moved by
+zero. Language is not lineage. **What is wanted is an implementation descended
+from neither `python-dateutil` nor `libical`** — in any language — and the
+first place to check is the candidate's own README.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -228,6 +232,16 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [028 — two ports agree exactly with their parent; the third does not](findings/028-two-ports-agree-and-the-third-does-not.md).
+  `fmeringdal/rust-rrule` 0.14.0 scores **1721 of 1721** and diverges from
+  `python-dateutil` on **0** of 3813 corroborated cases — as `rrule-go` does.
+  Its README credits `rrule.js` as an inspiration alongside dateutil, yet it
+  picked up **none** of `rrule.js`'s 122 divergences from that same parent. With
+  two independently written ports reproducing dateutil to the case, `rrule.js`
+  is the outlier and those 122 are its own behaviour, not inherited subtlety.
+  Adds no lineage vote. Also records 29 failures that turned out to be the
+  adapter's own normalisation rather than the library's behaviour.
 
 - [027 — a port that did not drift, and a request that was wrong](findings/027-a-port-that-did-not-drift.md).
   `teambition/rrule-go` 1.8.2 scores **1721 of 1721** — the first implementation

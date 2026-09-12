@@ -9,3 +9,4 @@ conformance/adapters/c/libical_adapter
 conformance/adapters/java/classes/
 conformance/adapters/java/libs/
 conformance/adapters/go/rrulego_adapter
+conformance/adapters/rust/target/

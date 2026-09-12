@@ -83,6 +83,7 @@ from the previous run of each; annotation only moves cases between `fail` and
 | `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 0 | 0 | 0 |
 | `rrule.js` | 2.8.1 | port of dateutil | 1695 | 26 | 0 | 0 |
 | `rrule-go` | 1.8.2 | port of dateutil (Go) | 1721 | 0 | 0 | 0 |
+| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1721 | 0 | 0 | 0 |
 | `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 195 | 58 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 13 | 63 | 8 |
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
@@ -95,18 +96,24 @@ Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
 
-`rrule-go`'s 1721 is **not independent evidence** either, for a different
-reason. It is a port of `python-dateutil` by its own README's account, and it
-returns the identical list to its parent on all 3813 corroborated cases, not
-merely on the 1721 scored here — so counting it as a lineage would double-count
-dateutil. It is the first implementation other than the corroborating expander
-to pass the whole subset, and that fact is about the quality of the port.
-[Finding 027](../findings/027-a-port-that-did-not-drift.md), which also sizes
-`rrule.js`'s divergence from the same parent at 122 of 3813 and decomposes all
-of it into the mechanisms findings 015 and 004/018/021 already named.
+`rrule-go`'s and `rust-rrule`'s 1721 are **not independent evidence** either,
+for a different reason. Both are `python-dateutil` descendants by their own
+READMEs' account, and both return the identical list to their parent on all
+3813 corroborated cases, not merely on the 1721 scored here — so counting
+either as a lineage would double-count dateutil.
+[Finding 027](../findings/027-a-port-that-did-not-drift.md) has the Go
+measurement and sizes `rrule.js`'s divergence from the same parent at 122 of
+3813, decomposing all of it into the mechanisms findings 015 and 004/018/021
+already named.
+[Finding 028](../findings/028-two-ports-agree-and-the-third-does-not.md) has
+the Rust one, and settles what 027 could not: with **two** independently
+written ports reproducing dateutil to the case — and zero overlap with
+`rrule.js`'s 122, despite `rust-rrule` citing `rrule.js` as an inspiration —
+`rrule.js` is the outlier, and those 122 are its own behaviour rather than an
+inherited subtlety.
 
-Three independent lineages are measured here, not five: dateutil (with its two
-ports), the Java pair, and `libical`.
+Three independent lineages are measured here, not seven: dateutil (with its
+three ports), the Java pair, and `libical`.
 
 ## Corpus-independent checks
 
@@ -120,6 +127,7 @@ constraints that RFC 5545's application order guarantees survive to the output
 | `python-dateutil` 2.9.0.post0 | 0 | 0 |
 | `rrule.js` 2.8.1 | 0 | 0 |
 | `rrule-go` 1.8.2 | 0 | 0 |
+| `rust-rrule` 0.14.0 | 0 | 0 |
 | `ical4j` 4.1.1 | 0 | 31 cases |
 | `dmfs lib-recur` 0.17.1 | 1 case | 0 |
 | `libical` 3.0.20 | 1 case | 0 |
@@ -134,6 +142,10 @@ python3 conformance/score.py -- python3 conformance/adapters/dateutil_adapter.py
 python3 conformance/score.py -- node conformance/adapters/rrulejs_adapter.js
 ```
 
+The Go and Rust adapters have their own build steps — see
+[`adapters/go/README.md`](adapters/go/README.md) and
+[`adapters/rust/README.md`](adapters/rust/README.md).
+
 The Java and C adapters have their own build steps — see
 [`adapters/java/README.md`](adapters/java/README.md) and
 [`adapters/c/README.md`](adapters/c/README.md).
@@ -144,11 +156,14 @@ For the two Java implementations, see
 ## Wanted
 
 An implementation descended from **neither `python-dateutil` nor `libical`**,
-in any language. This section used to ask for Go, Rust, C# or Swift; the Go
-result came back a perfect 1721 and was worth nothing as evidence, because the
-library is a dateutil port — [finding 027](../findings/027-a-port-that-did-not-drift.md).
-Language is not lineage, and a candidate's own README usually says where it
-came from. Finding 016 showed the known lineages disagree systematically on
+in any language. This section used to ask for Go, Rust, C# or Swift. Both the
+Go and the Rust results came back a perfect 1721 and were worth nothing as
+evidence, because both libraries are dateutil descendants — findings
+[027](../findings/027-a-port-that-did-not-drift.md) and
+[028](../findings/028-two-ports-agree-and-the-third-does-not.md). Two of the
+four languages that sentence named have now been spent proving the sentence
+wrong. Language is not lineage, and a candidate's own README usually says where
+it came from. Finding 016 showed the known lineages disagree systematically on
 `FREQ=YEARLY` expansion, so a fourth independent origin would break a tie that
 three cannot.
 
