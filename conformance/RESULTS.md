@@ -89,6 +89,7 @@ from the previous run of each; annotation only moves cases between `fail` and
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 30 | 57 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 22 | 57 | 35 |
+| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 831 | 863 | 23 | 4 |
 
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
@@ -112,8 +113,16 @@ written ports reproducing dateutil to the case — and zero overlap with
 `rrule.js` is the outlier, and those 122 are its own behaviour rather than an
 inherited subtlety.
 
-Three independent lineages are measured here, not seven: dateutil (with its
-three ports), the Java pair, and `libical`.
+Four independent lineages are measured here, not eight: dateutil (with its
+three ports), the Java pair, `libical`, and `sabre/vobject`.
+[Finding 029](../findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md)
+has the PHP one — the first candidate in four attempts that claims no ancestry
+anywhere in its README, `lib/Recur/` or `composer.json`. It is also the lowest
+score here by a wide margin (831), it has four cases that **do not
+terminate**, and its 414 guaranteed-invariant violations are two orders of
+magnitude above every other row. On the two contested readings of §3.3.10 it
+therefore casts no usable vote: the number of lineages that can arbitrate that
+table is still three.
 
 ## Corpus-independent checks
 
@@ -132,6 +141,7 @@ constraints that RFC 5545's application order guarantees survive to the output
 | `dmfs lib-recur` 0.17.1 | 1 case | 0 |
 | `libical` 3.0.20 | 1 case | 0 |
 | `libical` master `48d52b4b` | 0 | 0 |
+| `sabre/vobject` 4.6.1 | 414 cases | 176 cases |
 
 ## Reproducing
 
@@ -146,6 +156,10 @@ The Go and Rust adapters have their own build steps — see
 [`adapters/go/README.md`](adapters/go/README.md) and
 [`adapters/rust/README.md`](adapters/rust/README.md).
 
+The PHP adapter needs `php-cli`, `php-xml` and `composer`, and gives each case
+a wall-clock deadline because four of them never finish — see
+[`adapters/php/README.md`](adapters/php/README.md).
+
 The Java and C adapters have their own build steps — see
 [`adapters/java/README.md`](adapters/java/README.md) and
 [`adapters/c/README.md`](adapters/c/README.md).
@@ -155,16 +169,22 @@ For the two Java implementations, see
 
 ## Wanted
 
-An implementation descended from **neither `python-dateutil` nor `libical`**,
-in any language. This section used to ask for Go, Rust, C# or Swift. Both the
-Go and the Rust results came back a perfect 1721 and were worth nothing as
-evidence, because both libraries are dateutil descendants — findings
-[027](../findings/027-a-port-that-did-not-drift.md) and
-[028](../findings/028-two-ports-agree-and-the-third-does-not.md). Two of the
-four languages that sentence named have now been spent proving the sentence
-wrong. Language is not lineage, and a candidate's own README usually says where
-it came from. Finding 016 showed the known lineages disagree systematically on
-`FREQ=YEARLY` expansion, so a fourth independent origin would break a tie that
-three cannot.
+An implementation descended from **neither `python-dateutil` nor `libical`**
+**that implements the whole of §3.3.10** — in particular `BYWEEKNO`,
+`BYYEARDAY`, and the `BY*` parts in their limiting roles.
+
+The qualifier is new, and finding 029 is why. This section used to ask for Go,
+Rust, C# or Swift. The Go and Rust results came back a perfect 1721 and were
+worth nothing as evidence, because both libraries are dateutil descendants —
+findings [027](../findings/027-a-port-that-did-not-drift.md) and
+[028](../findings/028-two-ports-agree-and-the-third-does-not.md). Then PHP's
+`sabre/vobject` arrived as a genuine fourth origin and still could not
+arbitrate, because the branches under dispute are the ones it gets wrong
+([029](../findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md)).
+
+Language was never the variable. Lineage is necessary and not sufficient:
+finding 016 showed the known lineages disagree systematically on `FREQ=YEARLY`
+expansion, and breaking that tie needs an implementation that is both
+independent **and** competent on `FREQ=YEARLY`.
 
 An adapter is about forty lines; `PROTOCOL.md` is the whole contract.

@@ -71,7 +71,7 @@ decidable from the recorded window.
 
 Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
 `rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur
-0.17.1 1637, all of 1721. **A failure means the implementation and this corpus disagree, not that
+0.17.1 1637, `sabre/vobject` 4.6.1 831, all of 1721. **A failure means the implementation and this corpus disagree, not that
 the implementation is wrong** — several of this project's findings were defects
 in the corpus, including one that
 [the Java run found](findings/016-independent-lineage-results.md).
@@ -90,9 +90,18 @@ returns its parent's exact answer on all 3813 corroborated cases.
 the same thing in Rust and got the same nothing — `fmeringdal/rust-rrule`
 0.14.0, also 1721 of 1721, also zero divergence from the same parent. Two
 afternoons, two perfect scores, and the count of independent lineages moved by
-zero. Language is not lineage. **What is wanted is an implementation descended
-from neither `python-dateutil` nor `libical`** — in any language — and the
-first place to check is the candidate's own README.
+zero. Language is not lineage, and the first place to check is the candidate's
+own README.
+
+[Finding 029](findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md)
+then found a real fourth lineage — `sabre/vobject` 4.6.1, the PHP expander
+inside Nextcloud, ownCloud and Baïkal, claiming no ancestry anywhere in its
+README, `lib/Recur/` or `composer.json` — and it still cannot settle anything,
+because it scores 831 of 1721, has four rules that **never terminate**, and is
+wrong in exactly the `BYWEEKNO`/`BYYEARDAY` branches the dispute is about.
+**What is wanted is an implementation descended from neither
+`python-dateutil` nor `libical` that also implements the whole of §3.3.10.**
+Independence is necessary and not sufficient.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -232,6 +241,20 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [029 — the fourth independent lineage, and a loop that does not
+  end](findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md).
+  `sabre/vobject` 4.6.1 — hand-written PHP, no ancestry claimed, and the
+  expander inside Nextcloud, ownCloud and Baïkal — scores **831 of 1721**, the
+  lowest here, with **414** guaranteed-invariant violations against 0 or 1 for
+  every other row. Four `FREQ=YEARLY;BYYEARDAY` rules with a `BYDAY` **loop
+  forever**: `$dayMap` numbers Sunday 0 (PHP's `w`) while the `BYYEARDAY`
+  branch compares against ISO-8601 `format('N')`, where Sunday is 7, so
+  `BYDAY=SU` matches no date in any year and the year search has no ceiling.
+  The same off-by-one is silent under `BYWEEKNO`, which returns the Sunday of
+  the week *before* the selected one. Because those are the branches the
+  §3.3.10 dispute turns on, a fourth lineage arrives and the count that can
+  arbitrate stays at three.
 
 - [028 — two ports agree exactly with their parent; the third does not](findings/028-two-ports-agree-and-the-third-does-not.md).
   `fmeringdal/rust-rrule` 0.14.0 scores **1721 of 1721** and diverges from
