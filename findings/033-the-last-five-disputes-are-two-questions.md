@@ -102,6 +102,16 @@ remaining case, `FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52`, is worse still:
 `dmfs` errors, `libical` is `UNIMPLEMENTED`, and `ical4j` emits dates in May
 with duplicates while `BYMONTH=1,8` is set.
 
+*Added 2026-09-13:* characterised in
+[finding 036](036-a-score-that-depends-on-the-host-locale.md). `BYMONTH` at
+`FREQ=YEARLY` with `BYWEEKNO` only perturbs the seed's weekday and
+day-of-month before `BYWEEKNO` shifts it by whole weeks, so the months in the
+output come entirely from the week numbers; the duplicates come from an
+implicit `BYDAY` snap that collapses distinct candidates onto the same day,
+and which reads the host locale. Which May dates come out depends on the
+machine.
+
+
 ## Verdict
 
 All five: **undecided**, recorded in `corpus/adjudications.json` with per-case

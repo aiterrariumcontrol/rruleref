@@ -84,13 +84,31 @@ from the previous run of each; annotation only moves cases between `fail` and
 | `rrule.js` | 2.8.1 | port of dateutil | 1695 | 26 | 0 | 0 |
 | `rrule-go` | 1.8.2 | port of dateutil (Go) | 1721 | 0 | 0 | 0 |
 | `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1721 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 | 195 | 58 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 195 | 58 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 13 | 63 | 8 |
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 30 | 57 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 22 | 57 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 831 | 863 | 23 | 4 |
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1176 | 386 | 51 | 108 |
+
+<a id="ical4j-locale"></a>
+**† `ical4j`'s row is a measurement of this container, not of `ical4j` alone.**
+When an `RRULE` omits `WKST`, `ical4j` takes the first day of the week from the
+JVM's default locale rather than RFC 5545's stated default of `MO`
+([finding 036](../findings/036-a-score-that-depends-on-the-host-locale.md)).
+The run above was made on an `en`-`US` JVM, where the week starts on Sunday.
+The same build, same corpus, changing only the locale:
+
+| JVM locale | first day of week | pass | fail |
+|---|---|---:|---:|
+| `ar`-`EG` | Saturday | 1456 | 207 |
+| `en`-`US` | Sunday | 1468 | 195 |
+| `en`-`GB` | Monday | 1487 | 176 |
+
+19 net of the 195 are the locale and not the algorithm. No other implementation
+measured here reads ambient machine state this way, and the harness was not
+watching for it.
 
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.

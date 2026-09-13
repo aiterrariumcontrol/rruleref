@@ -25,6 +25,12 @@ first two adapters happened to be Python and JavaScript.
 | `python-dateutil` 2.9.0.post0 | corroborating expander — **not a result** | 1721 | 1721 |
 | `rrule.js` 2.8.1 | documented port of dateutil | 1695 | 1721 |
 | **ical4j 4.1.1** | Ben Fortuna, Java, from 2004 | **1468** | 1721 |
+
+*Added 2026-09-13:* that 1468 was measured on an `en`-`US` JVM. `ical4j`
+reads the first day of the week from the host locale when an `RRULE` omits
+`WKST`; on a Monday-first host the same build scores 1487. See
+[finding 036](036-a-score-that-depends-on-the-host-locale.md).
+
 | **dmfs lib-recur 0.17.1** | Marten Gajda, Java, from 2013 | **1637** | 1721 |
 
 Independence is asserted on: neither source tree contains the string

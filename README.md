@@ -70,7 +70,9 @@ synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
 decidable from the recorded window.
 
 Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
-`rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468, dmfs lib-recur
+`rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468 (on a Sunday-first host;
+see [finding 036](findings/036-a-score-that-depends-on-the-host-locale.md)),
+dmfs lib-recur
 0.17.1 1637, `sabre/vobject` 4.6.1 831, `DateTime::Event::ICal` 0.13 1176, all
 of 1721. **A failure means the implementation and this corpus disagree, not that
 the implementation is wrong** — several of this project's findings were defects
@@ -153,6 +155,19 @@ from a hash the frequency handler has already emptied. Three lines in the
 caller take it from **0 of 205** to **205 of 205**. The same defect is in the
 `MONTHLY` path, masked wherever there is no `BYDAY`: a cluster named for the
 shape that exposes a bug is not the shape of the bug.
+
+Nor is every failure a property of the implementation.
+[Finding 036](findings/036-a-score-that-depends-on-the-host-locale.md) found
+that `ical4j`'s score here is a measurement of this container as much as of
+`ical4j`: when an `RRULE` omits `WKST` it takes the first day of the week from
+`Locale.getDefault()` instead of RFC 5545's stated default of `MO`, so the same
+build and the same corpus score 1456, 1468 or 1487 depending only on the host —
+19 net of the published 195 failures are the locale. Three other lineages agree
+with the Monday-first answer. The dependence was reported to `ical4j` in 2024
+and closed on the grounds that the test case's `DTSTART` was unsynchronized;
+in all 20 cases here `DTSTART` *is* the first occurrence, so that escape does
+not apply. A conformance score measures an implementation *and its
+environment*.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -293,6 +308,17 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [036 — a conformance score that depends on the host machine's
+  locale](findings/036-a-score-that-depends-on-the-host-locale.md).
+  `ical4j` 4.1.1 and 4.3.0 read the first day of the week from
+  `Locale.getDefault()` when an `RRULE` omits `WKST`, instead of RFC 5545's
+  `MO`. The same build scores **1456 / 1468 / 1487** on this corpus on a
+  Saturday-, Sunday- and Monday-first host. All 20 affected cases have a
+  synchronized `DTSTART`, so §3.8.5.3's "undefined" escape — the grounds on
+  which [ical4j #727](https://github.com/ical4j/ical4j/issues/727) was closed
+  in 2024 — does not cover them. Appending `;WKST=MO` fixes 20 of 20; the
+  control fixes 0 of 20. The same path also explains why
+  `FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52` emits May dates, with duplicates.
 - [035 — one deletion explains every `WEEKLY`+`BYMONTH` failure in a 2003
   expander](findings/035-one-deletion-and-a-pinned-day.md).
   [Finding 031](findings/031-one-cluster-three-causes.md) left one of its three

@@ -1,0 +1,392 @@
+{
+ "note": "Finding 036. Same ical4j 4.1.1 build, same corpus (1721 cases), only -Duser.language/-Duser.country changed.",
+ "measured": "2026-09-13",
+ "adapter": "conformance/adapters/java Ical4jAdapter",
+ "locales": {
+  "en-US": {
+   "first_day_of_week": "SUNDAY",
+   "counts": {
+    "fail": 195,
+    "fail_other_reading": 58,
+    "pass": 1468
+   }
+  },
+  "en-GB": {
+   "first_day_of_week": "MONDAY",
+   "counts": {
+    "fail": 176,
+    "fail_other_reading": 58,
+    "pass": 1487
+   }
+  },
+  "ar-EG": {
+   "first_day_of_week": "SATURDAY",
+   "counts": {
+    "fail": 207,
+    "fail_other_reading": 58,
+    "pass": 1456
+   }
+  }
+ },
+ "fail_sunday_first_pass_monday_first": [
+  {
+   "id": "090cbf9a00d5",
+   "rrule": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+   "dtstart": "20260802T090000",
+   "limit": 8,
+   "expect": [
+    "20260802T090000",
+    "20260809T090000",
+    "20260816T090000",
+    "20260823T090000",
+    "20260830T090000",
+    "20270801T090000",
+    "20270808T090000",
+    "20270815T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "0afcea3de0cc",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU,TU",
+   "dtstart": "20240302T090000",
+   "limit": 8,
+   "expect": [
+    "20240302T090000",
+    "20240303T090000",
+    "20240312T090000",
+    "20240316T090000",
+    "20240317T090000",
+    "20240326T090000",
+    "20240330T090000",
+    "20240331T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "19a5436babc3",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU,WE",
+   "dtstart": "20270102T090000",
+   "limit": 8,
+   "expect": [
+    "20270102T090000",
+    "20270103T090000",
+    "20270113T090000",
+    "20270116T090000",
+    "20270117T090000",
+    "20270127T090000",
+    "20270130T090000",
+    "20270131T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "4d5bd3ccdeb4",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=FR,SU,WE",
+   "dtstart": "20260401T090000",
+   "limit": 8,
+   "expect": [
+    "20260401T090000",
+    "20260403T090000",
+    "20260405T090000",
+    "20260415T090000",
+    "20260417T090000",
+    "20260419T090000",
+    "20260429T090000",
+    "20260501T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "5ba766770aa8",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU,WE;BYSETPOS=1",
+   "dtstart": "20270106T090000",
+   "limit": 8,
+   "expect": [
+    "20270106T090000",
+    "20270113T090000",
+    "20270120T090000",
+    "20270127T090000",
+    "20270203T090000",
+    "20270210T090000",
+    "20270217T090000",
+    "20270224T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "6034bf9b99e8",
+   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=SU,TU",
+   "dtstart": "20260104T090000",
+   "limit": 8,
+   "expect": [
+    "20260104T090000",
+    "20260127T090000",
+    "20260201T090000",
+    "20260224T090000",
+    "20260301T090000",
+    "20260324T090000",
+    "20260329T090000",
+    "20260421T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "76656eaa6952",
+   "rrule": "FREQ=YEARLY;BYDAY=MO,SU;BYWEEKNO=-2",
+   "dtstart": "20261221T090000",
+   "limit": 8,
+   "expect": [
+    "20261221T090000",
+    "20261227T090000",
+    "20271220T090000",
+    "20271226T090000",
+    "20281218T090000",
+    "20281224T090000",
+    "20291217T090000",
+    "20291223T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "7d6b0cb34ad4",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=SA,SU;BYMONTH=3,4",
+   "dtstart": "20260404T090000",
+   "limit": 8,
+   "expect": [
+    "20260404T090000",
+    "20260405T090000",
+    "20260418T090000",
+    "20260419T090000",
+    "20270306T090000",
+    "20270307T090000",
+    "20270320T090000",
+    "20270321T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "7eb4fe9fe2bc",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=FR,SA,SU",
+   "dtstart": "20260517T090000",
+   "limit": 8,
+   "expect": [
+    "20260517T090000",
+    "20260605T090000",
+    "20260606T090000",
+    "20260607T090000",
+    "20260626T090000",
+    "20260627T090000",
+    "20260628T090000",
+    "20260717T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "8c1c5160f362",
+   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=MO,SU,TH;BYMONTH=4,9",
+   "dtstart": "20240422T090000",
+   "limit": 8,
+   "expect": [
+    "20240422T090000",
+    "20240425T090000",
+    "20240428T090000",
+    "20240909T090000",
+    "20240912T090000",
+    "20240915T090000",
+    "20250421T090000",
+    "20250424T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "97f0bcfcd795",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=FR,SU",
+   "dtstart": "20260517T090000",
+   "limit": 8,
+   "expect": [
+    "20260517T090000",
+    "20260605T090000",
+    "20260607T090000",
+    "20260626T090000",
+    "20260628T090000",
+    "20260717T090000",
+    "20260719T090000",
+    "20260807T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "a6fcf79f8b94",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYMONTH=8;BYSETPOS=-2",
+   "dtstart": "20260801T090000",
+   "limit": 8,
+   "expect": [
+    "20260801T090000",
+    "20260808T090000",
+    "20260815T090000",
+    "20260822T090000",
+    "20260829T090000",
+    "20270807T090000",
+    "20270814T090000",
+    "20270821T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "aeb071f4d36c",
+   "rrule": "FREQ=WEEKLY;BYDAY=SA,SU;BYSETPOS=-1",
+   "dtstart": "20260517T090000",
+   "limit": 8,
+   "expect": [
+    "20260517T090000",
+    "20260524T090000",
+    "20260531T090000",
+    "20260607T090000",
+    "20260614T090000",
+    "20260621T090000",
+    "20260628T090000",
+    "20260705T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "b43b71fc2098",
+   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=SU,TH;BYMONTH=10",
+   "dtstart": "20261008T090000",
+   "limit": 8,
+   "expect": [
+    "20261008T090000",
+    "20261011T090000",
+    "20271007T090000",
+    "20271010T090000",
+    "20281005T090000",
+    "20281008T090000",
+    "20291004T090000",
+    "20291007T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "b6bbcfaf354a",
+   "rrule": "FREQ=WEEKLY;BYDAY=SU,TH;BYMONTH=3",
+   "dtstart": "20270304T090000",
+   "limit": 8,
+   "expect": [
+    "20270304T090000",
+    "20270307T090000",
+    "20270311T090000",
+    "20270314T090000",
+    "20270318T090000",
+    "20270321T090000",
+    "20270325T090000",
+    "20270328T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "c20c8656090f",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=FR,MO,SU",
+   "dtstart": "20260517T090000",
+   "limit": 8,
+   "expect": [
+    "20260517T090000",
+    "20260601T090000",
+    "20260605T090000",
+    "20260607T090000",
+    "20260622T090000",
+    "20260626T090000",
+    "20260628T090000",
+    "20260713T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "cb61f465ae79",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,SU;BYMONTH=5,10",
+   "dtstart": "20260517T090000",
+   "limit": 8,
+   "expect": [
+    "20260517T090000",
+    "20260522T090000",
+    "20260524T090000",
+    "20260529T090000",
+    "20260531T090000",
+    "20261002T090000",
+    "20261004T090000",
+    "20261009T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "d9564ca8122a",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,SU,WE",
+   "dtstart": "20240303T090000",
+   "limit": 8,
+   "expect": [
+    "20240303T090000",
+    "20240311T090000",
+    "20240313T090000",
+    "20240317T090000",
+    "20240325T090000",
+    "20240327T090000",
+    "20240331T090000",
+    "20240408T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "e1e8534d2dbb",
+   "rrule": "FREQ=WEEKLY;BYDAY=SU,WE;BYSETPOS=-2",
+   "dtstart": "20240306T090000",
+   "limit": 8,
+   "expect": [
+    "20240306T090000",
+    "20240313T090000",
+    "20240320T090000",
+    "20240327T090000",
+    "20240403T090000",
+    "20240410T090000",
+    "20240417T090000",
+    "20240424T090000"
+   ],
+   "dtstart_is_first_expected": true
+  },
+  {
+   "id": "ea2ac106302a",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=7;BYDAY=MO,SU,TH",
+   "dtstart": "20260713T090000",
+   "limit": 8,
+   "expect": [
+    "20260713T090000",
+    "20260716T090000",
+    "20260719T090000",
+    "20270705T090000",
+    "20270708T090000",
+    "20270711T090000",
+    "20270726T090000",
+    "20270729T090000"
+   ],
+   "dtstart_is_first_expected": true
+  }
+ ],
+ "fail_monday_first_pass_sunday_first": [
+  {
+   "id": "462f7be949a1",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU;BYMONTH=4",
+   "dtstart": "20270404T090000",
+   "limit": 8,
+   "expect": [
+    "20270404T090000",
+    "20270405T090000",
+    "20270411T090000",
+    "20270412T090000",
+    "20270418T090000",
+    "20270419T090000",
+    "20270425T090000",
+    "20270426T090000"
+   ],
+   "dtstart_is_first_expected": true
+  }
+ ]
+}
