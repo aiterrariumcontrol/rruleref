@@ -240,6 +240,11 @@
    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
    "verdict": "naive"
   },
+  "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2|20260331T090000": {
+   "finding": "033-the-last-five-disputes-are-two-questions",
+   "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+   "verdict": "undecided"
+  },
   "FREQ=YEARLY;BYMONTH=1,5;BYWEEKNO=1,52;WKST=SU;BYSETPOS=2|20270102T090000": {
    "expected": [
     "20270102T090000",
@@ -254,6 +259,11 @@
    "finding": "008-byweekno-previous-year-last-week",
    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
    "verdict": "naive"
+  },
+  "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52|20261231T090000": {
+   "finding": "033-the-last-five-disputes-are-two-questions",
+   "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+   "verdict": "undecided"
   },
   "FREQ=YEARLY;BYMONTH=1,8;BYWEEKNO=20,52|20280101T090000": {
    "expected": [
@@ -270,6 +280,11 @@
    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
    "verdict": "naive"
   },
+  "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200|20260101T090000": {
+   "finding": "033-the-last-five-disputes-are-two-questions",
+   "note": "Undecided. BYWEEKNO and BYYEARDAY are both Expand under YEARLY and both determine day-of-year. RFC 5545 3.3.10 gives Note 2 for exactly this collision when the later part is BYDAY ('Limit if BYYEARDAY or BYMONTHDAY is present') and gives no corresponding note for BYYEARDAY after BYWEEKNO, so the table's unconditional Expand and the sequential-application sentence are left to fight. Eight implementations give five different answers: naive and the dateutil lineage intersect the two masks; dmfs lib-recur intersects with week 53 taken strictly of year Y and therefore emits nothing at all; ical4j applies the parts literally in order, so BYWEEKNO survives only as a filter on which years have such a week and BYYEARDAY re-expands the day; libical master answers UNIMPLEMENTED; sabre/vobject ignores BYYEARDAY; DateTime::Event::ICal dies. No implementation majority and at least two constructions of the text. This case also carries axis (ii) of finding 033. See finding 033.",
+   "verdict": "undecided"
+  },
   "FREQ=YEARLY;BYWEEKNO=53;BYYEARDAY=1,200|20270101T090000": {
    "expected": [
     "20270101T090000",
@@ -283,6 +298,11 @@
    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
    "verdict": "naive"
   },
+  "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53|20260517T090000": {
+   "finding": "033-the-last-five-disputes-are-two-questions",
+   "note": "Undecided. BYWEEKNO and BYYEARDAY are both Expand under YEARLY and both determine day-of-year. RFC 5545 3.3.10 gives Note 2 for exactly this collision when the later part is BYDAY ('Limit if BYYEARDAY or BYMONTHDAY is present') and gives no corresponding note for BYYEARDAY after BYWEEKNO, so the table's unconditional Expand and the sequential-application sentence are left to fight. Eight implementations give five different answers: naive and the dateutil lineage intersect the two masks; dmfs lib-recur intersects with week 53 taken strictly of year Y and therefore emits nothing at all; ical4j applies the parts literally in order, so BYWEEKNO survives only as a filter on which years have such a week and BYYEARDAY re-expands the day; libical master answers UNIMPLEMENTED; sabre/vobject ignores BYYEARDAY; DateTime::Event::ICal dies. No implementation majority and at least two constructions of the text. This case also carries axis (ii) of finding 033. See finding 033.",
+   "verdict": "undecided"
+  },
   "FREQ=YEARLY;BYYEARDAY=60,1;BYWEEKNO=-2,53|20270101T090000": {
    "expected": [
     "20270101T090000",
@@ -295,6 +315,11 @@
    "finding": "008-byweekno-previous-year-last-week",
    "note": "dateutil 2.9.0.post0 misnumbers the days of a year that belong to the previous year's last week; see finding 008. All five disputes disappear under the fix in dateutil/dateutil PR #1537 (open). Expected values are naive's, which agree with week numbering computed from RFC 5545 3.3.10's own definition and, for WKST=MO, with date.isocalendar().",
    "verdict": "naive"
+  },
+  "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1|20261231T090000": {
+   "finding": "033-the-last-five-disputes-are-two-questions",
+   "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+   "verdict": "undecided"
   },
   "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=52,-2;BYSETPOS=1|20291217T090000": {
    "expected": [

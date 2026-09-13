@@ -126,9 +126,22 @@ RFC 5545 §3.3.10 does settle it, in three sentences that are new since RFC 2445
 and the ten such cases in `corpus/disputed.json` are now adjudicated to that
 reading.
 
-**Still wanted:** adjudication of the **5** cases in `corpus/disputed.json`
-that remain unadjudicated (21 of its 26 are now adjudicated). That file holds the corpus's open questions, and it
-is the only place a contested reading can be recorded at all.
+[Finding 033](findings/033-the-last-five-disputes-are-two-questions.md)
+adjudicates the last **5**, all `undecided` — so all **26** cases in
+`corpus/disputed.json` now carry a verdict, 21 `naive` and 5 `undecided`.
+Adjudicating them to `naive` would have been wrong: each turns on *two*
+questions, and finding 008 tested only one of them.
+
+**Still wanted:** either of the two readings in
+[finding 024](findings/024-dtstart-fill-versus-the-table.md) settled — but no
+longer *against RFC 5545*, because
+[finding 034](findings/034-when-the-table-arrived.md) traced both texts through
+all thirteen documents from RFC 2445 to RFC 5545 and found they were never
+brought into contact: the table was added in 2007 as a summary and the sentence
+it contradicts was left untouched. Settling it needs a source outside §3.3.10.
+Five of the corpus's open questions reduce to this. `disputed.json` holds the
+corpus's open questions, and it is the only place a contested reading can be
+recorded at all.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -268,6 +281,39 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [034 — the table arrived in 2007 as a summary, and the sentence it
+  contradicts was never touched](findings/034-when-the-table-arrived.md). The
+  project's headline open question was whether §3.3.10 can settle
+  [finding 024](findings/024-dtstart-fill-versus-the-table.md)'s split. It
+  cannot, and the drafting history says why. Both texts were traced through all
+  thirteen documents in the line — RFC 2445, the eleven
+  `draft-ietf-calsify-rfc2445bis` drafts, and RFC 5545. The `DTSTART`-fill
+  sentence has **two** wordings in eleven years, differing by two serial commas.
+  The table appears in exactly one edit, draft-07 of July 2007, whose change log
+  calls it *"Issue 11: Added a table that shows the dependency…"* and whose own
+  prose says it *summarizes* the section. It went in on the page before the
+  sentence it contradicts, and neither text was edited then or in the three
+  drafts that followed. Notes 1 and 2 arrived in the same edit, and Note 2
+  resolves precisely this collision for `BYDAY` — so the two unresolved cells
+  look like an omission, not a decision. The five `undecided` cases stay
+  undecided.
+
+- [033 — the last five disputes are two questions, and finding 008 answered only
+  one](findings/033-the-last-five-disputes-are-two-questions.md). The five
+  `FREQ=YEARLY`+`BYWEEKNO` cases left in `disputed.json` looked settled: finding
+  008 showed python-dateutil with PR #1537 applied agrees with `naive.py` on all
+  five. It is not evidence enough. Those cases turn on a second, orthogonal
+  question — `BYWEEKNO` expands a year to *weeks*, and with no `BYDAY` present
+  something must supply the day-of-week. Both adjudicators expand the week to
+  all seven days; `libical`, `dmfs lib-recur` and `ical4j` — three independent
+  lineages, byte-identical to each other — fill it from `DTSTART`. That is
+  [finding 024](findings/024-dtstart-fill-versus-the-table.md)'s unadjudicated
+  rewrite rule reappearing at `BYWEEKNO`, so agreement between `naive` and
+  patched dateutil is agreement *within one reading*. Two of the five are worse:
+  `BYWEEKNO`+`BYYEARDAY` draws **five different answers** from eight
+  implementations, including `UNIMPLEMENTED` from `libical` and an empty
+  recurrence set from `dmfs`. All five adjudicated **undecided**, with reasons.
 
 - [032 — a question the corpus cannot
   ask](findings/032-a-blind-spot-the-corpus-cannot-see.md). Finding 031 asked

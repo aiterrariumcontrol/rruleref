@@ -1,0 +1,158 @@
+{
+ "documents": [
+  {
+   "change_log_item": null,
+   "document": "RFC 2445",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-00",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-01",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-02",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-03",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-04",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-05",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": null,
+   "document": "draft-06",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": false,
+   "table_yearly_column": null
+  },
+  {
+   "change_log_item": "Issue 11: Added a table that shows the dependency of BYxxx rule part expand or limit behaviour on the FREQ value in the rule.",
+   "document": "draft-07",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": true,
+   "table_yearly_column": {
+    "BYDAY": "Note 2",
+    "BYHOUR": "Expand",
+    "BYMINUTE": "Expand",
+    "BYMONTH": "Expand",
+    "BYMONTHDAY": "Expand",
+    "BYSECOND": "Expand",
+    "BYSETPOS": "Limit",
+    "BYWEEKNO": "Expand",
+    "BYYEARDAY": "Expand"
+   }
+  },
+  {
+   "change_log_item": "Issue 11: Added a table that shows the dependency of BYxxx rule part expand or limit behaviour on the FREQ value in the rule.",
+   "document": "draft-08",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": true,
+   "table_yearly_column": {
+    "BYDAY": "Note 2",
+    "BYHOUR": "Expand",
+    "BYMINUTE": "Expand",
+    "BYMONTH": "Expand",
+    "BYMONTHDAY": "Expand",
+    "BYSECOND": "Expand",
+    "BYSETPOS": "Limit",
+    "BYWEEKNO": "Expand",
+    "BYYEARDAY": "Expand"
+   }
+  },
+  {
+   "change_log_item": "Issue 11: Added a table that shows the dependency of BYxxx rule part expand or limit behaviour on the FREQ value in the rule.",
+   "document": "draft-09",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": true,
+   "table_yearly_column": {
+    "BYDAY": "Note 2",
+    "BYHOUR": "Expand",
+    "BYMINUTE": "Expand",
+    "BYMONTH": "Expand",
+    "BYMONTHDAY": "Expand",
+    "BYSECOND": "Expand",
+    "BYSETPOS": "Limit",
+    "BYWEEKNO": "Expand",
+    "BYYEARDAY": "Expand"
+   }
+  },
+  {
+   "change_log_item": "Issue 11: Added a table that shows the dependency of BYxxx rule part expand or limit behaviour on the FREQ value in the rule.",
+   "document": "draft-10",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": true,
+   "table_yearly_column": {
+    "BYDAY": "Note 2",
+    "BYHOUR": "Expand",
+    "BYMINUTE": "Expand",
+    "BYMONTH": "Expand",
+    "BYMONTHDAY": "Expand",
+    "BYSECOND": "Expand",
+    "BYSETPOS": "Limit",
+    "BYWEEKNO": "Expand",
+    "BYYEARDAY": "Expand"
+   }
+  },
+  {
+   "change_log_item": null,
+   "document": "RFC 5545",
+   "fill_sentence": "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY, or BYMONTH rule part were missing, the appropriate minute, hour, day, or month would have been retrieved from the \"DTSTART\" property.",
+   "table_intro": true,
+   "table_yearly_column": {
+    "BYDAY": "Note 2",
+    "BYHOUR": "Expand",
+    "BYMINUTE": "Expand",
+    "BYMONTH": "Expand",
+    "BYMONTHDAY": "Expand",
+    "BYSECOND": "Expand",
+    "BYSETPOS": "Limit",
+    "BYWEEKNO": "Expand",
+    "BYYEARDAY": "Expand"
+   }
+  }
+ ],
+ "documents_with_table": [
+  "draft-07",
+  "draft-08",
+  "draft-09",
+  "draft-10",
+  "RFC 5545"
+ ],
+ "fill_sentence_wordings": [
+  "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY or BYMONTH rule part were missing, the appropriate minute, hour, day or month would have been retrieved from the \"DTSTART\" property.",
+  "Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY, or BYMONTH rule part were missing, the appropriate minute, hour, day, or month would have been retrieved from the \"DTSTART\" property."
+ ],
+ "problems": [],
+ "table_added_by": "Issue 11: Added a table that shows the dependency of BYxxx rule part expand or limit behaviour on the FREQ value in the rule."
+}

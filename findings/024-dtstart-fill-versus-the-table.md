@@ -25,7 +25,7 @@ says the same thing in general terms: *"BYxxx rule parts for a period of time
 less than the frequency generally increase or expand the number of
 occurrences."*
 
-**The DTSTART-fill sentence**, on the same page, says:
+**The DTSTART-fill sentence**, on the page after it, says:
 
 > Similarly, if the BYMINUTE, BYHOUR, BYDAY, BYMONTHDAY, or BYMONTH rule part
 > were missing, the appropriate minute, hour, day, or month would have been
@@ -135,6 +135,12 @@ suite pins. §4.3.10 carries the
 evaluation-order list and the DTSTART-fill sentence, and nothing else. The table
 that makes `BYMONTHDAY` `Expand` under `YEARLY` first appears in RFC 5545
 (2009), nine years after `icalrecur.c` was started.
+
+**When the table did arrive is now known exactly.**
+[Finding 034](034-when-the-table-arrived.md) traces both texts through all
+thirteen documents in the line: the table was added in a single edit,
+`draft-ietf-calsify-rfc2445bis-07` of July 2007, as a summary of the section,
+and the fill sentence was not touched then or afterwards.
 
 That is not proof of descent — `python-dateutil`'s `rrule` also predates RFC
 5545 and chose expand. But it removes the need to explain the limiting reading

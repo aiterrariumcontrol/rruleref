@@ -938,6 +938,11 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "finding": "033-the-last-five-disputes-are-two-questions",
+    "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+    "verdict": "undecided"
+   },
    "branches": [
     "BYMONTH|bymolist/1|repeat=1+",
     "BYSETPOS|bysplist/1|repeat=0",
@@ -1047,6 +1052,11 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "finding": "033-the-last-five-disputes-are-two-questions",
+    "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+    "verdict": "undecided"
+   },
    "branches": [
     "BYMONTH|bymolist/1|repeat=1+",
     "BYWEEKNO|bywknolist/1|repeat=1+",
@@ -1144,6 +1154,11 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "finding": "033-the-last-five-disputes-are-two-questions",
+    "note": "Undecided. BYWEEKNO and BYYEARDAY are both Expand under YEARLY and both determine day-of-year. RFC 5545 3.3.10 gives Note 2 for exactly this collision when the later part is BYDAY ('Limit if BYYEARDAY or BYMONTHDAY is present') and gives no corresponding note for BYYEARDAY after BYWEEKNO, so the table's unconditional Expand and the sequential-application sentence are left to fight. Eight implementations give five different answers: naive and the dateutil lineage intersect the two masks; dmfs lib-recur intersects with week 53 taken strictly of year Y and therefore emits nothing at all; ical4j applies the parts literally in order, so BYWEEKNO survives only as a filter on which years have such a week and BYYEARDAY re-expands the day; libical master answers UNIMPLEMENTED; sabre/vobject ignores BYYEARDAY; DateTime::Event::ICal dies. No implementation majority and at least two constructions of the text. This case also carries axis (ii) of finding 033. See finding 033.",
+    "verdict": "undecided"
+   },
    "branches": [
     "BYWEEKNO|bywknolist/1|repeat=0",
     "BYWEEKNO|weeknum/0|absent",
@@ -1237,6 +1252,11 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "finding": "033-the-last-five-disputes-are-two-questions",
+    "note": "Undecided. BYWEEKNO and BYYEARDAY are both Expand under YEARLY and both determine day-of-year. RFC 5545 3.3.10 gives Note 2 for exactly this collision when the later part is BYDAY ('Limit if BYYEARDAY or BYMONTHDAY is present') and gives no corresponding note for BYYEARDAY after BYWEEKNO, so the table's unconditional Expand and the sequential-application sentence are left to fight. Eight implementations give five different answers: naive and the dateutil lineage intersect the two masks; dmfs lib-recur intersects with week 53 taken strictly of year Y and therefore emits nothing at all; ical4j applies the parts literally in order, so BYWEEKNO survives only as a filter on which years have such a week and BYYEARDAY re-expands the day; libical master answers UNIMPLEMENTED; sabre/vobject ignores BYYEARDAY; DateTime::Event::ICal dies. No implementation majority and at least two constructions of the text. This case also carries axis (ii) of finding 033. See finding 033.",
+    "verdict": "undecided"
+   },
    "branches": [
     "BYWEEKNO|bywknolist/1|repeat=1+",
     "BYWEEKNO|weeknum/0/0|minus",
@@ -1334,6 +1354,11 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "finding": "033-the-last-five-disputes-are-two-questions",
+    "note": "Undecided. This case turns on two orthogonal questions and only one is settled. (i) Which week: finding 008's defect A, settled against the reading that resolves a week number against the calendar year the day sits in. (ii) Which day of that week: BYWEEKNO expands a year to weeks, no BYDAY is present, and something must supply the day-of-week. src/naive.py and python-dateutil both expand the week to all seven days; libical master 4edd39a3, dmfs lib-recur 0.17.1 and ical4j 4.1.1 -- three independent lineages, byte-identical to each other here -- fill the day from DTSTART. That is finding 024's rewrite rule at BYWEEKNO, and finding 024 concluded RFC 5545 3.3.10 contains both readings without adjudicating between them. Finding 008 tested only axis (i): 'patched dateutil agrees with naive' is not independent evidence on axis (ii), because on axis (ii) the two are the same reading. Adjudicating to naive would import an unadjudicated reading under cover of a settled defect. See finding 033.",
+    "verdict": "undecided"
+   },
    "branches": [
     "BYSETPOS|bysplist/1|repeat=0",
     "BYSETPOS|yeardaynum/0|absent",
@@ -1441,7 +1466,7 @@
  ],
  "meta": {
   "about": "Cases where the two expanders disagree. Unadjudicated unless carrying an 'adjudication' key (see corpus/adjudications.json and findings/).",
-  "adjudicated": 21,
+  "adjudicated": 26,
   "cases": 26
  }
 }

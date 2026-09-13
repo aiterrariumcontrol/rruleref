@@ -212,9 +212,22 @@ independent **and** competent on `FREQ=YEARLY`.
 ([030](../findings/030-a-fifth-lineage-that-writes-the-fill-down.md)), so the
 §3.3.10 question is no longer the open one. What is wanted now is narrower:
 
-- **Adjudication of the 5 cases still unadjudicated in `corpus/disputed.json`.**
-  This replaces the previous entry, which asked for a generator that produces
-  corpus cases discriminating the contested `FREQ=WEEKLY` readings.
+- **A reading of §3.3.10 that settles [finding
+  024](../findings/024-dtstart-fill-versus-the-table.md)'s split — the table's
+  `Expand` against the `DTSTART`-fill sentence.** Every case in
+  `corpus/disputed.json` now carries a verdict (21 `naive`, 5 `undecided`), and
+  all five `undecided` ones reduce to this question:
+  [finding 033](../findings/033-the-last-five-disputes-are-two-questions.md)
+  shows that `BYWEEKNO` without `BYDAY` raises it again, with `libical`, `dmfs`
+  and `ical4j` on one side and both of the corpus's own adjudicators on the
+  other. This replaces the previous two entries, which asked for adjudication of
+  those five and, before that, for a generator producing corpus cases that
+  discriminate the contested `FREQ=WEEKLY` readings.
+  [Finding 034](../findings/034-when-the-table-arrived.md) narrows what would
+  count as an answer: §3.3.10 itself cannot supply one. The `DTSTART`-fill
+  sentence is unchanged from RFC 2445 through RFC 5545, the table was added in
+  draft-07 (2007) as a summary of the section, and no edit ever reconciled them.
+  A settlement has to come from outside the section.
   [Finding 032](../findings/032-a-blind-spot-the-corpus-cannot-see.md) shows
   that is impossible: a case discriminates first-period truncation **if and
   only if** `naive.py` and python-dateutil disagree on it — zero off-diagonal
