@@ -95,6 +95,16 @@ from the previous run of each; annotation only moves cases between `fail` and
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 
+`DateTime::Event::ICal`'s 386 mismatches and 108 errors are not 494 separate
+problems. [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
+accounts for the `BYMONTH` share of both: at `FREQ=WEEKLY` and `FREQ=MONTHLY`
+the library reads `BYMONTH` as *month ∈ `BYMONTH` **and** day-of-month =
+`DTSTART`'s day*, because `recur()` assembles the `BYMONTH` filter from a hash
+the frequency handler has already deleted `byday` from. Supplying the one
+missing default from the caller takes the 205 non-`BYSETPOS`
+`WEEKLY`+`BYMONTH` cases from **0** passing to **205**, errors included. Its
+vote on §3.3.10 comes from `_yearly_recurrence` and is unaffected.
+
 `python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
 

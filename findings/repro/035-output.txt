@@ -1,0 +1,37 @@
+== 1. the pin at FREQ=WEEKLY ==
+  FREQ=WEEKLY;BYMONTH=1,3;BYDAY=MO,WE  DTSTART 2020-01-06
+    20200106 20210106 20230306 20240306 20250106 20270106
+  correct (python-dateutil, rrule.js, dmfs lib-recur, libical):
+    20200106 20200108 20200113 20200115 20200120 20200122
+ok     every WEEKLY occurrence falls on day-of-month 06 = DTSTART's
+
+== 2. the same pin at FREQ=MONTHLY ==
+  FREQ=MONTHLY;BYMONTH=1,3;BYDAY=MO         20200106 20230306 20250106 20280306 20310106 20340306
+ok     every MONTHLY+BYDAY occurrence falls on day-of-month 06
+  FREQ=MONTHLY;BYMONTH=1,3 (no BYDAY)      20200106 20200306 20210106 20210306
+ok     MONTHLY without BYDAY is correct -- the pin coincides
+
+== 3. DAILY and YEARLY are controls: they are correct ==
+  FREQ=DAILY;BYMONTH=1,3                   20200106 20200107 20200108 20200109
+  FREQ=YEARLY;BYMONTH=1,3;BYDAY=MO         20200106 20200113 20200120 20200127
+ok     DAILY is correct (_daily_recurrence carries the [1..31] workaround)
+ok     YEARLY is correct (no handler deletes what the filter needs)
+
+== 4. supplying the missing default by hand fixes WEEKLY ==
+  ... the same call with bymonthday => [1..31]
+    20200106 20200108 20200113 20200115 20200120 20200122
+ok     with bymonthday => [1..31] the WEEKLY answer is correct
+
+== 5. the Recurrence.pm line-822 crash is downstream of the pin ==
+  as parsed              dies: Recurrence.pm line 822
+  + bymonthday=>[1..31]  20260331 20270202 20270203
+ok     the unpatched call dies at Recurrence.pm line 822
+ok     the same call with the workaround returns occurrences
+
+== 6. the residual: a second defect, in DateTime::Event::Recurrence ==
+  yearly(months=>[2,3], days=>29)  20240229 20280229 20320229 20360229 20400229 20440229
+ok     with days=>29, March never appears in any year
+  yearly(months=>[2,3], days=>28)  20240228 20240328 20250228 20250328 20260228 20260328
+ok     with days=>28, March appears -- so it is day 29, not the months
+
+all claims hold

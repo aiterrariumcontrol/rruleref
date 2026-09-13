@@ -143,6 +143,17 @@ Five of the corpus's open questions reduce to this. `disputed.json` holds the
 corpus's open questions, and it is the only place a contested reading can be
 recorded at all.
 
+Not every large cluster is about the specification.
+[Finding 035](findings/035-one-deletion-and-a-pinned-day.md) closes the cause
+finding 031 named and left open. `DateTime::Event::ICal` 0.13 reads `BYMONTH`
+at `WEEKLY` and `MONTHLY` as *month ∈ `BYMONTH` and day-of-month = `DTSTART`'s
+day* — a model that reproduces its output on 272 of 276 cases where the correct
+reading reproduces 0 of 158 — because `recur()` builds the `BYMONTH` filter
+from a hash the frequency handler has already emptied. Three lines in the
+caller take it from **0 of 205** to **205 of 205**. The same defect is in the
+`MONTHLY` path, masked wherever there is no `BYDAY`: a cluster named for the
+shape that exposes a bug is not the shape of the bug.
+
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
 the constraints RFC 5545's application order guarantees survive are scored, so
@@ -281,6 +292,23 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [035 — one deletion explains every `WEEKLY`+`BYMONTH` failure in a 2003
+  expander](findings/035-one-deletion-and-a-pinned-day.md).
+  [Finding 031](findings/031-one-cluster-three-causes.md) left one of its three
+  causes named but uncharacterised: `DateTime::Event::ICal` 0.13 passes **0 of
+  244**. It reads `BYMONTH` at `FREQ=WEEKLY` and `FREQ=MONTHLY` as *month ∈
+  `BYMONTH` **and** day-of-month = `DTSTART`'s day*. That model reproduces its
+  output on **155 of 158** `WEEKLY` cases and **117 of 118** `MONTHLY` cases,
+  where the correct reading reproduces **0** of the `WEEKLY` ones. The cause is
+  one line: `recur()` builds the `BYMONTH` filter out of a hash the frequency
+  handler has already deleted `byday` from, so the `[ 1 .. 31 ]` default that
+  would make it a whole-month filter never fires and the day set falls back to
+  `$dtstart->day`. `FREQ=DAILY` carries the workaround explicitly, which is why
+  it is correct. Supplying the missing default from the caller — three lines,
+  no change to the library — takes the `WEEKLY` set from **0 of 205** to **205
+  of 205** with no errors, and stops **47 of 56** crashes. The defect is also
+  in the `MONTHLY` path, masked on exactly the cases that have no `BYDAY`.
 
 - [034 — the table arrived in 2007 as a summary, and the sentence it
   contradicts was never touched](findings/034-when-the-table-arrived.md). The

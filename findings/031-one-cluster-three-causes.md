@@ -107,6 +107,11 @@ expander is doing at `WEEKLY`+`BYMONTH`, it is not sabre's omission, and this
 finding does not characterise it. 68 of the 244 are the `BYSETPOS`
 non-termination already recorded in finding 030.
 
+*Characterised on 2026-09-13 by
+[finding 035](035-one-deletion-and-a-pinned-day.md): it reads `BYMONTH` at
+`WEEKLY` and `MONTHLY` as month ∈ `BYMONTH` **and** day-of-month = `DTSTART`'s
+day.*
+
 Two weak lineages failing the same cluster for unrelated reasons is exactly the
 coincidence that made the cluster look like one phenomenon.
 
