@@ -212,16 +212,19 @@ independent **and** competent on `FREQ=YEARLY`.
 ([030](../findings/030-a-fifth-lineage-that-writes-the-fill-down.md)), so the
 §3.3.10 question is no longer the open one. What is wanted now is narrower:
 
-- **Corpus cases that actually discriminate the `WEEKLY` readings.**
-  [Finding 031](../findings/031-one-cluster-three-causes.md) asked whether the
-  `FREQ=WEEKLY`+`BYMONTH` cluster was under-specification and answered no: the
-  244 cases split into three unrelated implementation causes, and three
-  lineages pass all 244. The real gap it exposed is in this corpus — **0** of
-  the 244 discriminate whether the first period is truncated at `DTSTART`
-  before `BYSETPOS` applies, and only **7** discriminate whether `BYSETPOS`
-  runs before or after `BYMONTH`. A generator that places `DTSTART` and the
-  selected month boundary so those two questions become visible is worth more
-  than another implementation.
+- **Adjudication of the 5 cases still unadjudicated in `corpus/disputed.json`.**
+  This replaces the previous entry, which asked for a generator that produces
+  corpus cases discriminating the contested `FREQ=WEEKLY` readings.
+  [Finding 032](../findings/032-a-blind-spot-the-corpus-cannot-see.md) shows
+  that is impossible: a case discriminates first-period truncation **if and
+  only if** `naive.py` and python-dateutil disagree on it — zero off-diagonal
+  over 800 sampled rules — and disagreement is exactly what the admission rule
+  rejects. The generator was never the problem. Ten such cases have now been
+  adjudicated to the untruncated reading RFC 5545 §3.3.10 states; the rest of
+  `disputed.json` is where the corpus's remaining open questions live.
+  ([Finding 031](../findings/031-one-cluster-three-causes.md) is what exposed
+  the gap: the `WEEKLY`+`BYMONTH` cluster is three unrelated implementation
+  causes, not under-specification.)
 - Candidate origins not yet lineage-checked: Ruby, Erlang/Elixir, Swift, Common
   Lisp, and calendar servers with their own expanders (Radicale, SOGo, Cyrus,
   DAViCal). Read the README first — that one minute has disqualified four

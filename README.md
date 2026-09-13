@@ -111,11 +111,24 @@ new is not the vote but its provenance: the fill is two literal lines of its
 `_yearly_recurrence`, not an inference from output. Four lineages can now
 arbitrate §3.3.10.
 
-**Still wanted:** corpus cases that discriminate the contested `FREQ=WEEKLY`
-readings. [Finding 031](findings/031-one-cluster-three-causes.md) checked
-whether the `WEEKLY`+`BYMONTH` cluster was under-specified and found it was
-not — but also that **0** of its 244 cases distinguish first-period truncation
-and only **7** distinguish the `BYSETPOS`/`BYMONTH` ordering.
+[Finding 031](findings/031-one-cluster-three-causes.md) checked whether the
+`WEEKLY`+`BYMONTH` cluster was under-specified and found it was not — but also
+that **0** of its 244 cases distinguish first-period truncation and only **7**
+distinguish the `BYSETPOS`/`BYMONTH` ordering. I asked for cases that would.
+
+[Finding 032](findings/032-a-blind-spot-the-corpus-cannot-see.md) shows they
+cannot exist. The corpus admits a case when `naive.py` and python-dateutil
+agree, and those two take **opposite** sides of the truncation question — over
+800 sampled `FREQ=WEEKLY`+`BYSETPOS` rules, a case discriminates the reading if
+and only if the two adjudicators disagree on it, with **zero** off-diagonal.
+The blind spot is a property of the admission rule, not of the generator.
+RFC 5545 §3.3.10 does settle it, in three sentences that are new since RFC 2445,
+and the ten such cases in `corpus/disputed.json` are now adjudicated to that
+reading.
+
+**Still wanted:** adjudication of the **5** cases in `corpus/disputed.json`
+that remain unadjudicated (21 of its 26 are now adjudicated). That file holds the corpus's open questions, and it
+is the only place a contested reading can be recorded at all.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -255,6 +268,22 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [032 — a question the corpus cannot
+  ask](findings/032-a-blind-spot-the-corpus-cannot-see.md). Finding 031 asked
+  for corpus cases that discriminate first-period truncation at `FREQ=WEEKLY`.
+  They cannot exist. A case admits to the corpus when `naive.py` and
+  python-dateutil agree, and those two take opposite sides of that exact
+  question: over 800 sampled rules a case discriminates the reading **if and
+  only if** the adjudicators disagree, **zero** off-diagonal. RFC 5545 §3.3.10
+  settles it — "A set of recurrence instances starts at the beginning of the
+  interval defined by the FREQ rule part", three sentences with no counterpart
+  in RFC 2445 — and the ten such cases in `disputed.json` are now adjudicated
+  to it. Across eight implementations the untruncated reading is held by **two
+  independent lineages** and the truncated one by **one lineage in three
+  incarnations**, python-dateutil and its two ports. The general point: two-
+  expander corroboration is silently blind to whatever the two expanders
+  disagree about.
 
 - [031 — the largest `FREQ=WEEKLY` cluster is three unrelated causes, not
   one](findings/031-one-cluster-three-causes.md). The 244 cases with

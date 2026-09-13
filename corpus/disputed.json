@@ -317,6 +317,21 @@
    "systematic_for": "pair:BYDAY|weekdaynum/0/0/0|absent + BYDAY|weekdaynum/0|absent"
   },
   {
+   "adjudication": {
+    "expected": [
+     "20260207T090000",
+     "20260214T090000",
+     "20260221T090000",
+     "20260228T090000",
+     "20260404T090000",
+     "20260411T090000",
+     "20260418T090000",
+     "20260425T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -366,6 +381,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20261231T090000",
+     "20270107T090000",
+     "20270114T090000",
+     "20270121T090000",
+     "20270128T090000",
+     "20270204T090000",
+     "20270211T090000",
+     "20270218T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -411,6 +441,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270101T090000",
+     "20270108T090000",
+     "20270115T090000",
+     "20270122T090000",
+     "20270129T090000",
+     "20270205T090000",
+     "20270212T090000",
+     "20270219T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -455,6 +500,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270101T090000",
+     "20270108T090000",
+     "20270115T090000",
+     "20270122T090000",
+     "20270129T090000",
+     "20270205T090000",
+     "20270212T090000",
+     "20270219T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -499,6 +559,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20260810T090000",
+     "20260817T090000",
+     "20260824T090000",
+     "20260831T090000",
+     "20261207T090000",
+     "20261214T090000",
+     "20261221T090000",
+     "20261228T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -548,6 +623,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270106T090000",
+     "20270113T090000",
+     "20270120T090000",
+     "20270127T090000",
+     "20270203T090000",
+     "20270210T090000",
+     "20270217T090000",
+     "20270224T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -593,6 +683,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20270110T090000",
+     "20270117T090000",
+     "20270124T090000",
+     "20270131T090000",
+     "20280109T090000",
+     "20280116T090000",
+     "20280123T090000",
+     "20280130T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -642,6 +747,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20240510T090000",
+     "20240524T090000",
+     "20250509T090000",
+     "20250523T090000",
+     "20260508T090000",
+     "20260522T090000",
+     "20270507T090000",
+     "20270521T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -691,6 +811,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20240229T090000",
+     "20240314T090000",
+     "20240328T090000",
+     "20240411T090000",
+     "20240425T090000",
+     "20240509T090000",
+     "20240523T090000",
+     "20240606T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -739,6 +874,21 @@
    "systematic_for": null
   },
   {
+   "adjudication": {
+    "expected": [
+     "20240229T090000",
+     "20241107T090000",
+     "20241128T090000",
+     "20250220T090000",
+     "20251120T090000",
+     "20260212T090000",
+     "20261112T090000",
+     "20270204T090000"
+    ],
+    "finding": "032-a-blind-spot-the-corpus-cannot-see",
+    "note": "The set BYSETPOS indexes is the whole FREQ interval, not the part of it at or after DTSTART. RFC 5545 3.3.10: \"BYSETPOS operates on a set of recurrence instances in one interval of the recurrence rule. For example, in a WEEKLY rule, the interval would be one week  A set of recurrence instances starts at the beginning of the interval defined by the FREQ rule part.\" Those three sentences are new in RFC 5545; the corresponding paragraph of RFC 2445 4.3.10 bounds the set not at all, which is the ambiguity they were added to close, and no erratum touches the passage. DTSTART still bounds the output (3.8.5.3), so an instance selected earlier in the first interval is discarded and that interval can contribute nothing -- which is the visible difference here. python-dateutil 2.9.0 truncates the set at DTSTART before indexing it, and rrule.js and rust-rrule inherit that as ports of it; libical and dmfs lib-recur, two independent lineages, do not. Because python-dateutil is one of this corpus's two adjudicating expanders, every case discriminating this question is routed to disputed.json rather than corroborated. See finding 032.",
+    "verdict": "naive"
+   },
    "branches": [
     "BYDAY|bywdaylist/1|repeat=1+",
     "BYDAY|weekdaynum/0|absent",
@@ -1291,7 +1441,7 @@
  ],
  "meta": {
   "about": "Cases where the two expanders disagree. Unadjudicated unless carrying an 'adjudication' key (see corpus/adjudications.json and findings/).",
-  "adjudicated": 11,
+  "adjudicated": 21,
   "cases": 26
  }
 }
