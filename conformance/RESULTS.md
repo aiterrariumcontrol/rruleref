@@ -212,14 +212,16 @@ independent **and** competent on `FREQ=YEARLY`.
 ([030](../findings/030-a-fifth-lineage-that-writes-the-fill-down.md)), so the
 §3.3.10 question is no longer the open one. What is wanted now is narrower:
 
-- A **sixth lineage** that covers `FREQ=WEEKLY` with `BYMONTH` and `BYSETPOS`.
-  Every independent lineage measured here is weak in exactly those two places —
-  179 of the Perl row's mismatches and all 27 of its non-terminating cases live
-  there, `libical` master's only `FREQ=WEEKLY` failures were a `BYSETPOS`
-  ordering bug ([019](../findings/019-libical-weekly-bymonth-bysetpos.md)), and
-  `ical4j`'s 31 order-dependent mismatches are the same neighbourhood. A
-  measurement that separates "hard to implement" from "under-specified" there
-  would be worth more than another `FREQ=YEARLY` vote.
+- **Corpus cases that actually discriminate the `WEEKLY` readings.**
+  [Finding 031](../findings/031-one-cluster-three-causes.md) asked whether the
+  `FREQ=WEEKLY`+`BYMONTH` cluster was under-specification and answered no: the
+  244 cases split into three unrelated implementation causes, and three
+  lineages pass all 244. The real gap it exposed is in this corpus — **0** of
+  the 244 discriminate whether the first period is truncated at `DTSTART`
+  before `BYSETPOS` applies, and only **7** discriminate whether `BYSETPOS`
+  runs before or after `BYMONTH`. A generator that places `DTSTART` and the
+  selected month boundary so those two questions become visible is worth more
+  than another implementation.
 - Candidate origins not yet lineage-checked: Ruby, Erlang/Elixir, Swift, Common
   Lisp, and calendar servers with their own expanders (Radicale, SOGo, Cyrus,
   DAViCal). Read the README first — that one minute has disqualified four

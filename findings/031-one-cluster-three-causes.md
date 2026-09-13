@@ -1,0 +1,175 @@
+# 031 — The largest `FREQ=WEEKLY` cluster is three unrelated causes, not one
+
+*2026-09-13.*
+
+## Why this was asked
+
+Every independent lineage measured here looked weak in the same place.
+`FREQ=WEEKLY` with `BYMONTH` accounts for 179 of `DateTime::Event::ICal`'s
+mismatches ([finding 030](030-a-fifth-lineage-that-writes-the-fill-down.md)),
+every `FREQ=WEEKLY` failure `libical` master had before `4edd39a`
+([finding 019](019-libical-weekly-bymonth-bysetpos.md)), and a large share of
+`ical4j`'s order-dependent mismatches. A cluster that several unrelated lineages fail in
+common is the shape that, twice before in this project, turned out to be
+**under-specification** rather than bugs — findings
+[024](024-dtstart-fill-versus-the-table.md) and
+[017](017-libical-third-lineage.md).
+
+So: is this one too?
+
+**No.** The 244 corpus cases with `FREQ=WEEKLY` and `BYMONTH` decompose into
+**three unrelated implementation causes**, and the two genuinely contested
+semantic questions in the neighbourhood are barely probed by these cases at
+all. The common appearance was an artifact of aggregation.
+
+## What the six implementations do on the 244 cases
+
+| implementation | lineage | pass | mismatch | error |
+| --- | --- | ---: | ---: | ---: |
+| `python-dateutil` | A | **244** | 0 | 0 |
+| `dmfs lib-recur` | C | **244** | 0 | 0 |
+| `libical` master `4edd39a3` | D | **244** | 0 | 0 |
+| `rrule.js` | A | 241 | 3 | 0 |
+| `ical4j` | B | 210 | 34 | 0 |
+| `sabre/vobject` 4.6.1 | E | 62 | 182 | 0 |
+| `DateTime::Event::ICal` 0.13 | F | **0** | 176 | 68 |
+
+**Three** lineages pass every case, including the strongest independent C
+implementation. The failures are not distributed like a contested
+reading; they are concentrated in two weak implementations plus a small
+`BYSETPOS` residual in the strong ones.
+
+## Cause 1 — `sabre/vobject` does not implement `BYMONTH` at `WEEKLY` or `MONTHLY`
+
+One rewrite reproduces `sabre/vobject`'s output on **all 244 cases exactly**:
+delete `BYMONTH` and `BYSETPOS` from the rule. Not 244 of the failures — 244 of
+244, passes included, which is the stronger claim: it passes precisely when
+ignoring those fields makes no difference.
+
+The rewritten rules were expanded by `python-dateutil` *and* `dmfs lib-recur`
+independently, and only cases where the two agree were counted (244/244 here).
+
+Restricting to the **non-vacuous** cases — those where the rewrite actually
+changes the answer — and extending the same test to the rest of the corpus:
+
+| `FREQ` | field(s) present | sabre matches the stripped rewrite |
+| --- | --- | ---: |
+| `WEEKLY` | `BYMONTH` | **146 / 146** |
+| `WEEKLY` | `BYMONTH`+`BYSETPOS` | **36 / 36** |
+| `MONTHLY` | `BYMONTH` | **115 / 115** |
+| `MONTHLY` | `BYMONTH`+`BYSETPOS` | 9 / 24 |
+| `MONTHLY` | `BYSETPOS` | 0 / 47 |
+| `DAILY` | `BYMONTH` | 6 / 73 |
+| `DAILY` | `BYMONTH`+`BYSETPOS` | 0 / 17 |
+| `YEARLY` | `BYMONTH` | 0 / 41 |
+| `YEARLY` | `BYSETPOS` | 2 / 13 |
+
+The effect is exactly as wide as the claim and no wider: total at `WEEKLY` and
+`MONTHLY`, absent at `DAILY` and `YEARLY`. `BYSETPOS` alone at `MONTHLY` is
+0/47 — sabre implements `BYSETPOS` there, and the 36/36 row above is `BYSETPOS`
+being unreachable at `WEEKLY` rather than unimplemented.
+
+**This is not inferred from output.** `lib/Recur/RRuleIterator.php` has one
+method per frequency, and counting references to the parsed field:
+
+| method | `$this->byMonth` | `$this->bySetPos` |
+| --- | ---: | ---: |
+| `nextHourly()` | 0 | 0 |
+| `nextDaily()` | 3 | 0 |
+| `nextWeekly()` | **0** | **0** |
+| `nextMonthly()` | **0** | 0 |
+| `nextYearly()` | 2 | 0 |
+
+`nextWeekly()`'s loop terminates on `byDay` and `byHour` only. The field is not
+mishandled at these frequencies; it is absent from the code path. `bySetPos` is
+applied in the monthly/yearly day-expansion helper, which `nextWeekly()` never
+calls.
+
+Reproduce without this repository's harness:
+[`repro/031-sabre-weekly-bymonth.php`](repro/031-sabre-weekly-bymonth.php),
+output in [`repro/031-output.txt`](repro/031-output.txt). It shows the `WEEKLY`
+case, the same rule with `BYMONTH` deleted giving the identical answer, the
+`MONTHLY` case, and `YEARLY` as a passing control.
+
+Searched `sabre-io/vobject` for prior art on 2026-09-13 (`BYMONTH`,
+`WEEKLY BYMONTH`, `BYSETPOS`): open issues #329, #730 and closed #328, #564,
+#626 are about infinite loops, `BYSETPOS` scope at `MONTHLY`, and `YEARLY`
+`BYMONTH`+`BYDAY`. **Nothing covers `BYMONTH` being ignored at `WEEKLY` or
+`MONTHLY`.** Reporting this to sabre would be an outward action and needs its
+own approval; it has not been done.
+
+## Cause 2 — `DateTime::Event::ICal` is weak here for a *different* reason
+
+It passes **0 of 244**. If cause 1 were a shared omission, the same rewrite
+would explain it. It explains **0 of 182** non-vacuous cases — neither the
+`BYMONTH`-only rewrite (0/163) nor the combined one. Whatever the 2003 Perl
+expander is doing at `WEEKLY`+`BYMONTH`, it is not sabre's omission, and this
+finding does not characterise it. 68 of the 244 are the `BYSETPOS`
+non-termination already recorded in finding 030.
+
+Two weak lineages failing the same cluster for unrelated reasons is exactly the
+coincidence that made the cluster look like one phenomenon.
+
+## Cause 3 — the strong lineages' residual is small and `BYSETPOS`-shaped
+
+What is left is `rrule.js` 3 and `ical4j` 34. All 3 of `rrule.js`'s carry
+`BYSETPOS`; 11 of `ical4j`'s do.
+
+`libical` contributes nothing. It failed 8 of these cases at master
+`48d52b4b`, all carrying `BYSETPOS` — but those are
+[libical/libical#1374](https://github.com/libical/libical/issues/1374), the bug
+this project reported, fixed by `4edd39a`. At `4edd39a3` the count is **0 of
+244**. The 8 reappeared here only because the first run of this investigation
+used the superseded shared library still sitting in the build directory; the
+corrected run is the table above.
+
+That mistake is worth recording, because it points the wrong way twice: it
+inflated the apparent breadth of the cluster *and* it would have republished a
+fixed defect as a current one. Two builds of the same library live side by side
+in this environment and the adapter binary picks one by `LD_LIBRARY_PATH`.
+
+The now-fixed bug is still worth one sentence of characterisation, because it
+refines [finding 019](019-libical-weekly-bymonth-bysetpos.md): of the 8, 4
+omitted `DTSTART` itself, and all **4 of 4** are reproduced exactly by applying
+`BYSETPOS` to the *untruncated* week before `BYMONTH` limits it. The other 4
+are reproduced 1 of 4. Control: the same model agrees with `48d52b4b` on 233 of
+its 236 passing cases, so read the 4/4 as support, not proof.
+
+## The part that is about my own instrument
+
+A 2×2 model over the two contested variables — whether the first period is
+truncated at `DTSTART` before `BYSETPOS` applies, and whether `BYSETPOS` runs
+before or after `BYMONTH` — expanded over all 244 cases:
+
+| model | agrees with corpus |
+| --- | ---: |
+| truncate, `BYMONTH` then `BYSETPOS` | 244 / 244 |
+| **no** truncation, `BYMONTH` then `BYSETPOS` | **244 / 244** |
+| truncate, `BYSETPOS` then `BYMONTH` | 237 / 244 |
+| no truncation, `BYSETPOS` then `BYMONTH` | 235 / 244 |
+
+Reproduce: [`repro/031-weekly-readings-model.py`](repro/031-weekly-readings-model.py),
+run from the repository root; it reads `conformance/cases.ndjson` and needs
+nothing else.
+
+**Zero** of the 244 cases discriminate first-period truncation. Only **7**
+discriminate the `BYSETPOS`/`BYMONTH` ordering. The largest `FREQ=WEEKLY`
+cluster in this corpus, the one that looked like it was exposing a contested
+reading, is almost blind to both contested readings it sits next to.
+
+That is a coverage gap in the corpus, not in the implementations, and it is the
+most useful thing this investigation produced. The corpus generator selects
+`WEEKLY`+`BYMONTH` cases by shape; it does not select for cases where the
+week straddling a month boundary contains a `BYSETPOS`-selected day outside the
+selected month, which is the configuration that makes either question visible.
+
+The model reproducing the corpus 244/244 in its baseline mode is also a check
+on the model: two routes, agreeing.
+
+## Wanted
+
+Cases that discriminate. A generator that, for `FREQ=WEEKLY`+`BYMONTH`+
+`BYSETPOS`, deliberately places `DTSTART` and the selected month boundary so
+that the untruncated week and the truncated week give different `BYSETPOS`
+results. Until those exist, no measurement here says anything about how
+implementations read §3.3.10 at `WEEKLY`.

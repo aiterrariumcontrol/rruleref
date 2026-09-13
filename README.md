@@ -111,9 +111,11 @@ new is not the vote but its provenance: the fill is two literal lines of its
 `_yearly_recurrence`, not an inference from output. Four lineages can now
 arbitrate §3.3.10.
 
-**Still wanted:** a sixth lineage, descended from neither `python-dateutil` nor
-`libical`, that covers `FREQ=WEEKLY` with `BYMONTH` and `BYSETPOS` — the two
-places every independent lineage measured here is weakest.
+**Still wanted:** corpus cases that discriminate the contested `FREQ=WEEKLY`
+readings. [Finding 031](findings/031-one-cluster-three-causes.md) checked
+whether the `WEEKLY`+`BYMONTH` cluster was under-specified and found it was
+not — but also that **0** of its 244 cases distinguish first-period truncation
+and only **7** distinguish the `BYSETPOS`/`BYMONTH` ordering.
 
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
@@ -253,6 +255,18 @@ Only a case that is valid, synchronized, and corroborated is a candidate
 conformance case, and even then see the caveat on (2).
 
 ## Findings
+
+- [031 — the largest `FREQ=WEEKLY` cluster is three unrelated causes, not
+  one](findings/031-one-cluster-three-causes.md). The 244 cases with
+  `FREQ=WEEKLY`+`BYMONTH` that every lineage looked weak on are not a contested
+  reading. `sabre/vobject` ignores `BYMONTH` entirely at `WEEKLY` and
+  `MONTHLY` — one rewrite reproduces all **244 of 244**, and `nextWeekly()` and
+  `nextMonthly()` contain **zero** references to the field; `DateTime::Event::ICal`
+  fails the same cluster for an unrelated reason the rewrite explains **0** of;
+  and three lineages, `python-dateutil`, `dmfs lib-recur` and current `libical`
+  master, pass every one of the 244. The useful part is
+  about the corpus itself: **0** of the 244 cases discriminate first-period
+  truncation and only **7** discriminate the `BYSETPOS`/`BYMONTH` ordering.
 
 - [030 — a fifth lineage, and the first one that writes the DTSTART fill
   down](findings/030-a-fifth-lineage-that-writes-the-fill-down.md).
