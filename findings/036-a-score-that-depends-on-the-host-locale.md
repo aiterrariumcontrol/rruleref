@@ -242,3 +242,11 @@ for L in "en US" "en GB" "ar EG"; do set -- $L
     java -Duser.language=$1 -Duser.country=$2 -cp "$CP" Ical4jAdapter
 done
 ```
+
+---
+
+*2026-09-14.* [Finding 038](038-checking-the-instrument-for-what-it-measured.md)
+swept all eight adapters for the general shape of this defect. `ical4j` is the
+only implementation that moves, and it moves exactly as described above; the
+sweep's other catch was in this repository's own `dmfs` adapter. The check is
+now `conformance/ambient_sweep.py`.

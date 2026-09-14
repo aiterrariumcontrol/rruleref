@@ -319,6 +319,16 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [038 — checking the instrument for the defect it had just measured](findings/038-checking-the-instrument-for-what-it-measured.md).
+  All eight adapters run over the scored corpus in three environments that move
+  the time zone, the locale's first day of the week and the locale's digit
+  shapes. `ical4j` is the only one whose answers move, and it moves as finding
+  036 says it does. The sweep's real catch was in the instrument: the
+  `dmfs lib-recur` adapter formatted dates with a `String.format` that had no
+  `Locale`, so on an Arabic-locale machine it would have emitted Arabic-Indic
+  digits and scored **0 of 1721** — a harness carrying a weaker form of the
+  defect it had just published about someone else. Now `conformance/ambient_sweep.py`.
+
 - [037 — a limit that runs before the thing it limits](findings/037-a-limit-that-runs-before-the-thing-it-limits.md).
   At `FREQ=WEEKLY`, `ical4j` 4.1.1 and 4.3.0 apply the `BYMONTH` **limit** to
   the period seed — one date, always on `DTSTART`'s weekday — and then let

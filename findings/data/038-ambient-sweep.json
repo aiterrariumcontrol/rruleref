@@ -1,0 +1,75 @@
+{
+ "dmfs": {
+  "baseline_n": 1721,
+  "baseline_rc": 0,
+  "envs": {
+   "honolulu_th": {
+    "changed": 0,
+    "ids": [],
+    "n": 1721,
+    "rc": 0
+   },
+   "kiritimati_ar": {
+    "changed": 0,
+    "ids": [],
+    "n": 1721,
+    "rc": 0
+   }
+  }
+ },
+ "ical4j": {
+  "baseline_n": 1721,
+  "baseline_rc": 0,
+  "envs": {
+   "honolulu_th": {
+    "changed": 0,
+    "ids": [],
+    "n": 1721,
+    "rc": 0
+   },
+   "kiritimati_ar": {
+    "changed": 36,
+    "ids": [
+     "0afcea3de0cc",
+     "19a5436babc3",
+     "2f838c52fb52",
+     "3176651c63d9",
+     "36fa68873abe",
+     "43bbb0e198c6",
+     "50662f7ac3ef",
+     "50a53235647b",
+     "52cb89bd1169",
+     "5ba766770aa8",
+     "5d8b5c511b92",
+     "6f5eaa18e870",
+     "729357f27806",
+     "7a5b8357c6db",
+     "7d6b0cb34ad4",
+     "7e8a4b388c13",
+     "7eb4fe9fe2bc",
+     "7ef50b7da690",
+     "81f65bb6b9e6",
+     "8764bebc457f",
+     "91739c0404d6",
+     "919336fa8ced",
+     "9dafe9e5e201",
+     "a11bc9303af3",
+     "a6e65b03a70c",
+     "a6fcf79f8b94",
+     "aabe994c1724",
+     "aeb071f4d36c",
+     "b1953b6ff688",
+     "b9903ca54da7",
+     "c8d48a43504c",
+     "d627bc6d4375",
+     "de0a4ef8d0ab",
+     "ee8831c6d22a",
+     "f3f803647e48",
+     "f4c6b95baf2e"
+    ],
+    "n": 1721,
+    "rc": 0
+   }
+  }
+ }
+}

@@ -106,9 +106,16 @@ The same build, same corpus, changing only the locale:
 | `en`-`US` | Sunday | 1468 | 195 |
 | `en`-`GB` | Monday | 1487 | 176 |
 
-19 net of the 195 are the locale and not the algorithm. No other implementation
-measured here reads ambient machine state this way, and the harness was not
-watching for it.
+19 net of the 195 are the locale and not the algorithm. The harness now watches
+for this: `conformance/ambient_sweep.py` reruns the adapters over the scored
+corpus under three environments that move the time zone, the locale's first day
+of the week and the locale's digit shapes, and diffs the answers case by case
+([finding 038](../findings/038-checking-the-instrument-for-what-it-measured.md)).
+`ical4j` is the only one whose answers move — 36 of 1721 under
+`ar`-`EG`, every one a `FREQ=WEEKLY` rule whose week boundary shifted. The sweep
+also caught a locale-dependent *formatter* in this repository's own `dmfs`
+adapter, which on an Arabic-locale machine would have scored that row 0 of 1721;
+it is fixed, and the `dmfs` row above is unchanged by the fix.
 
 Of the 176 that remain on the `en`-`GB` row — the row where `WKST` defaults to
 the value RFC 5545 specifies — **18 are one defect**, characterised in
