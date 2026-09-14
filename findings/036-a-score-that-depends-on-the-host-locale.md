@@ -122,6 +122,15 @@ to mask it. Appending `;WKST=MO` on the `en`-`US` host reproduces the drop, so
 the mask is the locale and not the host. This one is **not** characterised
 here.
 
+> **Update, 2026-09-14.** It is now, in
+> [finding 037](037-a-limit-that-runs-before-the-thing-it-limits.md), and it is
+> not one case. At `FREQ=WEEKLY`, `ical4j` applies the `BYMONTH` limit to the
+> period seed and then expands `BYDAY` across the whole `WKST` week, so the
+> result can contain dates in months `BYMONTH` excludes. 18 of the 176 failures
+> on the Monday-first row are this defect, and it reaches a further 42
+> corroborated cases whose `DTSTART` is unsynchronized — where, as here,
+> §3.8.5.3 declines to define the answer.
+
 ## Back to the `BYMONTH`+`BYWEEKNO` case
 
 The original question also has an answer, and it is a different defect again.

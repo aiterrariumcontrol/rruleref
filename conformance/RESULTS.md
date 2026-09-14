@@ -110,6 +110,16 @@ The same build, same corpus, changing only the locale:
 measured here reads ambient machine state this way, and the harness was not
 watching for it.
 
+Of the 176 that remain on the `en`-`GB` row — the row where `WKST` defaults to
+the value RFC 5545 specifies — **18 are one defect**, characterised in
+[finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md):
+at `FREQ=WEEKLY` the `BYMONTH` limit is applied to the period seed rather than
+to the expanded occurrences, so over a common horizon all 18 both return dates
+in months the rule excludes and omit dates it requires. The same behaviour appears on a further 42
+corroborated cases that this set excludes because their `DTSTART` is
+unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
+the current release.
+
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 

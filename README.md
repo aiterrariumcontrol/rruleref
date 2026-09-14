@@ -169,6 +169,17 @@ in all 20 cases here `DTSTART` *is* the first occurrence, so that escape does
 not apply. A conformance score measures an implementation *and its
 environment*.
 
+Holding that one still exposed another.
+[Finding 037](findings/037-a-limit-that-runs-before-the-thing-it-limits.md)
+was a single case that failed *only* once the week started on Monday — the
+boundary the specification actually names — and it turned out to be 60. At
+`FREQ=WEEKLY`, `ical4j` applies `BYMONTH` to the period seed and then expands
+`BYDAY` across the week, so a February-only rule returns a March date. 42 of the
+60 have an unsynchronized `DTSTART` and are not claimed as defects; 18 are. The
+ordering follows RFC 5545's own list; what is wrong is that a rule part
+classified as a limit on occurrences is applied to something that is not yet
+an occurrence.
+
 `conformance/check_invariants.py` asks a different question that never reads
 `expect`: does each returned occurrence satisfy the rule's own BY parts? Only
 the constraints RFC 5545's application order guarantees survive are scored, so
@@ -308,6 +319,19 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [037 — a limit that runs before the thing it limits](findings/037-a-limit-that-runs-before-the-thing-it-limits.md).
+  At `FREQ=WEEKLY`, `ical4j` 4.1.1 and 4.3.0 apply the `BYMONTH` **limit** to
+  the period seed — one date, always on `DTSTART`'s weekday — and then let
+  `BYDAY` expand that seed across the whole `WKST` week, with no month check
+  afterwards. So `FREQ=WEEKLY;BYMONTH=2;BYDAY=FR,TH,WE` returns `20240301`:
+  a March date from a February-only rule. Of 161 corroborated cases in this
+  shape the two readings disagree on **60**, and `ical4j` follows the
+  seed-limited one on **60 of 60** and the correct one on **0 of 60**; the
+  correct reading reproduces the corroborated expectation **161 of 161**.
+  42 of the 60 have an unsynchronized `DTSTART`, where §3.8.5.3 makes the set
+  undefined, and are not claimed; the **18** that remain are all in the scored
+  set, and over a common horizon every one of them both omits required
+  occurrences and emits spurious out-of-month ones.
 - [036 — a conformance score that depends on the host machine's
   locale](findings/036-a-score-that-depends-on-the-host-locale.md).
   `ical4j` 4.1.1 and 4.3.0 read the first day of the week from
