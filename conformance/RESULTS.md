@@ -125,7 +125,11 @@ to the expanded occurrences, so over a common horizon all 18 both return dates
 in months the rule excludes and omit dates it requires. The same behaviour appears on a further 42
 corroborated cases that this set excludes because their `DTSTART` is
 unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
-the current release.
+the current release. [Finding 039](../findings/039-what-bysetpos-selects-from.md)
+extends the same defect to the corpus's `BYSETPOS` cases: a further **8** of the
+176 are it, and six more cases carry the defect but only past the horizon their
+corpus entry runs to, so 176 is a count of disagreements within these horizons
+and undercounts this defect.
 
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.

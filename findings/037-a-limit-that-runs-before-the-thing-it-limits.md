@@ -179,3 +179,11 @@ uncharacterised. It also does not claim the ordering in `getCandidates` is
 itself the bug — that ordering follows the RFC's own list. The defect is that a
 rule part classified as a limit on occurrences is applied to something that is
 not yet an occurrence.
+
+---
+
+*2026-09-14, later the same day:* the `BYSETPOS` interaction left out of
+scope above is measured in
+[039 — what `BYSETPOS` selects from](039-what-bysetpos-selects-from.md).
+`BYSETPOS` neither creates nor masks this defect, but it can select the
+out-of-month date in preference to the correct one.

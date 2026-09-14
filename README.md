@@ -319,6 +319,15 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [039 — what `BYSETPOS` selects from](findings/039-what-bysetpos-selects-from.md).
+  The scope question finding 037 left open. Of the 39 corpus cases combining
+  `FREQ=WEEKLY`, `BYMONTH` and `BYSETPOS`, `ical4j` differs from the control on
+  14 — exactly the same 14 it gets wrong with `BYSETPOS` removed. `BYSETPOS`
+  neither creates nor masks the defect; it selects from the wrong week set, so
+  in four cases it returns the out-of-month date *in preference to* the correct
+  one, with the output keeping the shape a correct answer would have had. Only 8
+  of the 14 are scored failures; the rest diverge past the corpus's own horizon.
+
 - [038 — checking the instrument for the defect it had just measured](findings/038-checking-the-instrument-for-what-it-measured.md).
   All eight adapters run over the scored corpus in three environments that move
   the time zone, the locale's first day of the week and the locale's digit
