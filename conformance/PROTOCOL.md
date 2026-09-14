@@ -66,6 +66,14 @@ credit and no tolerance.
 * `count` / `horizon` — the corpus knows only a **prefix**. `limit` is
   `len(expect)`, and nothing is asserted about what comes after.
 
+  Consequence, and it runs the opposite way from the usual warning about short
+  prefixes: a prefix can *hide* a defect as easily as it can invent one. A rule
+  whose implementation goes wrong only past `limit` scores as a pass. Every
+  failure count produced from this corpus is therefore a lower bound on the
+  disagreement, not a measurement of it —
+  [finding 039](../findings/039-what-bysetpos-selects-from.md) has a worked case
+  where 6 of 14 defective results were scored as passes.
+
 ## `reading_alternatives`, and why some failures are not defects
 
 Some cases carry a `reading_alternatives` field: a map from the name of a rival

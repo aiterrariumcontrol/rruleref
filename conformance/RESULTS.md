@@ -12,6 +12,16 @@ See [finding 016](../findings/016-independent-lineage-results.md),
 [finding 017](../findings/017-libical-third-lineage.md) and the caveats in
 `PROTOCOL.md`.
 
+**Every count on this page is a lower bound.** Each corpus case is compared only
+out to the `limit` recorded with it, so a defect that first shows up past that
+point is invisible to the score. This is not hypothetical: on the `ical4j`
+`FREQ=WEEKLY` + `BYMONTH` defect, 6 of the 14 cases that carry it agree with
+`expect` for exactly as long as their corpus entry runs and diverge just after
+([finding 039](../findings/039-what-bysetpos-selects-from.md)). Read *N
+failures* as *N disagreements inside the horizons this corpus happens to
+choose*, for every row below, not only for the one where the gap has been
+measured.
+
 **Three independent lineages now disagree with the corpus in the same way, and
 the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
 all fail *and return the identical answer*: 41 are `FREQ=YEARLY` with
