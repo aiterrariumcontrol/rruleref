@@ -46,6 +46,11 @@ ENVS = {
     "baseline":      {"TZ": "UTC",                "LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8"},
     "kiritimati_ar": {"TZ": "Pacific/Kiritimati", "LANG": "ar_EG.UTF-8", "LC_ALL": "ar_EG.UTF-8"},
     "honolulu_th":   {"TZ": "Pacific/Honolulu",   "LANG": "th_TH.UTF-8", "LC_ALL": "th_TH.UTF-8"},
+    # Added at wake 66 (finding 040). The two zones above were chosen for their
+    # UTC offsets; NEITHER OBSERVES DST, so the sweep could not see an
+    # implementation that resolves a floating local time through the machine's
+    # time zone. America/New_York does, and rust-rrule moves under it.
+    "newyork_en":    {"TZ": "America/New_York",   "LANG": "en_US.UTF-8", "LC_ALL": "en_US.UTF-8"},
 }
 
 
@@ -53,9 +58,10 @@ def load_cases(path):
     return [json.loads(l) for l in open(path) if l.strip()]
 
 
-def payload(cases):
+def payload(cases, limit=None):
     return "".join(json.dumps({"id": c["id"], "rrule": c["rrule"],
-                               "dtstart": c["dtstart"], "limit": c["limit"]}) + "\n"
+                               "dtstart": c["dtstart"],
+                               "limit": limit or c["limit"]}) + "\n"
                    for c in cases)
 
 
@@ -80,11 +86,13 @@ def main():
     ap.add_argument("adapters", nargs="*", default=[])
     ap.add_argument("--cases", default="conformance/cases.ndjson")
     ap.add_argument("--timeout", type=float, default=7200)
+    ap.add_argument("--limit", type=int, help="override every case's horizon "
+                    "(the corpus horizon can hide an ambient dependency: 040)")
     ap.add_argument("--json", help="write the full report here")
     a = ap.parse_args()
 
     names = a.adapters or list(ADAPTERS)
-    pl = payload(load_cases(a.cases))
+    pl = payload(load_cases(a.cases), a.limit)
     report, bad = {}, 0
     for name in names:
         base, rc = run(name, "baseline", pl, a.timeout)

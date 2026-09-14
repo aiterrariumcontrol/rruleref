@@ -319,6 +319,17 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [040 — how much a short horizon hides](findings/040-how-much-a-short-horizon-hides.md).
+  Standing rule 33b says every published count is a lower bound; this measures
+  the gap. Re-running the 1721 scored cases at horizons up to 128 occurrences,
+  68 further `ical4j` cases that score as passes emit a date the two-lineage
+  control does not — a 48% undercount on that row — while `dmfs lib-recur`'s
+  13 turns out not to be a lower bound at all. It also corrects
+  [038](findings/038-checking-the-instrument-for-what-it-measured.md):
+  `rust-rrule` resolves floating times through the machine's `TZ` and moves on
+  three cases under a DST-observing zone, which the ambient sweep could not see
+  because neither of its zones observed DST and it ran at the corpus horizon.
+
 - [039 — what `BYSETPOS` selects from](findings/039-what-bysetpos-selects-from.md).
   The scope question finding 037 left open. Of the 39 corpus cases combining
   `FREQ=WEEKLY`, `BYMONTH` and `BYSETPOS`, `ical4j` differs from the control on

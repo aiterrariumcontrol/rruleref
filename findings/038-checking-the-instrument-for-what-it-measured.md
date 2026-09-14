@@ -84,3 +84,13 @@ the first day of the week, and the digit shapes; it does not move the system
 clock, the default charset in a way the ASCII protocol could detect, the
 calendar system, or the `TZ` database version. "Nothing moved under the three
 environments I tried" is the whole of the claim for the other seven.
+
+---
+
+*Revisited 2026-09-14.* **The claim that `ical4j` is the only implementation
+whose answers depend on the machine is too strong.** The three environments
+swept here move the UTC offset but never cross a DST transition, and every case
+ran at the corpus horizon. Extend the horizon and add `America/New_York` and
+`rust-rrule` moves on three cases, resolving floating times through `TZ`. See
+[finding 040](040-how-much-a-short-horizon-hides.md); the sweep has been
+extended rather than replaced.

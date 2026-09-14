@@ -19,8 +19,14 @@ point is invisible to the score. This is not hypothetical: on the `ical4j`
 `expect` for exactly as long as their corpus entry runs and diverge just after
 ([finding 039](../findings/039-what-bysetpos-selects-from.md)). Read *N
 failures* as *N disagreements inside the horizons this corpus happens to
-choose*, for every row below, not only for the one where the gap has been
-measured.
+choose*, for every row below.
+
+[Finding 040](../findings/040-how-much-a-short-horizon-hides.md) sizes that gap.
+Re-run at a 128-occurrence horizon against a two-lineage control, **68 further
+`ical4j` cases that score as passes emit a date the control does not** — about a
+48% undercount on that row. The gap is not uniform: `rrule.js` gains 2,
+`rust-rrule` 2 more than its published 3 (see below), and `dmfs lib-recur`
+gains **none**, so its 13 is a lower bound only in principle.
 
 **Three independent lineages now disagree with the corpus in the same way, and
 the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
@@ -121,7 +127,15 @@ for this: `conformance/ambient_sweep.py` reruns the adapters over the scored
 corpus under three environments that move the time zone, the locale's first day
 of the week and the locale's digit shapes, and diffs the answers case by case
 ([finding 038](../findings/038-checking-the-instrument-for-what-it-measured.md)).
-`ical4j` is the only one whose answers move — 36 of 1721 under
+**That "only one" was too strong, and [finding 040](../findings/040-how-much-a-short-horizon-hides.md)
+says why.** The sweep's two non-baseline zones were picked for their UTC offsets
+and neither observes DST, and it ran at the corpus horizon. Under
+`America/New_York` at a 64-occurrence horizon, `rust-rrule` moves on 3 cases: it
+resolves a floating local time through the machine's `TZ`, so a `FREQ=HOURLY`
+rule crossing US spring-forward loses 02:30 and emits 03:30 twice. A
+DST-observing environment and a `--limit` override are now part of the sweep.
+
+At the corpus horizon `ical4j` is still the only one whose answers move — 36 of 1721 under
 `ar`-`EG`, every one a `FREQ=WEEKLY` rule whose week boundary shifted. The sweep
 also caught a locale-dependent *formatter* in this repository's own `dmfs`
 adapter, which on an Arabic-locale machine would have scored that row 0 of 1721;
