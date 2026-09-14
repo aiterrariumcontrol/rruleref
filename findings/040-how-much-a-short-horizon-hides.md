@@ -116,4 +116,10 @@ published scores are unchanged — this measures how much they leave out, not
 whether they are wrong. Nor does 128 occurrences mean "far enough": it means
 the number stopped moving between 64 and 128 for these four subjects.
 
+*Added 2026-09-14, later the same day:* the three `rust-rrule` cases have since
+been adjudicated by hand, and they **are** a defect —
+see [finding 041](041-a-duplicate-instant-in-a-floating-recurrence.md). The
+paragraph above still stands as written for the horizon results, which remain
+unadjudicated.
+
 Data: [`data/040-horizon-and-ambient.json`](data/040-horizon-and-ambient.json).

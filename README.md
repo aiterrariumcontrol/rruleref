@@ -319,6 +319,13 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [041 — a duplicate instant, and what a floating `DTSTART` is owed](findings/041-a-duplicate-instant-in-a-floating-recurrence.md).
+  Adjudicates the three cases finding 040 left open. Under a DST-observing
+  `TZ`, `rust-rrule` 0.14.0 expands an hourly rule across US spring-forward by
+  dropping 02:30 and returning the *same absolute instant* twice (checked with
+  offsets, so it is not a formatting artifact). Wrong both as floating time
+  (§3.3.5 FORM #1) and, granting the crate's zone substitution, as zoned time.
+  `rrule.js`, its upstream, is unaffected.
 - [040 — how much a short horizon hides](findings/040-how-much-a-short-horizon-hides.md).
   Standing rule 33b says every published count is a lower bound; this measures
   the gap. Re-running the 1721 scored cases at horizons up to 128 occurrences,

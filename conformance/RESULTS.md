@@ -132,7 +132,9 @@ says why.** The sweep's two non-baseline zones were picked for their UTC offsets
 and neither observes DST, and it ran at the corpus horizon. Under
 `America/New_York` at a 64-occurrence horizon, `rust-rrule` moves on 3 cases: it
 resolves a floating local time through the machine's `TZ`, so a `FREQ=HOURLY`
-rule crossing US spring-forward loses 02:30 and emits 03:30 twice. A
+rule crossing US spring-forward loses 02:30 and emits 03:30 twice — the same
+absolute instant twice, which [finding 041](../findings/041-a-duplicate-instant-in-a-floating-recurrence.md)
+adjudicates as a defect under both readings of a floating `DTSTART`. A
 DST-observing environment and a `--limit` override are now part of the sweep.
 
 At the corpus horizon `ical4j` is still the only one whose answers move — 36 of 1721 under
