@@ -28,6 +28,13 @@ Re-run at a 128-occurrence horizon against a two-lineage control, **68 further
 `rust-rrule` 2 more than its published 3 (see below), and `dmfs lib-recur`
 gains **none**, so its 13 is a lower bound only in principle.
 
+[Finding 042](../findings/042-what-the-fourth-lineage-hides-past-occurrence-eight.md)
+extends the same sweep to `sabre/vobject`, which had no horizon measurement at
+all: **135 further cases** that score as passes emit a date the control does not
+by occurrence 64, about a 17% undercount on its row, and none of its hidden
+rows are early stops. `DateTime::Event::ICal` is still unswept, so its 386 is a
+bound of unknown size.
+
 **Three independent lineages now disagree with the corpus in the same way, and
 the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
 all fail *and return the identical answer*: 41 are `FREQ=YEARLY` with

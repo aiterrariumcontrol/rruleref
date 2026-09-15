@@ -319,6 +319,14 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [042 — what the fourth lineage hides past occurrence eight](findings/042-what-the-fourth-lineage-hides-past-occurrence-eight.md).
+  `sabre/vobject` now runs under the horizon sweep. 135 cases that score as
+  passes emit a date the two-lineage control does not by occurrence 64 — a ~17%
+  undercount on its row — and **none** of its hidden rows are early stops,
+  unlike both Java implementations. 45 of the 135 are a `BYMONTH` omission at
+  `FREQ=DAILY` that finding 031's per-method source count could not see: all
+  three `byMonth` references in `nextDaily()` sit after an early `return` taken
+  whenever neither `BYDAY` nor `BYHOUR` is present.
 - [041 — a duplicate instant, and what a floating `DTSTART` is owed](findings/041-a-duplicate-instant-in-a-floating-recurrence.md).
   Adjudicates the three cases finding 040 left open. Under a DST-observing
   `TZ`, `rust-rrule` 0.14.0 expands an hourly rule across US spring-forward by

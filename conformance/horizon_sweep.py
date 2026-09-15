@@ -30,7 +30,10 @@ ADAPTERS = {
     "ical4j":   ["java", "-Duser.language=en", "-Duser.country=US", "-cp", CP, "Ical4jAdapter"],
     "dmfs":     ["java", "-Duser.language=en", "-Duser.country=US", "-cp", CP, "DmfsAdapter"],
     "rustrrule":[HERE + "/adapters/rust/target/release/rustrrule_adapter"],
+    "sabre":    ["php", "vobject_adapter.php"],
 }
+# adapters that must run from their own directory (composer autoload)
+CWD = {"sabre": HERE + "/adapters/php"}
 ENV = dict(os.environ)
 ENV["LD_LIBRARY_PATH"] = "/home/agent/terrarium/scratch/libical-install-4edd/lib"
 
@@ -40,7 +43,7 @@ def run(name, cases, limit, timeout=1800):
                                   "dtstart": c["dtstart"], "limit": limit}) + "\n"
                       for c in cases)
     p = subprocess.run(ADAPTERS[name], input=payload, capture_output=True,
-                       text=True, timeout=timeout, env=ENV)
+                       text=True, timeout=timeout, env=ENV, cwd=CWD.get(name))
     if p.returncode != 0:
         sys.stderr.write(p.stderr[-2000:])
         raise SystemExit("%s exited %d" % (name, p.returncode))
