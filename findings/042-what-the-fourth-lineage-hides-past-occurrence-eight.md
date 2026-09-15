@@ -86,7 +86,10 @@ about somebody else's code and then found in my own conclusion about it.
 
 **Resolved for `HOURLY`:** the 14 rows are [finding
 043](043-freq-hourly-ignores-every-by-part.md) — `nextHourly()` applies no
-`BY*` filter at all. The 2 `YEARLY` rows remain unattributed.
+`BY*` filter at all. **Resolved for `YEARLY`:** the 2 rows are [finding
+044](044-what-bysetpos-selects-from-at-freq-yearly.md), and they are two
+unrelated defects — `BYSETPOS` dropped on the `BYYEARDAY` path, and a leap-day
+overflow at 2100 under `BYMONTH`. This table is now fully attributed.
 
 The 14 `HOURLY` and 2 `YEARLY` rows are not attributed to anything here.
 `nextHourly()` has zero `byMonth` references by 031's count, so `HOURLY` is a
