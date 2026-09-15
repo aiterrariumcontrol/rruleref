@@ -319,6 +319,14 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [044 — the last two rows of finding 042, and they are two different bugs](findings/044-what-bysetpos-selects-from-at-freq-yearly.md).
+  At `FREQ=YEARLY`, `sabre/vobject` applies `BYSETPOS` only on the `BYMONTH`
+  path, and there to one month's set rather than the year's (reported upstream
+  as sabre-io/vobject #730); on the `BYYEARDAY` and `BYWEEKNO` paths it is
+  dropped entirely. Separately, `FREQ=YEARLY;INTERVAL=4;BYMONTH=2` from a
+  February 29 `DTSTART` overflows at 2100 to March 1 and emits February **1**
+  forever after — the same rule without the redundant `BYMONTH` is correct.
+  Finding 042's hidden-case table is now fully attributed.
 - [043 — `FREQ=HOURLY` ignores every `BY*` part, by a 2012 decision](findings/043-freq-hourly-ignores-every-by-part.md).
   `sabre/vobject`'s `nextHourly()` is four lines and applies no filter at all,
   so all eight `BY*` parts §3.3.10 defines for the `HOURLY` column are parsed

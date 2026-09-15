@@ -49,9 +49,9 @@ The 135 hidden cases break down as:
 |---|---:|---|
 | `WEEKLY` (all with `BYMONTH`) | 62 | finding 031 — `nextWeekly()`'s filter loop has no `byMonth` term in any branch |
 | `DAILY` (all with `BYMONTH`, none with `BYDAY` or `BYHOUR`) | 45 | **new, below** |
-| `HOURLY` | 14 | unattributed |
+| `HOURLY` | 14 | [finding 043](043-freq-hourly-ignores-every-by-part.md) — `nextHourly()` applies no `BY*` filter |
 | `MONTHLY` (all with `BYMONTH`) | 12 | finding 031 |
-| `YEARLY` | 2 | unattributed |
+| `YEARLY` | 2 | [finding 044](044-what-bysetpos-selects-from-at-freq-yearly.md) — `BYSETPOS` dropped on the `BYYEARDAY` path; a leap-day overflow under `BYMONTH` |
 
 `nextDaily()` begins:
 
