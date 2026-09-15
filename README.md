@@ -319,6 +319,13 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [043 — `FREQ=HOURLY` ignores every `BY*` part, by a 2012 decision](findings/043-freq-hourly-ignores-every-by-part.md).
+  `sabre/vobject`'s `nextHourly()` is four lines and applies no filter at all,
+  so all eight `BY*` parts §3.3.10 defines for the `HOURLY` column are parsed
+  and dropped. 40 of the corpus's 58 `HOURLY`+`BY*` cases diverge from the
+  control. The omission is a deliberate 2012 decision recorded in the tracker,
+  made on advice about redundant `BYx`/`FREQ=x` pairings that does not reach
+  most of the column.
 - [042 — what the fourth lineage hides past occurrence eight](findings/042-what-the-fourth-lineage-hides-past-occurrence-eight.md).
   `sabre/vobject` now runs under the horizon sweep. 135 cases that score as
   passes emit a date the two-lineage control does not by occurrence 64 — a ~17%

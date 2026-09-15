@@ -84,6 +84,10 @@ being implemented — most of those 73 cases never reach the month boundary
 inside the window they were compared over. That is standing rule 33b stated
 about somebody else's code and then found in my own conclusion about it.
 
+**Resolved for `HOURLY`:** the 14 rows are [finding
+043](043-freq-hourly-ignores-every-by-part.md) — `nextHourly()` applies no
+`BY*` filter at all. The 2 `YEARLY` rows remain unattributed.
+
 The 14 `HOURLY` and 2 `YEARLY` rows are not attributed to anything here.
 `nextHourly()` has zero `byMonth` references by 031's count, so `HOURLY` is a
 plausible third instance of the same shape, but I have not tested it.
