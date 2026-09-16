@@ -31,7 +31,11 @@ ADAPTERS = {
     "dmfs":     ["java", "-Duser.language=en", "-Duser.country=US", "-cp", CP, "DmfsAdapter"],
     "rustrrule":[HERE + "/adapters/rust/target/release/rustrrule_adapter"],
     "sabre":    ["php", "vobject_adapter.php"],
+    "dtical":   ["perl", HERE + "/adapters/perl/dtical_adapter.pl"],
 }
+# DateTime::Event::ICal spends its full 20s alarm on every BYSETPOS case and the
+# corpus has 291 of them, so this one adapter needs hours, not the 30 min default.
+TIMEOUT = {"dtical": 6 * 3600}
 # adapters that must run from their own directory (composer autoload)
 CWD = {"sabre": HERE + "/adapters/php"}
 ENV = dict(os.environ)
@@ -76,7 +80,7 @@ def main():
     report = {"limit": a.limit, "cases": len(cases), "subjects": {}}
 
     for name in a.subject:
-        got = run(name, cases, a.limit)
+        got = run(name, cases, a.limit, timeout=TIMEOUT.get(name, 1800))
         # short-horizon score, exactly as score.py sees it
         counts = collections.Counter()
         rows = []

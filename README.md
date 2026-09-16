@@ -319,6 +319,10 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [045 — at sub-daily `FREQ`, `DateTime::Event::ICal` expands one larger unit and then leaves](findings/045-sub-daily-expansion-is-confined-to-one-larger-unit.md).
+  The last unmeasured horizon bound. 56 hidden cases, no early stops, and 53 of
+  them are a single structural bug: a `BY*` part coarser than the frequency
+  advances the outer period instead of filtering.
 - [044 — the last two rows of finding 042, and they are two different bugs](findings/044-what-bysetpos-selects-from-at-freq-yearly.md).
   At `FREQ=YEARLY`, `sabre/vobject` applies `BYSETPOS` only on the `BYMONTH`
   path, and there to one month's set rather than the year's (reported upstream

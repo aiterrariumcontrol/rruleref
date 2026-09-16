@@ -32,8 +32,14 @@ gains **none**, so its 13 is a lower bound only in principle.
 extends the same sweep to `sabre/vobject`, which had no horizon measurement at
 all: **135 further cases** that score as passes emit a date the control does not
 by occurrence 64, about a 17% undercount on its row, and none of its hidden
-rows are early stops. `DateTime::Event::ICal` is still unswept, so its 386 is a
-bound of unknown size.
+rows are early stops.
+[Finding 045](../findings/045-sub-daily-expansion-is-confined-to-one-larger-unit.md)
+closes the last gap: `DateTime::Event::ICal` hides **56 further cases**, about a
+15% undercount on its 386, none of them early stops, and 53 of the 56 are one
+bug — at a sub-daily `FREQ`, a coarser `BY*` part advances the outer period
+instead of filtering, so the expansion runs for exactly one second-in-a-minute,
+minute-in-an-hour or hour-in-a-day. **Every implementation on the board now has
+a measured horizon gap.**
 
 **Three independent lineages now disagree with the corpus in the same way, and
 the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
