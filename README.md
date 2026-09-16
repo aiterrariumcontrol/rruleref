@@ -319,6 +319,10 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [046 — the three unexplained rows of finding 045 are not a `BYSETPOS` bug: `DateTime::Set`'s iterator and its `next` disagree](findings/046-the-iterator-and-the-next-chain-disagree.md).
+  One set object, two documented traversals, two different answers, on 68 of
+  the corpus's 291 `BYSETPOS` cases. Part of the published `dtical` column is a
+  fact about how I chose to enumerate, not about anyone's reading of RFC 5545.
 - [045 — at sub-daily `FREQ`, `DateTime::Event::ICal` expands one larger unit and then leaves](findings/045-sub-daily-expansion-is-confined-to-one-larger-unit.md).
   The last unmeasured horizon bound. 56 hidden cases, no early stops, and 53 of
   them are a single structural bug: a `BY*` part coarser than the frequency

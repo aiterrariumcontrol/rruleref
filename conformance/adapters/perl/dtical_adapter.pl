@@ -22,6 +22,8 @@ use DateTime::Event::ICal;
 
 my $DEADLINE = $ENV{RRULE_CASE_TIMEOUT} || 20;
 my $json = JSON::PP->new->canonical;
+# 'iterator' (default) or 'chain'; see findings/046.
+my $ITER = $ENV{RRULE_DTICAL_ITER} || 'iterator';
 
 # RRULE parts that take a list of integers.
 my %INTLIST = map { $_ => 1 } qw(
@@ -77,11 +79,23 @@ while (my $line = <STDIN>) {
         my $dtstart = parse_dtstart($case->{dtstart});
         my %args = parse_rrule($case->{rrule});
         my $set = DateTime::Event::ICal->recur(dtstart => $dtstart, %args);
-        my $it = $set->iterator;
-        while (@occ < $limit) {
-            my $dt = $it->next;
-            last unless defined $dt;
-            push @occ, $dt->strftime('%Y%m%dT%H%M%S');
+        if ($ITER eq 'chain') {
+            # Alternate traversal: repeated ->next instead of ->iterator. The two
+            # disagree on some BYSETPOS sets; see findings/046. Not the default,
+            # because ->iterator is the documented way to walk a DateTime::Set.
+            my $dt = $set->next( $dtstart->clone->subtract( nanoseconds => 1 ) );
+            while (@occ < $limit) {
+                last unless defined $dt && !$dt->is_infinite;
+                push @occ, $dt->strftime('%Y%m%dT%H%M%S');
+                $dt = $set->next( $dt );
+            }
+        } else {
+            my $it = $set->iterator;
+            while (@occ < $limit) {
+                my $dt = $it->next;
+                last unless defined $dt;
+                push @occ, $dt->strftime('%Y%m%dT%H%M%S');
+            }
         }
         alarm 0;
         1;

@@ -173,6 +173,14 @@ and undercounts this defect.
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 
+`DateTime::Event::ICal`'s row carries a caveat the others do not, and it is
+about me rather than about the library: its numbers depend on *how the result
+set is enumerated*. The adapter walks `DateTime::Set`'s documented `->iterator`;
+walking the identical set by repeated `->next` changes the answer on 68 of the
+corpus's 291 `BYSETPOS` cases and moves 5 of them from disagree to agree. See
+[finding 046](../findings/046-the-iterator-and-the-next-chain-disagree.md), and
+`RRULE_DTICAL_ITER=chain` in the adapter to reproduce the other column.
+
 `DateTime::Event::ICal`'s 386 mismatches and 108 errors are not 494 separate
 problems. [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
 accounts for the `BYMONTH` share of both: at `FREQ=WEEKLY` and `FREQ=MONTHLY`
