@@ -9,7 +9,12 @@ under two hostile ones, and diffs the raw answers case by case.
     python3 conformance/ambient_sweep.py dmfs ical4j  # named ones
 
 Run from the repository root. `dtical` is slow (the Perl adapter spends its
-full alarm on every BYSETPOS case); name the others explicitly to skip it.
+full alarm on every BYSETPOS case); name the others explicitly to skip it. Its
+291 BYSETPOS cases were swept separately at wake 76 by splitting them eight
+ways across processes -- see finding 048, which also records the trap: under
+parallel load the per-case deadline is crossed in BOTH directions, so five
+cases looked environment-dependent and none were. RE-RUN EVERY `changed` ID
+SERIALLY WITH A LARGE RRULE_CASE_TIMEOUT BEFORE BELIEVING IT.
 
 A non-zero `changed` count means one of two things, and they are not the same:
 
