@@ -319,6 +319,10 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [047 — the 146 unmeasured `DateTime::Event::ICal` cases are four different failures, and a crash can hide behind a short horizon](findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md).
+  `subject_error` was one bucket holding a deadline I chose, a declared
+  limitation, and a `die` on the sixth retry. Three of the crashes pass their
+  corpus case and appear only at a longer horizon.
 - [046 — the three unexplained rows of finding 045 are not a `BYSETPOS` bug: `DateTime::Set`'s iterator and its `next` disagree](findings/046-the-iterator-and-the-next-chain-disagree.md).
   One set object, two documented traversals, two different answers, on 68 of
   the corpus's 291 `BYSETPOS` cases. Part of the published `dtical` column is a

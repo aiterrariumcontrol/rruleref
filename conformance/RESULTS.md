@@ -41,6 +41,16 @@ instead of filtering, so the expansion runs for exactly one second-in-a-minute,
 minute-in-an-hour or hour-in-a-day. **Every implementation on the board now has
 a measured horizon gap.**
 
+That sweep still left one block uncounted: the **146** cases where the Perl
+adapter returned no answer at all, which the sweep charges to nobody.
+[Finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)
+measures it. It is four different failures, not one: 13 cases were only my own
+20s deadline, 12 are a limitation `ICal.pm` declares by name, and 77 are the
+library dereferencing its own `undef` after a bounded retry budget runs out.
+**Three of those crashes pass their corpus case and appear only at limit 64** —
+a horizon can hide a `die`, and a sweep that buckets every error together will
+never show it.
+
 **Three independent lineages now disagree with the corpus in the same way, and
 the reason is known.** On **56** cases `libical`, `ical4j` and `dmfs lib-recur`
 all fail *and return the identical answer*: 41 are `FREQ=YEARLY` with

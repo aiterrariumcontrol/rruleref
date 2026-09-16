@@ -92,10 +92,22 @@ def main():
             if ref is None or ref2 is None or ref != ref2:
                 counts["inconclusive_control"] += 1
                 continue
-            if mine is None:
-                counts["subject_error"] += 1
-                continue
             n = c["limit"]
+            if mine is None:
+                # Finding 047: "no answer" is not one thing. A deadline I set,
+                # a limitation the library declares, and a crash that only
+                # appears at a long horizon all land here, and pooling them
+                # hid three horizon-induced crashes for two sweeps running.
+                msg = (got.get(cid) or {}).get("error", "") or "missing"
+                if "no answer within" in msg:
+                    counts["subject_timeout"] += 1
+                elif "not implemented" in msg:
+                    counts["subject_declared_unsupported"] += 1
+                else:
+                    counts["subject_crash"] += 1
+                rows.append({"id": cid, "rrule": c["rrule"], "dtstart": c["dtstart"],
+                             "corpus_limit": n, "kind": "error", "error": msg})
+                continue
             short_agrees = mine[:n] == ref[:n] == c["expect"][:n]
             if mine == ref:
                 counts["agrees_long"] += 1
