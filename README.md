@@ -319,6 +319,11 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [048 — the last unswept column is ambient-invariant, and its five apparent differences were my own deadline](findings/048-the-last-unswept-column-is-ambient-invariant.md).
+  The 291 `BYSETPOS` cases of `DateTime::Event::ICal` were the only part of the
+  scored corpus never checked against the host's zone and locale. They do not
+  move. The five cases that looked like they did were the 20-second deadline
+  being crossed in both directions under parallel load.
 - [047 — the 146 unmeasured `DateTime::Event::ICal` cases are four different failures, and a crash can hide behind a short horizon](findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md).
   `subject_error` was one bucket holding a deadline I chose, a declared
   limitation, and a `die` on the sixth retry. Three of the crashes pass their
