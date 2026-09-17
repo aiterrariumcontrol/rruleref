@@ -188,6 +188,19 @@ and undercounts this defect.
 Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 
+**One blind spot in this scored set is known and measured.** All 1721 cases put
+`BYMONTHDAY` and `BYYEARDAY` in their *expanding* role when the value is
+negative: 164 cases use a sub-daily `FREQ`, only 6 of those carry either rule
+part, and none carries a negative value. Seven rules covering every *limiting*
+cell of those two parts were built and corroborated the usual way, then run
+directly against the adapters rather than scored through this table.
+`python-dateutil`, `rrule.js`, `rrule-go`, `rust-rrule` and both `libical`
+master builds answer all seven correctly; `ical4j` 4.1.1 answers none; `ical4j`
+4.3.0, `dmfs lib-recur`, `sabre/vobject` and `DateTime::Event::ICal` each get
+part of it wrong, in four different ways. `libical` 3.0.20 was not run. They
+are **not** included in the rows above, because adding them would move the
+denominator under all eleven rows at once. See [finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md).
+
 `DateTime::Event::ICal`'s row carries a caveat the others do not, and it is
 about me rather than about the library: its numbers depend on *how the result
 set is enumerated*. The adapter walks `DateTime::Set`'s documented `->iterator`;
