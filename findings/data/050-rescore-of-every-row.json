@@ -1,0 +1,290 @@
+{
+ "about": "Rescore of every row of conformance/RESULTS.md after the corpus gained the seven negative-value Limit cells of finding 050.",
+ "cases": 1728,
+ "date": "2026-09-17",
+ "dtical_split_is_not_reproducible": {
+  "columns": [
+   "pass",
+   "fail",
+   "fail_other_reading",
+   "error"
+  ],
+  "note": "Same machine, same adapter, byte-identical input. pass and fail_other_reading reproduce exactly; the fail/error boundary moves because the adapter's per-case 20s alarm is load-dependent.",
+  "published_row_1721": [
+   1176,
+   386,
+   51,
+   108
+  ],
+  "rescore_of_1728": [
+   1179,
+   400,
+   51,
+   98
+  ],
+  "rescore_of_byte_identical_1721_today": [
+   1176,
+   394,
+   51,
+   100
+  ]
+ },
+ "per_adapter": {
+  "dateutil": {
+   "counts": {
+    "pass": 1728
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "dmfs": {
+   "counts": {
+    "error": 11,
+    "fail": 13,
+    "fail_other_reading": 63,
+    "pass": 1641
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "error",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "error",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "error"
+   }
+  },
+  "dtical": {
+   "counts": {
+    "error": 98,
+    "fail": 400,
+    "fail_other_reading": 51,
+    "pass": 1179
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "dtical_old": {
+   "counts": {
+    "error": 100,
+    "fail": 394,
+    "fail_other_reading": 51,
+    "pass": 1176
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "ical4j_411_arEG": {
+   "counts": {
+    "fail": 214,
+    "fail_other_reading": 58,
+    "pass": 1456
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "fail",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "fail",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "ical4j_411_enGB": {
+   "counts": {
+    "fail": 183,
+    "fail_other_reading": 58,
+    "pass": 1487
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "fail",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "fail",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "ical4j_411_enUS": {
+   "counts": {
+    "fail": 202,
+    "fail_other_reading": 58,
+    "pass": 1468
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "fail",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "fail",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "ical4j_430_enGB": {
+   "counts": {
+    "fail": 114,
+    "fail_other_reading": 58,
+    "pass": 1556
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "ical4j_430_enUS": {
+   "counts": {
+    "fail": 133,
+    "fail_other_reading": 58,
+    "pass": 1537
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "fail",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  },
+  "libical_3020": {
+   "counts": {
+    "error": 57,
+    "fail": 113,
+    "fail_other_reading": 41,
+    "pass": 1517
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "libical_48d5": {
+   "counts": {
+    "error": 35,
+    "fail": 30,
+    "fail_other_reading": 57,
+    "pass": 1606
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "libical_4edd": {
+   "counts": {
+    "error": 35,
+    "fail": 22,
+    "fail_other_reading": 57,
+    "pass": 1614
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "rrulego": {
+   "counts": {
+    "pass": 1728
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "rrulejs": {
+   "counts": {
+    "fail": 26,
+    "pass": 1702
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "rustrrule": {
+   "counts": {
+    "pass": 1728
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "pass",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "pass",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "pass",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "pass"
+   }
+  },
+  "sabre": {
+   "counts": {
+    "error": 4,
+    "fail": 868,
+    "fail_other_reading": 23,
+    "pass": 833
+   },
+   "new_seven": {
+    "FREQ=DAILY;BYMONTHDAY=-1": "fail",
+    "FREQ=HOURLY;BYMONTHDAY=-1": "pass",
+    "FREQ=HOURLY;BYYEARDAY=-1": "pass",
+    "FREQ=MINUTELY;BYMONTHDAY=-1": "fail",
+    "FREQ=MINUTELY;BYYEARDAY=-1": "fail",
+    "FREQ=SECONDLY;BYMONTHDAY=-1": "fail",
+    "FREQ=SECONDLY;BYYEARDAY=-1": "fail"
+   }
+  }
+ }
+}

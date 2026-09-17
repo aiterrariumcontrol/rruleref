@@ -1,7 +1,7 @@
 # Results
 
 Produced by `conformance/score.py` against `conformance/cases.ndjson`
-(1721 cases: valid rule, synchronized `DTSTART`, `UNTIL` value type matching
+(1728 cases: valid rule, synchronized `DTSTART`, `UNTIL` value type matching
 `DTSTART`, decidable from the recorded window). Exact list equality; no partial
 credit.
 
@@ -113,23 +113,25 @@ as `fail_other_reading` rather than `fail`, broken down by which reading
 with no reading-dependent failures at all** — every failure it has is a
 disagreement about behaviour rather than about the text.
 
-All rows rescored 2026-09-11 against the annotated corpus. `pass` is unchanged
-from the previous run of each; annotation only moves cases between `fail` and
-`other reading`.
+All rows rescored 2026-09-17 against the annotated corpus, which gained seven
+cases that hour: the first cases anywhere in this set that put `BYMONTHDAY` or
+`BYYEARDAY` in their *limiting* role with a negative value
+([finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md)). The
+seven are the whole of the change to every row below.
 
 | implementation | version | lineage | pass | fail | other reading | error |
 |---|---|---|---:|---:|---:|---:|
-| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1721 | 0 | 0 | 0 |
-| `rrule.js` | 2.8.1 | port of dateutil | 1695 | 26 | 0 | 0 |
-| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1721 | 0 | 0 | 0 |
-| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1721 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 195 | 58 | 0 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1637 | 13 | 63 | 8 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1510 | 113 | 41 | 57 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1599 | 30 | 57 | 35 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1607 | 22 | 57 | 35 |
-| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 831 | 863 | 23 | 4 |
-| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1176 | 386 | 51 | 108 |
+| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1728 | 0 | 0 | 0 |
+| `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 |
+| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 |
+| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 202 | 58 | 0 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 13 | 63 | 11 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 113 | 41 | 57 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 30 | 57 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 22 | 57 | 35 |
+| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 4 |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 400 [‡](#dtical-split) | 51 | 98 [‡](#dtical-split) |
 
 <a id="ical4j-locale"></a>
 **† `ical4j`'s row is a measurement of this container, not of `ical4j` alone.**
@@ -141,15 +143,21 @@ The same build, same corpus, changing only the locale:
 
 | JVM locale | first day of week | pass | fail |
 |---|---|---:|---:|
-| `ar`-`EG` | Saturday | 1456 | 207 |
-| `en`-`US` | Sunday | 1468 | 195 |
-| `en`-`GB` | Monday | 1487 | 176 |
+| `ar`-`EG` | Saturday | 1456 | 214 |
+| `en`-`US` | Sunday | 1468 | 202 |
+| `en`-`GB` | Monday | 1487 | 183 |
 
-19 net of the 195 are the locale and not the algorithm. Of the 176 that remain
-on the `en`-`GB` row, **65 are a single defect** — negative `BYMONTHDAY`
-resolved correctly when the rule part expands but compared raw when it limits,
-so `FREQ=DAILY;BYMONTHDAY=-1` matches nothing. It is fixed in `ical4j` 4.3.0
-(1552 / 111 / 58 on the same corpus), and its `BYYEARDAY` twin is not
+19 net of the 202 are the locale and not the algorithm. Of the 183 that remain
+on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
+negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
+resolved correctly when the rule part expands and compared raw when the same
+rule part limits, so `FREQ=DAILY;BYMONTHDAY=-1` matches nothing. Finding 049
+could only say the 65 it then had were *all* `FREQ=DAILY`; that was a fact
+about the corpus, not about `ical4j`, and the seven cases added on 2026-09-17
+show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.0 fixes it for `BYMONTHDAY`
+and not for `BYYEARDAY`, and the scored set now shows exactly that split:
+4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
+`BYYEARDAY` ones (1556 / 114 / 58 on the `en`-`GB` row of the same corpus)
 ([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)). The harness now watches
 for this: `conformance/ambient_sweep.py` reruns the adapters over the scored
 corpus under three environments that move the time zone, the locale's first day
@@ -165,13 +173,13 @@ absolute instant twice, which [finding 041](../findings/041-a-duplicate-instant-
 adjudicates as a defect under both readings of a floating `DTSTART`. A
 DST-observing environment and a `--limit` override are now part of the sweep.
 
-At the corpus horizon `ical4j` is still the only one whose answers move — 36 of 1721 under
+At the corpus horizon `ical4j` is still the only one whose answers move — 36 of 1728 under
 `ar`-`EG`, every one a `FREQ=WEEKLY` rule whose week boundary shifted. The sweep
 also caught a locale-dependent *formatter* in this repository's own `dmfs`
-adapter, which on an Arabic-locale machine would have scored that row 0 of 1721;
+adapter, which on an Arabic-locale machine would have scored that row 0 of 1728;
 it is fixed, and the `dmfs` row above is unchanged by the fix.
 
-Of the 176 that remain on the `en`-`GB` row — the row where `WKST` defaults to
+Of the 183 that remain on the `en`-`GB` row — the row where `WKST` defaults to
 the value RFC 5545 specifies — **18 are one defect**, characterised in
 [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md):
 at `FREQ=WEEKLY` the `BYMONTH` limit is applied to the period seed rather than
@@ -181,36 +189,70 @@ corroborated cases that this set excludes because their `DTSTART` is
 unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
 the current release. [Finding 039](../findings/039-what-bysetpos-selects-from.md)
 extends the same defect to the corpus's `BYSETPOS` cases: a further **8** of the
-176 are it, and six more cases carry the defect but only past the horizon their
-corpus entry runs to, so 176 is a count of disagreements within these horizons
+183 are it, and six more cases carry the defect but only past the horizon their
+corpus entry runs to, so 183 is a count of disagreements within these horizons
 and undercounts this defect.
 
-Every row is out of 1721. `dmfs lib-recur`'s 63 is the only one that is not all
+Every row is out of 1728. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
 
-**One blind spot in this scored set is known and measured.** All 1721 cases put
-`BYMONTHDAY` and `BYYEARDAY` in their *expanding* role when the value is
-negative: 164 cases use a sub-daily `FREQ`, only 6 of those carry either rule
-part, and none carries a negative value. Seven rules covering every *limiting*
-cell of those two parts were built and corroborated the usual way, then run
-directly against the adapters rather than scored through this table.
-`python-dateutil`, `rrule.js`, `rrule-go`, `rust-rrule` and both `libical`
-master builds answer all seven correctly; `ical4j` 4.1.1 answers none; `ical4j`
-4.3.0, `dmfs lib-recur`, `sabre/vobject` and `DateTime::Event::ICal` each get
-part of it wrong, in four different ways. `libical` 3.0.20 was not run. They
-are **not** included in the rows above, because adding them would move the
-denominator under all eleven rows at once. See [finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md).
+**A blind spot that was known and measured is now closed.** Until 2026-09-17
+every case in this set put `BYMONTHDAY` and `BYYEARDAY` in their *expanding*
+role whenever the value was negative. The corpus guaranteed one case per
+§3.3.10 table cell and a test enforced it, but it drew every value from an
+all-positive table, so "57 of 57 cells covered" meant each cell had been
+*visited* — never that both signs had been tried. The whole Limit column for
+those two rule parts was scored by cases that could not see a defect in it.
 
-`DateTime::Event::ICal`'s row carries a caveat the others do not, and it is
-about me rather than about the library: its numbers depend on *how the result
+Seven rules covering every *limiting* cell of the two parts are now in the
+scored set, and they are the whole of the difference between these rows and the
+previous run. Per case, out of seven:
+
+| implementation | correct | how it is wrong |
+|---|---:|---|
+| `python-dateutil`, `rrule.js`, `rrule-go`, `rust-rrule` | 7 | — |
+| `libical` 3.0.20, master `48d52b4b`, master `4edd39a3` | 7 | — |
+| `ical4j` 4.1.1 | 0 | returns an empty list for all seven |
+| `ical4j` 4.3.0 | 4 | `BYMONTHDAY` fixed, `BYYEARDAY` twin not |
+| `dmfs lib-recur` | 4 | throws *too many empty recurrence sets* on all three `BYYEARDAY` cases |
+| `sabre/vobject` | 2 | drops the constraint, then repeats one instant |
+| `DateTime::Event::ICal` | 3 | promotes the limit to the frequency |
+
+Two of the six lineages get the cell right and four get it wrong, each
+differently. `libical` 3.0.20, which [finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md)
+left unrun, was run for this table and answers all seven correctly.
+
+The lesson is about this instrument and not about the subjects: **a coverage
+model earns only the coverage it states, and is silent about every axis it does
+not name.** Cell coverage was never value coverage.
+
+<a id="dtical-split"></a>
+**‡ `DateTime::Event::ICal`'s `fail`/`error` boundary does not reproduce, and
+the previous version of this table presented it as if it did.** The adapter
+gives each case a 20-second alarm, so a case that is merely slow lands in
+`error` or in `fail` depending on what else the machine was doing. Rescoring
+the **byte-identical** 1721-case file that produced the published row gave
+`1176 / 394 / 51 / 100` where the row said `1176 / 386 / 51 / 108` — same
+machine, same adapter, same input, eight cases across the boundary. `pass` and
+`fail_other_reading` came back exactly, both times. Read this row as
+**1179 passing and 549 not**, and treat any comparison of its `fail` column
+against an earlier run of this document as noise. The seven cases added on
+2026-09-17 account for 3 of the passes and 4 of the failures; the rest of the
+movement from the previous row is the alarm, not the corpus. This is
+[finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)'s point
+arriving a second time: a terminal "no answer" bucket is not one fact, and a
+deadline manufactures differences as readily as it hides them.
+
+`DateTime::Event::ICal`'s row carries a second caveat the others do not, and it
+is about me rather than about the library: its numbers depend on *how the result
 set is enumerated*. The adapter walks `DateTime::Set`'s documented `->iterator`;
 walking the identical set by repeated `->next` changes the answer on 68 of the
 corpus's 291 `BYSETPOS` cases and moves 5 of them from disagree to agree. See
 [finding 046](../findings/046-the-iterator-and-the-next-chain-disagree.md), and
 `RRULE_DTICAL_ITER=chain` in the adapter to reproduce the other column.
 
-`DateTime::Event::ICal`'s 386 mismatches and 108 errors are not 494 separate
-problems. [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
+`DateTime::Event::ICal`'s 400 mismatches and 98 errors are not 498 separate
+problems (and, per the note above, are not a stable split of 498 either). [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
 accounts for the `BYMONTH` share of both: at `FREQ=WEEKLY` and `FREQ=MONTHLY`
 the library reads `BYMONTH` as *month ∈ `BYMONTH` **and** day-of-month =
 `DTSTART`'s day*, because `recur()` assembles the `BYMONTH` filter from a hash
@@ -219,17 +261,19 @@ missing default from the caller takes the 205 non-`BYSETPOS`
 `WEEKLY`+`BYMONTH` cases from **0** passing to **205**, errors included. Its
 vote on §3.3.10 comes from `_yearly_recurrence` and is unaffected.
 
-`python-dateutil`'s 1721 is **not a result**: it is one of the two expanders
+`python-dateutil`'s 1728 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
 
-`rrule-go`'s and `rust-rrule`'s 1721 are **not independent evidence** either,
+`rrule-go`'s and `rust-rrule`'s 1728 are **not independent evidence** either,
 for a different reason. Both are `python-dateutil` descendants by their own
 READMEs' account, and both return the identical list to their parent on all
-3813 corroborated cases, not merely on the 1721 scored here — so counting
+3820 corroborated cases, not merely on the 1728 scored here — so counting
 either as a lineage would double-count dateutil.
 [Finding 027](../findings/027-a-port-that-did-not-drift.md) has the Go
 measurement and sizes `rrule.js`'s divergence from the same parent at 122 of
-3813, decomposing all of it into the mechanisms findings 015 and 004/018/021
+the 3813 corroborated cases that existed when it ran — the seven added since
+are not among them, because `rrule.js` matches its parent on all seven —
+decomposing all of it into the mechanisms findings 015 and 004/018/021
 already named.
 [Finding 028](../findings/028-two-ports-agree-and-the-third-does-not.md) has
 the Rust one, and settles what 027 could not: with **two** independently
@@ -319,7 +363,7 @@ An implementation descended from **neither `python-dateutil` nor `libical`**
 `BYYEARDAY`, and the `BY*` parts in their limiting roles.
 
 The qualifier is new, and finding 029 is why. This section used to ask for Go,
-Rust, C# or Swift. The Go and Rust results came back a perfect 1721 and were
+Rust, C# or Swift. The Go and Rust results came back a perfect 1728 and were
 worth nothing as evidence, because both libraries are dateutil descendants —
 findings [027](../findings/027-a-port-that-did-not-drift.md) and
 [028](../findings/028-two-ports-agree-and-the-third-does-not.md). Then PHP's

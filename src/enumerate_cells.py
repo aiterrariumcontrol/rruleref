@@ -6,7 +6,9 @@ cells were empty and nothing in the corpus said so. These cases are chosen by
 the cell they occupy, not by a seed, so the corpus's coverage becomes a
 statement that a test can check.
 
-Each case carries the cell it was built for. DTSTART is anchored near the
+Each case carries the cell it was built for. A cell may hold more than one
+case: where 3.3.10 permits a negative value, the cell is emitted twice, once
+per sign -- see NEG_VALUES. DTSTART is anchored near the
 rule's own matching region: the naive expander is a brute force over candidate
 instants, and FREQ=SECONDLY;BYMONTH=3 starting in January costs five million
 iterations to reach its first occurrence.
@@ -40,6 +42,26 @@ VALUES = {
     "BYHOUR": "9,18",
     "BYMINUTE": "0,30",
     "BYSECOND": "0,15",
+}
+
+# 3.3.10 lets BYMONTHDAY and BYYEARDAY count from the end of the period as well
+# as from the start, and the two directions are *different code paths* in real
+# implementations. Covering a table cell with a positive value only says the
+# cell was visited; it says nothing about the sign. Finding 049 is exactly that
+# blind spot: ical4j resolves a negative day correctly when the rule part
+# expands and compares it raw when the same rule part limits, so the whole
+# Limit column was scored by cases that could not see the defect.
+NEG_VALUES = {
+    "BYMONTHDAY": "-1",
+    "BYYEARDAY": "-1",
+}
+
+#: Anchored at the end of the period the negative value names, for ANCHOR's
+#: reason: the brute force must not walk a year of seconds to reach occurrence
+#: one.
+NEG_ANCHOR = {
+    "BYMONTHDAY": datetime(2026, 3, 31, 9, 0, 0),
+    "BYYEARDAY": datetime(2026, 12, 31, 9, 0, 0),
 }
 
 
@@ -76,11 +98,20 @@ def _parts(part, freq, branch):
 
 
 def cases():
-    """[(cell, rrule, dtstart)] -- one rule per cell, deterministic."""
+    """[(cell, rrule, dtstart)] -- every permitted cell, deterministic.
+
+    One rule per cell, plus a second rule for the cells whose rule part accepts
+    a negative value. The negative variant is filed under the *same* cell: it
+    is not a new cell of 3.3.10's table, it is the other sign of one that was
+    already there.
+    """
     out = []
     for part, freq, branch in coverage.cells():
         rule = "FREQ=%s;%s" % (freq, _parts(part, freq, branch))
         out.append(((part, freq, branch), rule, ANCHOR[part]))
+        if part in NEG_VALUES:
+            neg = "FREQ=%s;%s=%s" % (freq, part, NEG_VALUES[part])
+            out.append(((part, freq, branch), neg, NEG_ANCHOR[part]))
     return out
 
 

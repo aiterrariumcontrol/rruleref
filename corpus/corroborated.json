@@ -13101,6 +13101,41 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260331T090000",
+    "20260430T090000",
+    "20260531T090000",
+    "20260630T090000",
+    "20260731T090000",
+    "20260831T090000",
+    "20260930T090000",
+    "20261031T090000"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYMONTHDAY/DAILY/Limit"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=0",
+    "BYMONTHDAY|monthdaynum/0/0|minus",
+    "BYMONTHDAY|monthdaynum/0|present",
+    "FREQ|freq|DAILY",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYMONTHDAY/DAILY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260517T090000",
    "dtstart_synchronized": false,
    "expect": [
@@ -33247,6 +33282,41 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260331T090000",
+    "20260331T100000",
+    "20260331T110000",
+    "20260331T120000",
+    "20260331T130000",
+    "20260331T140000",
+    "20260331T150000",
+    "20260331T160000"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=HOURLY;BYMONTHDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYMONTHDAY/HOURLY/Limit"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=0",
+    "BYMONTHDAY|monthdaynum/0/0|minus",
+    "BYMONTHDAY|monthdaynum/0|present",
+    "FREQ|freq|HOURLY",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYMONTHDAY/HOURLY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260302T093000",
    "dtstart_synchronized": false,
    "expect": [
@@ -33538,6 +33608,41 @@
    "rrule": "FREQ=HOURLY;BYYEARDAY=+60",
    "rule_valid": true,
    "systematic_for": "pair:BYYEARDAY|yeardaynum/0/0|plus + FREQ|freq|HOURLY"
+  },
+  {
+   "branches": [
+    "BYYEARDAY|byyrdaylist/1|repeat=0",
+    "BYYEARDAY|yeardaynum/0/0|minus",
+    "BYYEARDAY|yeardaynum/0|present",
+    "FREQ|freq|HOURLY",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYYEARDAY/HOURLY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261231T090000",
+    "20261231T100000",
+    "20261231T110000",
+    "20261231T120000",
+    "20261231T130000",
+    "20261231T140000",
+    "20261231T150000",
+    "20261231T160000"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=HOURLY;BYYEARDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYYEARDAY/HOURLY/Limit"
   },
   {
    "branches": [
@@ -34884,6 +34989,41 @@
    "rrule": "FREQ=MINUTELY;BYMONTHDAY=+15",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|plus + FREQ|freq|MINUTELY"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=0",
+    "BYMONTHDAY|monthdaynum/0/0|minus",
+    "BYMONTHDAY|monthdaynum/0|present",
+    "FREQ|freq|MINUTELY",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYMONTHDAY/MINUTELY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260331T090000",
+    "20260331T090100",
+    "20260331T090200",
+    "20260331T090300",
+    "20260331T090400",
+    "20260331T090500",
+    "20260331T090600",
+    "20260331T090700"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=MINUTELY;BYMONTHDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYMONTHDAY/MINUTELY/Limit"
   },
   {
    "branches": [
@@ -37649,6 +37789,41 @@
    "rrule": "FREQ=MINUTELY;BYYEARDAY=+60",
    "rule_valid": true,
    "systematic_for": "pair:BYYEARDAY|yeardaynum/0/0|plus + FREQ|freq|MINUTELY"
+  },
+  {
+   "branches": [
+    "BYYEARDAY|byyrdaylist/1|repeat=0",
+    "BYYEARDAY|yeardaynum/0/0|minus",
+    "BYYEARDAY|yeardaynum/0|present",
+    "FREQ|freq|MINUTELY",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYYEARDAY/MINUTELY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261231T090000",
+    "20261231T090100",
+    "20261231T090200",
+    "20261231T090300",
+    "20261231T090400",
+    "20261231T090500",
+    "20261231T090600",
+    "20261231T090700"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=MINUTELY;BYYEARDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYYEARDAY/MINUTELY/Limit"
   },
   {
    "branches": [
@@ -62596,7 +62771,7 @@
    "reading_dependent": false,
    "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1",
    "rule_valid": true,
-   "systematic_for": null
+   "systematic_for": "BYMONTHDAY/MONTHLY/Expand"
   },
   {
    "branches": [
@@ -78825,6 +79000,41 @@
     "naive-bruteforce",
     "python-dateutil-2.9.0"
    ],
+   "dtstart": "20260331T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20260331T090000",
+    "20260331T090001",
+    "20260331T090002",
+    "20260331T090003",
+    "20260331T090004",
+    "20260331T090005",
+    "20260331T090006",
+    "20260331T090007"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=SECONDLY;BYMONTHDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYMONTHDAY/SECONDLY/Limit"
+  },
+  {
+   "branches": [
+    "BYMONTHDAY|bymodaylist/1|repeat=0",
+    "BYMONTHDAY|monthdaynum/0/0|minus",
+    "BYMONTHDAY|monthdaynum/0|present",
+    "FREQ|freq|SECONDLY",
+    "recur|recur-rule-part|BYMONTHDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYMONTHDAY/SECONDLY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
    "dtstart": "20260302T093000",
    "dtstart_synchronized": false,
    "expect": [
@@ -79116,6 +79326,41 @@
    "rrule": "FREQ=SECONDLY;BYYEARDAY=+60",
    "rule_valid": true,
    "systematic_for": "pair:BYYEARDAY|yeardaynum/0/0|plus + FREQ|freq|SECONDLY"
+  },
+  {
+   "branches": [
+    "BYYEARDAY|byyrdaylist/1|repeat=0",
+    "BYYEARDAY|yeardaynum/0/0|minus",
+    "BYYEARDAY|yeardaynum/0|present",
+    "FREQ|freq|SECONDLY",
+    "recur|recur-rule-part|BYYEARDAY",
+    "recur|recur-rule-part|FREQ",
+    "recur|recur/1|repeat=1+"
+   ],
+   "cells": [
+    "BYYEARDAY/SECONDLY/Limit"
+   ],
+   "corroborated_by": [
+    "naive-bruteforce",
+    "python-dateutil-2.9.0"
+   ],
+   "dtstart": "20261231T090000",
+   "dtstart_synchronized": true,
+   "expect": [
+    "20261231T090000",
+    "20261231T090001",
+    "20261231T090002",
+    "20261231T090003",
+    "20261231T090004",
+    "20261231T090005",
+    "20261231T090006",
+    "20261231T090007"
+   ],
+   "expect_bound": "count",
+   "reading_dependent": false,
+   "rrule": "FREQ=SECONDLY;BYYEARDAY=-1",
+   "rule_valid": true,
+   "systematic_for": "BYYEARDAY/SECONDLY/Limit"
   },
   {
    "branches": [
@@ -119947,7 +120192,7 @@
    "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-1",
    "rule_valid": true,
-   "systematic_for": null
+   "systematic_for": "BYMONTHDAY/YEARLY/Expand"
   },
   {
    "branches": [
@@ -131782,7 +132027,7 @@
    "reading_dependent": false,
    "rrule": "FREQ=YEARLY;BYYEARDAY=-1",
    "rule_valid": true,
-   "systematic_for": null
+   "systematic_for": "BYYEARDAY/YEARLY/Expand"
   },
   {
    "branches": [
@@ -144171,7 +144416,7 @@
  ],
  "meta": {
   "about": "Cross-implementation RFC 5545 RRULE conformance corpus.",
-  "cases": 3813,
+  "cases": 3820,
   "horizon_days": 10958,
   "occurrences_per_case": 8
  }

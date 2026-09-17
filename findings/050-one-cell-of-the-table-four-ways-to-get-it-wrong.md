@@ -201,8 +201,10 @@ it applies to `src/enumerate_cells.py` alone.
   count here is a lower bound in the sense of
   [finding 040](040-how-much-a-short-horizon-hides.md): a library that agrees on
   eight occurrences may still diverge later.
-- `libical` 3.0.20 (the Debian row in `RESULTS.md`) was **not** run here; it
-  needs a separately compiled binary. Both master builds were.
+- `libical` 3.0.20 (the Debian row in `RESULTS.md`) was **not** run when this
+  finding was first written; it needs a separately compiled binary. It has since
+  been run — see the follow-up below — and answers all seven correctly, so all
+  three `libical` builds do.
 - The two Java rows were run with `-Duser.language=en -Duser.country=GB`.
   [Finding 036](036-a-score-that-depends-on-the-host-locale.md) is why that has
   to be said.
@@ -214,3 +216,31 @@ it applies to `src/enumerate_cells.py` alone.
 - The seven cases exercise the Limit role of two rule parts. `BYDAY`'s offset
   form is excluded on purpose: §3.3.10 forbids the offset under `DAILY` and
   `WEEKLY`, and under the sub-daily frequencies it is a separate question.
+
+## Follow-up, 2026-09-17: the seven cases are now scored, not just probed
+
+When this finding was written the seven rules were run directly against the
+adapters and deliberately kept out of `conformance/RESULTS.md`, because adding
+them moves the denominator under every row at once. That has now been done.
+`src/enumerate_cells.py` emits a second case for each cell whose rule part
+accepts a negative value, the corpus went from 3813 to 3820 corroborated cases
+and the scored subset from 1721 to 1728, and every pre-existing scored case is
+byte-identical. Three pre-existing corroborated cases gained a `systematic_for`
+tag and nothing else; no `expect` anywhere changed.
+
+Every row of `RESULTS.md` was rescored. The per-case verdicts reproduce this
+finding exactly, through a second and independent path — the scoring harness
+rather than the ad-hoc probe — and add the one build that was missing:
+`libical` 3.0.20 answers all seven correctly. Raw result:
+[`data/050-rescore-of-every-row.json`](data/050-rescore-of-every-row.json).
+
+The rescore also turned up something that is not about §3.3.10 at all. The
+`DateTime::Event::ICal` row's `fail`/`error` split **does not reproduce**.
+Scoring the byte-identical 1721-case file that produced the published row
+`1176 / 386 / 51 / 108` returned `1176 / 394 / 51 / 100` on the same machine
+with the same adapter: `pass` and `fail_other_reading` came back exactly, and
+eight cases crossed the `fail`/`error` boundary because the adapter's per-case
+20-second alarm is load-dependent. That is
+[finding 047](047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)
+arriving a second time from the other direction, and `RESULTS.md` now says so
+on the row itself.

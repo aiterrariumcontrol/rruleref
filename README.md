@@ -64,17 +64,17 @@ adapters ([dateutil](conformance/adapters/dateutil_adapter.py),
 each, and the two [Java ones](conformance/adapters/java/) about forty. The contract is [`conformance/PROTOCOL.md`](conformance/PROTOCOL.md);
 the corpus fields are [`corpus/SCHEMA.md`](corpus/SCHEMA.md).
 
-`conformance/cases.ndjson` is the 1721-case subset for which a disagreement is
+`conformance/cases.ndjson` is the 1728-case subset for which a disagreement is
 a defensible conformance claim — the rule is valid under §3.3.10, `DTSTART` is
 synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
 decidable from the recorded window.
 
 Scores so far are in [`conformance/RESULTS.md`](conformance/RESULTS.md):
-`rrule-go` 1.8.2 1721, `rrule.js` 2.8.1 1695, ical4j 4.1.1 1468 (on a Sunday-first host;
+`rrule-go` 1.8.2 1728, `rrule.js` 2.8.1 1702, ical4j 4.1.1 1468 (on a Sunday-first host;
 see [finding 036](findings/036-a-score-that-depends-on-the-host-locale.md)),
 dmfs lib-recur
-0.17.1 1637, `sabre/vobject` 4.6.1 831, `DateTime::Event::ICal` 0.13 1176, all
-of 1721. **A failure means the implementation and this corpus disagree, not that
+0.17.1 1641, `sabre/vobject` 4.6.1 833, `DateTime::Event::ICal` 0.13 1179, all
+of 1728. **A failure means the implementation and this corpus disagree, not that
 the implementation is wrong** — several of this project's findings were defects
 in the corpus, including one that
 [the Java run found](findings/016-independent-lineage-results.md).
@@ -86,12 +86,12 @@ on `FREQ=YEARLY` expansion — see
 
 This file used to ask here for a result in **Go, Rust, C# or Swift**. That was
 the wrong request, and [finding 027](findings/027-a-port-that-did-not-drift.md)
-is the correction: `teambition/rrule-go` scores a clean 1721 of 1721 and
+is the correction: `teambition/rrule-go` scores a clean 1728 of 1728 and
 teaches nothing about the RFC, because it is a port of `python-dateutil` and
-returns its parent's exact answer on all 3813 corroborated cases.
+returns its parent's exact answer on all 3820 corroborated cases.
 [Finding 028](findings/028-two-ports-agree-and-the-third-does-not.md) then did
 the same thing in Rust and got the same nothing — `fmeringdal/rust-rrule`
-0.14.0, also 1721 of 1721, also zero divergence from the same parent. Two
+0.14.0, also 1728 of 1728, also zero divergence from the same parent. Two
 afternoons, two perfect scores, and the count of independent lineages moved by
 zero. Language is not lineage, and the first place to check is the candidate's
 own README.
@@ -100,7 +100,7 @@ own README.
 then found a real fourth lineage — `sabre/vobject` 4.6.1, the PHP expander
 inside Nextcloud, ownCloud and Baïkal, claiming no ancestry anywhere in its
 README, `lib/Recur/` or `composer.json` — and it still cannot settle anything,
-because it scores 831 of 1721, has four rules that **never terminate**, and is
+because it scores 833 of 1728, has four rules that **never terminate**, and is
 wrong in exactly the `BYWEEKNO`/`BYYEARDAY` branches the dispute is about.
 Independence is necessary and not sufficient.
 
@@ -225,7 +225,7 @@ by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
 implementation. Some are places the spec genuinely does not decide.
 
-Current state: **3813 corroborated cases** (1722 with a spec-defined,
+Current state: **3820 corroborated cases** (1729 with a spec-defined,
 synchronized `DTSTART`; see the next section) and **26 disputed**, 11 of them
 adjudicated in `findings/`. 13 of the remaining disputes are in the
 spec-defined region.
@@ -503,7 +503,7 @@ conformance case, and even then see the caveat on (2).
 - [030 — a fifth lineage, and the first one that writes the DTSTART fill
   down](findings/030-a-fifth-lineage-that-writes-the-fill-down.md).
   `DateTime::Event::ICal` 0.13 (Perl, Flavio Soibelmann Glock, 2003) scores
-  **1176 of 1721** with **0** guaranteed invariant violations and **0**
+  **1179 of 1728** with **0** guaranteed invariant violations and **0**
   order-dependent mismatches, and takes the `dtstart_fill` reading on **51** of
   the 65 contested cases. Unlike the three lineages that were *observed* to
   agree with that reading, this one states it: `_yearly_recurrence` fills
@@ -518,7 +518,7 @@ conformance case, and even then see the caveat on (2).
 - [029 — the fourth independent lineage, and a loop that does not
   end](findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md).
   `sabre/vobject` 4.6.1 — hand-written PHP, no ancestry claimed, and the
-  expander inside Nextcloud, ownCloud and Baïkal — scores **831 of 1721**, the
+  expander inside Nextcloud, ownCloud and Baïkal — scores **833 of 1728**, the
   lowest here, with **414** guaranteed-invariant violations against 0 or 1 for
   every other row. Four `FREQ=YEARLY;BYYEARDAY` rules with a `BYDAY` **loop
   forever**: `$dayMap` numbers Sunday 0 (PHP's `w`) while the `BYYEARDAY`
@@ -530,8 +530,8 @@ conformance case, and even then see the caveat on (2).
   arbitrate stays at three.
 
 - [028 — two ports agree exactly with their parent; the third does not](findings/028-two-ports-agree-and-the-third-does-not.md).
-  `fmeringdal/rust-rrule` 0.14.0 scores **1721 of 1721** and diverges from
-  `python-dateutil` on **0** of 3813 corroborated cases — as `rrule-go` does.
+  `fmeringdal/rust-rrule` 0.14.0 scores **1728 of 1728** and diverges from
+  `python-dateutil` on **0** of 3820 corroborated cases — as `rrule-go` does.
   Its README credits `rrule.js` as an inspiration alongside dateutil, yet it
   picked up **none** of `rrule.js`'s 122 divergences from that same parent. With
   two independently written ports reproducing dateutil to the case, `rrule.js`
@@ -540,14 +540,14 @@ conformance case, and even then see the caveat on (2).
   adapter's own normalisation rather than the library's behaviour.
 
 - [027 — a port that did not drift, and a request that was wrong](findings/027-a-port-that-did-not-drift.md).
-  `teambition/rrule-go` 1.8.2 scores **1721 of 1721** — the first implementation
+  `teambition/rrule-go` 1.8.2 scores **1728 of 1728** — the first implementation
   other than the corroborating expander to pass the whole subset — and returns
-  `python-dateutil`'s exact answer on all **3813** corroborated cases, including
+  `python-dateutil`'s exact answer on all **3820** corroborated cases, including
   the 2092 the conformance subset discards. It is a dateutil port by its own
   README, so it adds no lineage vote, and this project's standing request for
   "a result from Go, Rust, C# or Swift" was asking for the wrong thing: language
   is not lineage. The same comparison sizes `rrule.js`'s divergence from the
-  same parent at 122 of 3813 and decomposes all of it — 67 non-ascending lists
+  same parent at 122 of the 3813 then corroborated and decomposes all of it — 67 non-ascending lists
   (finding 015's mechanism, and the RFC does not require chronological order),
   55 `BYSETPOS` (findings 004/018/021).
 - [026 — converting `UNTIL` through JSCalendar loses an hour, and can drop an
@@ -637,7 +637,7 @@ conformance case, and even then see the caveat on (2).
   reading on the strength of a probe that dropped the `BYMONTH` making them
   reading-independent.
 - [017 — libical, a third lineage and the oldest](findings/017-libical-third-lineage.md).
-  `icalrecur.c` predates dateutil's `rrule`; 3.0.20 scores 1510/1721 and master
+  `icalrecur.c` predates dateutil's `rrule`; 3.0.20 scores 1517/1728 and master
   1599. 41 cases where libical, ical4j and lib-recur all fail *identically*,
   every one `FREQ=YEARLY` with `BYMONTHDAY`. Both of those closing claims were
   wrong: see finding 018 for the dismissal it should not have made, and finding
