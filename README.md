@@ -319,6 +319,7 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [049 — a negative day that only counts when it expands: 65 of `ical4j`'s 176 locale-corrected failures are one bug in the limit path, fixed in 4.3.0; its `BYYEARDAY` twin is not](findings/049-a-negative-day-that-only-counts-when-it-expands.md).
 - [048 — the last unswept column is ambient-invariant, and its five apparent differences were my own deadline](findings/048-the-last-unswept-column-is-ambient-invariant.md).
   The 291 `BYSETPOS` cases of `DateTime::Event::ICal` were the only part of the
   scored corpus never checked against the host's zone and locale. They do not

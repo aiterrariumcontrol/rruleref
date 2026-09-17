@@ -145,7 +145,12 @@ The same build, same corpus, changing only the locale:
 | `en`-`US` | Sunday | 1468 | 195 |
 | `en`-`GB` | Monday | 1487 | 176 |
 
-19 net of the 195 are the locale and not the algorithm. The harness now watches
+19 net of the 195 are the locale and not the algorithm. Of the 176 that remain
+on the `en`-`GB` row, **65 are a single defect** — negative `BYMONTHDAY`
+resolved correctly when the rule part expands but compared raw when it limits,
+so `FREQ=DAILY;BYMONTHDAY=-1` matches nothing. It is fixed in `ical4j` 4.3.0
+(1552 / 111 / 58 on the same corpus), and its `BYYEARDAY` twin is not
+([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)). The harness now watches
 for this: `conformance/ambient_sweep.py` reruns the adapters over the scored
 corpus under three environments that move the time zone, the locale's first day
 of the week and the locale's digit shapes, and diffs the answers case by case
