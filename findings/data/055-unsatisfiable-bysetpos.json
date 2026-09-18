@@ -1,0 +1,130 @@
+{
+ "what": "Finding 055. Two implementations return a date when BYSETPOS selects the nth member of a set with fewer than n members, where the correct result is the empty set. These are PROBES, not corpus cases: they carry no score and nothing in conformance/RESULTS.md's tables depends on them. Validated by src/validity.py (rule 45).",
+ "probe_rule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=<n>",
+ "dtstart": "20260601T090000",
+ "rrulejs": {
+  "version": "2.8.1 (js/node_modules)",
+  "claim": "an out-of-range NEGATIVE BYSETPOS is clamped to the first element of the set; positive out-of-range is correct",
+  "by_setpos": {
+   "-1": [
+    "20260603",
+    "20260610",
+    "20260617",
+    "20260624",
+    "20260629",
+    "20270602"
+   ],
+   "-2": [
+    "20260601",
+    "20260608",
+    "20260615",
+    "20260622",
+    "20260629",
+    "20270602"
+   ],
+   "-3": [
+    "20260601",
+    "20260608",
+    "20260615",
+    "20260622",
+    "20260629",
+    "20270602"
+   ],
+   "-5": [
+    "20260601",
+    "20260608",
+    "20260615",
+    "20260622",
+    "20260629",
+    "20270602"
+   ],
+   "1": [
+    "20260601",
+    "20260608",
+    "20260615",
+    "20260622",
+    "20260629",
+    "20270602"
+   ],
+   "2": [
+    "20260603",
+    "20260610",
+    "20260617",
+    "20260624",
+    "20270609",
+    "20270616"
+   ],
+   "3": [],
+   "5": []
+  },
+  "correct_for_-3_and_-5": [],
+  "dateutil_and_rustrrule_for_-3_and_-5": [],
+  "corpus_case_reaching_this": "c29dd0b92b8f (BYSETPOS=-2), the only case of this shape in the scored corpus",
+  "lineage_note": "dateutil (upstream) and rust-rrule (downstream port of rrule.js) both correct; rule 24 collapses the three into one vote and they disagree here",
+  "prior_art_searched": false
+ },
+ "libical": {
+  "claim": "exhausting ICAL_LIMIT_RECURRENCE_SEARCH is not a path that returns icaltime_null_time(); icalrecur_iterator_next falls through to `return impl->last` and hands back the date the search had reached",
+  "source": "src/libical/icalrecur.c, icalrecur_iterator_next; src/libical/icallimits.c _MAX_RECURRENCE_SEARCH = 100000",
+  "builds": {
+   "master 4edd39a3 (PR #1387)": [
+    "29840908",
+    "39421221",
+    "49010330",
+    "58590711"
+   ],
+   "master 48d52b4b (pre-#1387)": [
+    "29840908",
+    "39421221",
+    "49010330",
+    "58590711"
+   ],
+   "3.0.20 (system)": "BYSETPOS ignored entirely at WEEKLY; a full expansion is returned"
+  },
+  "not_a_regression_from_1387": true,
+  "budget_scaling_master_4edd39a3": {
+   "100000": [
+    "29840908",
+    "39421221",
+    "49010330"
+   ],
+   "50000": [
+    "25050722",
+    "29840913",
+    "34631104"
+   ],
+   "10000": [
+    "21220401",
+    "22180202",
+    "23131203"
+   ],
+   "1000": [
+    "20360102",
+    "20450807",
+    "20550310"
+   ]
+  },
+  "partially_satisfiable_is_unaffected": {
+   "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=5": [
+    "20260629",
+    "20260831",
+    "20261130",
+    "20270329",
+    "20270531",
+    "20270830"
+   ]
+  },
+  "prior_art": {
+   "795/944/21/67": "closed, BYSETPOS ignored or partly implemented; none concerns an unsatisfiable selection",
+   "1156/1279": "the stall counter (time standing still / infinite loop in next_unit); a different exit than the budget",
+   "1374": "this repository's own report, opened 2026-09-08, fixed by PR #1387 on 2026-09-10",
+   "open_issue_covering_this": null
+  }
+ },
+ "caveats": [
+  "The libical probes are compiled directly against the library, not run through conformance/adapters/c/libical_adapter (rule 25).",
+  "The 958-year and 1917-year steps are arithmetic consistent with a 100000-iteration budget, not measurements of the iteration count.",
+  "The libical mechanism is read from source at scratch/libical checkout 4edd39a3 and confirmed by the budget-scaling experiment; it was not stepped through in a debugger.",
+  "Neither defect has been reported upstream; external reporting is paused for this repository."
+ ]
+}

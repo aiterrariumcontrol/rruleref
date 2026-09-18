@@ -1,0 +1,936 @@
+{
+ "what": "Finding 054. Re-derivation of finding 051's Category C against finding 037's mechanism. The predictor is findings/repro/054-predict-weekly-037.py: a reimplementation of 037's claimed mechanism and nothing else. Scope is every FREQ=WEEKLY case in conformance/cases.ndjson whose rule parts lie in {FREQ,BYDAY,BYMONTH,INTERVAL,WKST,BYSETPOS} -- 362 of the corpus's 373 WEEKLY cases. ical4j run at JVM locale en-GB (finding 036). The mechanism itself is not new to this repository: finding 022 named the seed-limit reading and implemented it for WKST=MO. What 054 adds is corpus scale, an arbitrary WKST, and the exhaustive consequence split.",
+ "totals": {
+  "weekly_cases_in_corpus": 373,
+  "in_predictor_scope": 362,
+  "predictor_equals_ical4j_4_3_0": 362,
+  "predictor_equals_ical4j_4_1_1": 362,
+  "ical4j_4_1_1_equals_4_3_0": 362,
+  "predictor_differs_from_expect": 27,
+  "ical4j_differs_from_expect": 27,
+  "those_two_sets_are_the_same": true,
+  "category_C_of_051": 27
+ },
+ "consequence_split": {
+  "out_of_month_date_emitted": 9,
+  "in_month_occurrence_dropped": 20,
+  "bysetpos_misselection": 1,
+  "none_of_the_three": 0,
+  "note": "Counts are of cases, not of dates, and a case can show more than one consequence. Compared over a common truncation endpoint per case (rule 33): min(max(ical4j), max(expect))."
+ },
+ "per_case": [
+  {
+   "id": "f9a5d240c793",
+   "rrule": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1",
+   "dtstart": "20260102T090000",
+   "window_end": "20261118T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260102T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20260102T090000",
+    "20260107T090000",
+    "20260114T090000",
+    "20260121T090000",
+    "20260128T090000",
+    "20261104T090000",
+    "20261111T090000",
+    "20261118T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260107T090000",
+    "20260114T090000",
+    "20260121T090000",
+    "20260128T090000",
+    "20261104T090000",
+    "20261111T090000",
+    "20261118T090000",
+    "20261125T090000"
+   ]
+  },
+  {
+   "id": "50a53235647b",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SA;BYMONTH=7",
+   "dtstart": "20260704T090000",
+   "window_end": "20260727T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260727T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260704T090000",
+    "20260706T090000",
+    "20260711T090000",
+    "20260713T090000",
+    "20260718T090000",
+    "20260720T090000",
+    "20260725T090000",
+    "20260727T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260704T090000",
+    "20260706T090000",
+    "20260711T090000",
+    "20260713T090000",
+    "20260718T090000",
+    "20260720T090000",
+    "20260725T090000",
+    "20270628T090000"
+   ]
+  },
+  {
+   "id": "3ac91c227a82",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+   "dtstart": "20260705T090000",
+   "window_end": "20270712T090000",
+   "out_of_month_emitted": [
+    "20270628T090000"
+   ],
+   "in_month_dropped": [
+    "20260705T090000",
+    "20260727T090000",
+    "20270704T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20260705T090000",
+    "20260706T090000",
+    "20260713T090000",
+    "20260720T090000",
+    "20260727T090000",
+    "20270704T090000",
+    "20270705T090000",
+    "20270712T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260706T090000",
+    "20260713T090000",
+    "20260720T090000",
+    "20270628T090000",
+    "20270705T090000",
+    "20270712T090000",
+    "20270719T090000",
+    "20280626T090000"
+   ]
+  },
+  {
+   "id": "462f7be949a1",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,SU;BYMONTH=4",
+   "dtstart": "20270404T090000",
+   "window_end": "20270426T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20270426T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20270404T090000",
+    "20270405T090000",
+    "20270411T090000",
+    "20270412T090000",
+    "20270418T090000",
+    "20270419T090000",
+    "20270425T090000",
+    "20270426T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270404T090000",
+    "20270405T090000",
+    "20270411T090000",
+    "20270412T090000",
+    "20270418T090000",
+    "20270419T090000",
+    "20270425T090000",
+    "20280327T090000"
+   ]
+  },
+  {
+   "id": "9e228865a075",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+   "dtstart": "20260402T090000",
+   "window_end": "20261116T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260402T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20260402T090000",
+    "20260406T090000",
+    "20260413T090000",
+    "20260420T090000",
+    "20260427T090000",
+    "20261102T090000",
+    "20261109T090000",
+    "20261116T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260406T090000",
+    "20260413T090000",
+    "20260420T090000",
+    "20260427T090000",
+    "20261102T090000",
+    "20261109T090000",
+    "20261116T090000",
+    "20261123T090000"
+   ]
+  },
+  {
+   "id": "835b8cde09da",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+   "dtstart": "20260804T090000",
+   "window_end": "20270817T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260831T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000",
+    "20260825T090000",
+    "20260831T090000",
+    "20270803T090000",
+    "20270810T090000",
+    "20270817T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260804T090000",
+    "20260811T090000",
+    "20260818T090000",
+    "20260825T090000",
+    "20270803T090000",
+    "20270810T090000",
+    "20270817T090000",
+    "20270824T090000"
+   ]
+  },
+  {
+   "id": "c29dd0b92b8f",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-2",
+   "dtstart": "20260601T090000",
+   "window_end": "20270621T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [
+    "20260629T090000"
+   ],
+   "bysetpos": true,
+   "expect": [
+    "20260601T090000",
+    "20260608T090000",
+    "20260615T090000",
+    "20260622T090000",
+    "20270607T090000",
+    "20270614T090000",
+    "20270621T090000",
+    "20270628T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260601T090000",
+    "20260608T090000",
+    "20260615T090000",
+    "20260622T090000",
+    "20260629T090000",
+    "20270607T090000",
+    "20270614T090000",
+    "20270621T090000"
+   ]
+  },
+  {
+   "id": "a88e0fd12d29",
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+   "dtstart": "20260902T090000",
+   "window_end": "20270913T090000",
+   "out_of_month_emitted": [
+    "20270830T090000"
+   ],
+   "in_month_dropped": [
+    "20260902T090000",
+    "20270901T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20260902T090000",
+    "20260907T090000",
+    "20260914T090000",
+    "20260921T090000",
+    "20260928T090000",
+    "20270901T090000",
+    "20270906T090000",
+    "20270913T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260907T090000",
+    "20260914T090000",
+    "20260921T090000",
+    "20260928T090000",
+    "20270830T090000",
+    "20270906T090000",
+    "20270913T090000",
+    "20270920T090000"
+   ]
+  },
+  {
+   "id": "e14852b0f8b2",
+   "rrule": "FREQ=WEEKLY;BYDAY=TH,TU,WE;BYMONTH=2,3",
+   "dtstart": "20260331T090000",
+   "window_end": "20270210T090000",
+   "out_of_month_emitted": [
+    "20260401T090000",
+    "20260402T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260331T090000",
+    "20270202T090000",
+    "20270203T090000",
+    "20270204T090000",
+    "20270209T090000",
+    "20270210T090000",
+    "20270211T090000",
+    "20270216T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260331T090000",
+    "20260401T090000",
+    "20260402T090000",
+    "20270202T090000",
+    "20270203T090000",
+    "20270204T090000",
+    "20270209T090000",
+    "20270210T090000"
+   ]
+  },
+  {
+   "id": "d627bc6d4375",
+   "rrule": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+   "dtstart": "20261004T090000",
+   "window_end": "20271017T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20261031T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20261004T090000",
+    "20261011T090000",
+    "20261018T090000",
+    "20261025T090000",
+    "20261031T090000",
+    "20271003T090000",
+    "20271010T090000",
+    "20271017T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20261004T090000",
+    "20261011T090000",
+    "20261018T090000",
+    "20261025T090000",
+    "20271003T090000",
+    "20271010T090000",
+    "20271017T090000",
+    "20271024T090000"
+   ]
+  },
+  {
+   "id": "36d6b0251a3f",
+   "rrule": "FREQ=WEEKLY;BYMONTH=2;BYDAY=FR,TH,WE",
+   "dtstart": "20240229T090000",
+   "window_end": "20250214T090000",
+   "out_of_month_emitted": [
+    "20240301T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20240229T090000",
+    "20250205T090000",
+    "20250206T090000",
+    "20250207T090000",
+    "20250212T090000",
+    "20250213T090000",
+    "20250214T090000",
+    "20250219T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20240229T090000",
+    "20240301T090000",
+    "20250205T090000",
+    "20250206T090000",
+    "20250207T090000",
+    "20250212T090000",
+    "20250213T090000",
+    "20250214T090000"
+   ]
+  },
+  {
+   "id": "cf5110b53a93",
+   "rrule": "FREQ=WEEKLY;BYMONTH=4;BYDAY=FR,TU",
+   "dtstart": "20260403T090000",
+   "window_end": "20260428T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260428T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260403T090000",
+    "20260407T090000",
+    "20260410T090000",
+    "20260414T090000",
+    "20260417T090000",
+    "20260421T090000",
+    "20260424T090000",
+    "20260428T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260403T090000",
+    "20260407T090000",
+    "20260410T090000",
+    "20260414T090000",
+    "20260417T090000",
+    "20260421T090000",
+    "20260424T090000",
+    "20270330T090000"
+   ]
+  },
+  {
+   "id": "f359caaf9d2e",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+   "dtstart": "20270904T090000",
+   "window_end": "20271120T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20271102T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20270904T090000",
+    "20270911T090000",
+    "20270918T090000",
+    "20270925T090000",
+    "20271102T090000",
+    "20271106T090000",
+    "20271113T090000",
+    "20271120T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270904T090000",
+    "20270911T090000",
+    "20270918T090000",
+    "20270925T090000",
+    "20271106T090000",
+    "20271113T090000",
+    "20271120T090000",
+    "20271127T090000"
+   ]
+  },
+  {
+   "id": "c8d48a43504c",
+   "rrule": "FREQ=WEEKLY;BYMONTH=9;BYDAY=MO,SA",
+   "dtstart": "20270904T090000",
+   "window_end": "20270927T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20270927T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20270904T090000",
+    "20270906T090000",
+    "20270911T090000",
+    "20270913T090000",
+    "20270918T090000",
+    "20270920T090000",
+    "20270925T090000",
+    "20270927T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270904T090000",
+    "20270906T090000",
+    "20270911T090000",
+    "20270913T090000",
+    "20270918T090000",
+    "20270920T090000",
+    "20270925T090000",
+    "20280828T090000"
+   ]
+  },
+  {
+   "id": "37f59ef6db40",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,SU;BYMONTH=1,9",
+   "dtstart": "20260906T090000",
+   "window_end": "20270124T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260928T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260906T090000",
+    "20260914T090000",
+    "20260920T090000",
+    "20260928T090000",
+    "20270104T090000",
+    "20270110T090000",
+    "20270118T090000",
+    "20270124T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260906T090000",
+    "20260914T090000",
+    "20260920T090000",
+    "20270104T090000",
+    "20270110T090000",
+    "20270118T090000",
+    "20270124T090000",
+    "20270830T090000"
+   ]
+  },
+  {
+   "id": "410b545af614",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH,WE;BYMONTH=5,7",
+   "dtstart": "20270503T090000",
+   "window_end": "20270602T090000",
+   "out_of_month_emitted": [
+    "20270602T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20270503T090000",
+    "20270505T090000",
+    "20270506T090000",
+    "20270517T090000",
+    "20270519T090000",
+    "20270520T090000",
+    "20270531T090000",
+    "20270701T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270503T090000",
+    "20270505T090000",
+    "20270506T090000",
+    "20270517T090000",
+    "20270519T090000",
+    "20270520T090000",
+    "20270531T090000",
+    "20270602T090000"
+   ]
+  },
+  {
+   "id": "3f4bed93672d",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=1,10;BYDAY=FR,SU",
+   "dtstart": "20261002T090000",
+   "window_end": "20270110T090000",
+   "out_of_month_emitted": [
+    "20261101T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20261002T090000",
+    "20261004T090000",
+    "20261016T090000",
+    "20261018T090000",
+    "20261030T090000",
+    "20270108T090000",
+    "20270110T090000",
+    "20270122T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20261002T090000",
+    "20261004T090000",
+    "20261016T090000",
+    "20261018T090000",
+    "20261030T090000",
+    "20261101T090000",
+    "20270108T090000",
+    "20270110T090000"
+   ]
+  },
+  {
+   "id": "aabe994c1724",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=3,8;BYDAY=SA,SU,TU",
+   "dtstart": "20270309T090000",
+   "window_end": "20270810T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20270801T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20270309T090000",
+    "20270313T090000",
+    "20270314T090000",
+    "20270323T090000",
+    "20270327T090000",
+    "20270328T090000",
+    "20270801T090000",
+    "20270810T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270309T090000",
+    "20270313T090000",
+    "20270314T090000",
+    "20270323T090000",
+    "20270327T090000",
+    "20270328T090000",
+    "20270810T090000",
+    "20270814T090000"
+   ]
+  },
+  {
+   "id": "3176651c63d9",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=4,8;BYDAY=MO,SA,TH",
+   "dtstart": "20260406T090000",
+   "window_end": "20260810T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20260801T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260406T090000",
+    "20260409T090000",
+    "20260411T090000",
+    "20260420T090000",
+    "20260423T090000",
+    "20260425T090000",
+    "20260801T090000",
+    "20260810T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260406T090000",
+    "20260409T090000",
+    "20260411T090000",
+    "20260420T090000",
+    "20260423T090000",
+    "20260425T090000",
+    "20260810T090000",
+    "20260813T090000"
+   ]
+  },
+  {
+   "id": "de0a4ef8d0ab",
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;BYMONTH=5;BYDAY=SA,TH,TU",
+   "dtstart": "20260502T090000",
+   "window_end": "20270427T090000",
+   "out_of_month_emitted": [
+    "20270427T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260502T090000",
+    "20260512T090000",
+    "20260514T090000",
+    "20260516T090000",
+    "20260526T090000",
+    "20260528T090000",
+    "20260530T090000",
+    "20270501T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260502T090000",
+    "20260512T090000",
+    "20260514T090000",
+    "20260516T090000",
+    "20260526T090000",
+    "20260528T090000",
+    "20260530T090000",
+    "20270427T090000"
+   ]
+  },
+  {
+   "id": "5d8b5c511b92",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=FR,SA,SU;BYMONTH=8",
+   "dtstart": "20260807T090000",
+   "window_end": "20270820T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20270801T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260807T090000",
+    "20260808T090000",
+    "20260809T090000",
+    "20260828T090000",
+    "20260829T090000",
+    "20260830T090000",
+    "20270801T090000",
+    "20270820T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260807T090000",
+    "20260808T090000",
+    "20260809T090000",
+    "20260828T090000",
+    "20260829T090000",
+    "20260830T090000",
+    "20270820T090000",
+    "20270821T090000"
+   ]
+  },
+  {
+   "id": "2f838c52fb52",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYDAY=SA,TU;BYMONTH=10",
+   "dtstart": "20261006T090000",
+   "window_end": "20281010T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20271002T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20261006T090000",
+    "20261010T090000",
+    "20261027T090000",
+    "20261031T090000",
+    "20271002T090000",
+    "20271019T090000",
+    "20271023T090000",
+    "20281010T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20261006T090000",
+    "20261010T090000",
+    "20261027T090000",
+    "20261031T090000",
+    "20271019T090000",
+    "20271023T090000",
+    "20281010T090000",
+    "20281014T090000"
+   ]
+  },
+  {
+   "id": "b9903ca54da7",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=2,7;BYDAY=SA,SU",
+   "dtstart": "20260718T090000",
+   "window_end": "20270801T090000",
+   "out_of_month_emitted": [
+    "20270801T090000"
+   ],
+   "in_month_dropped": [],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260718T090000",
+    "20260719T090000",
+    "20270213T090000",
+    "20270214T090000",
+    "20270710T090000",
+    "20270711T090000",
+    "20270731T090000",
+    "20280205T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260718T090000",
+    "20260719T090000",
+    "20270213T090000",
+    "20270214T090000",
+    "20270710T090000",
+    "20270711T090000",
+    "20270731T090000",
+    "20270801T090000"
+   ]
+  },
+  {
+   "id": "b1953b6ff688",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+   "dtstart": "20270307T090000",
+   "window_end": "20310316T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20290331T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": true,
+   "expect": [
+    "20270307T090000",
+    "20270328T090000",
+    "20280319T090000",
+    "20290311T090000",
+    "20290331T090000",
+    "20300303T090000",
+    "20300324T090000",
+    "20310316T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270307T090000",
+    "20270328T090000",
+    "20280319T090000",
+    "20290311T090000",
+    "20300303T090000",
+    "20300324T090000",
+    "20310316T090000",
+    "20320307T090000"
+   ]
+  },
+  {
+   "id": "de1b2d9f162d",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=6,12;BYDAY=MO,TU,WE",
+   "dtstart": "20270614T090000",
+   "window_end": "20280605T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20271201T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20270614T090000",
+    "20270615T090000",
+    "20270616T090000",
+    "20271201T090000",
+    "20271220T090000",
+    "20271221T090000",
+    "20271222T090000",
+    "20280605T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20270614T090000",
+    "20270615T090000",
+    "20270616T090000",
+    "20271220T090000",
+    "20271221T090000",
+    "20271222T090000",
+    "20280605T090000",
+    "20280606T090000"
+   ]
+  },
+  {
+   "id": "880a158e5f7d",
+   "rrule": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=8,11;BYDAY=MO,SU,TU",
+   "dtstart": "20260802T090000",
+   "window_end": "20261130T090000",
+   "out_of_month_emitted": [],
+   "in_month_dropped": [
+    "20261130T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20260802T090000",
+    "20260817T090000",
+    "20260818T090000",
+    "20260823T090000",
+    "20261109T090000",
+    "20261110T090000",
+    "20261115T090000",
+    "20261130T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20260802T090000",
+    "20260817T090000",
+    "20260818T090000",
+    "20260823T090000",
+    "20261109T090000",
+    "20261110T090000",
+    "20261115T090000",
+    "20270809T090000"
+   ]
+  },
+  {
+   "id": "877278325080",
+   "rrule": "FREQ=WEEKLY;INTERVAL=4;BYDAY=MO,TU,WE;BYMONTH=11",
+   "dtstart": "20271101T090000",
+   "window_end": "20281128T090000",
+   "out_of_month_emitted": [
+    "20271201T090000"
+   ],
+   "in_month_dropped": [
+    "20281101T090000"
+   ],
+   "bysetpos_misselected": [],
+   "bysetpos": false,
+   "expect": [
+    "20271101T090000",
+    "20271102T090000",
+    "20271103T090000",
+    "20271129T090000",
+    "20271130T090000",
+    "20281101T090000",
+    "20281127T090000",
+    "20281128T090000"
+   ],
+   "ical4j_4_3_0": [
+    "20271101T090000",
+    "20271102T090000",
+    "20271103T090000",
+    "20271129T090000",
+    "20271130T090000",
+    "20271201T090000",
+    "20281127T090000",
+    "20281128T090000"
+   ]
+  }
+ ],
+ "other_lineages_on_the_27": {
+  "dateutil": {
+   "fail": 0,
+   "note": "control"
+  },
+  "rrule.js": {
+   "fail": 1,
+   "ids": [
+    "c29dd0b92b8f"
+   ],
+   "note": "see finding 055; diverges from its own upstream dateutil"
+  },
+  "libical_master_4edd39a3": {
+   "fail": 0
+  },
+  "rust-rrule": {
+   "fail": 0,
+   "note": "a port of rrule.js, but it agrees with dateutil here"
+  },
+  "dmfs": {
+   "fail": 0
+  },
+  "sabre_vobject_4.6.1": {
+   "fail": 23,
+   "note": "fully accounted for by finding 031: nextWeekly() references neither byMonth nor bySetPos. Corroboration, not a new result."
+  }
+ },
+ "caveats": [
+  "The predictor is not a general RRULE engine. It implements one mechanism over one frequency and a six-part vocabulary, and says nothing outside that scope.",
+  "Eight occurrences per case: every count is a lower bound in the sense of finding 040.",
+  "Agreement between the predictor and ical4j is evidence that 037 describes the code path the corpus reaches, not that no other defect exists at WEEKLY outside the predictor scope (11 cases carry BYHOUR/BYMINUTE/BYSECOND/COUNT/UNTIL and were excluded)."
+ ],
+ "cross_check_against_finding_022": {
+  "what": "findings/repro/022-seed-limit-reading.py implements the same seed-limit reading independently, for finding 022's probe cases. It asserts WKST=MO, which leaves 314 of the 362 in-scope cases.",
+  "cases_compared": 314,
+  "agree_with_054_predictor": 314,
+  "agree_with_ical4j_4_3_0": 314,
+  "note": "022 emits dates without times; the comparison is on the date part. The 48 non-MO WKST cases rest on the 054 predictor alone."
+ }
+}

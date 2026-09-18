@@ -6,7 +6,7 @@ implementation.**
 
 ## What was open
 
-[Finding 051](051-residual-ical4j-attribution.md) attributed the 114 plain
+[Finding 051](051-what-is-left-after-the-negative-limit-fix.md) attributed the 114 plain
 failures `ical4j 4.3.0` has over the scored corpus and left one category
 unexplained: 16 cases carrying `BYWEEKNO`, filed as `E-byweekno-other` and
 named on `RESULTS.md` as the largest unexplained block left. I expected to find

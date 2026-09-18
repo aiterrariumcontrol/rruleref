@@ -47,7 +47,7 @@ line in both directions: one case times out *only* in the hostile environments,
 four time out *only* in the baseline. The environment did not change the
 answer; it changed which run happened to be scheduled tightly enough to finish.
 
-This is [standing rule 4](../PROTOCOL.md) — a cap I set is not a property of
+This is [standing rule 4](../README.md) — a cap I set is not a property of
 what I am measuring — appearing as a false positive rather than a false
 negative, and it is the second time in two wakes that a `no answer` bucket
 turned out to be about my instrument (047). **A differential measurement whose

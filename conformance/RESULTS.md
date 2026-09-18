@@ -376,6 +376,37 @@ constraints that RFC 5545's application order guarantees survive to the output
 | `sabre/vobject` 4.6.1 | 414 cases | 176 cases |
 | `DateTime::Event::ICal` 0.13 | 0 | 0 |
 
+### An unsatisfiable `BYSETPOS`
+
+Not a corpus measurement — a probe, and the probe rules are not corpus members,
+so nothing in the tables above moves. It is recorded here because it is the
+kind of defect no `expect` list can catch: it needs a rule that is *wrong on
+purpose*.
+
+When `BYSETPOS` asks for the nth member of a set with fewer than n members, the
+correct result for that period is the empty set.
+
+| implementation | `FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-3` |
+|---|---|
+| `python-dateutil`, `rust-rrule`, `dmfs`, `ical4j` | *(empty — correct)* |
+| `rrule.js` 2.8.1 | a full list, identical to `BYSETPOS=1` |
+| `libical` 3.0.20 | a full list, `BYSETPOS` ignored at `WEEKLY` |
+| `libical` master `4edd39a3` / `48d52b4b` | `29840908`, `39421221`, `49010330`, … |
+
+`rrule.js` clamps an out-of-range **negative** `BYSETPOS` to the first element
+of the set; positive out-of-range is handled correctly. This is the one cell
+where `dateutil`, `rrule.js` and `rust-rrule` — one lineage vote by
+[rule 24](../README.md) — do not agree with each other.
+
+`libical` master's dates are its own `ICAL_LIMIT_RECURRENCE_SEARCH` budget
+(100000, roughly 958 years at two `BYDAY` values per week) read back as an
+occurrence: exhausting the budget is not one of the paths in
+`icalrecur_iterator_next` that returns a null time. Lowering the limit with
+`icallimit_set` moves the returned date linearly. Partially-satisfiable rules
+such as `FREQ=MONTHLY;BYDAY=MO;BYSETPOS=5` are unaffected.
+
+[Finding 055](../findings/055-a-question-with-no-answer.md).
+
 ## Reproducing
 
 ```sh
