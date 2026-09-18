@@ -127,6 +127,11 @@ def _dtstart_fill_rewrite(rule, ds):
         FREQ=YEARLY + BYMONTHDAY, no BYMONTH  ->  add BYMONTH=month(DTSTART)
         FREQ=YEARLY + BYWEEKNO,   no BYDAY    ->  add BYDAY=weekday(DTSTART)
 
+    Both fills are applied when both shapes are present. Until finding 052 this
+    function returned after the first match, so a rule carrying BYMONTHDAY and
+    BYWEEKNO together got only the BYMONTH fill and the reading was recorded as
+    not applying -- which scored a reading disagreement as a defect.
+
     BYDAY under YEARLY is the same collision, but Note 2 spells it out in prose
     and all six implementations expand it -- which is why this is a rewrite of
     two cells and not of a column.
@@ -134,11 +139,12 @@ def _dtstart_fill_rewrite(rule, ds):
     parts = dict(p.split("=", 1) for p in rule.split(";") if "=" in p)
     if parts.get("FREQ") != "YEARLY":
         return None
+    out = rule
     if "BYMONTHDAY" in parts and "BYMONTH" not in parts:
-        return rule + ";BYMONTH=%d" % ds.month
+        out += ";BYMONTH=%d" % ds.month
     if "BYWEEKNO" in parts and "BYDAY" not in parts:
-        return rule + ";BYDAY=" + WEEKDAY[ds.weekday()]
-    return None
+        out += ";BYDAY=" + WEEKDAY[ds.weekday()]
+    return out if out != rule else None
 
 
 def _dtstart_fill_reading(rule, ds, n):

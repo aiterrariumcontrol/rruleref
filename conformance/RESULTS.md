@@ -171,7 +171,19 @@ instant on those cases — and **15 are an ordinal `BYDAY` in its limiting role*
 where `FREQ=MONTHLY;BYMONTHDAY=1;BYDAY=1MO` returns nothing at all while three
 independent lineages return the months whose 1st is a Monday. A further 27 have
 the shape of [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md);
-43 remain unaccounted for, 16 of them `BYWEEKNO`.
+43 remain unaccounted for.
+
+The 16 `BYWEEKNO` cases among them are **not** an `ical4j` defect.
+[Finding 052](../findings/052-byweekno-is-one-lineage-deep.md) ran all eight
+adapters over the 50 scored cases carrying `BYWEEKNO` and split them by whether
+the rule also carries `BYDAY`. On the 42 without `BYDAY`, the corpus's `expect`
+is matched by `dateutil`, `rrule.js` and `rust-rrule` — **one lineage** — and by
+nothing else: `dmfs` matches 16, and `libical`, `ical4j`, `dtical` and `sabre`
+match none. That is finding 024's `dtstart_fill` split, which `ical4j`'s
+`ByWeekNoRule` implements literally by carrying `DTSTART`'s weekday through the
+week-number map. 17 of the 50 are already reported as `fail_other_reading`; the
+rest were scored as plain failures because the corpus under-recorded the
+alternative — see 052 for the two guards responsible, one of which is now fixed.
 
 The harness now watches
 for this: `conformance/ambient_sweep.py` reruns the adapters over the scored

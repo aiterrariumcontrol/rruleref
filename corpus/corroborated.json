@@ -123999,19 +123999,7 @@
     "20340105T090000"
    ],
    "expect_bound": "count",
-   "reading_alternatives": {
-    "dtstart_fill": [
-     "20270105T090000",
-     "20280105T090000",
-     "20290105T090000",
-     "20300105T090000",
-     "20310105T090000",
-     "20330105T090000",
-     "20340105T090000",
-     "20350105T090000"
-    ]
-   },
-   "reading_dependent": true,
+   "reading_dependent": false,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -124049,19 +124037,7 @@
     "20340105T090000"
    ],
    "expect_bound": "count",
-   "reading_alternatives": {
-    "dtstart_fill": [
-     "20270105T090000",
-     "20280105T090000",
-     "20290105T090000",
-     "20300105T090000",
-     "20310105T090000",
-     "20330105T090000",
-     "20340105T090000",
-     "20350105T090000"
-    ]
-   },
-   "reading_dependent": true,
+   "reading_dependent": false,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -125221,7 +125197,19 @@
     "20291231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20241229T090000",
+     "20281231T090000",
+     "20301229T090000",
+     "20341231T090000",
+     "20411229T090000",
+     "20451231T090000",
+     "20471229T090000",
+     "20511231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=31,29;BYWEEKNO=-1,52;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -127066,7 +127054,19 @@
     "20281228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20241228T090000",
+     "20301228T090000",
+     "20331231T090000",
+     "20391231T090000",
+     "20411228T090000",
+     "20441231T090000",
+     "20471228T090000",
+     "20501231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,53;BYMONTHDAY=28,-1;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
