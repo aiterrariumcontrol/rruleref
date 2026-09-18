@@ -11,6 +11,17 @@ list equals `expect` exactly. The one exception is bookkeeping, not leniency:
 a mismatch that equals one of the case's `reading_alternatives` is reported as
 `fail_other_reading`, because the corpus knows that case has more than one
 defensible answer and recorded one of them as `expect` (findings 018 and 024).
+
+An answer that is a non-empty *proper prefix* of `expect`, or of a rival
+reading, gets its own bucket again (`fail_prefix`, `fail_other_reading_prefix`).
+Such an answer stopped before the corpus horizon while agreeing with it for as
+long as it ran, which is the signature of the adapter's own window rather than
+of a disagreement -- finding 056 found 14 of them, all attributable to the Java
+adapter's `DTSTART` + 10958-day window, being reported as flat mismatches.
+The bucket asserts only the checkable fact (a proper prefix); it does not assert
+that the implementation would have continued correctly, and nothing here proves
+the truncation is the harness rather than the library.
+
 Read a failure as "this implementation and this corpus disagree", not as "this
 implementation is wrong" -- the corpus can be wrong too, and has been (findings
 001, 009, 014 are all defects of mine).
@@ -55,6 +66,21 @@ def _matching_reading(case, got):
     return None
 
 
+def _is_proper_prefix(got, occ):
+    """A non-empty proper prefix. Empty is excluded on purpose: an adapter that
+    answers nothing at all is not thereby a truncated version of every list."""
+    return 0 < len(got) < len(occ) and occ[:len(got)] == got
+
+
+def _prefix_of_reading(case, got):
+    """The name of the rival reading this answer is a proper prefix of, or
+    None. Same sorted-order determinism as _matching_reading."""
+    for name, occ in sorted(case.get("reading_alternatives", {}).items()):
+        if _is_proper_prefix(got, occ):
+            return name
+    return None
+
+
 def score(cases, replies):
     res = collections.Counter()
     failures = []
@@ -84,6 +110,17 @@ def score(cases, replies):
             res["fail_other_reading"] += 1
             failures.append((c, r, "other reading of 3.3.10: %s"
                              % _matching_reading(c, got)))
+        elif _is_proper_prefix(got, c["expect"]):
+            # Agrees with the corpus for its whole length and then stops. The
+            # answer is short, not different. See the module docstring.
+            res["fail_prefix"] += 1
+            failures.append((c, r, "proper prefix of expect (%d of %d)"
+                             % (len(got), len(c["expect"]))))
+        elif _prefix_of_reading(c, got):
+            res["fail_other_reading_prefix"] += 1
+            failures.append((c, r, "proper prefix of other reading: %s (%d of %d)"
+                             % (_prefix_of_reading(c, got), len(got),
+                                len(c["reading_alternatives"][_prefix_of_reading(c, got)]))))
         else:
             res["fail"] += 1
             failures.append((c, r, "mismatch"))
@@ -107,9 +144,10 @@ def main(argv=None):
     total = sum(res.values())
     print("adapter: %s" % " ".join(adapter))
     print("cases:   %d" % total)
-    for k in ("pass", "fail", "fail_other_reading", "error", "missing", "malformed"):
+    for k in ("pass", "fail", "fail_other_reading", "fail_prefix",
+              "fail_other_reading_prefix", "error", "missing", "malformed"):
         if res[k]:
-            print("  %-9s %5d  (%5.1f%%)" % (k, res[k], 100.0 * res[k] / total))
+            print("  %-25s %5d  (%5.1f%%)" % (k, res[k], 100.0 * res[k] / total))
     # Which rival reading, not merely how many. "Some other reading" is not a
     # checkable claim; "41 cases read BYMONTHDAY under YEARLY as limiting" is.
     by_reading = collections.Counter(

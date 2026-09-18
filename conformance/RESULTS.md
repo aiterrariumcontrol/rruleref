@@ -21,22 +21,32 @@ point is invisible to the score. This is not hypothetical: on the `ical4j`
 failures* as *N disagreements inside the horizons this corpus happens to
 choose*, for every row below.
 
-It points the other way in exactly one place, and only for the two JVM rows.
-[Finding 056](../findings/056-two-scopes-for-one-word.md) measures it: 7 of
-`ical4j`'s plain failures and 7 of `dmfs`'s are a proper *prefix* of a rival
-reading the corpus records, returned short because the Java adapter's window is
-`DTSTART` + 10958 days. `score.py` recognises a rival reading only by exact
-equality, so it reports those as mismatches. Those two counts are therefore an
-**upper** bound by 7 — for `dmfs`, more than half its residual. Nothing else on
-this page is affected: the same measurement over all 1721 cases finds no such
-case for any other adapter.
+It pointed the other way in exactly one place, and that has now been fixed
+rather than footnoted. [Finding 056](../findings/056-two-scopes-for-one-word.md)
+found 7 of `ical4j`'s plain failures and 7 of `dmfs`'s to be a proper *prefix* of
+a rival reading the corpus records, returned short because the Java adapter's
+window is `DTSTART` + 10958 days, and reported by a scorer that recognised a
+rival reading only by exact equality. `score.py` now has a bucket for it, and
+the **prefix of other reading** column below is that bucket.
+
+[Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)
+rescored every row against the new scorer. The two JVM rows moved by exactly 7
+each; **every other row reproduced its published numbers cell for cell**, and
+`fail_prefix` — a prefix of the corpus's *own* answer — is zero everywhere,
+measured rather than assumed. The 7 are the *same* 7 cases for both adapters, in
+all three JVM locales, which is what identifies the cause as the harness: the
+corpus applies `horizon_days` to every `expect` list and to only 99 of its 120
+`reading_alternatives` lists, so an adapter clipping at the declared horizon
+cannot match the other 21 by equality. Those 21 are the exact bound on this
+artifact; 7 of them were ever exposed.
 
 [Finding 040](../findings/040-how-much-a-short-horizon-hides.md) sizes that gap.
 Re-run at a 128-occurrence horizon against a two-lineage control, **68 further
 `ical4j` cases that score as passes emit a date the control does not** — about a
 48% undercount on that row. The gap is not uniform: `rrule.js` gains 2,
 `rust-rrule` 2 more than its published 3 (see below), and `dmfs lib-recur`
-gains **none**, so its 13 is a lower bound only in principle.
+gains **none**, so its plain-failure count (13 when finding 040 measured this,
+6 today) is a lower bound only in principle.
 
 [Finding 042](../findings/042-what-the-fourth-lineage-hides-past-occurrence-eight.md)
 extends the same sweep to `sabre/vobject`, which had no horizon measurement at
@@ -81,7 +91,9 @@ than `fail` — see [`PROTOCOL.md`](PROTOCOL.md) and
 [`../corpus/SCHEMA.md`](../corpus/SCHEMA.md). No pass count changed; what
 changed is how many of the remaining cases are being called defects.
 `ical4j`'s plain failures fall 253 → 195, `libical` master `4edd39a3`'s 79 → 22,
-and `dmfs lib-recur`'s 76 → 13.
+and `dmfs lib-recur`'s 76 → 13. (Those are the figures *at that moment*; the
+corpus and the scorer have both moved since, and the table below is the current
+one.)
 
 The annotation is **shape-selected, not failure-selected**: it is applied to
 every corroborated case of the two shapes where the rewritten rule is itself
@@ -138,19 +150,30 @@ measured move is the whole of the change: `ical4j` 8 (identically in 4.1.1,
 `DateTime::Event::ICal` 14, and nothing at all for the `dateutil` lineage,
 `dmfs` or `sabre`.
 
-| implementation | version | lineage | pass | fail | other reading | error |
-|---|---|---|---:|---:|---:|---:|
-| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1728 | 0 | 0 | 0 |
-| `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 |
-| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 |
-| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 194 | 66 | 0 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 13 | 63 | 11 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 108 | 46 | 57 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 16 | 71 | 35 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 8 | 71 | 35 |
-| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 4 |
-| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 386 [‡](#dtical-split) | 65 | 98 [‡](#dtical-split) |
+| implementation | version | lineage | pass | fail | other reading | prefix of other reading [¶](#prefix) | error |
+|---|---|---|---:|---:|---:|---:|---:|
+| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1728 | 0 | 0 | 0 | 0 |
+| `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 | 0 |
+| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 | 0 |
+| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 187 | 66 | 7 | 0 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 6 | 63 | 7 | 11 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 108 | 46 | 0 | 57 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 16 | 71 | 0 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 8 | 71 | 0 | 35 |
+| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 0 | 4 |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 385 [‡](#dtical-split) | 67 [‡](#dtical-split) | 97 [‡](#dtical-split) |
+
+<a id="prefix"></a>
+**¶ prefix of other reading.** A non-empty *proper prefix* of one of the case's
+recorded `reading_alternatives`: the answer agreed with that reading for its
+whole length and then stopped. Counted apart from `fail` because stopping short
+is the signature of a window rather than of a disagreement — here, of the Java
+adapters' own `DTSTART` + 10958-day clip, which is the corpus's declared horizon
+and which the corpus does not apply to its own alternative readings. The bucket
+asserts the prefix and nothing more: it does not claim the implementation would
+have continued correctly.
+[Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
 
 <a id="ical4j-locale"></a>
 **† `ical4j`'s row is a measurement of this container, not of `ical4j` alone.**
@@ -160,13 +183,15 @@ JVM's default locale rather than RFC 5545's stated default of `MO`
 The run above was made on an `en`-`US` JVM, where the week starts on Sunday.
 The same build, same corpus, changing only the locale:
 
-| JVM locale | first day of week | pass | fail |
-|---|---|---:|---:|
-| `ar`-`EG` | Saturday | 1456 | 206 |
-| `en`-`US` | Sunday | 1468 | 194 |
-| `en`-`GB` | Monday | 1487 | 175 |
+| JVM locale | first day of week | pass | fail | prefix |
+|---|---|---:|---:|---:|
+| `ar`-`EG` | Saturday | 1456 | 199 | 7 |
+| `en`-`US` | Sunday | 1468 | 187 | 7 |
+| `en`-`GB` | Monday | 1487 | 168 | 7 |
 
-19 net of the 194 are the locale and not the algorithm. Of the 175 that remain
+19 net of the 187 are the locale and not the algorithm. The prefix column does
+not move with the locale at all — the same 7 cases in all three rows, which is
+part of how finding 057 identifies them as the harness. Of the 168 that remain
 on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
 negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
 resolved correctly when the rule part expands and compared raw when the same
@@ -176,16 +201,23 @@ about the corpus, not about `ical4j`, and the seven cases added on 2026-09-17
 show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.0 fixes it for `BYMONTHDAY`
 and not for `BYYEARDAY`, and the scored set now shows exactly that split:
 4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
-`BYYEARDAY` ones (1556 / 106 / 66 on the `en`-`GB` row of the same corpus)
+`BYYEARDAY` ones (1556 / 99 / 66 / 7 on the `en`-`GB` row of the same corpus)
 ([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)).
 
 **The plain failures that survive that fix are now attributed.**
 [Finding 051](../findings/051-what-is-left-after-the-negative-limit-fix.md)
 categorises every plain failure of both releases. All 69 cases 4.3.0 repaired
 are the negative-limit defect above; no other block moves by a single case
-between 4.1.1 and 4.3.0. Finding 051 counted 114 of them; 8 have since left
-the column for the other reading (finding 053), so 106 remain and the
-breakdown below is 051's, taken before that move. Of the 114, **29 are answers
+between 4.1.1 and 4.3.0. Finding 051 counted 114 of them. Two later corrections
+of mine have since taken 15 out of that column: 8 left for the other reading
+([finding 053](../findings/053-a-short-list-is-not-always-my-horizon.md)) and 7
+for the new prefix bucket
+([finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)),
+so **99 remain** — 2 out of 051's `BYWEEKNO` block and 5 out of its unattributed
+block, exactly the 5 that
+[finding 056](../findings/056-two-scopes-for-one-word.md) had already declared
+were an artifact of my own harness rather than a defect. The breakdown below is
+051's, taken before both moves. Of the 114, **29 are answers
 containing the same
 instant twice** — `FREQ=MONTHLY;BYMONTHDAY=31,-1` returns month end twice in a
 31-day month, and no other implementation on this page returns a repeated
@@ -290,10 +322,19 @@ gives each case a 20-second alarm, so a case that is merely slow lands in
 `error` or in `fail` depending on what else the machine was doing. Rescoring
 the **byte-identical** 1721-case file that produced the published row gave
 `1176 / 394 / 51 / 100` where the row said `1176 / 386 / 51 / 108` — same
-machine, same adapter, same input, eight cases across the boundary. `pass` and
-`fail_other_reading` came back exactly, both times. Read this row as
-**1179 passing and 549 not**, and treat any comparison of its `fail` column
-against an earlier run of this document as noise. The seven cases added on
+machine, same adapter, same input, eight cases across the boundary.
+
+**The `other reading` column moves too, which the previous version of this note
+got wrong.** It said `pass` and `fail_other_reading` came back exactly — true of
+the two runs it had. The rescore of 2026-09-18 gives `1179 / 385 / 67 / 97`
+against the row's earlier `1179 / 386 / 65 / 98`. The adapter discards a partial
+answer when the alarm fires, so a timed-out case is always `error` and never a
+short list; when the alarm does *not* fire the case lands in whichever answer
+bucket it belongs to, and that can be `other reading` as easily as `fail`. The
+whole of this delta is two cases arriving from `error` and one leaving for it.
+Only `pass` has reproduced across all three runs. Read this row as
+**1179 passing and 549 not**, and treat any comparison of its `fail`, `error` or
+`other reading` columns against an earlier run of this document as noise. The seven cases added on
 2026-09-17 account for 3 of the passes and 4 of the failures; the rest of the
 movement from the previous row is the alarm, not the corpus. This is
 [finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)'s point

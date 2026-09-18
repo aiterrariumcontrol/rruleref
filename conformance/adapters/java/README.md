@@ -29,6 +29,14 @@ Both write SLF4J warnings to stderr; the protocol only reads stdout.
 
 `Recur.getDates` needs an explicit window, so `Ical4jAdapter` passes
 `DTSTART + 10958 days`, the corpus's own horizon (`corpus/SCHEMA.md`).
-`DmfsAdapter` stops at the same point. The corpus asserts nothing beyond that
-window, so this cannot hide a scored disagreement — but it is a bound the
-adapter imposes and not a property of either library.
+`DmfsAdapter` stops at the same point. It is a bound the adapter imposes and
+not a property of either library.
+
+It cannot hide a disagreement with `expect`: no `expect` list in the corpus runs
+past this horizon. It **can** hide an agreement with a rival reading, because 21
+of the corpus's `reading_alternatives` lists do run past it. On 7 cases —
+the same 7 for both adapters, in every JVM locale — the clip turns a match into
+a proper prefix, which `score.py` now buckets as `fail_other_reading_prefix`
+rather than as a mismatch. Do not widen the window without reading
+[finding 057](../../../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md):
+widening it would stop these rows from measuring what they claim to measure.

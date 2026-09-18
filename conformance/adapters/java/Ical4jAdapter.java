@@ -26,9 +26,14 @@ public final class Ical4jAdapter {
                 LocalDateTime seed = LocalDateTime.parse((String) c.get("dtstart"), F);
                 int limit = (int) (long) (Long) c.get("limit");
                 Recur<LocalDateTime> r = new Recur<>((String) c.get("rrule"));
-                // Window end: DTSTART + the corpus's own 10958-day horizon. The corpus
-                // asserts nothing outside it, so clipping there cannot hide a scored
-                // disagreement -- but it is an adapter-imposed bound, recorded as such.
+                // Window end: DTSTART + the corpus's own 10958-day horizon
+                // (corpus/SCHEMA.md), an adapter-imposed bound, recorded as such.
+                // It cannot hide a disagreement with `expect`: no `expect` list in the
+                // corpus runs past this horizon. It CAN hide an agreement with a rival
+                // reading -- 21 of the corpus's `reading_alternatives` lists do run past
+                // it, and on 7 cases this clip turns a match into a proper prefix.
+                // score.py buckets those separately. Finding 057; do not widen this
+                // window without reading it.
                 LocalDateTime end = seed.plusDays(10958);
                 List<LocalDateTime> ds = r.getDates(seed, seed, end, limit);
                 org.json.simple.JSONArray a = new org.json.simple.JSONArray();

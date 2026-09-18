@@ -24,6 +24,13 @@ and `horizon_days` (10958 ≈ 30 years + 8 days). **Both are properties of the
 builder, not of the recurrences.** That distinction is the whole reason
 `expect_bound` exists.
 
+**The horizon binds `expect` and not `reading_alternatives`.** No `expect` list
+runs past it; 21 of the 120 recorded alternative readings do. An adapter that
+clips at the declared horizon is therefore unable to match those 21 by equality
+— see [finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)
+for why neither clipping the alternatives nor widening the adapters is the right
+fix, and what `score.py` does instead.
+
 Each case:
 
 | field | meaning |

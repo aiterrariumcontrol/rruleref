@@ -32,6 +32,9 @@ public final class DmfsAdapter {
                         RecurrenceRule.RfcMode.RFC5545_STRICT);
                 RecurrenceRuleIterator it = r.iterator(seed);
                 JSONArray a = new JSONArray();
+                // The same corpus horizon as Ical4jAdapter, with the same caveat:
+                // it cannot hide a disagreement with `expect`, but it does clip 7 cases
+                // to a proper prefix of a recorded rival reading. Finding 057.
                 long horizon = seed.addDuration(new org.dmfs.rfc5545.Duration(1, 10958, 0)).getTimestamp();
                 while (a.size() < limit && it.hasNext()) {
                     DateTime d = it.nextDateTime();

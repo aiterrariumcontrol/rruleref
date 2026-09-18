@@ -1,0 +1,350 @@
+{
+ "about": "Rescore of every published row of conformance/RESULTS.md after score.py gained the fail_prefix and fail_other_reading_prefix buckets (finding 057).",
+ "cases": 1728,
+ "corpus_horizon": {
+  "expect_lists_past_horizon": 0,
+  "expect_lists_total": 1728,
+  "horizon_days": 10958,
+  "reading_alternative_lists_past_horizon": 21,
+  "reading_alternative_lists_total": 120,
+  "the_21": [
+   {
+    "alt_last": "20651228T090000",
+    "alt_len": 8,
+    "dtstart": "20261228T090000",
+    "id": "0fbbee9bbc5e",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYMONTH=12"
+   },
+   {
+    "alt_last": "20770829T090000",
+    "alt_len": 8,
+    "dtstart": "20270829T090000",
+    "id": "1133012800b2",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=29;WKST=MO;BYSETPOS=1"
+   },
+   {
+    "alt_last": "20711231T090000",
+    "alt_len": 8,
+    "dtstart": "20261231T090000",
+    "id": "1589af3bc253",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=-2,-1;BYYEARDAY=365;WKST=SU"
+   },
+   {
+    "alt_last": "21021231T090000",
+    "alt_len": 4,
+    "dtstart": "20341231T090000",
+    "id": "1bb00e23e3de",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=100,365;BYWEEKNO=52"
+   },
+   {
+    "alt_last": "20741231T090000",
+    "alt_len": 8,
+    "dtstart": "20291231T090000",
+    "id": "2b11373ebe0b",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=52;BYYEARDAY=-1;WKST=WE"
+   },
+   {
+    "alt_last": "20711231T090000",
+    "alt_len": 8,
+    "dtstart": "20261231T090000",
+    "id": "3636394ced72",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=52,-1;BYYEARDAY=365,200"
+   },
+   {
+    "alt_last": "21731231T090000",
+    "alt_len": 5,
+    "dtstart": "20381231T090000",
+    "id": "5c4804d492a3",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-1,-60;BYWEEKNO=52"
+   },
+   {
+    "alt_last": "20741231T090000",
+    "alt_len": 8,
+    "dtstart": "20291231T090000",
+    "id": "67c2e7444c3b",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31"
+   },
+   {
+    "alt_last": "20741231T090000",
+    "alt_len": 8,
+    "dtstart": "20291231T090000",
+    "id": "7bd0c809c29f",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=-60,-1;BYWEEKNO=20,1"
+   },
+   {
+    "alt_last": "20651228T090000",
+    "alt_len": 8,
+    "dtstart": "20261228T090000",
+    "id": "843414945172",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=53"
+   },
+   {
+    "alt_last": "20770228T090000",
+    "alt_len": 8,
+    "dtstart": "20270228T090000",
+    "id": "91d6a0860c72",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28"
+   },
+   {
+    "alt_last": "20750429T090000",
+    "alt_len": 8,
+    "dtstart": "20240429T090000",
+    "id": "9346b18d8869",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO"
+   },
+   {
+    "alt_last": "21501231T090000",
+    "alt_len": 5,
+    "dtstart": "20261231T090000",
+    "id": "9641ee2de6ea",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=200,-1;BYWEEKNO=53,-1;WKST=MO"
+   },
+   {
+    "alt_last": "20801230T090000",
+    "alt_len": 8,
+    "dtstart": "20301230T090000",
+    "id": "9996c6ffbd63",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1"
+   },
+   {
+    "alt_last": "21281231T090000",
+    "alt_len": 4,
+    "dtstart": "20321231T090000",
+    "id": "9bee4d9a4870",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYWEEKNO=1;BYYEARDAY=200,366;WKST=WE"
+   },
+   {
+    "alt_last": "20760828T090000",
+    "alt_len": 8,
+    "dtstart": "20260828T090000",
+    "id": "afd39eca7f70",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1"
+   },
+   {
+    "alt_last": "20711231T090000",
+    "alt_len": 8,
+    "dtstart": "20261231T090000",
+    "id": "cca24657755f",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,52;BYYEARDAY=365"
+   },
+   {
+    "alt_last": "20751228T090000",
+    "alt_len": 8,
+    "dtstart": "20241228T090000",
+    "id": "ec9aeb012c8f",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28"
+   },
+   {
+    "alt_last": "20711231T090000",
+    "alt_len": 8,
+    "dtstart": "20261231T090000",
+    "id": "f10e6679dbb8",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=53,1;BYYEARDAY=365;BYSETPOS=1"
+   },
+   {
+    "alt_last": "20770401T090000",
+    "alt_len": 8,
+    "dtstart": "20270401T090000",
+    "id": "f12f8876eff4",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH"
+   },
+   {
+    "alt_last": "20770105T090000",
+    "alt_len": 8,
+    "dtstart": "20270105T090000",
+    "id": "f2776576ee91",
+    "reading": "dtstart_fill",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1"
+   }
+  ]
+ },
+ "counts_after": {
+  "dateutil": {
+   "pass": 1728
+  },
+  "dmfs": {
+   "error": 11,
+   "fail": 6,
+   "fail_other_reading": 63,
+   "fail_other_reading_prefix": 7,
+   "pass": 1641
+  },
+  "dtical": {
+   "error": 97,
+   "fail": 385,
+   "fail_other_reading": 67,
+   "pass": 1179
+  },
+  "ical4j411_arEG": {
+   "fail": 199,
+   "fail_other_reading": 66,
+   "fail_other_reading_prefix": 7,
+   "pass": 1456
+  },
+  "ical4j411_enGB": {
+   "fail": 168,
+   "fail_other_reading": 66,
+   "fail_other_reading_prefix": 7,
+   "pass": 1487
+  },
+  "ical4j411_enUS": {
+   "fail": 187,
+   "fail_other_reading": 66,
+   "fail_other_reading_prefix": 7,
+   "pass": 1468
+  },
+  "ical4j430_enGB": {
+   "fail": 99,
+   "fail_other_reading": 66,
+   "fail_other_reading_prefix": 7,
+   "pass": 1556
+  },
+  "libical_3020": {
+   "error": 57,
+   "fail": 108,
+   "fail_other_reading": 46,
+   "pass": 1517
+  },
+  "libical_48d5": {
+   "error": 35,
+   "fail": 16,
+   "fail_other_reading": 71,
+   "pass": 1606
+  },
+  "libical_4edd": {
+   "error": 35,
+   "fail": 8,
+   "fail_other_reading": 71,
+   "pass": 1614
+  },
+  "rrulego": {
+   "pass": 1728
+  },
+  "rrulejs": {
+   "fail": 26,
+   "pass": 1702
+  },
+  "rustrrule": {
+   "pass": 1728
+  },
+  "sabre": {
+   "error": 4,
+   "fail": 868,
+   "fail_other_reading": 23,
+   "pass": 833
+  }
+ },
+ "date": "2026-09-18",
+ "fail_prefix_is_zero_on_every_row": true,
+ "prefix_cases_are_locale_invariant": true,
+ "prefix_cases_identical_for_both_java_adapters": [
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20261228T090000",
+   "id": "0fbbee9bbc5e",
+   "limit": 8,
+   "returned": 6,
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYMONTH=12"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20270829T090000",
+   "id": "1133012800b2",
+   "limit": 8,
+   "returned": 5,
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=29;WKST=MO;BYSETPOS=1"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20261228T090000",
+   "id": "843414945172",
+   "limit": 8,
+   "returned": 6,
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20270228T090000",
+   "id": "91d6a0860c72",
+   "limit": 8,
+   "returned": 5,
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20240429T090000",
+   "id": "9346b18d8869",
+   "limit": 8,
+   "returned": 5,
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20260828T090000",
+   "id": "afd39eca7f70",
+   "limit": 8,
+   "returned": 5,
+   "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1"
+  },
+  {
+   "alt_len": 8,
+   "alternative": "dtstart_fill",
+   "dtstart": "20270401T090000",
+   "id": "f12f8876eff4",
+   "limit": 8,
+   "returned": 5,
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH"
+  }
+ ],
+ "published_before": {
+  "dmfs": {
+   "error": 11,
+   "fail": 13,
+   "fail_other_reading": 63,
+   "pass": 1641
+  },
+  "dtical": {
+   "error": 98,
+   "fail": 386,
+   "fail_other_reading": 65,
+   "pass": 1179
+  },
+  "ical4j_411_enUS": {
+   "fail": 194,
+   "fail_other_reading": 66,
+   "pass": 1468
+  },
+  "ical4j_430_enGB": {
+   "fail": 106,
+   "fail_other_reading": 66,
+   "pass": 1556
+  },
+  "note": "Every other row's published numbers reproduced cell for cell. Three rows moved: the two JVM rows by exactly the 7 finding 056 predicted, and the DateTime::Event::ICal row by the load-dependent 20s alarm documented in finding 047 -- two cases arrived from `error` and one left for it, which corrects the earlier claim that only its fail/error boundary was unstable."
+ }
+}

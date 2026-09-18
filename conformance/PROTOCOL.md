@@ -95,6 +95,21 @@ broken down by reading name. That is a disagreement about the specification,
 not evidence of a bug, and it should not be added to a defect count. Adapters
 need do nothing with the field; only the scorer reads it.
 
+An answer that is a non-empty **proper prefix** of `expect`, or of one of these
+alternatives, is reported as **`fail_prefix`** or
+**`fail_other_reading_prefix`** — it agreed for its whole length and then
+stopped, which is the signature of a window rather than of a disagreement. The
+empty list is excluded on purpose: answering nothing is not a truncated version
+of every reading. The bucket asserts the prefix and nothing more; it does not
+claim the implementation would have continued correctly.
+
+This matters because the corpus applies its own horizon unevenly. No `expect`
+list runs past `horizon_days` (10958), but **21 of its 120
+`reading_alternatives` lists do** — so an adapter that honours the declared
+horizon cannot match those 21 by equality however correct the library behind it
+is. Today that bites 7 cases, identically on both Java adapters.
+[Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
+
 ## What a failure means
 
 It means this implementation and this corpus disagree. It does **not** mean
