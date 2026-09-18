@@ -109274,7 +109274,10 @@
     "20260630T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=FR,TU;BYMONTHDAY=30",
    "rule_valid": true,
    "systematic_for": null
@@ -109453,7 +109456,19 @@
     "20330128T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270528T090000",
+     "20320528T090000",
+     "20380528T090000",
+     "20490528T090000",
+     "20550528T090000",
+     "20600528T090000",
+     "20660528T090000",
+     "20770528T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1",
    "rule_valid": true,
    "systematic_for": null
@@ -109496,7 +109511,19 @@
     "20330128T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20260828T090000",
+     "20370828T090000",
+     "20430828T090000",
+     "20480828T090000",
+     "20540828T090000",
+     "20650828T090000",
+     "20710828T090000",
+     "20760828T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1",
    "rule_valid": true,
    "systematic_for": null
@@ -111580,7 +111607,10 @@
     "20250830T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=SA,TU,WE;BYMONTHDAY=30;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -112772,7 +112802,19 @@
     "20300728T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20311228T090000",
+     "20361228T090000",
+     "20421228T090000",
+     "20531228T090000",
+     "20591228T090000",
+     "20641228T090000",
+     "20701228T090000",
+     "20811228T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28",
    "rule_valid": true,
    "systematic_for": null
@@ -112811,7 +112853,19 @@
     "20300728T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270228T090000",
+     "20380228T090000",
+     "20440228T090000",
+     "20490228T090000",
+     "20550228T090000",
+     "20660228T090000",
+     "20720228T090000",
+     "20770228T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28",
    "rule_valid": true,
    "systematic_for": null
@@ -112857,6 +112911,16 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [
+     "20370329T090000",
+     "20430329T090000",
+     "20480329T090000",
+     "20540329T090000",
+     "20650329T090000",
+     "20710329T090000",
+     "20760329T090000",
+     "20820329T090000"
+    ],
     "first_period_truncated": [
      "20261129T090000",
      "20270829T090000",
@@ -112913,7 +112977,19 @@
     "20340129T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270829T090000",
+     "20320829T090000",
+     "20380829T090000",
+     "20490829T090000",
+     "20550829T090000",
+     "20600829T090000",
+     "20660829T090000",
+     "20770829T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=29;WKST=MO;BYSETPOS=1",
    "rule_valid": true,
    "systematic_for": null
@@ -119906,7 +119982,10 @@
     "20440115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=+15;BYWEEKNO=+2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|plus + BYWEEKNO|weeknum/0/0|plus"
@@ -119942,7 +120021,10 @@
     "20531215T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=+15;BYWEEKNO=-2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|plus + BYWEEKNO|weeknum/0/0|minus"
@@ -119981,7 +120063,10 @@
     "20440115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=+15;BYWEEKNO=2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|plus + BYWEEKNO|bywknolist/1|repeat=0"
@@ -120020,7 +120105,10 @@
     "20340115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=+15;BYWEEKNO=2,3",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|plus + BYWEEKNO|bywknolist/1|repeat=1+"
@@ -120322,7 +120410,10 @@
     "20521231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,15;BYYEARDAY=366,200",
    "rule_valid": true,
    "systematic_for": null
@@ -120446,7 +120537,10 @@
     "20550117T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-15;BYWEEKNO=+2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|minus + BYWEEKNO|weeknum/0/0|plus"
@@ -120486,7 +120580,10 @@
     "20421217T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-15;BYWEEKNO=-2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|minus + BYWEEKNO|weeknum/0/0|minus"
@@ -120522,7 +120619,10 @@
     "20550117T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-15;BYWEEKNO=2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|minus + BYWEEKNO|bywknolist/1|repeat=0"
@@ -120561,7 +120661,10 @@
     "20340117T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-15;BYWEEKNO=2,3",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|monthdaynum/0/0|minus + BYWEEKNO|bywknolist/1|repeat=1+"
@@ -121083,7 +121186,19 @@
     "20280228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20280228T090000",
+     "20340227T090000",
+     "20450227T090000",
+     "20510227T090000",
+     "20560228T090000",
+     "20620227T090000",
+     "20730227T090000",
+     "20790227T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO",
    "rule_valid": true,
    "systematic_for": null
@@ -121123,7 +121238,19 @@
     "20280228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20240429T090000",
+     "20300429T090000",
+     "20410429T090000",
+     "20470429T090000",
+     "20520429T090000",
+     "20580429T090000",
+     "20690429T090000",
+     "20750429T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO",
    "rule_valid": true,
    "systematic_for": null
@@ -121162,7 +121289,10 @@
     "20340227T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYSETPOS=2",
    "rule_valid": true,
    "systematic_for": null
@@ -121202,6 +121332,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20270330T090000",
      "20280228T090000",
@@ -121351,7 +121482,10 @@
     "20331231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,-1;BYYEARDAY=-60,-1",
    "rule_valid": true,
    "systematic_for": null
@@ -121689,6 +121823,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20240426T090000",
      "20250224T090000",
@@ -121740,6 +121875,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20250327T090000",
      "20260224T090000",
@@ -122314,7 +122450,10 @@
     "20340114T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15,14;BYWEEKNO=+2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=1+ + BYWEEKNO|weeknum/0/0|plus"
@@ -122349,7 +122488,10 @@
     "20531215T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15,14;BYWEEKNO=-2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=1+ + BYWEEKNO|weeknum/0/0|minus"
@@ -122387,7 +122529,10 @@
     "20340114T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15,14;BYWEEKNO=2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=1+ + BYWEEKNO|bywknolist/1|repeat=0"
@@ -122425,7 +122570,10 @@
     "20300115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15,14;BYWEEKNO=2,3",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=1+ + BYWEEKNO|bywknolist/1|repeat=1+"
@@ -122852,7 +123000,10 @@
     "20440115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15;BYWEEKNO=+2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=0 + BYWEEKNO|weeknum/0/0|plus"
@@ -122887,7 +123038,10 @@
     "20531215T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15;BYWEEKNO=-2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=0 + BYWEEKNO|weeknum/0/0|minus"
@@ -122925,7 +123079,10 @@
     "20440115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15;BYWEEKNO=2",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=0 + BYWEEKNO|bywknolist/1|repeat=0"
@@ -122963,7 +123120,10 @@
     "20340115T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=15;BYWEEKNO=2,3",
    "rule_valid": true,
    "systematic_for": "pair:BYMONTHDAY|bymodaylist/1|repeat=0 + BYWEEKNO|bywknolist/1|repeat=1+"
@@ -123120,7 +123280,19 @@
     "20310501T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20331201T090000",
+     "20391201T090000",
+     "20441201T090000",
+     "20501201T090000",
+     "20611201T090000",
+     "20671201T090000",
+     "20721201T090000",
+     "20781201T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
    "rule_valid": true,
    "systematic_for": null
@@ -123159,7 +123331,19 @@
     "20310501T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270401T090000",
+     "20320401T090000",
+     "20380401T090000",
+     "20490401T090000",
+     "20550401T090000",
+     "20600401T090000",
+     "20660401T090000",
+     "20770401T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
    "rule_valid": true,
    "systematic_for": null
@@ -123801,7 +123985,10 @@
     "20311128T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=28;BYSETPOS=-2",
    "rule_valid": true,
    "systematic_for": null
@@ -123840,7 +124027,10 @@
     "20311128T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=28;BYSETPOS=-2",
    "rule_valid": true,
    "systematic_for": null
@@ -123999,7 +124189,19 @@
     "20340105T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20340105T090000",
+     "20400105T090000",
+     "20450105T090000",
+     "20510105T090000",
+     "20620105T090000",
+     "20680105T090000",
+     "20730105T090000",
+     "20790105T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -124037,7 +124239,19 @@
     "20340105T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270105T090000",
+     "20380105T090000",
+     "20440105T090000",
+     "20490105T090000",
+     "20550105T090000",
+     "20660105T090000",
+     "20720105T090000",
+     "20770105T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -124075,7 +124289,16 @@
     "20521229T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20320229T090000",
+     "20600229T090000",
+     "20880229T090000",
+     "21280229T090000",
+     "21560229T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYDAY=-1SU",
    "rule_valid": true,
    "systematic_for": null
@@ -124331,7 +124554,10 @@
     "20330329T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYSETPOS=2",
    "rule_valid": true,
    "systematic_for": null
@@ -124370,6 +124596,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20260429T090000",
      "20270329T090000",
@@ -124605,7 +124832,10 @@
     "20340301T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30,1;BYYEARDAY=60,365;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -124697,7 +124927,10 @@
     "20260530T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYDAY=SA,TU",
    "rule_valid": true,
    "systematic_for": null
@@ -124862,7 +125095,10 @@
     "20331130T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYSETPOS=-2",
    "rule_valid": true,
    "systematic_for": null
@@ -124901,7 +125137,10 @@
     "20331130T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYSETPOS=-2",
    "rule_valid": true,
    "systematic_for": null
@@ -124939,7 +125178,10 @@
     "20330330T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYSETPOS=2",
    "rule_valid": true,
    "systematic_for": null
@@ -124978,6 +125220,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20260430T090000",
      "20270330T090000",
@@ -125027,7 +125270,10 @@
     "20531230T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -125065,7 +125311,19 @@
     "20531230T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20301230T090000",
+     "20411230T090000",
+     "20471230T090000",
+     "20521230T090000",
+     "20581230T090000",
+     "20691230T090000",
+     "20751230T090000",
+     "20801230T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1",
    "rule_valid": true,
    "systematic_for": null
@@ -125155,7 +125413,10 @@
     "20291231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYMONTHDAY=31,29;BYWEEKNO=-1,52;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -126926,7 +127187,19 @@
     "20381231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20341231T090000",
+     "20401230T090000",
+     "20451231T090000",
+     "20511231T090000",
+     "20621231T090000",
+     "20681230T090000",
+     "20731231T090000",
+     "20791231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,52;BYYEARDAY=365",
    "rule_valid": true,
    "systematic_for": null
@@ -126966,7 +127239,19 @@
     "20381231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000",
+     "20711231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,52;BYYEARDAY=365",
    "rule_valid": true,
    "systematic_for": null
@@ -127010,7 +127295,10 @@
     "20281228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,53;BYMONTHDAY=28,-1;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -127248,7 +127536,10 @@
     "20371231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-2,-1;BYYEARDAY=365;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -127289,7 +127580,19 @@
     "20371231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000",
+     "20711231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=-2,-1;BYYEARDAY=365;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -128356,7 +128659,10 @@
     "20421231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31",
    "rule_valid": true,
    "systematic_for": null
@@ -128396,7 +128702,19 @@
     "20421231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20291231T090000",
+     "20351231T090000",
+     "20401231T090000",
+     "20461231T090000",
+     "20571231T090000",
+     "20631231T090000",
+     "20681231T090000",
+     "20741231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31",
    "rule_valid": true,
    "systematic_for": null
@@ -128545,6 +128863,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20241231T090000",
      "20250102T090000",
@@ -128595,6 +128914,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20250103T090000",
      "20260102T090000",
@@ -129820,7 +130140,10 @@
     "20331228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28",
    "rule_valid": true,
    "systematic_for": null
@@ -129858,7 +130181,19 @@
     "20331228T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20241228T090000",
+     "20301228T090000",
+     "20411228T090000",
+     "20471228T090000",
+     "20521228T090000",
+     "20581228T090000",
+     "20691228T090000",
+     "20751228T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28",
    "rule_valid": true,
    "systematic_for": null
@@ -130630,7 +130965,10 @@
     "20381231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=52,-1;BYYEARDAY=365,200",
    "rule_valid": true,
    "systematic_for": null
@@ -130670,7 +131008,19 @@
     "20381231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000",
+     "20711231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=52,-1;BYYEARDAY=365,200",
    "rule_valid": true,
    "systematic_for": null
@@ -130939,7 +131289,10 @@
     "20461231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=52;BYYEARDAY=-1;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -130980,7 +131333,19 @@
     "20461231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20291231T090000",
+     "20351231T090000",
+     "20401231T090000",
+     "20461231T090000",
+     "20571231T090000",
+     "20631231T090000",
+     "20681231T090000",
+     "20741231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=52;BYYEARDAY=-1;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -131014,7 +131379,19 @@
     "20321227T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20481231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=53",
    "rule_valid": true,
    "systematic_for": null
@@ -131048,7 +131425,19 @@
     "20321227T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261228T090000",
+     "20321227T090000",
+     "20371228T090000",
+     "20431228T090000",
+     "20481228T090000",
+     "20541228T090000",
+     "20601227T090000",
+     "20651228T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=53",
    "rule_valid": true,
    "systematic_for": null
@@ -131090,7 +131479,19 @@
     "20371231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000",
+     "20711231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=53,1;BYYEARDAY=365;BYSETPOS=1",
    "rule_valid": true,
    "systematic_for": null
@@ -131127,7 +131528,19 @@
     "20321230T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20321230T090000",
+     "20371231T090000",
+     "20431231T090000",
+     "20481231T090000",
+     "20541231T090000",
+     "20601230T090000",
+     "20651231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYMONTH=12",
    "rule_valid": true,
    "systematic_for": null
@@ -131164,7 +131577,19 @@
     "20321230T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261228T090000",
+     "20321227T090000",
+     "20371228T090000",
+     "20431228T090000",
+     "20481228T090000",
+     "20541228T090000",
+     "20601227T090000",
+     "20651228T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYWEEKNO=53;BYMONTH=12",
    "rule_valid": true,
    "systematic_for": null
@@ -132603,7 +133028,19 @@
     "20421231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20301231T090000",
+     "20411231T090000",
+     "20471231T090000",
+     "20521231T090000",
+     "20581231T090000",
+     "20691231T090000",
+     "20751231T090000",
+     "20801231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYYEARDAY=-60,-1;BYWEEKNO=20,1",
    "rule_valid": true,
    "systematic_for": null
@@ -132642,7 +133079,19 @@
     "20421231T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20291231T090000",
+     "20351231T090000",
+     "20401231T090000",
+     "20461231T090000",
+     "20571231T090000",
+     "20631231T090000",
+     "20681231T090000",
+     "20741231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYYEARDAY=-60,-1;BYWEEKNO=20,1",
    "rule_valid": true,
    "systematic_for": null
@@ -134615,7 +135064,10 @@
     "20521230T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;BYYEARDAY=365,100;BYMONTHDAY=5,30",
    "rule_valid": true,
    "systematic_for": null
@@ -138517,6 +138969,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20260530T090000",
      "20280228T090000",
@@ -138571,6 +139024,7 @@
    ],
    "expect_bound": "count",
    "reading_alternatives": {
+    "dtstart_fill": [],
     "first_period_truncated": [
      "20280330T090000",
      "20300227T090000",
@@ -140302,7 +140756,13 @@
     "20440105T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20561205T090000",
+     "20621205T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYDAY=1TU;BYMONTHDAY=5;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -141710,7 +142170,10 @@
     "20530105T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
    "rule_valid": true,
    "systematic_for": null
@@ -141941,7 +142404,14 @@
     "20501231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20561231T090000",
+     "20621231T090000",
+     "21131231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-1,-60;BYWEEKNO=52",
    "rule_valid": true,
    "systematic_for": null
@@ -141978,7 +142448,16 @@
     "20621231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20381231T090000",
+     "20771231T090000",
+     "20831231T090000",
+     "21341231T090000",
+     "21731231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-1,-60;BYWEEKNO=52",
    "rule_valid": true,
    "systematic_for": null
@@ -143164,7 +143643,19 @@
     "20261101T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20300301T090000",
+     "20340301T090000",
+     "20380301T090000",
+     "20420301T090000",
+     "20460301T090000",
+     "20500301T090000",
+     "20540301T090000",
+     "20580301T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=1",
    "rule_valid": true,
    "systematic_for": null
@@ -143246,7 +143737,19 @@
     "20300801T090000"
    ],
    "expect_bound": "count",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20301201T090000",
+     "20341201T090000",
+     "20381201T090000",
+     "20421201T090000",
+     "20461201T090000",
+     "20501201T090000",
+     "20541201T090000",
+     "20581201T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=1",
    "rule_valid": true,
    "systematic_for": null
@@ -143539,7 +144042,14 @@
     "20481231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20481231T090000",
+     "20761231T090000",
+     "21161231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYWEEKNO=1;BYYEARDAY=200,366;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -143576,7 +144086,15 @@
     "20601231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20321231T090000",
+     "20601231T090000",
+     "20881231T090000",
+     "21281231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYWEEKNO=1;BYYEARDAY=200,366;WKST=WE",
    "rule_valid": true,
    "systematic_for": null
@@ -143779,7 +144297,10 @@
     "20501231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": []
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=100,365;BYWEEKNO=52",
    "rule_valid": true,
    "systematic_for": null
@@ -143814,7 +144335,15 @@
     "20621231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20341231T090000",
+     "20621231T090000",
+     "20901231T090000",
+     "21021231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=100,365;BYWEEKNO=52",
    "rule_valid": true,
    "systematic_for": null
@@ -143926,7 +144455,16 @@
     "20541231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20341231T090000",
+     "20621231T090000",
+     "20901231T090000",
+     "21021231T090000",
+     "21301231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=200,-1;BYWEEKNO=53,-1;WKST=MO",
    "rule_valid": true,
    "systematic_for": null
@@ -143968,7 +144506,16 @@
     "20541231T090000"
    ],
    "expect_bound": "horizon",
-   "reading_dependent": false,
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20261231T090000",
+     "20541231T090000",
+     "20821231T090000",
+     "21221231T090000",
+     "21501231T090000"
+    ]
+   },
+   "reading_dependent": true,
    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=200,-1;BYWEEKNO=53,-1;WKST=MO",
    "rule_valid": true,
    "systematic_for": null

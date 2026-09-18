@@ -9,7 +9,7 @@ regression suite, which by construction cannot disagree with itself.
 Cases where they disagree are not silently dropped. They go to
 corpus/disputed.json for a human to adjudicate against the spec text.
 """
-import sys, os, json, random, itertools, re
+import sys, os, json, random, itertools, re, math
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import env
@@ -147,6 +147,72 @@ def _dtstart_fill_rewrite(rule, ds):
     return out if out != rule else None
 
 
+GREG_CYCLE_YEARS = 400
+GREG_CYCLE_DAYS = 146097   # 400 Gregorian years: also exactly 20871 whole weeks
+
+
+def _cycle_days(rule):
+    """One full period of a YEARLY rule's calendar pattern, in days.
+
+    The Gregorian calendar repeats exactly every 400 years -- 146097 days,
+    which is also an exact whole number of weeks -- so month lengths, weekday
+    alignment and ISO-8601 week numbering all return to their starting
+    configuration. A YEARLY rule selects dates from that configuration alone,
+    so if it fires at all it fires at least once per cycle; with INTERVAL=k
+    the rule's own phase repeats every lcm(k, 400) years.
+    """
+    parts = dict(p.split("=", 1) for p in rule.split(";") if "=" in p)
+    years = math.lcm(int(parts.get("INTERVAL", "1")), GREG_CYCLE_YEARS)
+    return years // GREG_CYCLE_YEARS * GREG_CYCLE_DAYS
+
+
+def _short_of_horizon(alt_rule, ds, n):
+    """`alt_rule` yielded fewer than `n` occurrences inside the corpus
+    horizon. Return the reading's answer, or None when I cannot establish it.
+
+    Rule 33: a difference measured inside a truncated window is not an
+    omission. The corpus horizon is 30 years because that is what the
+    differential harness compares over; it is a property of my instrument.
+    An implementation has no such window, so before recording anything the
+    two possible meanings of a short list have to be told apart, and
+    `_cycle_days` makes that decidable rather than a matter of picking a
+    bigger number:
+
+      * occurrences exist but arrive sparsely -- one full cycle (or as many
+        as the density needs) reaches `n`, and the 30-year window was the
+        only reason the list was short;
+      * nothing at all inside a full cycle -- the rewritten rule selects no
+        date in any Gregorian configuration, so its occurrence set is empty
+        and the empty list *is* the reading's answer.
+
+    Anything else (still short after enough cycles to cover `n` at the
+    observed density -- a rule bounded by its own COUNT or UNTIL, or a case
+    my reasoning above does not cover) returns None and stays unrecorded.
+
+    Either way the answer is corroborated at its own reach: `du_expand` asks
+    dateutil for `n` occurrences with no horizon of mine at all.
+    """
+    cyc = _cycle_days(alt_rule)
+    occ = expand(alt_rule, ds, horizon=ds + timedelta(days=cyc), limit=max(n, 1) * 4)
+    if len(occ) >= n:
+        answer = occ[:n]
+    elif not occ:
+        answer = []
+    else:
+        cycles = math.ceil(n / len(occ)) + 1
+        occ = expand(alt_rule, ds, horizon=ds + timedelta(days=cyc * cycles),
+                     limit=n * 4)
+        if len(occ) < n:
+            return None
+        answer = occ[:n]
+    theirs = du_expand(alt_rule, ds, n)
+    if isinstance(theirs, str):
+        return None
+    if [fmt(x) for x in theirs[:n]] != [fmt(x) for x in answer]:
+        return None
+    return answer
+
+
 def _dtstart_fill_reading(rule, ds, n):
     """The first `n` occurrences under the DTSTART-fill reading, or None.
 
@@ -156,11 +222,16 @@ def _dtstart_fill_reading(rule, ds, n):
         demands of everything else -- naive and dateutil agreeing on it. An
         alternative reading recorded on one expander's word would be weaker
         evidence than the `expect` it sits next to.
-      * it must yield exactly `n` occurrences. The DTSTART-fill reading fires
-        strictly less often, so it can run out inside the expander's horizon
-        where `expect` did not, and a shorter list is not "the same answer read
-        differently" -- it is an artifact of a cap I chose (and an adapter,
-        which has no horizon, would not produce it).
+      * a list shorter than `n` must be explained rather than dropped. The
+        DTSTART-fill reading fires strictly less often, so it can run out
+        inside the expander's horizon where `expect` did not -- and that
+        shortfall may be a property of the horizon (mine) or of the rule
+        (the reading's own answer). `_short_of_horizon` separates the two
+        over a full Gregorian cycle. Until finding 053 this function simply
+        returned None on a short list, on the stated grounds that "an
+        adapter, which has no horizon, would not produce it" -- false on
+        FREQ=YEARLY;BYWEEKNO=53, where ical4j and dmfs return exactly the
+        short list (finding 052).
     """
     if n == 0:
         return None
@@ -171,7 +242,9 @@ def _dtstart_fill_reading(rule, ds, n):
         return None
     occ = expand(alt_rule, ds, limit=n)[:n]
     if len(occ) != n:
-        return None
+        occ = _short_of_horizon(alt_rule, ds, n)
+        if occ is None:
+            return None
     return [fmt(x) for x in occ]
 
 

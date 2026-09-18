@@ -86,12 +86,15 @@ reason, and `conformance/score.py` counts an implementation matching any of
 them as `fail_other_reading` rather than `fail`, naming which — a disagreement
 about the specification, not a defect.
 
-One consequence is sharper than the flag itself. All 25 reading-dependent cases
-that are also `dtstart_synchronized` have `DTSTART` as their first occurrence
-*because of* the reading taken — expanding them under the other reading, 24 of
-the 25 no longer start at `DTSTART`, and §3.8.5.3 would then declare their
-recurrence set undefined. So those cases are scorable conformance evidence only
-under one reading. They are kept and marked rather than dropped: dropping them
+One consequence is sharper than the flag itself. 114 cases are both
+reading-dependent and `dtstart_synchronized`, and for 26 of them `DTSTART` is
+the first occurrence *because of* the reading taken: under a rival reading
+recorded beside them the expansion no longer starts at `DTSTART`, and §3.8.5.3
+would then declare their recurrence set undefined. So those 26 are scorable
+conformance evidence only under one reading. (Counted on 2026-09-18 by asking,
+for each such case, whether every list in `reading_alternatives` still begins
+at `DTSTART`. This paragraph previously read "all 25 … 24 of the 25", a count
+left behind by corpus growth; the 24 was right for the corpus of the day.) They are kept and marked rather than dropped: dropping them
 would shrink the corpus by a decision the reader could no longer see.
 
 `reading_dependent` is false for every case that carries neither `BYSETPOS` nor

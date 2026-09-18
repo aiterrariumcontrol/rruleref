@@ -103,7 +103,7 @@ invalid; finding 018 is the retraction.
 **Those eight are now fixed upstream.** Reported as libical/libical#1374; fixed
 by commit `4edd39a` ("BYSETPOS issue fix", #1387). Retested 2026-09-11 over the
 whole corpus: 8 fixed, 0 regressions, 1599 → 1607 pass. The remaining
-non-passing cases are `FREQ=YEARLY` shapes, and 57 of them are now scored as
+non-passing cases are `FREQ=YEARLY` shapes, and 71 of them are now scored as
 the other reading rather than as failures. Finding 019, "Retest".
 
 `score.py` reports a failure that matches one of a case's `reading_alternatives`
@@ -116,8 +116,17 @@ disagreement about behaviour rather than about the text.
 All rows rescored 2026-09-17 against the annotated corpus, which gained seven
 cases that hour: the first cases anywhere in this set that put `BYMONTHDAY` or
 `BYYEARDAY` in their *limiting* role with a negative value
-([finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md)). The
-seven are the whole of the change to every row below.
+([finding 050](../findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md)).
+
+On 2026-09-18 the corpus recorded a `dtstart_fill` alternative on 29 further
+scored cases that a length guard of mine had been suppressing
+([finding 053](../findings/053-a-short-list-is-not-always-my-horizon.md)). No
+`expect` list changed, so no case can change bucket except from `fail` to
+`other reading`; every adapter was rescored over exactly those 29 and the
+measured move is the whole of the change: `ical4j` 8 (identically in 4.1.1,
+4.3.0 and all three locales), `libical` master 14, `libical` 3.0.20 5,
+`DateTime::Event::ICal` 14, and nothing at all for the `dateutil` lineage,
+`dmfs` or `sabre`.
 
 | implementation | version | lineage | pass | fail | other reading | error |
 |---|---|---|---:|---:|---:|---:|
@@ -125,13 +134,13 @@ seven are the whole of the change to every row below.
 | `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 |
 | `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 |
 | `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 202 | 58 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 194 | 66 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 13 | 63 | 11 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 113 | 41 | 57 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 30 | 57 | 35 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 22 | 57 | 35 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 108 | 46 | 57 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 16 | 71 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 8 | 71 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 4 |
-| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 400 [‡](#dtical-split) | 51 | 98 [‡](#dtical-split) |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 386 [‡](#dtical-split) | 65 | 98 [‡](#dtical-split) |
 
 <a id="ical4j-locale"></a>
 **† `ical4j`'s row is a measurement of this container, not of `ical4j` alone.**
@@ -143,11 +152,11 @@ The same build, same corpus, changing only the locale:
 
 | JVM locale | first day of week | pass | fail |
 |---|---|---:|---:|
-| `ar`-`EG` | Saturday | 1456 | 214 |
-| `en`-`US` | Sunday | 1468 | 202 |
-| `en`-`GB` | Monday | 1487 | 183 |
+| `ar`-`EG` | Saturday | 1456 | 206 |
+| `en`-`US` | Sunday | 1468 | 194 |
+| `en`-`GB` | Monday | 1487 | 175 |
 
-19 net of the 202 are the locale and not the algorithm. Of the 183 that remain
+19 net of the 194 are the locale and not the algorithm. Of the 175 that remain
 on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
 negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
 resolved correctly when the rule part expands and compared raw when the same
@@ -157,21 +166,30 @@ about the corpus, not about `ical4j`, and the seven cases added on 2026-09-17
 show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.0 fixes it for `BYMONTHDAY`
 and not for `BYYEARDAY`, and the scored set now shows exactly that split:
 4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
-`BYYEARDAY` ones (1556 / 114 / 58 on the `en`-`GB` row of the same corpus)
+`BYYEARDAY` ones (1556 / 106 / 66 on the `en`-`GB` row of the same corpus)
 ([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)).
 
-**The 114 that survive that fix are now attributed.**
+**The plain failures that survive that fix are now attributed.**
 [Finding 051](../findings/051-what-is-left-after-the-negative-limit-fix.md)
 categorises every plain failure of both releases. All 69 cases 4.3.0 repaired
 are the negative-limit defect above; no other block moves by a single case
-between 4.1.1 and 4.3.0. Of the 114, **29 are answers containing the same
+between 4.1.1 and 4.3.0. Finding 051 counted 114 of them; 8 have since left
+the column for the other reading (finding 053), so 106 remain and the
+breakdown below is 051's, taken before that move. Of the 114, **29 are answers
+containing the same
 instant twice** — `FREQ=MONTHLY;BYMONTHDAY=31,-1` returns month end twice in a
 31-day month, and no other implementation on this page returns a repeated
 instant on those cases — and **15 are an ordinal `BYDAY` in its limiting role**,
 where `FREQ=MONTHLY;BYMONTHDAY=1;BYDAY=1MO` returns nothing at all while three
 independent lineages return the months whose 1st is a Monday. A further 27 have
 the shape of [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md);
-43 remain unaccounted for.
+43 remain unaccounted for. 8 of those 43 have since left the plain-failure
+column: they are `FREQ=YEARLY;…;BYSETPOS` rules on which `ical4j` returns an
+empty list, and the corpus now records an empty `dtstart_fill` alternative for
+them ([finding 053](../findings/053-a-short-list-is-not-always-my-horizon.md)),
+which empties 051's *other empty answers* bucket from 11 to 3 and leaves 35
+unaccounted for. 053 says why a match against an *empty* alternative is the
+weakest label the scorer can apply.
 
 The 16 `BYWEEKNO` cases among them are **not** an `ical4j` defect.
 [Finding 052](../findings/052-byweekno-is-one-lineage-deep.md) ran all eight
@@ -183,7 +201,9 @@ match none. That is finding 024's `dtstart_fill` split, which `ical4j`'s
 `ByWeekNoRule` implements literally by carrying `DTSTART`'s weekday through the
 week-number map. 17 of the 50 are already reported as `fail_other_reading`; the
 rest were scored as plain failures because the corpus under-recorded the
-alternative — see 052 for the two guards responsible, one of which is now fixed.
+alternative — see 052 for the two guards responsible. Both are now fixed; the
+second, a length guard that suppressed an alternative shorter than `expect`,
+is [finding 053](../findings/053-a-short-list-is-not-always-my-horizon.md).
 
 The harness now watches
 for this: `conformance/ambient_sweep.py` reruns the adapters over the scored

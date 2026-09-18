@@ -320,7 +320,9 @@ conformance case, and even then see the caveat on (2).
 ## Findings
 
 - [051 — what is left after the negative-limit fix: the 114 residual `ical4j` failures, attributed. Every case 4.3.0 fixed is findings 049/050; of what remains, 29 are a pipeline that never removes a repeated instant (`BYMONTHDAY=31,-1` yields month end twice) and 15 are an ordinal `BYDAY` that can never match in its limiting role, both unchanged since 4.1.1](findings/051-what-is-left-after-the-negative-limit-fix.md).
-- [052 — the `BYWEEKNO` column of the corpus is one lineage deep. On the 42 scored cases with `BYWEEKNO` and no `BYDAY`, `expect` is matched by the `dateutil` lineage and by nothing else; `dmfs` matches 16, `libical`, `ical4j`, `dtical` and `sabre` match none. It is finding 024's `dtstart_fill` split, under-recorded by my own builder: one rewrite returned before applying the second fill (fixed here), and a length guard suppresses the alternative on sparse rules](findings/052-byweekno-is-one-lineage-deep.md).
+- [053 — a short list is not always my horizon. The corpus refused to record the rival `dtstart_fill` reading whenever it yielded fewer occurrences than `expect`, on the stated grounds that only my own 30-year window could shorten a list — false on the sparse `FREQ=YEARLY` shapes, where `ical4j` and `dmfs` return the short list with no horizon at all. A `FREQ=YEARLY` rule's calendar repeats exactly every 400 Gregorian years, so the two meanings of a short list are decidable rather than a matter of choosing a bigger number. 87 corpus cases gain the alternative, 29 of them scored, and two independent lineages reproduce it instant for instant](findings/053-a-short-list-is-not-always-my-horizon.md).
+
+- [052 — the `BYWEEKNO` column of the corpus is one lineage deep. On the 42 scored cases with `BYWEEKNO` and no `BYDAY`, `expect` is matched by the `dateutil` lineage and by nothing else; `dmfs` matches 16, `libical`, `ical4j`, `dtical` and `sabre` match none. It is finding 024's `dtstart_fill` split, under-recorded by my own builder: one rewrite returned before applying the second fill (fixed here), and a length guard suppresses the alternative on sparse rules (fixed in 053)](findings/052-byweekno-is-one-lineage-deep.md).
 - [049 — a negative day that only counts when it expands: 65 of `ical4j`'s 176 locale-corrected failures are one bug in the limit path, fixed in 4.3.0; the `BYYEARDAY` twin is still open in the current release, and the corpus was blind to it because cell coverage is not value coverage](findings/049-a-negative-day-that-only-counts-when-it-expands.md).
 - [050 — one cell of the table, four ways to get it wrong: negative `BYMONTHDAY`/`BYYEARDAY` in their *limiting* role is got wrong by four of the six independent lineages, each differently — silence, a thrown guard, a dropped constraint, a promoted period — and the corpus could not see it because cell coverage is not value coverage](findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md).
 - [048 — the last unswept column is ambient-invariant, and its five apparent differences were my own deadline](findings/048-the-last-unswept-column-is-ambient-invariant.md).
@@ -586,8 +588,11 @@ conformance case, and even then see the caveat on (2).
   had no table at all. No erratum against §3.3.10 addresses the precedence.
   The corpus now records this as a named alternative reading, `dtstart_fill`,
   and [`conformance/RESULTS.md`](conformance/RESULTS.md) scores a match as
-  `fail_other_reading`: `ical4j`'s plain failures fall 253 → 195, `libical`
-  master's 79 → 22, `dmfs lib-recur`'s 76 → 13. No pass count moved.
+  `fail_other_reading`: `ical4j`'s plain failures fall 260 → 194, `libical`
+  master's 79 → 8, `dmfs lib-recur`'s 76 → 13. No pass count moved. (Each
+  left-hand figure is that row's `fail` + `other reading`; both sides grew with
+  the corpus, and the right-hand ones moved again with
+  [finding 053](findings/053-a-short-list-is-not-always-my-horizon.md).)
 
 - [023 — the two footnotes under §3.3.10's table, as a shipped
   bug](findings/023-byday-limit-footnotes.md). A calendar user reports that a

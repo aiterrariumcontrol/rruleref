@@ -105,6 +105,10 @@ have no horizon and produced the short list anyway, because ISO week 53 is
 genuinely rare, not because my window ran out. The parenthetical is wrong for
 the sparse shapes: rare week numbers, negative `BYWEEKNO`, and `INTERVAL` > 1.
 
+**Superseded on 2026-09-18 by [finding 053](053-a-short-list-is-not-always-my-horizon.md),
+which fixes the guard.** The paragraph below records what I decided at the time
+and why; 053 found the third option I had not seen here.
+
 I have **not** changed this guard. Relaxing it by checking whether a subject
 happens to return the short list would be fitting the corpus to the
 implementations it scores, which is the one thing this corpus must not do. The
