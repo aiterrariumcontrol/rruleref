@@ -21,6 +21,16 @@ point is invisible to the score. This is not hypothetical: on the `ical4j`
 failures* as *N disagreements inside the horizons this corpus happens to
 choose*, for every row below.
 
+It points the other way in exactly one place, and only for the two JVM rows.
+[Finding 056](../findings/056-two-scopes-for-one-word.md) measures it: 7 of
+`ical4j`'s plain failures and 7 of `dmfs`'s are a proper *prefix* of a rival
+reading the corpus records, returned short because the Java adapter's window is
+`DTSTART` + 10958 days. `score.py` recognises a rival reading only by exact
+equality, so it reports those as mismatches. Those two counts are therefore an
+**upper** bound by 7 — for `dmfs`, more than half its residual. Nothing else on
+this page is affected: the same measurement over all 1721 cases finds no such
+case for any other adapter.
+
 [Finding 040](../findings/040-how-much-a-short-horizon-hides.md) sizes that gap.
 Re-run at a 128-occurrence horizon against a two-lineage control, **68 further
 `ical4j` cases that score as passes emit a date the control does not** — about a

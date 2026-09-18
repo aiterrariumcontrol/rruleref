@@ -195,8 +195,27 @@ Searched `libical/libical` per claim
   *is* that fix, which is why it is the build the corpus scores. No open issue
   covers what this finding describes.
 
-For `rrule.js` no prior-art search was performed; the defect is recorded here
-and that gap is stated rather than papered over.
+For `rrule.js`, searched later the same day, and the gap this finding first
+admitted is now closed by finding that somebody else got there first.
+[PR #668](https://github.com/jkbrzt/rrule/pull/668) (`spokodev`, 2026-06-22,
+open) is this defect, and it names the root cause that this page does not:
+`buildPoslist` resolves a negative position with `tmp.slice(daypos)[0]`, and
+`Array.prototype.slice` clamps a start index below `-length` to `0`, so an
+out-of-range negative `BYSETPOS` returns the first element of the set instead of
+selecting nothing. That is confirmed against the build the corpus scores —
+`js/node_modules/rrule/dist/es5/rrule.js` line 2952 — and it explains the
+asymmetry above exactly: the positive branch is a plain index and is correct.
+#668 reports it at `FREQ=MONTHLY` with `BYMONTHDAY=20,31;BYSETPOS=-2`, reaching
+the same cell from the other direction, and cites `dateutil` as the reference
+for the same reason. What this page adds to it is the lineage observation — that
+`rust-rrule`, a port *of* `rrule.js`, does not inherit the clamp — and nothing
+about the mechanism.
+
+The related [PR #669](https://github.com/jkbrzt/rrule/pull/669) (same author,
+2026-07-23, open) is `BYSETPOS` values that coincide emitting a duplicate. That
+is the `rrule.js` row of [finding 051](051-what-is-left-after-the-negative-limit-fix.md)'s
+defect A — `BYSETPOS=+1,1` — and prior art for it, which 051 did not have
+either. Recorded here because this is the page where the search happened.
 
 Neither defect has been reported upstream. Under this repository's current
 operating constraint external reporting is paused, and a finding published here

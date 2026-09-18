@@ -1,0 +1,705 @@
+{
+ "cases": [
+  {
+   "dtstart": "20270829T090000",
+   "expect": [
+    "20270829T090000",
+    "20281029T090000",
+    "20290429T090000",
+    "20300929T090000",
+    "20310629T090000",
+    "20320229T090000",
+    "20330529T090000",
+    "20340129T090000"
+   ],
+   "ical4j_430": [
+    "20270829T090000",
+    "20320829T090000",
+    "20380829T090000",
+    "20490829T090000",
+    "20550829T090000"
+   ],
+   "id": "1133012800b2",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "fail",
+    "libical": "alt",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270829T090000",
+     "20320829T090000",
+     "20380829T090000",
+     "20490829T090000",
+     "20550829T090000",
+     "20600829T090000",
+     "20660829T090000",
+     "20770829T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=29;WKST=MO;BYSETPOS=1",
+   "sub_block": "truncated-dtstart_fill-reading"
+  },
+  {
+   "dtstart": "20260301T090000",
+   "expect": [
+    "20260301T090000",
+    "20270301T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20330301T090000",
+    "20340301T090000",
+    "20350301T090000"
+   ],
+   "ical4j_430": [
+    "20260301T090000",
+    "20270301T090000",
+    "20280229T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20320229T090000",
+    "20330301T090000"
+   ],
+   "id": "3c45714c6614",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYYEARDAY=60;BYMONTH=3",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20241230T090000",
+   "expect": [
+    "20241230T090000",
+    "20281230T090000",
+    "20321230T090000",
+    "20361230T090000",
+    "20401230T090000",
+    "20441230T090000",
+    "20481230T090000",
+    "20521230T090000"
+   ],
+   "ical4j_430": [
+    "20241230T090000",
+    "20250405T090000",
+    "20250430T090000",
+    "20251205T090000",
+    "20251230T090000",
+    "20260405T090000",
+    "20260430T090000",
+    "20261205T090000"
+   ],
+   "id": "3e9bc8319dc6",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYYEARDAY=365,100;BYMONTHDAY=5,30",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20260301T090000",
+   "expect": [
+    "20260301T090000",
+    "20270301T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20330301T090000",
+    "20340301T090000",
+    "20350301T090000"
+   ],
+   "ical4j_430": [
+    "20260301T090000",
+    "20270228T090000",
+    "20270301T090000",
+    "20280228T090000",
+    "20280229T090000",
+    "20290228T090000",
+    "20290301T090000",
+    "20300228T090000"
+   ],
+   "id": "3f01d1d37c94",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYYEARDAY=60,59;BYMONTH=3",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20321231T090000",
+   "expect": [
+    "20321231T090000",
+    "20441231T090000",
+    "20561231T090000"
+   ],
+   "ical4j_430": [
+    "20350430T090000",
+    "20380430T090000",
+    "20410430T090000"
+   ],
+   "id": "6819ae4065e7",
+   "limit": 3,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=-1;BYYEARDAY=100,366;BYSETPOS=1",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20281231T090000",
+   "expect": [
+    "20281231T090000",
+    "20321231T090000",
+    "20361231T090000",
+    "20401231T090000",
+    "20441231T090000",
+    "20481231T090000",
+    "20521231T090000",
+    "20561231T090000"
+   ],
+   "ical4j_430": [
+    "20281231T090000",
+    "20290715T090000",
+    "20290731T090000",
+    "20300715T090000",
+    "20300731T090000",
+    "20310715T090000",
+    "20310731T090000",
+    "20320715T090000"
+   ],
+   "id": "8a5c88de1d34",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,15;BYYEARDAY=366,200",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20270228T090000",
+   "expect": [
+    "20270228T090000",
+    "20270328T090000",
+    "20271128T090000",
+    "20280528T090000",
+    "20290128T090000",
+    "20291028T090000",
+    "20300428T090000",
+    "20300728T090000"
+   ],
+   "ical4j_430": [
+    "20270228T090000",
+    "20380228T090000",
+    "20440228T090000",
+    "20490228T090000",
+    "20550228T090000"
+   ],
+   "id": "91d6a0860c72",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "fail",
+    "libical": "alt",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270228T090000",
+     "20380228T090000",
+     "20440228T090000",
+     "20490228T090000",
+     "20550228T090000",
+     "20660228T090000",
+     "20720228T090000",
+     "20770228T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28",
+   "sub_block": "truncated-dtstart_fill-reading"
+  },
+  {
+   "dtstart": "20240429T090000",
+   "expect": [
+    "20240429T090000",
+    "20241230T090000",
+    "20250929T090000",
+    "20260330T090000",
+    "20260629T090000",
+    "20270830T090000",
+    "20271129T090000",
+    "20280228T090000"
+   ],
+   "ical4j_430": [
+    "20240429T090000",
+    "20300429T090000",
+    "20410429T090000",
+    "20470429T090000",
+    "20520429T090000"
+   ],
+   "id": "9346b18d8869",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "fail",
+    "libical": "alt",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20240429T090000",
+     "20300429T090000",
+     "20410429T090000",
+     "20470429T090000",
+     "20520429T090000",
+     "20580429T090000",
+     "20690429T090000",
+     "20750429T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO",
+   "sub_block": "truncated-dtstart_fill-reading"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "expect": [
+    "20261231T090000",
+    "20271231T090000",
+    "20281231T090000",
+    "20291231T090000",
+    "20301231T090000",
+    "20311231T090000",
+    "20321231T090000",
+    "20331231T090000"
+   ],
+   "ical4j_430": [
+    "20261231T090000",
+    "20270430T090000",
+    "20271231T090000",
+    "20280430T090000",
+    "20281231T090000",
+    "20290430T090000",
+    "20291231T090000",
+    "20300430T090000"
+   ],
+   "id": "9e1f525849c4",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "pass",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "first_period_truncated": [
+     "20271231T090000",
+     "20281231T090000",
+     "20291231T090000",
+     "20301231T090000",
+     "20311231T090000",
+     "20321231T090000",
+     "20331231T090000",
+     "20341231T090000"
+    ]
+   },
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,-1;BYMONTH=4,12;BYSETPOS=2",
+   "sub_block": "defect-A-through-BYSETPOS"
+  },
+  {
+   "dtstart": "20260828T090000",
+   "expect": [
+    "20260828T090000",
+    "20270528T090000",
+    "20280128T090000",
+    "20290928T090000",
+    "20300628T090000",
+    "20310228T090000",
+    "20320528T090000",
+    "20330128T090000"
+   ],
+   "ical4j_430": [
+    "20260828T090000",
+    "20370828T090000",
+    "20430828T090000",
+    "20480828T090000",
+    "20540828T090000"
+   ],
+   "id": "afd39eca7f70",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "fail",
+    "libical": "alt",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20260828T090000",
+     "20370828T090000",
+     "20430828T090000",
+     "20480828T090000",
+     "20540828T090000",
+     "20650828T090000",
+     "20710828T090000",
+     "20760828T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1",
+   "sub_block": "truncated-dtstart_fill-reading"
+  },
+  {
+   "dtstart": "20270301T090000",
+   "expect": [
+    "20270301T090000",
+    "20281230T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20321230T090000",
+    "20330301T090000",
+    "20340301T090000"
+   ],
+   "ical4j_430": [
+    "20270301T090000",
+    "20270330T090000",
+    "20271201T090000",
+    "20271230T090000",
+    "20280201T090000",
+    "20281201T090000",
+    "20281230T090000",
+    "20290301T090000"
+   ],
+   "id": "d41c364d7f42",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270301T090000",
+     "20290301T090000",
+     "20300301T090000",
+     "20310301T090000",
+     "20330301T090000",
+     "20340301T090000",
+     "20350301T090000",
+     "20370301T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30,1;BYYEARDAY=60,365;WKST=SU",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20270410T090000",
+   "expect": [
+    "20270410T090000",
+    "20280409T090000",
+    "20290410T090000",
+    "20300410T090000",
+    "20310410T090000",
+    "20320409T090000",
+    "20330410T090000",
+    "20340410T090000"
+   ],
+   "ical4j_430": [
+    "20270410T090000",
+    "20271102T090000",
+    "20280409T090000",
+    "20281102T090000",
+    "20290410T090000",
+    "20291102T090000",
+    "20300410T090000",
+    "20301102T090000"
+   ],
+   "id": "dbf074888378",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYMONTH=4;BYYEARDAY=-60,100",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20270401T090000",
+   "expect": [
+    "20270401T090000",
+    "20270701T090000",
+    "20280601T090000",
+    "20290201T090000",
+    "20290301T090000",
+    "20291101T090000",
+    "20300801T090000",
+    "20310501T090000"
+   ],
+   "ical4j_430": [
+    "20270401T090000",
+    "20320401T090000",
+    "20380401T090000",
+    "20490401T090000",
+    "20550401T090000"
+   ],
+   "id": "f12f8876eff4",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "fail",
+    "libical": "alt",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {
+    "dtstart_fill": [
+     "20270401T090000",
+     "20320401T090000",
+     "20380401T090000",
+     "20490401T090000",
+     "20550401T090000",
+     "20600401T090000",
+     "20660401T090000",
+     "20770401T090000"
+    ]
+   },
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
+   "sub_block": "truncated-dtstart_fill-reading"
+  },
+  {
+   "dtstart": "20270410T090000",
+   "expect": [
+    "20270410T090000",
+    "20280409T090000",
+    "20290410T090000",
+    "20300410T090000",
+    "20310410T090000",
+    "20320409T090000",
+    "20330410T090000",
+    "20340410T090000"
+   ],
+   "ical4j_430": [
+    "20270410T090000",
+    "20280409T090000",
+    "20281231T090000",
+    "20290410T090000",
+    "20300410T090000",
+    "20310410T090000",
+    "20320409T090000",
+    "20321231T090000"
+   ],
+   "id": "f35a131b25d8",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYYEARDAY=366,100;BYMONTH=4",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20260301T090000",
+   "expect": [
+    "20260301T090000",
+    "20270301T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20330301T090000",
+    "20340301T090000",
+    "20350301T090000"
+   ],
+   "ical4j_430": [
+    "20260301T090000",
+    "20270301T090000",
+    "20280229T090000",
+    "20290301T090000",
+    "20300301T090000",
+    "20310301T090000",
+    "20320229T090000",
+    "20330301T090000"
+   ],
+   "id": "f5dcbdfc509e",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYYEARDAY=+60;BYMONTH=3",
+   "sub_block": "byyearday-discards-the-month"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "expect": [
+    "20261231T090000",
+    "20271231T090000",
+    "20281231T090000",
+    "20291231T090000",
+    "20301231T090000",
+    "20311231T090000",
+    "20321231T090000",
+    "20331231T090000"
+   ],
+   "ical4j_430": [
+    "20261231T090000",
+    "20271126T090000",
+    "20271130T090000",
+    "20271227T090000",
+    "20271231T090000",
+    "20281126T090000",
+    "20281130T090000",
+    "20281227T090000"
+   ],
+   "id": "fbc71855357e",
+   "limit": 8,
+   "lineages": {
+    "dateutil": "pass",
+    "dmfs": "pass",
+    "libical": "error",
+    "rrulejs": "pass",
+    "rustrrule": "pass",
+    "sabre": "fail"
+   },
+   "reading_alternatives": {},
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,-1;BYYEARDAY=-60,-1",
+   "sub_block": "byyearday-discards-the-month"
+  }
+ ],
+ "ical4j_version": "4.3.0",
+ "locale": "en-GB",
+ "predictor_agreement": {
+  "excluded": {
+   "BYHOUR": 9,
+   "BYMINUTE": 1,
+   "BYSECOND": 1,
+   "BYWEEKNO": 50,
+   "COUNT": 4,
+   "UNTIL": 4
+  },
+  "ical4j_4.1.1": 305,
+  "ical4j_4.3.0": 305,
+  "in_scope_yearly_cases": 305,
+  "scope": "FREQ=YEARLY and rule parts drawn from {FREQ,INTERVAL,WKST,BYMONTH,BYYEARDAY,BYMONTHDAY,BYDAY,BYSETPOS}"
+ },
+ "prefix_note": "per adapter: [plain fail, plain fails that are a proper non-empty prefix of expect, plain fails that are a proper non-empty prefix of a recorded alternative reading]. Measured over all 1721 scored cases.",
+ "prefix_of_alternative_reading_across_adapters": {
+  "dateutil": [
+   0,
+   0,
+   0
+  ],
+  "dmfs": [
+   13,
+   0,
+   7
+  ],
+  "ical4j-4.3.0": [
+   106,
+   0,
+   7
+  ],
+  "libical": [
+   8,
+   0,
+   0
+  ],
+  "rrulejs": [
+   26,
+   0,
+   0
+  ],
+  "rustrrule": [
+   0,
+   0,
+   0
+  ],
+  "sabre": [
+   782,
+   0,
+   0
+  ]
+ },
+ "residual_recount_2026_09_18": {
+  "by_051_category": {
+   "A-duplicate-instants": 29,
+   "B-ordinal-byday-in-limit-role": 15,
+   "C-weekly-bymonth-shape-of-037": 27,
+   "D-other-empty": 3,
+   "E-byweekno-other": 16,
+   "F-other": 16
+  },
+  "fail_other_reading": 66,
+  "note": "051 published 114/58. The eight cases that moved are all D-other-empty and all now score as the dtstart_fill alternative reading, because finding 053 removed the length guard that had suppressed it.",
+  "plain_fail": 106
+ },
+ "sub_block_totals": {
+  "byyearday-discards-the-month": 10,
+  "defect-A-through-BYSETPOS": 1,
+  "truncated-dtstart_fill-reading": 5
+ },
+ "what": "Finding 056: every one of finding 051 Category F (ical4j 4.3.0, en-GB, 8 occurrences) with its sub-block and the six other lineages."
+}
