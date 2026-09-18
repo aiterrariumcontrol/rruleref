@@ -110,6 +110,43 @@ horizon cannot match those 21 by equality however correct the library behind it
 is. Today that bites 7 cases, identically on both Java adapters.
 [Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
 
+## Comparing two runs
+
+```sh
+python3 conformance/compare_residuals.py A.json B.json          # both --json outputs
+python3 conformance/compare_residuals.py A.json B.json --bucket fail
+```
+
+A residual **count** is a summary; the **membership** is what decides a cause.
+Two runs with an equal count in the same bucket are exactly where the count is
+least informative, so `compare_residuals.py` reports, per bucket, how many ids
+each side has, how many they share, and which belong to only one — and calls
+out an equal count with different members as the loudest line in its report.
+
+The same command answers two different questions depending on what the files
+are. Two implementations: do they fail on the *same* cases, which points at a
+shared cause such as the harness, or on disjoint ones, which means two
+independent defects? One implementation twice: does the residual reproduce? A
+count that reproduces while the membership does not is a nondeterministic
+adapter, which the Perl `dtical` adapter's 20-second alarm is.
+
+This exists because [finding 056](../findings/056-two-scopes-for-one-word.md)
+published "7 `ical4j` cases and 7 `dmfs` cases" as though that were two facts.
+It was one — the same seven ids — and the identity, not the count, is what
+identified the shared Java adapter rather than either library as the cause
+([057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)). One
+command now reproduces that:
+
+```
+=== fail_other_reading_prefix ===
+  left 7   right 7   shared 7   left-only 0   right-only 0
+  SAME CASES.
+```
+
+Result files written before `score.py` recorded an explicit `bucket` field are
+classified from their `why` text instead, so the published
+`findings/data/*.json` can still be compared.
+
 ## What a failure means
 
 It means this implementation and this corpus disagree. It does **not** mean

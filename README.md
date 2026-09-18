@@ -64,6 +64,19 @@ adapters ([dateutil](conformance/adapters/dateutil_adapter.py),
 each, and the two [Java ones](conformance/adapters/java/) about forty. The contract is [`conformance/PROTOCOL.md`](conformance/PROTOCOL.md);
 the corpus fields are [`corpus/SCHEMA.md`](corpus/SCHEMA.md).
 
+Two `--json` results can be compared by membership rather than by count:
+
+```sh
+python3 conformance/compare_residuals.py A.json B.json
+```
+
+An equal residual count in two runs is exactly where the count says least and
+the membership says most — whether two implementations fail on the *same* cases
+(a shared cause, often the harness) or on disjoint ones (two independent
+defects), and whether one implementation's residual reproduces at all. Finding
+056 published two equal counts as two facts when they were one set of seven
+ids; this reports the difference in one line.
+
 `conformance/cases.ndjson` is the 1728-case subset for which a disagreement is
 a defensible conformance claim — the rule is valid under §3.3.10, `DTSTART` is
 synchronized so §3.8.5.3 does not declare the answer undefined, and the case is
@@ -319,6 +332,7 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [058 — what the whole field rejects: six cases, one rule part. The corpus had never been asked the one question that could indict it — *which cases does the entire independent field disagree with me about?* — because residuals are reported as counts and counts cannot be intersected. Comparing **membership** instead, the four independent non-`dateutil` lineages (`libical`, `ical4j`, `dmfs`, `sabre`) jointly reject exactly **6 of the 1728** scored cases, and every one carries `BYWEEKNO` — which was an output, not a filter. On **four of the six, two independent lineages agree byte-for-byte** on an occurrence list the corpus records nowhere, which is this project's own standard for a reading rather than a bug, so the corpus is presenting a contested answer as settled. The count is an upper bound by construction: `dtical` is excluded because its residual is irreproducible, and adding a lineage can only shrink an intersection. The common shape is week numbers whose ISO week straddles the year boundary; the finding names that shape and deliberately does not adjudicate it, because the disagreement runs in both directions](findings/058-what-the-whole-field-rejects.md).
 - [057 — a horizon the corpus keeps on one side only. `score.py` gains a bucket for an answer that is a non-empty **proper prefix** of the corpus's answer or of a recorded rival reading: it agreed for its whole length and then stopped, which is a window rather than a disagreement. Rescoring every published row against it moved exactly two, by exactly the 7 cases finding 056 predicted, and every other row reproduced cell for cell; a prefix of `expect` itself is zero everywhere, now measured rather than assumed. The 7 turn out to be **the same 7 cases** on `ical4j` and on `dmfs lib-recur`, in all three JVM locales — two unrelated libraries failing identically is evidence about the harness — and the cause is that the corpus applies its declared `horizon_days` to every `expect` list and to only 99 of its 120 alternative readings. Those 21 over-horizon alternatives are the exact bound on the artifact. Neither widening the adapters nor clipping the alternatives is right: clipping would simply move the artifact onto `libical`, whose adapter has no window and matches these lists in full](findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
 - [056 — two scopes for one word: Category F, the last of finding 051's six blocks, and the end of that page's unexplained residue. `ical4j`'s `BY` pipeline is reimplemented for `FREQ=YEARLY` from the 4.3.0 sources alone and reproduces 4.1.1 and 4.3.0 byte-for-byte on **all 305** in-scope cases. At `YEARLY`, `ByMonthDayRule` expands within the enclosing **month** of the date it is handed while `ByYearDayRule` expands within the enclosing **year** — both labelled `Expand` in the table the source quotes — so no reading of §3.3.10 makes both right, and a rule carrying both parts returns dates that satisfy neither. That is 10 of the 16; one more is 051's duplicate-instant defect reaching the output through `BYSETPOS`; the last 5 are not a defect at all but the `dtstart_fill` reading truncated by my own adapter window, which `score.py` can only report as a mismatch. Measured across all eight adapters, that scoring artifact is exactly 7 cases of `ical4j` and 7 of `dmfs` and nothing else. With F accounted for, every one of `ical4j` 4.3.0's residual plain failures has a named account — 106 of them today rather than 051's 114, because finding 053 moved eight to a rival reading](findings/056-two-scopes-for-one-word.md).
 - [055 — a question with no answer: two ways to invent an occurrence. When `BYSETPOS` asks for the nth member of a set that has fewer than n members, the correct result is the empty set. `rrule.js` clamps an out-of-range *negative* `BYSETPOS` to the first element of the set — diverging from `dateutil` upstream and `rust-rrule` downstream, so the lineage that the one-lineage rule collapses into one vote does not agree with itself here. `libical` master returns a date roughly 958 years out, and the source shows why: exhausting `ICAL_LIMIT_RECURRENCE_SEARCH` is not one of the paths that returns a null time, so the loop falls through and hands back wherever the search ran out of budget. Lowering the budget moves the date linearly](findings/055-a-question-with-no-answer.md).

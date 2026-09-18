@@ -88,16 +88,16 @@ def score(cases, replies):
         r = replies.get(c["id"])
         if r is None:
             res["missing"] += 1
-            failures.append((c, None, "no reply"))
+            failures.append((c, None, "no reply", "missing"))
             continue
         if "error" in r:
             res["error"] += 1
-            failures.append((c, r, "error: %s" % str(r["error"])[:120]))
+            failures.append((c, r, "error: %s" % str(r["error"])[:120], "error"))
             continue
         got = r.get("occurrences")
         if not isinstance(got, list) or any(not isinstance(x, str) for x in got):
             res["malformed"] += 1
-            failures.append((c, r, "occurrences is not a list of strings"))
+            failures.append((c, r, "occurrences is not a list of strings", "malformed"))
             continue
         if got == c["expect"]:
             res["pass"] += 1
@@ -109,21 +109,24 @@ def score(cases, replies):
             # counted, because "some other reading" is not a checkable claim.
             res["fail_other_reading"] += 1
             failures.append((c, r, "other reading of 3.3.10: %s"
-                             % _matching_reading(c, got)))
+                             % _matching_reading(c, got),
+                             "fail_other_reading"))
         elif _is_proper_prefix(got, c["expect"]):
             # Agrees with the corpus for its whole length and then stops. The
             # answer is short, not different. See the module docstring.
             res["fail_prefix"] += 1
             failures.append((c, r, "proper prefix of expect (%d of %d)"
-                             % (len(got), len(c["expect"]))))
+                             % (len(got), len(c["expect"])),
+                             "fail_prefix"))
         elif _prefix_of_reading(c, got):
             res["fail_other_reading_prefix"] += 1
             failures.append((c, r, "proper prefix of other reading: %s (%d of %d)"
                              % (_prefix_of_reading(c, got), len(got),
-                                len(c["reading_alternatives"][_prefix_of_reading(c, got)]))))
+                                len(c["reading_alternatives"][_prefix_of_reading(c, got)])),
+                             "fail_other_reading_prefix"))
         else:
             res["fail"] += 1
-            failures.append((c, r, "mismatch"))
+            failures.append((c, r, "mismatch", "fail"))
     return res, failures
 
 
@@ -152,13 +155,13 @@ def main(argv=None):
     # checkable claim; "41 cases read BYMONTHDAY under YEARLY as limiting" is.
     by_reading = collections.Counter(
         _matching_reading(c, r["occurrences"])
-        for c, r, w in failures if r and w.startswith("other reading"))
+        for c, r, w, b in failures if b == "fail_other_reading")
     for name, n in sorted(by_reading.items()):
         print("      %-24s %5d" % (name, n))
-    by_bound = collections.Counter(c["expect_bound"] for c, _, _ in failures)
+    by_bound = collections.Counter(c["expect_bound"] for c, _, _, _ in failures)
     if by_bound:
         print("failures by expect_bound: %s" % dict(by_bound))
-    for c, r, why in failures[:a.show]:
+    for c, r, why, _bucket in failures[:a.show]:
         print("\n  %s  %s" % (c["id"], why))
         print("    RRULE:%s  DTSTART:%s  (%s)" % (c["rrule"], c["dtstart"], c["expect_bound"]))
         print("    expect: %s" % c["expect"])
@@ -169,7 +172,8 @@ def main(argv=None):
     if a.json:
         json.dump({"adapter": adapter, "counts": dict(res),
                    "by_reading": dict(by_reading),
-                   "failures": [{"case": c, "reply": r, "why": w} for c, r, w in failures]},
+                   "failures": [{"case": c, "reply": r, "why": w, "bucket": b}
+                                for c, r, w, b in failures]},
                   open(a.json, "w"), indent=1, sort_keys=True)
         print("\nfull result -> %s" % a.json)
     if stderr.strip():
