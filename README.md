@@ -319,6 +319,7 @@ conformance case, and even then see the caveat on (2).
 
 ## Findings
 
+- [051 — what is left after the negative-limit fix: the 114 residual `ical4j` failures, attributed. Every case 4.3.0 fixed is findings 049/050; of what remains, 29 are a pipeline that never removes a repeated instant (`BYMONTHDAY=31,-1` yields month end twice) and 15 are an ordinal `BYDAY` that can never match in its limiting role, both unchanged since 4.1.1](findings/051-what-is-left-after-the-negative-limit-fix.md).
 - [049 — a negative day that only counts when it expands: 65 of `ical4j`'s 176 locale-corrected failures are one bug in the limit path, fixed in 4.3.0; the `BYYEARDAY` twin is still open in the current release, and the corpus was blind to it because cell coverage is not value coverage](findings/049-a-negative-day-that-only-counts-when-it-expands.md).
 - [050 — one cell of the table, four ways to get it wrong: negative `BYMONTHDAY`/`BYYEARDAY` in their *limiting* role is got wrong by four of the six independent lineages, each differently — silence, a thrown guard, a dropped constraint, a promoted period — and the corpus could not see it because cell coverage is not value coverage](findings/050-one-cell-of-the-table-four-ways-to-get-it-wrong.md).
 - [048 — the last unswept column is ambient-invariant, and its five apparent differences were my own deadline](findings/048-the-last-unswept-column-is-ambient-invariant.md).
@@ -590,7 +591,10 @@ conformance case, and even then see the caveat on (2).
 - [023 — the two footnotes under §3.3.10's table, as a shipped
   bug](findings/023-byday-limit-footnotes.md). A calendar user reports that a
   Friday-the-13th rule fires every Friday. All six implementations here get it
-  right, so there is nothing to report upstream: the footnotes that turn
+  right **on a plain weekday** — put an ordinal on it and `ical4j` returns
+  nothing, which is
+  [finding 051](findings/051-what-is-left-after-the-negative-limit-fix.md) — so
+  there is nothing to report upstream from this case: the footnotes that turn
   `BYDAY` from an expanding part into a limiting one are missed by people
   writing an expander from the table, not by the libraries that already did.
   The debugger now says the intersection out loud, checked over the corpus.

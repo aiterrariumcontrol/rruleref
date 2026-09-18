@@ -158,7 +158,22 @@ show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.
 and not for `BYYEARDAY`, and the scored set now shows exactly that split:
 4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
 `BYYEARDAY` ones (1556 / 114 / 58 on the `en`-`GB` row of the same corpus)
-([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)). The harness now watches
+([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)).
+
+**The 114 that survive that fix are now attributed.**
+[Finding 051](../findings/051-what-is-left-after-the-negative-limit-fix.md)
+categorises every plain failure of both releases. All 69 cases 4.3.0 repaired
+are the negative-limit defect above; no other block moves by a single case
+between 4.1.1 and 4.3.0. Of the 114, **29 are answers containing the same
+instant twice** — `FREQ=MONTHLY;BYMONTHDAY=31,-1` returns month end twice in a
+31-day month, and no other implementation on this page returns a repeated
+instant on those cases — and **15 are an ordinal `BYDAY` in its limiting role**,
+where `FREQ=MONTHLY;BYMONTHDAY=1;BYDAY=1MO` returns nothing at all while three
+independent lineages return the months whose 1st is a Monday. A further 27 have
+the shape of [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md);
+43 remain unaccounted for, 16 of them `BYWEEKNO`.
+
+The harness now watches
 for this: `conformance/ambient_sweep.py` reruns the adapters over the scored
 corpus under three environments that move the time zone, the locale's first day
 of the week and the locale's digit shapes, and diffs the answers case by case

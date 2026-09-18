@@ -43,6 +43,15 @@ FREQ=MONTHLY;BYMONTHDAY=13;BYDAY=FR   DTSTART:20250613T090000
 Six for six, on the `MONTHLY` shape and on `BYMONTHDAY=13,14;BYDAY=FR,SA`. The
 footnotes are not a place the libraries fall over.
 
+> **Narrowed, 2026-09-18.** That sentence claims more than the measurement
+> earns. Every rule tested here carries a *plain* weekday. Put an ordinal on the
+> weekday — `FREQ=MONTHLY;BYMONTHDAY=1;BYDAY=1MO` — and `ical4j` returns an
+> empty list while the other lineages agree on an answer, because its limit
+> filter compares the whole `1MO` token against an offset-0 `MO`. So the
+> footnotes *are* a place one library falls over; this finding could not see it
+> because it never wrote an ordinal. See
+> [finding 051](051-what-is-left-after-the-negative-limit-fix.md).
+
 **So there is nothing to report upstream, and the failure is somewhere else.**
 Fossify's calendar does not use any of these; Android calendar code
 conventionally carries its own expander. That is where this bug lives, and it
