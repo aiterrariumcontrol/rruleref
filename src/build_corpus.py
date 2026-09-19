@@ -100,14 +100,15 @@ def expect_bound(rule, dtstart, occ):
     return "horizon"
 
 
-def _other_reading(rule, ds, n):
+def _other_reading(rule, ds, n, horizon=None):
     """The first `n` occurrences under the *other* reading of 3.3.10's first
     period, or None when the rule has no BYSETPOS and the question does not
     arise. See src/naive.py's `truncate_first_period` and finding 018."""
     if "BYSETPOS" not in rule or n == 0:
         return None
     return [fmt(x) for x in
-            expand(rule, ds, limit=n, truncate_first_period=True)][:n]
+            expand(rule, ds, horizon=horizon, limit=n,
+                   truncate_first_period=True)][:n]
 
 
 WEEKDAY = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"]
@@ -213,7 +214,7 @@ def _short_of_horizon(alt_rule, ds, n):
     return answer
 
 
-def _dtstart_fill_reading(rule, ds, n):
+def _dtstart_fill_reading(rule, ds, n, horizon=None):
     """The first `n` occurrences under the DTSTART-fill reading, or None.
 
     Two conditions beyond the shape, both deliberately conservative:
@@ -240,7 +241,7 @@ def _dtstart_fill_reading(rule, ds, n):
         return None
     if compare(alt_rule, ds, n) is not None:
         return None
-    occ = expand(alt_rule, ds, limit=n)[:n]
+    occ = expand(alt_rule, ds, horizon=horizon, limit=n)[:n]
     if len(occ) != n:
         occ = _short_of_horizon(alt_rule, ds, n)
         if occ is None:
@@ -248,7 +249,7 @@ def _dtstart_fill_reading(rule, ds, n):
     return [fmt(x) for x in occ]
 
 
-def _week_based_year_reading(rule, ds, n, fill=False):
+def _week_based_year_reading(rule, ds, n, fill=False, horizon=None):
     """The first `n` occurrences under the `week_based_year` reading, or None
     when the question does not arise for this rule.
 
@@ -278,24 +279,35 @@ def _week_based_year_reading(rule, ds, n, fill=False):
         alt_rule = _dtstart_fill_rewrite(rule, ds)
         if alt_rule is None:
             return None
-    occ = expand(alt_rule, ds, limit=n, week_based_year=True)[:n]
+    occ = expand(alt_rule, ds, horizon=horizon, limit=n, week_based_year=True)[:n]
     if len(occ) != n:
         return None
     return [fmt(x) for x in occ]
 
 
-def _readings(rule, ds, n, expect):
+def _readings(rule, ds, n, expect, horizon=None):
     """Every alternative reading of 3.3.10 that gives this case a *different*
     answer, by name. Empty dict means the readings coincide here (or none of
     them applies), which is the common case and is not the same as the question
-    not existing."""
+    not existing.
+
+    `horizon` is threaded through to the expander unchanged and defaults to
+    None, which is the 30-year window every corpus row was built with. It
+    exists for `conformance/reading_past_bound.py`, which has to compute the
+    same readings further out than the corpus ever asked for them, and must
+    compute them with the function that wrote them rather than with a copy
+    (standing rule 57). Passing it does not change any corpus value: the
+    builder never sets it."""
     out = {}
-    for name, alt in (("first_period_truncated", _other_reading(rule, ds, n)),
-                      ("dtstart_fill", _dtstart_fill_reading(rule, ds, n)),
+    for name, alt in (("first_period_truncated",
+                       _other_reading(rule, ds, n, horizon)),
+                      ("dtstart_fill",
+                       _dtstart_fill_reading(rule, ds, n, horizon)),
                       ("week_based_year",
-                       _week_based_year_reading(rule, ds, n)),
+                       _week_based_year_reading(rule, ds, n, horizon=horizon)),
                       ("week_based_year+dtstart_fill",
-                       _week_based_year_reading(rule, ds, n, fill=True))):
+                       _week_based_year_reading(rule, ds, n, fill=True,
+                                                horizon=horizon))):
         if alt is not None and alt != expect:
             # The composed reading is only worth its own name when composing
             # actually changed something; on a rule where `dtstart_fill` does
