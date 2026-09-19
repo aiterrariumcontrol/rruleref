@@ -58,7 +58,7 @@ disagreement*, and implementations agreeing on a contested reading land in
 
 So the builder asks the question directly: each rival reading is implemented as
 a second expansion, and where it gives a different answer that answer is
-recorded under its own name. Two are known.
+recorded under its own name. Four are known.
 
 **`first_period_truncated`** — when `BYSETPOS` selects from the period
 containing `DTSTART`, does it index the whole period (instances before
@@ -86,8 +86,29 @@ answer read differently". Of the 404 corroborated cases with one of the two
 shapes, 201 carry the reading, 28 have it coincide with `expect`, and 175 are
 left unannotated by that horizon rule.
 
+**`week_based_year`** — RFC 5545 §3.3.10 says `BYWEEKNO` names "weeks of the
+year", numbered as in ISO 8601, and that "a week is defined as a seven day
+period". Such a week can hold days of two calendar years; §3.3.10 never says
+which `FREQ=YEARLY` *period* those days belong to. `expect` takes the calendar
+year the day sits in — and so resolves the day's week *number* against the year
+that owns the week while assigning its *period* by the calendar year, a hybrid
+that misattributes straddling days in whichever direction the straddle runs.
+This reading takes the owning year for both. The two are indistinguishable at
+`INTERVAL=1` without `BYSETPOS`; finding 059 has the demonstration that
+separates them.
+
+**`week_based_year+dtstart_fill`** — the two composed, recorded under its own
+name because on `BYWEEKNO` rules with no `BYDAY` neither half alone reproduces
+what the independent lineages return. It is omitted where it would duplicate
+one of the others.
+
+Both week-based readings are declined on a list shorter than `len(expect)`,
+for the reason given above for `dtstart_fill` but without the
+`_short_of_horizon` analysis that would separate "the rule ran out" from "my
+horizon did"; finding 059 measures what that costs.
+
 A consumer that treats `expect` as ground truth without looking at this flag
-silently inherits my position on findings 004 and 024.
+silently inherits my position on findings 004, 024 and 059.
 `conformance/cases.ndjson` carries `reading_alternatives` through for the same
 reason, and `conformance/score.py` counts an implementation matching any of
 them as `fail_other_reading` rather than `fail`, naming which — a disagreement

@@ -88,6 +88,12 @@ readings are named today:
   expand/limit table is the sole authority and leaves a coarser field
   unspecified, that field is expanded over or filled from `DTSTART`
   (finding 024).
+* **`week_based_year`** — under `FREQ=YEARLY` with `BYWEEKNO`, whether the days
+  of a week that straddles 1 January belong to the period of the calendar year
+  they sit in or of the year that *owns* the week (finding 059).
+* **`week_based_year+dtstart_fill`** — the two above composed. It is named
+  separately because on some cases neither one alone reproduces what any
+  implementation returns.
 
 `score.py` compares against `expect` first. A mismatch that equals one of these
 is reported as **`fail_other_reading`**, counted separately from `fail`, and

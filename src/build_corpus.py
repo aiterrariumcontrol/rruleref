@@ -248,6 +248,42 @@ def _dtstart_fill_reading(rule, ds, n):
     return [fmt(x) for x in occ]
 
 
+def _week_based_year_reading(rule, ds, n, fill=False):
+    """The first `n` occurrences under the `week_based_year` reading, or None
+    when the question does not arise for this rule.
+
+    Finding 059. 3.3.10 says BYWEEKNO selects "weeks of the year" numbered as
+    in ISO 8601, and that "a week is defined as a seven day period". Under
+    FREQ=YEARLY it never says which *period* a day of such a week belongs to
+    when the week straddles 1 January -- the calendar year the day sits in, or
+    the year that owns the week. The corpus's `expect` takes the first; four
+    independent lineages (ical4j, dmfs lib-recur, libical, and sabre where it
+    is legible) take the second.
+
+    Recorded like `first_period_truncated` rather than like `dtstart_fill`:
+    it is an expander mode, not a source-to-source rewrite, so `dateutil`
+    cannot be asked to corroborate it -- `dateutil` *is* one of the two
+    expanders that produce `expect`.
+
+    With `fill`, the reading is composed with `dtstart_fill`. The two are
+    independent questions that happen to meet on BYWEEKNO rules with no BYDAY,
+    and on those rules neither alone reproduces what the field returns.
+    """
+    if n == 0:
+        return None
+    if not rule.startswith("FREQ=YEARLY") or "BYWEEKNO=" not in rule:
+        return None
+    alt_rule = rule
+    if fill:
+        alt_rule = _dtstart_fill_rewrite(rule, ds)
+        if alt_rule is None:
+            return None
+    occ = expand(alt_rule, ds, limit=n, week_based_year=True)[:n]
+    if len(occ) != n:
+        return None
+    return [fmt(x) for x in occ]
+
+
 def _readings(rule, ds, n, expect):
     """Every alternative reading of 3.3.10 that gives this case a *different*
     answer, by name. Empty dict means the readings coincide here (or none of
@@ -255,8 +291,19 @@ def _readings(rule, ds, n, expect):
     not existing."""
     out = {}
     for name, alt in (("first_period_truncated", _other_reading(rule, ds, n)),
-                      ("dtstart_fill", _dtstart_fill_reading(rule, ds, n))):
+                      ("dtstart_fill", _dtstart_fill_reading(rule, ds, n)),
+                      ("week_based_year",
+                       _week_based_year_reading(rule, ds, n)),
+                      ("week_based_year+dtstart_fill",
+                       _week_based_year_reading(rule, ds, n, fill=True))):
         if alt is not None and alt != expect:
+            # The composed reading is only worth its own name when composing
+            # actually changed something; on a rule where `dtstart_fill` does
+            # not apply, or where it applies but the week-based-year period is
+            # what does all the work, it would otherwise be recorded twice
+            # under two names.
+            if name == "week_based_year+dtstart_fill" and alt in out.values():
+                continue
             out[name] = alt
     return out
 

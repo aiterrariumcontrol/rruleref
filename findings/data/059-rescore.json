@@ -1,0 +1,247 @@
+{
+ "about": "Every row of conformance/RESULTS.md rescored across the corpus rebuild that added the week_based_year and week_based_year+dtstart_fill readings (finding 059). `counts_before` is the 2026-09-18 cases.ndjson, `counts_after` the 2026-09-19 one; the two differ only in reading_alternatives on 7 of the 1728 cases and in no expect list, so no case can move except out of a failure bucket. Rows with counts_before null were scored once, on the new file, and are compared in RESULTS.md against their previously published numbers. DateTime::Event::ICal is absent deliberately: its residual is load-dependent and would move for reasons unrelated to this edit.",
+ "date": "2026-09-19",
+ "rows": [
+  {
+   "by_reading_after": {
+    "dtstart_fill": 66,
+    "week_based_year": 2,
+    "week_based_year+dtstart_fill": 2
+   },
+   "cases_that_moved": [
+    {
+     "from": "fail",
+     "id": "1b491afa4ef0",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year"
+    },
+    {
+     "from": "fail",
+     "id": "36fa68873abe",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year"
+    },
+    {
+     "from": "fail",
+     "id": "39497d02ae1e",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year+dtstart_fill"
+    },
+    {
+     "from": "fail",
+     "id": "cd5d1f7e7232",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year+dtstart_fill"
+    }
+   ],
+   "counts_after": {
+    "fail": 183,
+    "fail_other_reading": 70,
+    "fail_other_reading_prefix": 7,
+    "pass": 1468
+   },
+   "counts_before": {
+    "fail": 187,
+    "fail_other_reading": 66,
+    "fail_other_reading_prefix": 7,
+    "pass": 1468
+   },
+   "implementation": "ical4j 4.1.1 en-US"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 66,
+    "week_based_year": 2,
+    "week_based_year+dtstart_fill": 2
+   },
+   "counts_after": {
+    "fail": 164,
+    "fail_other_reading": 70,
+    "fail_other_reading_prefix": 7,
+    "pass": 1487
+   },
+   "counts_before": null,
+   "implementation": "ical4j 4.1.1 en-GB"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 66,
+    "week_based_year": 1,
+    "week_based_year+dtstart_fill": 2
+   },
+   "counts_after": {
+    "fail": 196,
+    "fail_other_reading": 69,
+    "fail_other_reading_prefix": 7,
+    "pass": 1456
+   },
+   "counts_before": null,
+   "implementation": "ical4j 4.1.1 ar-EG"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 60,
+    "first_period_truncated": 3,
+    "week_based_year": 1,
+    "week_based_year+dtstart_fill": 1
+   },
+   "cases_that_moved": [
+    {
+     "from": "fail",
+     "id": "1b491afa4ef0",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year"
+    },
+    {
+     "from": "fail",
+     "id": "cd5d1f7e7232",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year+dtstart_fill"
+    }
+   ],
+   "counts_after": {
+    "error": 11,
+    "fail": 4,
+    "fail_other_reading": 65,
+    "fail_other_reading_prefix": 7,
+    "pass": 1641
+   },
+   "counts_before": {
+    "error": 11,
+    "fail": 6,
+    "fail_other_reading": 63,
+    "fail_other_reading_prefix": 7,
+    "pass": 1641
+   },
+   "implementation": "dmfs lib-recur 0.17.1 en-GB"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 71,
+    "week_based_year": 1,
+    "week_based_year+dtstart_fill": 1
+   },
+   "cases_that_moved": [
+    {
+     "from": "fail",
+     "id": "36fa68873abe",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year"
+    },
+    {
+     "from": "fail",
+     "id": "39497d02ae1e",
+     "to": "fail_other_reading",
+     "why": "other reading of 3.3.10: week_based_year+dtstart_fill"
+    }
+   ],
+   "counts_after": {
+    "error": 35,
+    "fail": 6,
+    "fail_other_reading": 73,
+    "pass": 1614
+   },
+   "counts_before": {
+    "error": 35,
+    "fail": 8,
+    "fail_other_reading": 71,
+    "pass": 1614
+   },
+   "implementation": "libical master 4edd39a3"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 71,
+    "week_based_year": 1,
+    "week_based_year+dtstart_fill": 1
+   },
+   "counts_after": {
+    "error": 35,
+    "fail": 14,
+    "fail_other_reading": 73,
+    "pass": 1606
+   },
+   "counts_before": null,
+   "implementation": "libical master 48d52b4b"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 46,
+    "week_based_year": 1
+   },
+   "counts_after": {
+    "error": 57,
+    "fail": 107,
+    "fail_other_reading": 47,
+    "pass": 1517
+   },
+   "counts_before": null,
+   "implementation": "libical 3.0.20"
+  },
+  {
+   "by_reading_after": {},
+   "cases_that_moved": [],
+   "counts_after": {
+    "fail": 26,
+    "pass": 1702
+   },
+   "counts_before": {
+    "fail": 26,
+    "pass": 1702
+   },
+   "implementation": "rrule.js 2.8.1"
+  },
+  {
+   "by_reading_after": {},
+   "cases_that_moved": [],
+   "counts_after": {
+    "pass": 1728
+   },
+   "counts_before": {
+    "pass": 1728
+   },
+   "implementation": "python-dateutil 2.9.0.post0"
+  },
+  {
+   "by_reading_after": {},
+   "cases_that_moved": [],
+   "counts_after": {
+    "pass": 1728
+   },
+   "counts_before": {
+    "pass": 1728
+   },
+   "implementation": "rrule-go 1.8.2"
+  },
+  {
+   "by_reading_after": {},
+   "cases_that_moved": [],
+   "counts_after": {
+    "pass": 1728
+   },
+   "counts_before": {
+    "pass": 1728
+   },
+   "implementation": "rust-rrule 0.14.0"
+  },
+  {
+   "by_reading_after": {
+    "dtstart_fill": 23
+   },
+   "cases_that_moved": [],
+   "counts_after": {
+    "error": 4,
+    "fail": 868,
+    "fail_other_reading": 23,
+    "pass": 833
+   },
+   "counts_before": {
+    "error": 4,
+    "fail": 868,
+    "fail_other_reading": 23,
+    "pass": 833
+   },
+   "implementation": "sabre/vobject 4.6.1"
+  }
+ ]
+}

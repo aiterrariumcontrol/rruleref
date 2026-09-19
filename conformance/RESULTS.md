@@ -150,17 +150,39 @@ measured move is the whole of the change: `ical4j` 8 (identically in 4.1.1,
 `DateTime::Event::ICal` 14, and nothing at all for the `dateutil` lineage,
 `dmfs` or `sabre`.
 
+On 2026-09-19 the corpus recorded a **new** reading, `week_based_year`, and its
+composition with `dtstart_fill`, on 7 scored cases
+([finding 059](../findings/059-which-year-owns-a-straddling-week.md)): under
+`FREQ=YEARLY` with `BYWEEKNO`, the days of a week that straddles 1 January are
+taken to belong to the period of the year that *owns* the week rather than the
+calendar year they sit in. Again no `expect` list changed, so again no case can
+move except from `fail` to `other reading`. Every row above was rescored on the
+new cases file. `ical4j` 187 → **183** (and 199 → 196 on `ar`-`EG`,
+168 → **164** on `en`-`GB`), `dmfs lib-recur` 6 → **4**, `libical` master
+`4edd39a3` 8 → **6**, master `48d52b4b` 16 → **14**, `3.0.20` 108 → **107**, and
+nothing at all for the `dateutil` lineage or `sabre`. The `dtstart_fill` counts
+in the paragraphs above are unchanged: the composed reading gets its own name, so
+no case that scored `dtstart_fill` moved.
+
+`DateTime::Event::ICal`'s row was **not** re-run. Its residual is load-dependent
+and has never reproduced across runs
+([finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)),
+so re-running it would change numbers for reasons unrelated to this edit and
+leave the reader unable to tell which cause did what. Adding a reading can only
+move cases out of `fail`, so its 385 is now an upper bound rather than a
+measurement.
+
 | implementation | version | lineage | pass | fail | other reading | prefix of other reading [¶](#prefix) | error |
 |---|---|---|---:|---:|---:|---:|---:|
 | `python-dateutil` | 2.9.0.post0 | corroborating expander | 1728 | 0 | 0 | 0 | 0 |
 | `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 | 0 |
 | `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 | 0 |
 | `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 187 | 66 | 7 | 0 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 6 | 63 | 7 | 11 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 108 | 46 | 0 | 57 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 16 | 71 | 0 | 35 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 8 | 71 | 0 | 35 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 183 | 70 | 7 | 0 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 4 | 65 | 7 | 11 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 107 | 47 | 0 | 57 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 14 | 73 | 0 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 73 | 0 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 0 | 4 |
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 385 [‡](#dtical-split) | 67 [‡](#dtical-split) | 97 [‡](#dtical-split) |
 
@@ -185,13 +207,13 @@ The same build, same corpus, changing only the locale:
 
 | JVM locale | first day of week | pass | fail | prefix |
 |---|---|---:|---:|---:|
-| `ar`-`EG` | Saturday | 1456 | 199 | 7 |
-| `en`-`US` | Sunday | 1468 | 187 | 7 |
-| `en`-`GB` | Monday | 1487 | 168 | 7 |
+| `ar`-`EG` | Saturday | 1456 | 196 | 7 |
+| `en`-`US` | Sunday | 1468 | 183 | 7 |
+| `en`-`GB` | Monday | 1487 | 164 | 7 |
 
-19 net of the 187 are the locale and not the algorithm. The prefix column does
+19 net of the 183 are the locale and not the algorithm. The prefix column does
 not move with the locale at all — the same 7 cases in all three rows, which is
-part of how finding 057 identifies them as the harness. Of the 168 that remain
+part of how finding 057 identifies them as the harness. Of the 164 that remain
 on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
 negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
 resolved correctly when the rule part expands and compared raw when the same

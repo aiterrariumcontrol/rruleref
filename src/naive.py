@@ -68,8 +68,16 @@ def _week_index(d, wkst):
     return (d.toordinal() - 1 - shift) // 7
 
 
-def period_index(dt, freq, wkst):
+def period_index(dt, freq, wkst, week_based_year=False):
     if freq == "YEARLY":
+        if week_based_year:
+            # The rival reading of 3.3.10 recorded as `week_based_year`: a
+            # BYWEEKNO occurrence belongs to the period of the year that *owns*
+            # its week, not to the calendar year the day happens to sit in.
+            # See finding 059. Only reached when the caller asked for it and
+            # the rule actually carries BYWEEKNO.
+            got = _week_number(dt.date(), wkst)
+            return got[0] if got else dt.year
         return dt.year
     if freq == "MONTHLY":
         return dt.year * 12 + (dt.month - 1)
@@ -213,8 +221,9 @@ def _finer(freq):
 def matches(dt, r, dtstart):
     """Is `dt` an occurrence of rule `r`, ignoring BYSETPOS/COUNT/UNTIL?"""
     freq, wkst = r["FREQ"], r["WKST"]
+    wy = r.get("_WEEK_BASED_YEAR", False)
 
-    if (period_index(dt, freq, wkst) - period_index(dtstart, freq, wkst)) \
+    if (period_index(dt, freq, wkst, wy) - period_index(dtstart, freq, wkst, wy)) \
             % r["INTERVAL"] != 0:
         return False
 
@@ -271,7 +280,7 @@ def _pinned(r, freq):
 
 
 def expand(rrule, dtstart, horizon=None, limit=1000,
-           truncate_first_period=False):
+           truncate_first_period=False, week_based_year=False):
     """Return occurrences at or after dtstart, in order.
 
     ``truncate_first_period`` selects the *other* reading of the question in
@@ -287,6 +296,11 @@ def expand(rrule, dtstart, horizon=None, limit=1000,
     """
     r = parse(rrule)
     freq = r["FREQ"]
+    # `week_based_year` only means anything for a YEARLY rule carrying
+    # BYWEEKNO; everywhere else the two readings are the same expander, so the
+    # flag is normalised away here and no other code has to re-check it.
+    r["_WEEK_BASED_YEAR"] = bool(week_based_year) and freq == "YEARLY" \
+        and "BYWEEKNO" in r
     if horizon is None:
         horizon = dtstart + timedelta(days=365 * 30 + 8)
     out = []
@@ -338,7 +352,8 @@ def expand(rrule, dtstart, horizon=None, limit=1000,
         if dt > scan or ((not setpos or truncate_first_period) and dt < dtstart):
             continue
         if setpos:
-            key = period_index(dt, freq, r["WKST"])
+            key = period_index(dt, freq, r["WKST"],
+                               r.get("_WEEK_BASED_YEAR", False))
             if key != cur_key:
                 if cur_key is not None:
                     flush(cur)
@@ -374,8 +389,12 @@ def _period_span(freq):
     return _SPAN[freq]
 
 
-def _period_start(dt, freq, wkst):
+def _period_start(dt, freq, wkst, week_based_year=False):
     if freq == "YEARLY":
+        if week_based_year:
+            got = _week_number(dt.date(), wkst)
+            d = _first_week_start(got[0] if got else dt.year, wkst)
+            return dt.replace(year=d.year, month=d.month, day=d.day)
         return dt.replace(month=1, day=1)
     if freq == "MONTHLY":
         return dt.replace(day=1)
@@ -396,7 +415,9 @@ def _candidates(r, dtstart, horizon, whole_period=False):
     secs = sorted(r["BYSECOND"]) if "BYSECOND" in r else (
         list(range(60)) if freq == "SECONDLY" else [dtstart.second])
 
-    begin = _period_start(dtstart, freq, r["WKST"]) if whole_period else dtstart
+    begin = _period_start(dtstart, freq, r["WKST"],
+                          r.get("_WEEK_BASED_YEAR", False)) \
+        if whole_period else dtstart
     d = begin.date()
     end = horizon.date()
     while d <= end:
