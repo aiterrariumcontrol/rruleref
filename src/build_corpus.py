@@ -381,25 +381,34 @@ def record(rule, ds, cell, agreed, disputed, seen):
     return True
 
 
-def main(seeds=(7, 11, 13, 17, 23), per=300, out=None):
+def main(seeds=(7, 11, 13, 17, 23), per=300, out=None, systematic=True):
+    """Build a corpus into `out`.
+
+    `systematic=False` skips the three enumerations below. They are ~97% of the
+    committed corpus's 3846 cases and essentially all of a full build's ~12
+    minutes, so a test that only needs to watch a case travel through this
+    function can turn them off and finish in seconds. Nothing that produces the
+    committed corpus may pass it: the default is True and the CLI never sets it.
+    """
     out = out or CORPUS
     os.makedirs(out, exist_ok=True)
     agreed, disputed, seen = [], [], set()
-    # Systematic first: one case per permitted cell of the 3.3.10 table, so
-    # what the corpus covers does not depend on which seeds were used.
-    for cell, rule, ds in enumerate_cells.cases():
-        record(rule, ds, "/".join(cell), agreed, disputed, seen)
-    # ...and one per branch of the RECUR ABNF. The table says nothing about
-    # UNTIL, COUNT, INTERVAL, WKST, the explicit '+' sign or list arity, and
-    # before this the corpus had never exercised any of them.
-    for feature, rule, ds in enumerate_branches.cases():
-        record(rule, ds, "branch:" + feature, agreed, disputed, seen)
-    # ...and one per *realizable pair* of branches. Both single-branch models
-    # read 100%, and a presence measure that is saturated has stopped
-    # measuring: the bugs this corpus has caught (findings 001, 004) were
-    # interactions between parts, not parts appearing at all. See src/pairs.py.
-    for pair, rule, ds in pairs.cases():
-        record(rule, ds, "pair:" + pair, agreed, disputed, seen)
+    if systematic:
+        # Systematic first: one case per permitted cell of the 3.3.10 table, so
+        # what the corpus covers does not depend on which seeds were used.
+        for cell, rule, ds in enumerate_cells.cases():
+            record(rule, ds, "/".join(cell), agreed, disputed, seen)
+        # ...and one per branch of the RECUR ABNF. The table says nothing about
+        # UNTIL, COUNT, INTERVAL, WKST, the explicit '+' sign or list arity, and
+        # before this the corpus had never exercised any of them.
+        for feature, rule, ds in enumerate_branches.cases():
+            record(rule, ds, "branch:" + feature, agreed, disputed, seen)
+        # ...and one per *realizable pair* of branches. Both single-branch models
+        # read 100%, and a presence measure that is saturated has stopped
+        # measuring: the bugs this corpus has caught (findings 001, 004) were
+        # interactions between parts, not parts appearing at all. See src/pairs.py.
+        for pair, rule, ds in pairs.cases():
+            record(rule, ds, "pair:" + pair, agreed, disputed, seen)
     for seed in seeds:
         rng = random.Random(seed)
         for _ in range(per):
