@@ -527,4 +527,14 @@ if __name__ == "__main__":
     dest = None
     if "--out" in argv:
         dest = argv[argv.index("--out") + 1]
+    # --occurrences N builds a corpus at a different bound. The committed
+    # corpus is N=8 and nothing here changes that default; the flag exists so
+    # that raising the bound can be *costed and compared* against the
+    # committed build rather than argued about. See tools/cost_bound.py and
+    # rule 58: agreement inside the bound is not agreement.
+    if "--occurrences" in argv:
+        N = int(argv[argv.index("--occurrences") + 1])
+        if "--out" not in argv:
+            sys.exit("--occurrences requires --out: it must not overwrite the "
+                     "committed N=%d corpus" % 8)
     sys.exit(main(out=dest))

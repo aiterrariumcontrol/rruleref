@@ -1,0 +1,278 @@
+{
+ "lost_corroboration": [
+  {
+   "dateutil": [
+    "20261228T090000",
+    "20261229T090000",
+    "20261230T090000",
+    "20261231T090000",
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20321227T090000",
+    "20321228T090000",
+    "20321229T090000",
+    "20321230T090000",
+    "20321231T090000",
+    "20330101T090000",
+    "20330102T090000",
+    "20371228T090000",
+    "20371229T090000",
+    "20371230T090000",
+    "20371231T090000",
+    "20380101T090000",
+    "20380102T090000",
+    "20380103T090000",
+    "20390101T090000",
+    "20390102T090000",
+    "20431228T090000",
+    "20431229T090000"
+   ],
+   "dtstart": "20240229T090000",
+   "naive": [
+    "20261228T090000",
+    "20261229T090000",
+    "20261230T090000",
+    "20261231T090000",
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20321227T090000",
+    "20321228T090000",
+    "20321229T090000",
+    "20321230T090000",
+    "20321231T090000",
+    "20330101T090000",
+    "20330102T090000",
+    "20371228T090000",
+    "20371229T090000",
+    "20371230T090000",
+    "20371231T090000",
+    "20380101T090000",
+    "20380102T090000",
+    "20380103T090000",
+    "20431228T090000",
+    "20431229T090000",
+    "20431230T090000",
+    "20431231T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53"
+  },
+  {
+   "dateutil": [
+    "20261228T090000",
+    "20261229T090000",
+    "20261230T090000",
+    "20261231T090000",
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20321227T090000",
+    "20321228T090000",
+    "20321229T090000",
+    "20321230T090000",
+    "20321231T090000",
+    "20330101T090000",
+    "20330102T090000",
+    "20371228T090000",
+    "20371229T090000",
+    "20371230T090000",
+    "20371231T090000",
+    "20380101T090000",
+    "20380102T090000",
+    "20380103T090000",
+    "20390101T090000",
+    "20390102T090000",
+    "20431228T090000",
+    "20431229T090000"
+   ],
+   "dtstart": "20261228T090000",
+   "naive": [
+    "20261228T090000",
+    "20261229T090000",
+    "20261230T090000",
+    "20261231T090000",
+    "20270101T090000",
+    "20270102T090000",
+    "20270103T090000",
+    "20321227T090000",
+    "20321228T090000",
+    "20321229T090000",
+    "20321230T090000",
+    "20321231T090000",
+    "20330101T090000",
+    "20330102T090000",
+    "20371228T090000",
+    "20371229T090000",
+    "20371230T090000",
+    "20371231T090000",
+    "20380101T090000",
+    "20380102T090000",
+    "20380103T090000",
+    "20431228T090000",
+    "20431229T090000",
+    "20431230T090000",
+    "20431231T090000"
+   ],
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53"
+  }
+ ],
+ "meta": {
+  "about": "What raising the corpus occurrence bound from 8 to 25 actually changes.",
+  "build_secs": {
+   "N=25": 816,
+   "N=8": 739
+  },
+  "corroborated": {
+   "N=25": 3818,
+   "N=8": 3820
+  },
+  "disputed": {
+   "N=25": 28,
+   "N=8": 26
+  },
+  "expect_bound": {
+   "N=25": {
+    "complete": 98,
+    "count": 3227,
+    "horizon": 493
+   },
+   "N=8": {
+    "complete": 98,
+    "count": 3370,
+    "horizon": 352
+   }
+  },
+  "expect_regressions": 0,
+  "generated": 3846,
+  "method": "Two full runs of src/build_corpus.py, identical except for --occurrences. The N=8 run reproduced the committed corpus byte-identically first.",
+  "reading_answer_regressions": 0,
+  "reading_dependent_flag_flips": 0
+ },
+ "reading_set_changed": [
+  {
+   "at_25": [
+    "week_based_year+dtstart_fill"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20260517T090000",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=-2,53"
+  },
+  {
+   "at_25": [
+    "dtstart_fill"
+   ],
+   "at_8": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "dtstart": "20261231T090000",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=53,1;BYYEARDAY=365;BYSETPOS=1"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20240229T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=-1"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20241223T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=-1"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20240229T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=52"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20241223T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=52"
+  },
+  {
+   "at_25": [
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill",
+    "week_based_year",
+    "week_based_year+dtstart_fill"
+   ],
+   "dtstart": "20280101T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=52"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20260101T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=52,1"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill",
+    "week_based_year+dtstart_fill"
+   ],
+   "dtstart": "20260517T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-1,52"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill"
+   ],
+   "dtstart": "20261221T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-1,52"
+  },
+  {
+   "at_25": [
+    "dtstart_fill",
+    "week_based_year"
+   ],
+   "at_8": [
+    "dtstart_fill",
+    "week_based_year",
+    "week_based_year+dtstart_fill"
+   ],
+   "dtstart": "20261231T090000",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-1;WKST=SU"
+  }
+ ]
+}
