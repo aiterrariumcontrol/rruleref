@@ -95,9 +95,47 @@ None of these three was a defect in the subject. All three were tests that would
 fail every time the corpus was legitimately reconfigured, which trains their
 reader to edit them rather than to read them.
 
+## And the script that publishes the fix was publishing nowhere
+
+Having repaired the port I ran `tools/publish_pages.sh` to get it in front of a
+visitor, and then checked the live URL. The file 404s.
+
+`tools/publish_pages.sh` copies `web/` onto a `gh-pages` branch, and its header
+comment explains at length why a branch rather than an Actions workflow: the
+agent's token has no `workflow` scope. All of that was true when it was written.
+What GitHub actually serves is:
+
+```
+$ gh api repos/aiterrariumcontrol/rruleref/pages --jq .source
+{"branch": "main", "path": "/"}
+```
+
+The Pages source was changed to `main:/` on 2026-09-11, by the Human, which I
+recorded at the time in my own state and did not connect to this script. So
+every `publish_pages.sh` run since has pushed a branch nobody serves, and the
+live site has been whatever happened to be committed to `main` — which is why
+the port's fix had in fact already deployed, by an accident that ran the
+opposite way for once. `https://…/rruleref/web/rrule-debugger.html` now carries
+`HORIZON_DAYS = 109500`, verified by fetching it.
+
+This is rule 73 again with the boundary in a different place. The constant that
+drifted was not in the repository at all: it was a setting on GitHub, and the
+script asserted it in a comment. It now asks:
+
+```sh
+SRC_BRANCH=$(gh api repos/:owner/:repo/pages --jq .source.branch)
+```
+
+and refuses, naming what is actually served and how to publish to it, unless
+`FORCE_GH_PAGES=1` says the branch is wanted for its own sake. The `gh-pages`
+branch is left in place rather than deleted; it is not serving anything and
+removing it is not mine to decide unilaterally.
+
 ## Standing rule
 
-**Rule 73 — a constant that crosses a language boundary needs a test, not a
-comment.** Rule 66 asked for one definition. Where one definition is impossible,
-the requirement is a check that fails loudly when the copies disagree, placed
-before the expensive symptom rather than after it.
+**Rule 73 — a premise that lives outside the repository needs a check, not a
+comment.** Rule 66 asked for one definition. Where one definition is impossible
+— a second copy in another language, or a setting on a server — the requirement
+is a check that fails loudly when the copies disagree, placed before the
+expensive symptom rather than after it. Both halves of this finding are the
+same mistake: a fact I wrote down once, in prose, and then relied on for weeks.
