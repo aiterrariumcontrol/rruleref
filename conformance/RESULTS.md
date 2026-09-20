@@ -1,9 +1,12 @@
 # Results
 
 Produced by `conformance/score.py` against `conformance/cases.ndjson`
-(1728 cases: valid rule, synchronized `DTSTART`, `UNTIL` value type matching
+(1727 cases: valid rule, synchronized `DTSTART`, `UNTIL` value type matching
 `DTSTART`, decidable from the recorded window). Exact list equality; no partial
-credit.
+credit. Every case records up to **25** occurrences within **109500 days** of
+`DTSTART`; both numbers were raised on 2026-09-20 and every row below was
+re-measured then, under `TZ=UTC`
+([finding 066](../findings/066-the-ports-were-not-identical.md)).
 
 **A failure is a disagreement between an implementation and this corpus.** It is
 not, by itself, a defect in the implementation — and on the largest cluster
@@ -174,17 +177,28 @@ measurement.
 
 | implementation | version | lineage | pass | fail | other reading | prefix of other reading [¶](#prefix) | error |
 |---|---|---|---:|---:|---:|---:|---:|
-| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1728 | 0 | 0 | 0 | 0 |
-| `rrule.js` | 2.8.1 | port of dateutil | 1702 | 26 | 0 | 0 | 0 |
-| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1728 | 0 | 0 | 0 | 0 |
-| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1728 | 0 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1468 [†](#ical4j-locale) | 183 | 70 | 7 | 0 |
-| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1641 | 4 | 65 | 7 | 11 |
-| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 107 | 47 | 0 | 57 |
-| `libical` | master `48d52b4b` | independent (C, 2000) | 1606 | 14 | 73 | 0 | 35 |
-| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 73 | 0 | 35 |
-| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 833 | 868 | 23 | 0 | 4 |
+| `python-dateutil` | 2.9.0.post0 | corroborating expander | 1727 | 0 | 0 | 0 | 0 |
+| `rrule.js` | 2.8.1 | port of dateutil | 1699 | 28 | 0 | 0 | 0 |
+| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1724 | 0 [§](#go-truncation) | 0 | 0 | 0 |
+| `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1727 | 0 | 0 | 0 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1420 [†](#ical4j-locale) | 230 | 76 | 0 | 0 |
+| `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1640 | 4 | 71 | 0 | 12 |
+| `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 107 | 47 | 0 | 56 |
+| `libical` | master `48d52b4b` | independent (C, 2000) | 1601 | 19 | 72 | 0 | 35 |
+| `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 72 | 0 | 35 |
+| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 |
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 385 [‡](#dtical-split) | 67 [‡](#dtical-split) | 97 [‡](#dtical-split) |
+
+<a id="go-truncation"></a>
+**§ `rrule-go`'s three.** They are not in any column above: they fall in a
+*fourth* failure bucket, `fail_prefix`, a proper prefix of the corpus's own
+`expect`. All three stop at exactly 105189 days past their own `DTSTART` and
+the corpus's next occurrence falls at exactly 107380 days. `math.MaxInt64`
+nanoseconds is 106751.99 days, so `rrule-go` silently truncates any recurrence
+reaching beyond Go's `time.Duration` ceiling.
+[Finding 066](../findings/066-the-ports-were-not-identical.md). `ical4j` has one
+entry in the same bucket, which is finding 050's sub-daily `BYYEARDAY` defect;
+every other row is zero there.
 
 <a id="prefix"></a>
 **¶ prefix of other reading.** A non-empty *proper prefix* of one of the case's
@@ -194,8 +208,8 @@ is the signature of a window rather than of a disagreement. Until 2026-09-20
 this bucket was almost entirely an artifact of the Java adapters' own `DTSTART`
 + 10958-day clip, which was the corpus's declared horizon and which the corpus
 did not apply to its own alternative readings; raising the corpus horizon to
-109500 days and raising both Java adapters' windows with it removed 13 of those
-14 entries, and the bucket now reports behaviour rather than my harness
+109500 days and raising both Java adapters' windows with it removed all 14, and
+the column is now zero for every implementation on the board
 ([finding 066](../findings/066-the-ports-were-not-identical.md)). The bucket
 asserts the prefix and nothing more: it does not claim the implementation would
 have continued correctly.

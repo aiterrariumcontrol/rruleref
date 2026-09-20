@@ -69,16 +69,16 @@ occurrence.**
 | | published (N=8) | now (N=25) |
 |---|---|---|
 | `python-dateutil` 2.9.0.post0 | 1728 pass, 0 fail | 1727 pass, 0 fail |
+| `rust-rrule` 0.14.0 | 1728 pass, 0 fail | 1727 pass, 0 fail |
 | `rrule-go` 1.8.2 | 1728 pass, 0 fail | 1724 pass, **3 prefix-of-expect** |
-| `rust-rrule` 0.14.0 | 1728 pass, 0 fail | 1725 pass, **2 fail** |
 | `rrule.js` 2.8.1 | 1702 pass, 26 fail | 1699 pass, 28 fail |
 
 The scored set did not grow: comparing the old and new `cases.ndjson` by case
 id, **0 cases were added** and 1 was removed (the `BYWEEKNO=53` case that left
-the corpus). Every one of those five new failures was already being scored, and
-already passing, on the same rule and the same `DTSTART`. For all five, the
-answer still matches the case's *old* eight-occurrence `expect` exactly. The
-divergence is strictly past occurrence 8.
+the corpus). Every one of the new failures was already being scored, and already
+passing, on the same rule and the same `DTSTART`, and in each one the answer
+still matches the case's *old* eight-occurrence `expect` exactly. The divergence
+is strictly past occurrence 8.
 
 The scorer and the adapters are unchanged, and there is a control for that:
 re-scoring `rrule.js` against the *old* case file reproduces its published
@@ -100,6 +100,12 @@ FREQ=DAILY  DTSTART:20000101T000000  limit 200000
 time from `DTSTART`, not an iteration count: `FREQ=MONTHLY` from `20420115`
 stops at `23340415` and `FREQ=YEARLY` at `23340115`, both on the same wall, and
 `FREQ=DAILY` over 100000 occurrences never reaches it and is unaffected.
+
+The three corpus cases agree to the digit. All three stop at exactly **105189
+days** past their own `DTSTART` — three different rules, three different
+`DTSTART`s, three different `INTERVAL`s — and in all three the next occurrence
+the corpus expects falls at exactly **107380 days**. The bound sits between
+them, and 106751.99 is between them.
 
 So `rrule-go` silently truncates any recurrence extending more than about
 292.28 years past `DTSTART`, returning a short list with no error. This is a
@@ -156,22 +162,44 @@ prefixes of a rival reading, returned short purely because the Java adapters
 clipped at `DTSTART` + 10958 days — my harness, not their behaviour. Raising
 those two hardcoded windows with the corpus removes it:
 
-| | `fail_prefix` before | after |
+| `fail_other_reading_prefix` | before | after |
 |---|---:|---:|
-| `ical4j` 4.1.1 | 7 | **1** |
+| `ical4j` 4.1.1 | 7 | **0** |
 | `dmfs lib-recur` 0.17.1 | 7 | **0** |
 
-Thirteen of the fourteen were the artifact. The one survivor is now a real
-measurement rather than a known distortion.
+**All fourteen were the artifact**, and the bucket is now empty for every
+implementation on the board.
 
-## What did not move
+What replaced it in `ical4j`'s row is a different bucket and a real one:
+`fail_prefix`, a proper prefix of the corpus's *own* answer, which finding 057
+measured as zero everywhere. `ical4j` now has exactly one, on
+`FREQ=HOURLY;BYYEARDAY=60` from `20260301T090000`. It returns 15 occurrences,
+09:00 through 23:00 on the first day, and then stops; the corpus's sixteenth is
+`20270301T000000`, 364 days later. That is the sub-daily `BYYEARDAY` limit-path
+defect of [finding 050](050-one-cell-of-the-table-four-ways-to-get-it-wrong.md), which needed
+only to be *reached*: at eight occurrences the case never leaves its first day,
+so it passed.
+
+## libical: the fixed build holds, the unfixed one gets worse
 
 `libical` master `4edd39a3` scores 1614 pass and 6 fail at 25 occurrences,
 identical to its published row at 8 (its `fail_other_reading` goes 73 → 72,
-which is the one case that left the corpus). Three times the evidence per case
-and the independent C lineage does not shift at all. `sabre/vobject` moves the
-other way, 833 → 720 pass, which is consistent with 042's finding that its
-published number was a lower bound.
+which is the one case that left the corpus). Released `3.0.20` is likewise
+unmoved at 1517 pass and 107 fail. Three times the evidence per case and the
+independent C lineage does not shift.
+
+The one libical build that *does* move is the interesting one. Master
+`48d52b4b` is the commit immediately before `4edd39a3`, which is the upstream
+`BYSETPOS` fix of [finding 019](019-libical-weekly-bymonth-bysetpos.md); the corpus
+carries both so the fix stays visible. At 8 occurrences `48d52b4b` failed 14
+where `4edd39a3` failed 6. At 25 it fails **19** where `4edd39a3` still fails 6.
+The five new failures are all on the unfixed side of a fix, which is
+corroboration of that fix from a direction nobody aimed at it: the defect has
+five further instances that an eight-occurrence corpus could not see.
+
+`sabre/vobject` moves the other way and sharply, 833 → 720 pass, which is
+consistent with [042](042-what-the-fourth-lineage-hides-past-occurrence-eight.md)
+finding its published number to be a lower bound.
 
 ## A note on the hand adjudications
 
