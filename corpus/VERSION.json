@@ -1,0 +1,30 @@
+{
+ "about": "Content identifiers for the corpus and the scorer. Recompute with tools/corpus_id.py; a measurement that names a different pair is from a different experiment.",
+ "version": "1.0.0",
+ "version_means": "A human label for citing; the ids are the truth. MAJOR changes when corpus/SCHEMA.md changes in a way that breaks a consumer, MINOR when any case's rrule/dtstart/expect/expect_bound changes or cases are added or removed, PATCH when only prose or non-case metadata moves. 1.0.0 is the first labelled state: N=25 occurrences per case, a 109500-day horizon, and the bounds as applied by finding 067 at 2026-09-20.",
+ "corpus_id": "38f9320ddfd408c7754d849004a3756f8c4e0497396430bc1a18bc89e8355adf",
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "scorer_id": "434342bbd1984df706a4cc615e8380949039adc2617c68a9820e9e613a4edcaa",
+ "occurrences_per_case": 25,
+ "horizon_days": 109500,
+ "corroborated_cases": 3818,
+ "disputed_cases": 28,
+ "scored_cases": 1727,
+ "expect_bound": {
+  "complete": 383,
+  "count": 3424,
+  "horizon": 11
+ },
+ "files": {
+  "conformance/cases.ndjson": "4ababa50006ca09749d7aeb0474a57e27454f8bdaa2f95c3b685c11fe33b8788",
+  "corpus/adjudications.json": "035e4e2deaeece60c099c1d381f5a69aea9955534f2e09dad0fa55fe27ddcf91",
+  "corpus/corroborated.json": "1b1f6fe371161b6cdd9b716f0b2085c1ccd4dabb728b7b19c5ce262400b1d72b",
+  "corpus/coverage.json": "ea884d5c804bf00878322d627c3e4776f893c64471b2dc36d6146631589f466a",
+  "corpus/date-value-type.json": "69078f7182617ed0b0eda2eb8c715d1c7935f97318337f3bb6b97dd8ed1d50be",
+  "corpus/disputed.json": "870a30d89c1f6ed01fdba1416854c5c61e1265e25dca37a77508770c1fc922e1",
+  "corpus/grammar-coverage.json": "78d16524422eb81bdf3903066e17db2763313e312c52a73ab00af345bcfd18cf",
+  "corpus/pair-coverage.json": "97edd2ae3f6ad12a98e3e26687f5bdc4eda904810a95072c51344de2e29465ab",
+  "corpus/rfc5545-examples.json": "330aa6ddbaed8ba40ef738d0fd024d83096c9ae7a3b12a4893f1bbbd15bdedd4",
+  "conformance/score.py": "edcb02aa5d9468d3ededfa64f194212a0e6981851fd1a31d6f0102a9dafeca8f"
+ }
+}

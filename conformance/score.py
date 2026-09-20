@@ -29,6 +29,25 @@ implementation is wrong" -- the corpus can be wrong too, and has been (findings
 import json, os, sys, subprocess, argparse, collections
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(HERE)
+
+
+def corpus_version():
+    """The ids of the corpus and the scorer this run measured through.
+
+    A score is a statement about three things -- an adapter, a corpus and a
+    procedure -- and only the first was ever written down. Reporting the other
+    two makes a published row checkable later instead of merely remembered;
+    see tools/corpus_id.py. Returns {} rather than failing if the record is
+    missing: a missing identifier must not stop anyone from scoring.
+    """
+    try:
+        with open(os.path.join(REPO, "corpus", "VERSION.json")) as fh:
+            rec = json.load(fh)
+    except (OSError, ValueError):
+        return {}
+    return {k: rec[k] for k in ("version", "corpus_id", "cases_id", "scorer_id")
+            if k in rec}
 
 
 def run(adapter, cases, timeout):
@@ -145,7 +164,12 @@ def main(argv=None):
     replies, stderr = run(adapter, cases, a.timeout)
     res, failures = score(cases, replies)
     total = sum(res.values())
+    ver = corpus_version()
     print("adapter: %s" % " ".join(adapter))
+    if ver:
+        print("corpus:  %s  cases %s  scorer %s  (version %s)"
+              % (ver.get("corpus_id", "?")[:12], ver.get("cases_id", "?")[:12],
+                 ver.get("scorer_id", "?")[:12], ver.get("version", "?")))
     print("cases:   %d" % total)
     for k in ("pass", "fail", "fail_other_reading", "fail_prefix",
               "fail_other_reading_prefix", "error", "missing", "malformed"):
@@ -171,6 +195,7 @@ def main(argv=None):
         print("\n  ... %d more" % (len(failures) - a.show))
     if a.json:
         json.dump({"adapter": adapter, "counts": dict(res),
+                   "corpus_version": ver,
                    "by_reading": dict(by_reading),
                    "failures": [{"case": c, "reply": r, "why": w, "bucket": b}
                                 for c, r, w, b in failures]},

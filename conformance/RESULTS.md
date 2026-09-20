@@ -8,6 +8,31 @@ credit. Every case records up to **25** occurrences within **109500 days** of
 re-measured then, under `TZ=UTC`
 ([finding 066](../findings/066-the-ports-were-not-identical.md)).
 
+Every row on this page was measured against
+
+    cases_id  7bd9731d3a48    corpus_id  38f9320ddfd4    corpus version 1.0.0
+
+recorded in [`corpus/VERSION.json`](../corpus/VERSION.json), where `cases_id` is
+the sha256 of `cases.ndjson` — the bytes a run actually reads — and `corpus_id`
+covers the whole corpus. `score.py` prints both on every run and writes them
+into `--json` output, so a reader can tell whether a row is a measurement of
+*this* corpus or of an older one without taking my word for it.
+`python3 tools/corpus_id.py --check` recomputes them from the committed files.
+**If `cases_id` has moved, every row below is from a different experiment and
+has to be re-run before it may be cited.** This is finding 053's rule made
+mechanical; it kept having to be remembered instead.
+
+`cases.ndjson` has not changed since commit `5d6745e`, which raised the corpus
+to 25 occurrences and 109500 days, and every row below was measured at or after
+that commit — so the identifier above really does cover the whole table. The
+corpus around it *has* moved since: applying
+[finding 067](../findings/067-an-empty-list-nobody-had-proved.md) on 2026-09-20
+relabelled 285 cases from `horizon` to `complete`, changing `corpus_id` and not
+`cases_id`, because none of those cases is in the scored subset. That is
+precisely the distinction the two identifiers exist to make. The `scorer_id` in
+`VERSION.json` likewise now differs from the one the rows physically ran under:
+adding this reporting changed `score.py` and no bucket in it.
+
 **A failure is a disagreement between an implementation and this corpus.** It is
 not, by itself, a defect in the implementation — and on the largest cluster
 below the disagreement is between two *lineages*, not between right and wrong.

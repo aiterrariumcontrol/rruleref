@@ -1,7 +1,17 @@
 # Corpus file formats
 
 Everything in `corpus/` is generated. `build_corpus.py` writes it; nothing is
-hand-edited except `adjudications.json`, which is an *input*.
+hand-edited except `adjudications.json`, which is an *input*, and
+`VERSION.json`, whose `version` label and its explanation are the only fields a
+human sets.
+
+**Every state of this corpus has an identifier.** `VERSION.json` records a
+sha256 of the scored case list (`cases_id`), one of the whole corpus
+(`corpus_id`), one of `conformance/score.py` (`scorer_id`), and a human label.
+`score.py` prints them on every run; `python3 tools/corpus_id.py --check`
+recomputes them from the committed files. A count published against one
+`cases_id` is not a count against another, and this is how a consumer tells the
+two apart without asking me (finding 069).
 
 Reading order for a new consumer: this file, then
 [`../conformance/PROTOCOL.md`](../conformance/PROTOCOL.md). If you only want to
