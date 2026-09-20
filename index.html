@@ -16,13 +16,13 @@
 <main>
   <form id="form" autocomplete="off">
     <div class="field">
-      <label for="rrule">RRULE</label>
-      <input id="rrule" name="rrule" type="text" spellcheck="false"
-             placeholder="FREQ=MONTHLY;BYDAY=-1FR" value="FREQ=MONTHLY;BYDAY=-1FR">
+      <label for="rrule">Rule <span class="hint">a rule, or paste a whole VEVENT</span></label>
+      <textarea id="rrule" name="rrule" rows="2" spellcheck="false"
+                placeholder="FREQ=MONTHLY;BYDAY=-1FR&#10;&#10;— or paste an event —&#10;BEGIN:VEVENT&#10;DTSTART;TZID=Europe/Paris:20260130T090000&#10;RRULE:FREQ=MONTHLY;BYDAY=-1FR&#10;END:VEVENT">FREQ=MONTHLY;BYDAY=-1FR</textarea>
     </div>
     <div class="row">
       <div class="field">
-        <label for="dtstart">DTSTART <span class="hint">local time, no zone</span></label>
+        <label for="dtstart">DTSTART <span class="hint">from the paste, or type it</span></label>
         <input id="dtstart" name="dtstart" type="text" spellcheck="false"
                placeholder="20260130T090000" value="20260130T090000">
       </div>
@@ -31,18 +31,32 @@
         <input id="limit" name="limit" type="number" min="1" max="500" value="24">
       </div>
     </div>
+    <div class="field">
+      <label for="cmp">Compare with <span class="hint">optional — a second rule, to see exactly what an edit changed</span></label>
+      <input id="cmp" name="cmp" type="text" spellcheck="false" placeholder="FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3">
+    </div>
+    <div class="field">
+      <label for="why">Explain one date <span class="hint">optional — why is this date in the list, or missing from it?</span></label>
+      <input id="why" name="why" type="text" spellcheck="false" placeholder="20260227">
+    </div>
     <div class="examples">
       <span>Try:</span>
       <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1" data-d="20260115T090000">last working day of the month</button>
       <button type="button" class="ex" data-r="FREQ=YEARLY;BYMONTHDAY=15" data-d="20260115T090000">yearly on the 15th</button>
       <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=+2SU,MO" data-d="20260302T090000">2nd Sunday and every Monday</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=13;BYDAY=FR" data-d="20250613T090000">Friday the 13th</button>
       <button type="button" class="ex" data-r="FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,SU" data-d="20260106T090000">fortnightly, Tue and Sun</button>
       <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=31" data-d="20260131T090000">the 31st</button>
       <button type="button" class="ex" data-r="FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE" data-d="20201230T090000">week 53</button>
+      <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=19" data-d="20240301T190000" data-w="20240302T193000">why is 19:30 missing?</button>
+      <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=9,17" data-d="20260105T090000" data-c="FREQ=DAILY;BYHOUR=9">what did that edit drop?</button>
     </div>
   </form>
 
   <div id="error" class="error" hidden></div>
+  <section id="say-out" aria-live="polite"></section>
+  <section id="cmp-out" aria-live="polite"></section>
+  <section id="why-out" class="notes" aria-live="polite"></section>
   <section id="notes" class="notes" aria-live="polite"></section>
   <section id="result"></section>
 </main>

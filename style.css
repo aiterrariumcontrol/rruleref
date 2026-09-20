@@ -4,6 +4,7 @@
   --warn-bg: #fff8e8; --warn-line: #d9a441;
   --err-bg: #fdf0ee; --err-line: #c0503c;
   --ok-bg: #f0f5f0; --ok-line: #6d8c6d;
+  --say-bg: #f2f6fa;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -13,6 +14,7 @@
     --warn-bg: #2a2418; --warn-line: #a8802f;
     --err-bg: #2b1d1a; --err-line: #a8503c;
     --ok-bg: #1b241d; --ok-line: #5d7d5d;
+    --say-bg: #1b2229;
   }
 }
 * { box-sizing: border-box; }
@@ -32,11 +34,12 @@ form { background: var(--card); border: 1px solid var(--line); border-radius: 10
 .row { display: flex; gap: .9rem; flex-wrap: wrap; }
 label { font-size: .8rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); }
 .hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
-input {
+input, textarea {
   font: 15px/1.4 var(--mono); padding: .6rem .7rem; border-radius: 6px;
   border: 1px solid var(--line); background: var(--bg); color: var(--fg); width: 100%;
 }
-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+textarea { resize: vertical; min-height: 2.6rem; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
 .examples { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .85rem; color: var(--muted); }
 .ex {
   font: inherit; font-size: .85rem; padding: .25rem .6rem; border-radius: 999px;
@@ -93,3 +96,69 @@ h2 .hint { color: var(--muted); font-weight: 400; font-size: .9rem; }
 
 footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
 footer p { margin: .5rem 0; }
+
+/* the date explainer */
+.why { border-radius: 8px; padding: .9rem 1.1rem; border: 1px solid var(--line); background: var(--card); }
+.why h3 { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.4; }
+.why p { margin: .4rem 0; font-size: .93rem; }
+.why.yes { background: var(--ok-bg); border-color: var(--ok-line); }
+.why.no { background: var(--warn-bg); border-color: var(--warn-line); }
+.why.broken { background: var(--err-bg); border-color: var(--err-line); }
+.checks { list-style: none; margin: .7rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.checks li { display: flex; gap: .6rem; align-items: baseline; font-size: .89rem; }
+.mark { flex: 0 0 1.1rem; font-family: var(--mono); font-weight: 700; text-align: center; }
+.check-yes .mark { color: var(--hit); }
+.check-no .mark { color: var(--err-line); }
+.check-no { font-weight: 600; }
+.check-part { font-family: var(--mono); font-size: .84rem; }
+.check-name { }
+.check-detail { font-weight: 400; color: var(--muted); }
+
+/* "Is this what you meant?" -- the rule in English, above the dates. */
+.say {
+  margin: 1rem 0 0.5rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: var(--say-bg);
+  border-radius: 0 4px 4px 0;
+}
+.say-head {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.say-notes {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+  opacity: 0.82;
+  line-height: 1.5;
+}
+.say-notes li { margin: 0.15rem 0; }
+
+/* Comparing two rules. The headline is the answer; the columns are the
+   evidence for it. Dropped dates are the ones a user is looking for, so they
+   are the ones that carry the warning colour. */
+.cmp {
+  margin: 1.2rem 0; border-radius: 8px; padding: 1rem 1.15rem;
+  border: 1px solid var(--line); background: var(--card);
+}
+.cmp h2 { margin: 0 0 .4rem; font-size: 1.1rem; line-height: 1.35; }
+.cmp h3 { margin: 0 0 .4rem; font-size: 1rem; }
+.cmp p { margin: .35rem 0; font-size: .93rem; color: var(--muted); }
+.cmp-same { background: var(--ok-bg); border-color: var(--ok-line); }
+.cmp-diff { background: var(--warn-bg); border-color: var(--warn-line); }
+.cmp.bad { background: var(--err-bg); border-color: var(--err-line); }
+.cmp-cols { display: flex; flex-wrap: wrap; gap: 1rem; margin: .8rem 0 .2rem; }
+.cmp-col { flex: 1 1 16rem; min-width: 0; }
+.cmp-col h4 { margin: 0 0 .4rem; font-size: .8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.cmp-dates { display: flex; flex-wrap: wrap; gap: .3rem; align-items: baseline; }
+.cmp-dates code {
+  font-family: var(--mono); font-size: .78rem; padding: .12rem .35rem;
+  border-radius: 4px; border: 1px solid var(--line); background: var(--card);
+}
+.cmp-col.dropped code { border-color: var(--err-line); }
+.cmp-col.added code { border-color: var(--ok-line); }
+.cmp-dates .more { font-size: .8rem; color: var(--muted); }
+.cmp-foot { font-size: .85rem !important; margin-top: .7rem !important; }

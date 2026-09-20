@@ -1,0 +1,2735 @@
+<!-- Built by tools/build_single_file.py from the sources in web/. Do not edit by hand;
+     edit web/ and rebuild. https://github.com/aiterrariumcontrol/rruleref -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RRULE debugger — expand a recurrence rule and see where implementations disagree</title>
+<meta name="description" content="Paste an iCalendar RRULE and DTSTART, see the dates it actually produces, and get told where real implementations disagree about it and what RFC 5545 says.">
+<style>
+:root {
+  --bg: #fbfbfa; --fg: #1a1a1a; --muted: #5c5c5c; --line: #dcdcd8;
+  --card: #ffffff; --accent: #1f5f8b; --hit: #1f5f8b; --hit-fg: #ffffff;
+  --warn-bg: #fff8e8; --warn-line: #d9a441;
+  --err-bg: #fdf0ee; --err-line: #c0503c;
+  --ok-bg: #f0f5f0; --ok-line: #6d8c6d;
+  --say-bg: #f2f6fa;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181a; --fg: #e6e6e3; --muted: #9a9a95; --line: #2f3336;
+    --card: #1d2023; --accent: #7fb3d5; --hit: #2d6d9e; --hit-fg: #ffffff;
+    --warn-bg: #2a2418; --warn-line: #a8802f;
+    --err-bg: #2b1d1a; --err-line: #a8503c;
+    --ok-bg: #1b241d; --ok-line: #5d7d5d;
+    --say-bg: #1b2229;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 0 1.25rem 4rem; background: var(--bg); color: var(--fg);
+  font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+header, main, footer { max-width: 60rem; margin: 0 auto; }
+header { padding: 2.5rem 0 1.5rem; }
+h1 { font-size: 1.6rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+.tagline { margin: 0; color: var(--muted); }
+a { color: var(--accent); }
+
+form { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 1.25rem; }
+.field { display: flex; flex-direction: column; gap: .35rem; margin-bottom: .9rem; flex: 1; }
+.field.narrow { flex: 0 0 9rem; }
+.row { display: flex; gap: .9rem; flex-wrap: wrap; }
+label { font-size: .8rem; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); }
+.hint { font-weight: 400; text-transform: none; letter-spacing: 0; }
+input, textarea {
+  font: 15px/1.4 var(--mono); padding: .6rem .7rem; border-radius: 6px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); width: 100%;
+}
+textarea { resize: vertical; min-height: 2.6rem; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.examples { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: .85rem; color: var(--muted); }
+.ex {
+  font: inherit; font-size: .85rem; padding: .25rem .6rem; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer;
+}
+.ex:hover { border-color: var(--accent); color: var(--accent); }
+
+.error {
+  margin: 1.25rem 0; padding: .9rem 1rem; border-radius: 8px;
+  background: var(--err-bg); border: 1px solid var(--err-line); font-family: var(--mono); font-size: .9rem;
+}
+
+.notes { margin: 1.5rem 0; display: flex; flex-direction: column; gap: .9rem; }
+.note { border-radius: 8px; padding: .9rem 1.1rem; border: 1px solid var(--line); background: var(--card); }
+.note h3 { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.4; }
+.note p { margin: .4rem 0; font-size: .93rem; }
+.note-diverges { background: var(--warn-bg); border-color: var(--warn-line); }
+.note-error { background: var(--err-bg); border-color: var(--err-line); }
+.note-clear { background: var(--ok-bg); border-color: var(--ok-line); }
+.badge {
+  display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: .12rem .45rem; border-radius: 4px; margin-right: .5rem;
+  background: var(--fg); color: var(--bg); vertical-align: .12em;
+}
+.evidence { font-size: .82rem; color: var(--muted); }
+.compare { margin: .7rem 0 .3rem; padding: .6rem .75rem; border-radius: 6px; background: var(--card); border: 1px solid var(--line); }
+.compare h4 { margin: 0 0 .45rem; font-size: .8rem; font-weight: 600; color: var(--muted); }
+.compare-dates { display: flex; flex-wrap: wrap; gap: .3rem; }
+.compare-dates code { font-family: var(--mono); font-size: .78rem; padding: .12rem .35rem; border-radius: 4px; border: 1px solid var(--line); }
+
+h2 { font-size: 1.15rem; margin: 2rem 0 .8rem; font-weight: 600; }
+h2 .hint { color: var(--muted); font-weight: 400; font-size: .9rem; }
+.occ-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .1rem .9rem; }
+.occ { display: flex; gap: .55rem; align-items: baseline; font-family: var(--mono); font-size: .87rem; padding: .12rem 0; }
+.occ-day { color: var(--muted); width: 2.4rem; }
+.occ-time { color: var(--muted); }
+.occ-gap { color: var(--muted); font-size: .78rem; margin-left: auto; }
+.occ-tag { font-size: .68rem; letter-spacing: .05em; background: var(--accent); color: var(--bg); padding: 0 .3rem; border-radius: 3px; }
+
+.grids { display: grid; grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+.month { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: .7rem; }
+.month h3 { margin: 0 0 .5rem; font-size: .85rem; font-weight: 600; }
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; }
+.grid > div { text-align: center; font-size: .75rem; font-family: var(--mono); padding: .2rem 0; border-radius: 3px; }
+.dow { color: var(--muted); font-size: .62rem !important; text-transform: uppercase; }
+.cell.hit { background: var(--hit); color: var(--hit-fg); font-weight: 700; }
+.cell.start { outline: 2px solid var(--accent); outline-offset: -2px; }
+.more { grid-column: 1 / -1; color: var(--muted); font-size: .85rem; margin: 0; }
+
+.caveat { margin-top: 2rem; font-size: .88rem; color: var(--muted); }
+.caveat summary { cursor: pointer; font-weight: 600; }
+.caveat ul { margin: .6rem 0 0; padding-left: 1.2rem; }
+.caveat li { margin: .25rem 0; }
+
+footer { margin-top: 3.5rem; padding-top: 1.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+footer p { margin: .5rem 0; }
+
+/* the date explainer */
+.why { border-radius: 8px; padding: .9rem 1.1rem; border: 1px solid var(--line); background: var(--card); }
+.why h3 { margin: 0 0 .4rem; font-size: 1rem; line-height: 1.4; }
+.why p { margin: .4rem 0; font-size: .93rem; }
+.why.yes { background: var(--ok-bg); border-color: var(--ok-line); }
+.why.no { background: var(--warn-bg); border-color: var(--warn-line); }
+.why.broken { background: var(--err-bg); border-color: var(--err-line); }
+.checks { list-style: none; margin: .7rem 0 0; padding: 0; display: flex; flex-direction: column; gap: .35rem; }
+.checks li { display: flex; gap: .6rem; align-items: baseline; font-size: .89rem; }
+.mark { flex: 0 0 1.1rem; font-family: var(--mono); font-weight: 700; text-align: center; }
+.check-yes .mark { color: var(--hit); }
+.check-no .mark { color: var(--err-line); }
+.check-no { font-weight: 600; }
+.check-part { font-family: var(--mono); font-size: .84rem; }
+.check-name { }
+.check-detail { font-weight: 400; color: var(--muted); }
+
+/* "Is this what you meant?" -- the rule in English, above the dates. */
+.say {
+  margin: 1rem 0 0.5rem;
+  padding: 0.9rem 1.1rem;
+  border-left: 4px solid var(--accent);
+  background: var(--say-bg);
+  border-radius: 0 4px 4px 0;
+}
+.say-head {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.say-notes {
+  margin: 0.55rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.92rem;
+  opacity: 0.82;
+  line-height: 1.5;
+}
+.say-notes li { margin: 0.15rem 0; }
+
+/* Comparing two rules. The headline is the answer; the columns are the
+   evidence for it. Dropped dates are the ones a user is looking for, so they
+   are the ones that carry the warning colour. */
+.cmp {
+  margin: 1.2rem 0; border-radius: 8px; padding: 1rem 1.15rem;
+  border: 1px solid var(--line); background: var(--card);
+}
+.cmp h2 { margin: 0 0 .4rem; font-size: 1.1rem; line-height: 1.35; }
+.cmp h3 { margin: 0 0 .4rem; font-size: 1rem; }
+.cmp p { margin: .35rem 0; font-size: .93rem; color: var(--muted); }
+.cmp-same { background: var(--ok-bg); border-color: var(--ok-line); }
+.cmp-diff { background: var(--warn-bg); border-color: var(--warn-line); }
+.cmp.bad { background: var(--err-bg); border-color: var(--err-line); }
+.cmp-cols { display: flex; flex-wrap: wrap; gap: 1rem; margin: .8rem 0 .2rem; }
+.cmp-col { flex: 1 1 16rem; min-width: 0; }
+.cmp-col h4 { margin: 0 0 .4rem; font-size: .8rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .03em; }
+.cmp-dates { display: flex; flex-wrap: wrap; gap: .3rem; align-items: baseline; }
+.cmp-dates code {
+  font-family: var(--mono); font-size: .78rem; padding: .12rem .35rem;
+  border-radius: 4px; border: 1px solid var(--line); background: var(--card);
+}
+.cmp-col.dropped code { border-color: var(--err-line); }
+.cmp-col.added code { border-color: var(--ok-line); }
+.cmp-dates .more { font-size: .8rem; color: var(--muted); }
+.cmp-foot { font-size: .85rem !important; margin-top: .7rem !important; }
+
+</style>
+</head>
+<body>
+<header>
+  <h1>RRULE debugger</h1>
+  <p class="tagline">Expand an iCalendar recurrence rule, and find out where implementations disagree about it.</p>
+</header>
+
+<main>
+  <form id="form" autocomplete="off">
+    <div class="field">
+      <label for="rrule">Rule <span class="hint">a rule, or paste a whole VEVENT</span></label>
+      <textarea id="rrule" name="rrule" rows="2" spellcheck="false"
+                placeholder="FREQ=MONTHLY;BYDAY=-1FR&#10;&#10;— or paste an event —&#10;BEGIN:VEVENT&#10;DTSTART;TZID=Europe/Paris:20260130T090000&#10;RRULE:FREQ=MONTHLY;BYDAY=-1FR&#10;END:VEVENT">FREQ=MONTHLY;BYDAY=-1FR</textarea>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="dtstart">DTSTART <span class="hint">from the paste, or type it</span></label>
+        <input id="dtstart" name="dtstart" type="text" spellcheck="false"
+               placeholder="20260130T090000" value="20260130T090000">
+      </div>
+      <div class="field narrow">
+        <label for="limit">Occurrences</label>
+        <input id="limit" name="limit" type="number" min="1" max="500" value="24">
+      </div>
+    </div>
+    <div class="field">
+      <label for="cmp">Compare with <span class="hint">optional — a second rule, to see exactly what an edit changed</span></label>
+      <input id="cmp" name="cmp" type="text" spellcheck="false" placeholder="FREQ=MONTHLY;BYDAY=-1FR;BYMONTH=1,2,3">
+    </div>
+    <div class="field">
+      <label for="why">Explain one date <span class="hint">optional — why is this date in the list, or missing from it?</span></label>
+      <input id="why" name="why" type="text" spellcheck="false" placeholder="20260227">
+    </div>
+    <div class="examples">
+      <span>Try:</span>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=MO,TU,WE,TH,FR;BYSETPOS=-1" data-d="20260115T090000">last working day of the month</button>
+      <button type="button" class="ex" data-r="FREQ=YEARLY;BYMONTHDAY=15" data-d="20260115T090000">yearly on the 15th</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYDAY=+2SU,MO" data-d="20260302T090000">2nd Sunday and every Monday</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=13;BYDAY=FR" data-d="20250613T090000">Friday the 13th</button>
+      <button type="button" class="ex" data-r="FREQ=WEEKLY;INTERVAL=2;BYDAY=TU,SU" data-d="20260106T090000">fortnightly, Tue and Sun</button>
+      <button type="button" class="ex" data-r="FREQ=MONTHLY;BYMONTHDAY=31" data-d="20260131T090000">the 31st</button>
+      <button type="button" class="ex" data-r="FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE" data-d="20201230T090000">week 53</button>
+      <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=19" data-d="20240301T190000" data-w="20240302T193000">why is 19:30 missing?</button>
+      <button type="button" class="ex" data-r="FREQ=DAILY;BYHOUR=9,17" data-d="20260105T090000" data-c="FREQ=DAILY;BYHOUR=9">what did that edit drop?</button>
+    </div>
+  </form>
+
+  <div id="error" class="error" hidden></div>
+  <section id="say-out" aria-live="polite"></section>
+  <section id="cmp-out" aria-live="polite"></section>
+  <section id="why-out" class="notes" aria-live="polite"></section>
+  <section id="notes" class="notes" aria-live="polite"></section>
+  <section id="result"></section>
+</main>
+
+<footer>
+  <p>Everything runs in your browser. Nothing you type is sent anywhere; there is no server,
+     no analytics and no cookie.</p>
+  <p>The expander is a brute-force reading of
+     <a href="https://www.rfc-editor.org/rfc/rfc5545.html#section-3.3.10">RFC 5545 §3.3.10</a>
+     written from the specification rather than ported from an existing library. It is scored
+     against a published cross-implementation corpus on every change
+     (<a href="https://github.com/aiterrariumcontrol/rruleref/blob/main/conformance/RESULTS.md">results</a>).
+     The divergence notes come from
+     <a href="https://github.com/aiterrariumcontrol/rruleref/tree/main/findings">measured findings</a>,
+     each naming the implementation and version it was observed on.</p>
+  <p><a href="https://github.com/aiterrariumcontrol/rruleref">Source and issues on GitHub</a>.
+     Found a case it gets wrong? That is the most useful thing you can send.</p>
+</footer>
+
+<script type="module">
+const __M = {};
+
+// ---- src/naive.js ------------------------------------------------------
+__M['src/naive.js'] = (() => {
+// A port of src/naive.py -- the deliberately naive, spec-derived RFC 5545
+// RRULE expander -- to dependency-free ES modules for the browser.
+//
+// The Python original is the reference. tests: web/test/parity.mjs replays
+// corpus cases through both and requires identical output; any change here
+// must keep that at zero mismatches.
+//
+// Dates are proleptic-Gregorian *civil* values with no time zone. A datetime
+// is a single integer: dayNumber * 86400 + secondsOfDay, where dayNumber
+// matches Python's date.toordinal() (0001-01-01 == 1). That makes ordering a
+// numeric comparison and keeps every arithmetic step exact in a double
+// (max ~3.2e10, well inside 2^53).
+
+const FREQS = ["SECONDLY", "MINUTELY", "HOURLY", "DAILY", "WEEKLY", "MONTHLY", "YEARLY"];
+const DAYS = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
+
+const DIM = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+function isLeap(y) {
+  return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+}
+function daysInMonth(y, m) {
+  return m === 2 && isLeap(y) ? 29 : DIM[m - 1];
+}
+function daysBeforeYear(y) {
+  const n = y - 1;
+  return n * 365 + Math.floor(n / 4) - Math.floor(n / 100) + Math.floor(n / 400);
+}
+function daysBeforeMonth(y, m) {
+  let t = 0;
+  for (let i = 1; i < m; i++) t += daysInMonth(y, i);
+  return t;
+}
+/** Python date.toordinal(). */
+function toOrd(y, m, d) {
+  return daysBeforeYear(y) + daysBeforeMonth(y, m) + d;
+}
+/** Python date.fromordinal(). Returns [y, m, d]. */
+function fromOrd(n) {
+  let y = Math.floor(n / 366) + 1;
+  while (daysBeforeYear(y + 1) < n) y++;
+  let rest = n - daysBeforeYear(y);
+  let m = 1;
+  while (rest > daysInMonth(y, m)) { rest -= daysInMonth(y, m); m++; }
+  return [y, m, rest];
+}
+/** Python date.weekday(): Monday == 0. Ordinal 1 (0001-01-01) is a Monday. */
+function weekday(ord) {
+  return (ord - 1) % 7;
+}
+/** Day-of-year, 1-based. */
+function yearDay(y, m, d) {
+  return daysBeforeMonth(y, m) + d;
+}
+
+// --- the datetime integer -------------------------------------------------
+
+function mk(y, mo, d, h = 0, mi = 0, s = 0) {
+  return toOrd(y, mo, d) * 86400 + h * 3600 + mi * 60 + s;
+}
+function parts(t) {
+  const ord = Math.floor(t / 86400);
+  let rest = t - ord * 86400;
+  const [y, mo, d] = fromOrd(ord);
+  const h = Math.floor(rest / 3600); rest -= h * 3600;
+  const mi = Math.floor(rest / 60);
+  return { y, mo, d, h, mi, s: rest - mi * 60, ord };
+}
+function fmt(t, dateOnly = false) {
+  const p = parts(t);
+  const z = (n, w = 2) => String(n).padStart(w, "0");
+  const day = `${z(p.y, 4)}${z(p.mo)}${z(p.d)}`;
+  return dateOnly ? day : `${day}T${z(p.h)}${z(p.mi)}${z(p.s)}`;
+}
+
+// --- parsing --------------------------------------------------------------
+
+function parse(rrule) {
+  let s = String(rrule).trim();
+  if (s.toUpperCase().startsWith("RRULE:")) s = s.slice(6);
+  const out = {};
+  for (const part of s.split(";")) {
+    if (!part) continue;
+    const i = part.indexOf("=");
+    const k = (i < 0 ? part : part.slice(0, i)).trim().toUpperCase();
+    const v = i < 0 ? "" : part.slice(i + 1).trim();
+    if (k === "FREQ" || k === "WKST") out[k] = v.toUpperCase();
+    else if (k === "INTERVAL" || k === "COUNT") out[k] = intOrThrow(v, k);
+    else if (k === "UNTIL") out[k] = parseUntil(v);
+    else if (k === "BYDAY") out[k] = v.split(",").map(parseByday);
+    else out[k] = v.split(",").map((x) => intOrThrow(x, k));
+  }
+  if (out.FREQ === undefined) out.FREQ = null;
+  if (out.INTERVAL === undefined) out.INTERVAL = 1;
+  if (out.WKST === undefined) out.WKST = "MO";
+  return out;
+}
+function intOrThrow(v, k) {
+  const t = v.trim();
+  if (!/^[+-]?\d+$/.test(t)) throw new Error(`${k}: cannot read ${JSON.stringify(v)} as an integer`);
+  return parseInt(t, 10);
+}
+function parseUntil(v) {
+  const t = v.trim().replace(/Z$/i, "");
+  let m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$/.exec(t);
+  if (m) return mk(+m[1], +m[2], +m[3], +m[4], +m[5], +m[6]);
+  m = /^(\d{4})(\d{2})(\d{2})$/.exec(t);
+  if (m) return mk(+m[1], +m[2], +m[3]);
+  throw new Error(`UNTIL: cannot read ${JSON.stringify(v)} as a DATE or DATE-TIME`);
+}
+function parseByday(tok) {
+  const t = tok.trim().toUpperCase();
+  const day = t.slice(-2);
+  const ord = t.slice(0, -2);
+  if (!DAYS.includes(day)) throw new Error(`BYDAY: ${JSON.stringify(tok)} does not end in a weekday`);
+  if (ord === "" || ord === "+" || ord === "-") return [null, day];
+  if (!/^[+-]?\d+$/.test(ord)) throw new Error(`BYDAY: cannot read the ordinal in ${JSON.stringify(tok)}`);
+  return [parseInt(ord, 10), day];
+}
+
+/** DTSTART, as either "YYYYMMDD" or "YYYYMMDDTHHMMSS" (optionally "DTSTART:"-prefixed). */
+function parseDtstart(v) {
+  let t = String(v).trim();
+  t = t.replace(/^DTSTART[^:]*:/i, "").trim().replace(/Z$/i, "");
+  let m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$/.exec(t);
+  if (m) return { t: mk(+m[1], +m[2], +m[3], +m[4], +m[5], +m[6]), dateOnly: false };
+  m = /^(\d{4})(\d{2})(\d{2})$/.exec(t);
+  if (m) return { t: mk(+m[1], +m[2], +m[3]), dateOnly: true };
+  throw new Error(`DTSTART: cannot read ${JSON.stringify(v)}; expected YYYYMMDD or YYYYMMDDTHHMMSS`);
+}
+
+// --- period arithmetic ----------------------------------------------------
+
+function weekIndex(ord, wkst) {
+  const shift = DAYS.indexOf(wkst);
+  return Math.floor((ord - 1 - shift) / 7);
+}
+function periodIndex(t, freq, wkst) {
+  const p = parts(t);
+  switch (freq) {
+    case "YEARLY": return p.y;
+    case "MONTHLY": return p.y * 12 + (p.mo - 1);
+    case "WEEKLY": return weekIndex(p.ord, wkst);
+    case "DAILY": return p.ord;
+    case "HOURLY": return p.ord * 24 + p.h;
+    case "MINUTELY": return (p.ord * 24 + p.h) * 60 + p.mi;
+    case "SECONDLY": return ((p.ord * 24 + p.h) * 60 + p.mi) * 60 + p.s;
+    default: throw new Error(`FREQ: ${JSON.stringify(freq)} is not a frequency`);
+  }
+}
+
+// --- BY-rule predicates ---------------------------------------------------
+
+function monthdayMatches(p, vals) {
+  const last = daysInMonth(p.y, p.mo);
+  for (const v of vals) {
+    if (v > 0 && p.d === v) return true;
+    if (v < 0 && p.d === last + 1 + v) return true;
+  }
+  return false;
+}
+function yeardayMatches(p, vals) {
+  const n = isLeap(p.y) ? 366 : 365;
+  const doy = yearDay(p.y, p.mo, p.d);
+  for (const v of vals) {
+    if (v > 0 && doy === v) return true;
+    if (v < 0 && doy === n + 1 + v) return true;
+  }
+  return false;
+}
+function weekStart(ord, wkst) {
+  const shift = (weekday(ord) - DAYS.indexOf(wkst) + 7) % 7;
+  return ord - shift;
+}
+function firstWeekStart(year, wkst) {
+  const jan1 = toOrd(year, 1, 1);
+  const first = weekStart(jan1, wkst);
+  return first + 6 - jan1 >= 3 ? first : first + 7;
+}
+function weeksInYear(year, wkst) {
+  return (firstWeekStart(year + 1, wkst) - firstWeekStart(year, wkst)) / 7;
+}
+/** [owning year, week number], or null if the date falls before week 1 of its own year. */
+function weekNumber(ord, wkst) {
+  const [y] = fromOrd(ord);
+  for (const yy of [y + 1, y, y - 1]) {
+    const start = firstWeekStart(yy, wkst);
+    if (start <= ord && ord < firstWeekStart(yy + 1, wkst)) {
+      return [yy, Math.floor((ord - start) / 7) + 1];
+    }
+  }
+  return null;
+}
+function weeknoMatches(p, vals, wkst) {
+  const got = weekNumber(p.ord, wkst);
+  if (got === null) return false;
+  const total = weeksInYear(got[0], wkst);
+  for (const v of vals) {
+    if (v > 0 && got[1] === v) return true;
+    if (v < 0 && got[1] === total + 1 + v) return true;
+  }
+  return false;
+}
+function nthInSpan(ord, lo, hi) {
+  const first = lo + ((weekday(ord) - weekday(lo) + 7) % 7);
+  return [Math.floor((ord - first) / 7) + 1, Math.floor((hi - first) / 7) + 1];
+}
+function bydayMatches(p, vals, freq, hasBymonth) {
+  const wd = DAYS[weekday(p.ord)];
+  for (const [ordinal, day] of vals) {
+    if (day !== wd) continue;
+    if (ordinal === null) return true;
+    let n, total;
+    if (freq === "MONTHLY" || (freq === "YEARLY" && hasBymonth)) {
+      [n, total] = nthInSpan(p.ord, toOrd(p.y, p.mo, 1), toOrd(p.y, p.mo, daysInMonth(p.y, p.mo)));
+    } else if (freq === "YEARLY") {
+      [n, total] = nthInSpan(p.ord, toOrd(p.y, 1, 1), toOrd(p.y, 12, 31));
+    } else {
+      // The spec calls an ordinal here an error; treat it as unmatchable
+      // rather than silently ignoring the ordinal.
+      continue;
+    }
+    if (ordinal > 0 && n === ordinal) return true;
+    if (ordinal < 0 && n === total + 1 + ordinal) return true;
+  }
+  return false;
+}
+
+// --- the occurrence predicate --------------------------------------------
+
+const FINER_ORDER = ["YEARLY", "MONTHLY", "DAILY", "HOURLY", "MINUTELY", "SECONDLY"];
+const FINER_COMP = { YEARLY: "mo", MONTHLY: "d", DAILY: "h", HOURLY: "mi", MINUTELY: "s" };
+
+function finer(freq) {
+  if (freq === "WEEKLY") return ["h", "mi", "s"];
+  const i = FINER_ORDER.indexOf(freq);
+  const out = [];
+  for (let j = i; j < FINER_ORDER.length - 1; j++) out.push(FINER_COMP[FINER_ORDER[j]]);
+  return out;
+}
+function pinned(r, freq) {
+  const out = new Set();
+  if ("BYMONTH" in r) out.add("mo");
+  if (["BYMONTHDAY", "BYYEARDAY", "BYDAY", "BYWEEKNO"].some((k) => k in r)) {
+    out.add("d");
+    // Under YEARLY the day-level rules expand over the whole year, so they
+    // pick the month too. Under MONTHLY they only pick a day inside it.
+    if (freq === "YEARLY") out.add("mo");
+  }
+  if ("BYHOUR" in r) out.add("h");
+  if ("BYMINUTE" in r) out.add("mi");
+  if ("BYSECOND" in r) out.add("s");
+  return out;
+}
+
+/** Is `t` an occurrence of rule `r`, ignoring BYSETPOS/COUNT/UNTIL? */
+function matches(t, r, dtstart) {
+  const freq = r.FREQ, wkst = r.WKST;
+  if ((periodIndex(t, freq, wkst) - periodIndex(dtstart, freq, wkst)) % r.INTERVAL !== 0) return false;
+
+  const p = parts(t);
+  if ("BYMONTH" in r && !r.BYMONTH.includes(p.mo)) return false;
+  if ("BYWEEKNO" in r && !weeknoMatches(p, r.BYWEEKNO, wkst)) return false;
+  if ("BYYEARDAY" in r && !yeardayMatches(p, r.BYYEARDAY)) return false;
+  if ("BYMONTHDAY" in r && !monthdayMatches(p, r.BYMONTHDAY)) return false;
+  if ("BYDAY" in r && !bydayMatches(p, r.BYDAY, freq, "BYMONTH" in r)) return false;
+  if ("BYHOUR" in r && !r.BYHOUR.includes(p.h)) return false;
+  if ("BYMINUTE" in r && !r.BYMINUTE.includes(p.mi)) return false;
+  if ("BYSECOND" in r && !r.BYSECOND.includes(p.s)) return false;
+
+  const ds = parts(dtstart);
+  if (freq === "WEEKLY" && !("BYDAY" in r) && weekday(p.ord) !== weekday(ds.ord)) return false;
+
+  // Components finer than FREQ that no BY rule pins down inherit DTSTART's
+  // value. This is what stops FREQ=MONTHLY from firing on all 31 days.
+  const pin = pinned(r, freq);
+  for (const comp of finer(freq)) {
+    if (pin.has(comp)) continue;
+    if (p[comp] !== ds[comp]) return false;
+  }
+  return true;
+}
+
+// --- expansion ------------------------------------------------------------
+
+const DAY = 86400;
+const SPAN = { YEARLY: 400 * DAY, MONTHLY: 40 * DAY, WEEKLY: 10 * DAY, DAILY: 2 * DAY,
+               HOURLY: 2 * 3600, MINUTELY: 120, SECONDLY: 2 };
+
+function periodStart(t, freq, wkst) {
+  const p = parts(t);
+  const tod = t - p.ord * DAY;
+  if (freq === "YEARLY") return toOrd(p.y, 1, 1) * DAY + tod;
+  if (freq === "MONTHLY") return toOrd(p.y, p.mo, 1) * DAY + tod;
+  if (freq === "WEEKLY") return weekStart(p.ord, wkst) * DAY + tod;
+  return t;
+}
+
+function* candidates(r, dtstart, horizon, wholePeriod) {
+  const freq = r.FREQ;
+  const seq = (n) => Array.from({ length: n }, (_, i) => i);
+  const ds = parts(dtstart);
+  const hours = "BYHOUR" in r ? [...r.BYHOUR].sort((a, b) => a - b)
+    : (["HOURLY", "MINUTELY", "SECONDLY"].includes(freq) ? seq(24) : [ds.h]);
+  const mins = "BYMINUTE" in r ? [...r.BYMINUTE].sort((a, b) => a - b)
+    : (["MINUTELY", "SECONDLY"].includes(freq) ? seq(60) : [ds.mi]);
+  const secs = "BYSECOND" in r ? [...r.BYSECOND].sort((a, b) => a - b)
+    : (freq === "SECONDLY" ? seq(60) : [ds.s]);
+
+  const begin = wholePeriod ? periodStart(dtstart, freq, r.WKST) : dtstart;
+  let ord = Math.floor(begin / DAY);
+  const end = Math.floor(horizon / DAY);
+  for (; ord <= end; ord++) {
+    const base = ord * DAY;
+    for (const h of hours) for (const mi of mins) for (const s of secs) {
+      yield base + h * 3600 + mi * 60 + s;
+    }
+  }
+}
+
+class Budget extends Error {
+  constructor(steps) {
+    super(`gave up after examining ${steps.toLocaleString()} candidate times`);
+    this.name = "Budget";
+    this.steps = steps;
+  }
+}
+
+/**
+ * The default expansion horizon, in days.
+ *
+ * This is a SECOND COPY of `src/naive.py`'s `HORIZON_DAYS`, and it has to be:
+ * the two run in different languages and nothing links them at run time. What
+ * keeps them from drifting is `tests/test_web_port.py`, which fails if these
+ * two numbers disagree.
+ *
+ * It drifted once. Finding 064 found `HORIZON_DAYS` declared in two Python
+ * modules and repaired it to one definition; this third copy, in another
+ * language, was not in that repair's field of view. When 066 raised the Python
+ * horizon from 10958 to 109500 this file kept 10958, and the port silently
+ * stopped agreeing with the corpus on 95 cases -- every one of them a proper
+ * prefix of the right answer, which is exactly the signature of a short
+ * window. Standing rule 66 is about definitions, not about modules.
+ */
+const HORIZON_DAYS = 109500;
+
+/**
+ * Occurrences at or after dtstart, in order, as datetime integers.
+ *
+ * opts: { limit, horizon, truncateFirstPeriod, maxSteps }
+ *
+ * `truncateFirstPeriod` selects the *other* reading of finding 004: the period
+ * containing DTSTART is cut at DTSTART before BYSETPOS selects from it. RFC
+ * 5545 3.3.10 settles this in favour of the default (finding 021); the flag
+ * exists so the UI can show a user what the other reading -- the one most
+ * libraries implement -- would produce.
+ */
+function expand(rrule, dtstart, opts = {}) {
+  const r = typeof rrule === "string" ? parse(rrule) : rrule;
+  const limit = opts.limit ?? 1000;
+  const maxSteps = opts.maxSteps ?? 5e6;
+  const freq = r.FREQ;
+  if (!FREQS.includes(freq)) throw new Error(`FREQ: ${JSON.stringify(freq)} is not a frequency`);
+  if (!Number.isInteger(r.INTERVAL) || r.INTERVAL < 1) throw new Error("INTERVAL must be a positive integer");
+  if (!DAYS.includes(r.WKST)) throw new Error(`WKST: ${JSON.stringify(r.WKST)} is not a weekday`);
+
+  let horizon = opts.horizon ?? dtstart + HORIZON_DAYS * DAY;
+  const out = [];
+  const setpos = "BYSETPOS" in r;
+  const until = "UNTIL" in r ? r.UNTIL : null;
+
+  // RFC 5545 3.3.10 fixes the order: BYSETPOS runs before COUNT and UNTIL.
+  // Folding UNTIL into the candidate horizon would evaluate it first, which
+  // truncates the final period and can change which instance BYSETPOS picks.
+  // Without BYSETPOS the two orders coincide and clipping is a large speedup.
+  if (until !== null && !setpos && until < horizon) horizon = until;
+  const stop = horizon;
+  const scan = setpos ? horizon + SPAN[freq] : horizon;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+
+  const flush = (got) => {
+    got.sort((a, b) => a - b);
+    const picked = new Set();
+    for (const pos of r.BYSETPOS) {
+      if (pos > 0 && pos <= got.length) picked.add(got[pos - 1]);
+      else if (pos < 0 && -pos <= got.length) picked.add(got[got.length + pos]);
+    }
+    for (const x of [...picked].sort((a, b) => a - b)) {
+      if (x >= dtstart && x <= stop && (until === null || x <= until)) out.push(x);
+    }
+  };
+
+  // BYSETPOS needs a whole period before it can select from it, so matches are
+  // buffered per period and flushed as soon as the candidate stream leaves it.
+  let curKey = null, cur = [], steps = 0;
+  for (const t of candidates(r, dtstart, scan, setpos)) {
+    if (++steps > maxSteps) throw new Budget(steps - 1);
+    if (t > scan || ((!setpos || opts.truncateFirstPeriod) && t < dtstart)) continue;
+    if (setpos) {
+      const key = periodIndex(t, freq, r.WKST);
+      if (key !== curKey) {
+        if (curKey !== null) {
+          flush(cur);
+          if (out.length >= cap) return out.slice(0, cap);
+        }
+        if (t > stop || (until !== null && t > until)) return out.slice(0, cap);
+        curKey = key; cur = [];
+      }
+      if (matches(t, r, dtstart)) cur.push(t);
+    } else if (matches(t, r, dtstart)) {
+      out.push(t);
+      if (out.length >= cap) return out.slice(0, cap);
+    }
+  }
+  if (setpos && curKey !== null) flush(cur);
+  return out.slice(0, cap);
+}
+
+return {FREQS, DAYS, isLeap, daysInMonth, toOrd, fromOrd, weekday, mk, parts, fmt, parse, parseDtstart, periodIndex, monthdayMatches, yeardayMatches, weekStart, weekNumber, weeknoMatches, bydayMatches, finer, pinned, matches, periodStart, Budget, HORIZON_DAYS, expand};
+})();
+
+// ---- src/validity.js ---------------------------------------------------
+__M['src/validity.js'] = (() => {
+// A port of src/validity.py: RFC 5545 3.3.10 rule-validity checks, independent
+// of any expander. Whether a rule is *valid* is a different question from
+// whether DTSTART is synchronized with it, and both are different from whether
+// implementations agree on its output.
+//
+// Every check quotes the sentence of RFC 5545 3.3.10 it enforces.
+// Text: https://www.rfc-editor.org/rfc/rfc5545.txt
+// sha256 c256f809479d98aa23d71bbd1658b3800ea9f13f41ca56e59c8d2de1b31cbfcb
+
+const WEEKDAYNUM = /^([+-]?\d{1,2})?(SU|MO|TU|WE|TH|FR|SA)$/;
+
+const RULES = {
+  "byday-numeric-freq":
+    "The BYDAY rule part MUST NOT be specified with a numeric value when the FREQ rule part is not set to MONTHLY or YEARLY.",
+  "byday-numeric-byweekno":
+    "Furthermore, the BYDAY rule part MUST NOT be specified with a numeric value with the FREQ rule part set to YEARLY when the BYWEEKNO rule part is specified.",
+  "bymonthday-weekly":
+    "The BYMONTHDAY rule part MUST NOT be specified when the FREQ rule part is set to WEEKLY.",
+  "byyearday-freq":
+    "The BYYEARDAY rule part MUST NOT be specified when the FREQ rule part is set to DAILY, WEEKLY, or MONTHLY.",
+  "byweekno-freq":
+    "This rule part MUST NOT be used when the FREQ rule part is set to anything other than YEARLY.",
+  "bysetpos-needs-byxxx": "It MUST only be used in conjunction with another BYxxx rule part.",
+  "freq-required": "The FREQ rule part ... MUST be specified in the recurrence rule.",
+  "count-until-exclusive":
+    "The UNTIL or COUNT rule parts are OPTIONAL, but they MUST NOT occur in the same 'recur'.",
+  "value-range": "Valid values are as stated per rule part in RFC 5545 3.3.10.",
+  "freq-value":
+    'freq = "SECONDLY" / "MINUTELY" / "HOURLY" / "DAILY" / "WEEKLY" / "MONTHLY" / "YEARLY"',
+  "part-repeated": "The other rule parts are OPTIONAL, but MUST NOT occur more than once.",
+  "count-zero":
+    'COUNT = 1*DIGIT, and "The COUNT rule part defines the number of occurrences at which to range-bound the recurrence. The DTSTART property value always counts as the first occurrence." COUNT=0 is syntactically well-formed but cannot describe a recurrence whose first occurrence is DTSTART.',
+};
+
+/** What violations() does NOT check. An empty result means "no violation of
+ *  the checks below was detected", never "this rule is valid". */
+const NOT_CHECKED = [
+  "BYSECOND/BYMINUTE/BYHOUR with a DATE-valued DTSTART",
+  "UNTIL value-type and UTC agreement with DTSTART",
+  "whether the rule is satisfiable at all (e.g. BYMONTHDAY=30;BYMONTH=2)",
+  "RRULE-vs-RECUR framing: property parameters, folding, escaping",
+];
+
+const RANGES = {
+  BYSECOND: [0, 60, false], BYMINUTE: [0, 59, false], BYHOUR: [0, 23, false],
+  BYMONTH: [1, 12, false], BYMONTHDAY: [1, 31, true], BYYEARDAY: [1, 366, true],
+  BYWEEKNO: [1, 53, true], BYSETPOS: [1, 366, true],
+};
+const BYXXX = ["BYSECOND", "BYMINUTE", "BYHOUR", "BYDAY", "BYMONTHDAY",
+               "BYYEARDAY", "BYWEEKNO", "BYMONTH"];
+const FREQS = ["SECONDLY", "MINUTELY", "HOURLY", "DAILY", "WEEKLY", "MONTHLY", "YEARLY"];
+
+function rawParts(rule) {
+  const out = {}, seen = new Set(), dup = [];
+  for (const chunk of String(rule).trim().split(";")) {
+    if (!chunk || !chunk.includes("=")) continue;
+    const i = chunk.indexOf("=");
+    const k = chunk.slice(0, i).trim().toUpperCase();
+    if (seen.has(k)) dup.push(k);
+    seen.add(k);
+    out[k] = chunk.slice(i + 1).trim();
+  }
+  return { p: out, dup };
+}
+
+/** [{rule, part, detail, rfc}]. Empty means no checked 3.3.10 violation was found. */
+function violations(rule) {
+  const { p, dup } = rawParts(rule);
+  const out = [];
+  const bad = (id, part, detail) => out.push({ rule: id, part, detail, rfc: RULES[id] });
+
+  const freq = p.FREQ ? p.FREQ.toUpperCase() : undefined;
+  if (!p.FREQ) bad("freq-required", "FREQ", "FREQ is absent");
+  else if (!FREQS.includes(freq)) bad("freq-value", "FREQ", `${JSON.stringify(p.FREQ)} is not one of ${FREQS.join(", ")}`);
+
+  for (const k of dup) bad("part-repeated", k, `${k} occurs more than once`);
+  if ("COUNT" in p && "UNTIL" in p) bad("count-until-exclusive", "COUNT/UNTIL", "both present");
+
+  if ("COUNT" in p) {
+    if (!/^[+-]?\d+$/.test(p.COUNT)) bad("value-range", "COUNT", `unreadable ${JSON.stringify(p.COUNT)}`);
+    else {
+      const c = parseInt(p.COUNT, 10);
+      if (c < 0) bad("value-range", "COUNT", `COUNT = 1*DIGIT, ${c} is negative`);
+      else if (c === 0) bad("count-zero", "COUNT", "COUNT=0");
+    }
+  }
+
+  if ("BYDAY" in p) {
+    const numeric = [];
+    for (const tok of p.BYDAY.split(",")) {
+      const t = tok.trim().toUpperCase();
+      const m = WEEKDAYNUM.exec(t);
+      if (!m) { bad("value-range", "BYDAY", `unreadable weekdaynum ${JSON.stringify(tok)}`); continue; }
+      if (m[1] !== undefined) {
+        const n = Math.abs(parseInt(m[1], 10));
+        if (n < 1 || n > 53) bad("value-range", "BYDAY", `ordwk ${m[1]} out of range 1..53 in ${JSON.stringify(t)}`);
+        numeric.push(t);
+      }
+    }
+    if (numeric.length) {
+      if (freq !== "MONTHLY" && freq !== "YEARLY")
+        bad("byday-numeric-freq", "BYDAY", `numeric ${numeric.join(", ")} with FREQ=${freq}`);
+      else if (freq === "YEARLY" && "BYWEEKNO" in p)
+        bad("byday-numeric-byweekno", "BYDAY", `numeric ${numeric.join(", ")} with FREQ=YEARLY and BYWEEKNO=${p.BYWEEKNO}`);
+    }
+  }
+
+  if ("BYMONTHDAY" in p && freq === "WEEKLY") bad("bymonthday-weekly", "BYMONTHDAY", "with FREQ=WEEKLY");
+  if ("BYYEARDAY" in p && ["DAILY", "WEEKLY", "MONTHLY"].includes(freq))
+    bad("byyearday-freq", "BYYEARDAY", `with FREQ=${freq}`);
+  if ("BYWEEKNO" in p && freq !== "YEARLY") bad("byweekno-freq", "BYWEEKNO", `with FREQ=${freq}`);
+  if ("BYSETPOS" in p && !BYXXX.some((b) => b in p)) bad("bysetpos-needs-byxxx", "BYSETPOS", "no other BYxxx rule part");
+
+  for (const [part, [lo, hi, mirror]] of Object.entries(RANGES)) {
+    if (!(part in p)) continue;
+    for (const tok of p[part].split(",")) {
+      const t = tok.trim();
+      if (!/^[+-]?\d+$/.test(t)) { bad("value-range", part, `unreadable ${JSON.stringify(p[part])}`); break; }
+      const v = parseInt(t, 10);
+      if (!((v >= lo && v <= hi) || (mirror && v >= -hi && v <= -lo)))
+        bad("value-range", part, `${v} out of range`);
+    }
+  }
+
+  if ("INTERVAL" in p) {
+    if (!/^[+-]?\d+$/.test(p.INTERVAL)) bad("value-range", "INTERVAL", `unreadable ${JSON.stringify(p.INTERVAL)}`);
+    else if (parseInt(p.INTERVAL, 10) < 1) bad("value-range", "INTERVAL", `${p.INTERVAL} < 1`);
+  }
+  return out;
+}
+
+return {RULES, NOT_CHECKED, violations};
+})();
+
+// ---- src/diagnostics.js ------------------------------------------------
+__M['src/diagnostics.js'] = (() => {
+// Where implementations diverge, and what RFC 5545 says about it.
+//
+// Every entry here is backed by a finding in ../../findings/, each of which
+// was produced by running the named implementations and comparing output --
+// not by reading their source and guessing. Two rules govern what may be
+// written here:
+//
+//   * A divergence is *computed* wherever computing it is possible. The
+//     BYSETPOS, WKST and minority-reading notes below re-expand the user's own
+//     rule under the other reading and show the actual difference, so they
+//     appear only when that rule really is affected. They do not fire on a
+//     syntactic shape that might or might not matter.
+//   * Where a note names an implementation and a version, that pair was
+//     measured. Where it cannot be computed from the rule alone, the note says
+//     which implementations were tested and does not generalise past them.
+
+const { expand, parse, parts, fmt, weekday, weekStart, fromOrd, DAYS } = __M['src/naive.js'];
+const F = (name) => ({
+  label: `finding ${name.slice(0, 3)}`,
+  url: `https://github.com/aiterrariumcontrol/rruleref/blob/main/findings/${name}.md`,
+});
+const RFC5545 = (section, anchor) => ({
+  label: `RFC 5545 ${section}`,
+  url: `https://www.rfc-editor.org/rfc/rfc5545.html#section-${anchor}`,
+});
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+const DAYNAMES = { MO: "Monday", TU: "Tuesday", WE: "Wednesday", TH: "Thursday",
+                   FR: "Friday", SA: "Saturday", SU: "Sunday" };
+
+/** Rebuild an RRULE string with one part set (or replaced). */
+function withPart(rrule, key, value) {
+  const kept = rrule.split(";").filter((c) => c && c.split("=")[0].trim().toUpperCase() !== key);
+  kept.push(`${key}=${value}`);
+  return kept.join(";");
+}
+function sameList(a, b) {
+  return a.length === b.length && a.every((x, i) => x === b[i]);
+}
+function tryExpand(rrule, dtstart, opts) {
+  try { return expand(rrule, dtstart, opts); } catch { return null; }
+}
+
+/** Rebuild an RRULE string with the named parts removed. */
+function withoutParts(rrule, keys) {
+  return rrule.split(";")
+    .filter((c) => c && !keys.includes(c.split("=")[0].trim().toUpperCase()))
+    .join(";");
+}
+
+/**
+ * Finding 022's *seed-limit* reading of RFC 5545 3.3.10, for FREQ=WEEKLY.
+ *
+ * 3.3.10 applies BYMONTH before BYDAY, and for FREQ=WEEKLY BYMONTH is a limit
+ * while BYDAY is an expand -- so BYMONTH runs while "the current set of
+ * evaluated occurrences" is still the single DTSTART-derived seed for the
+ * week. Under that reading BYMONTH selects *weeks*, by the month of their
+ * seed; a selected week is then expanded by BYDAY across the whole week,
+ * including into months BYMONTH does not name.
+ *
+ * That is computed here by re-expanding the rule with BYMONTH deleted -- which
+ * is exactly "the week, unrestricted, with BYSETPOS applied to it" -- and then
+ * keeping only the occurrences whose week's seed falls in a named month.
+ * COUNT and UNTIL are deleted first and reapplied afterwards, because they are
+ * evaluated after BYSETPOS and would otherwise be spent on filtered-out weeks.
+ */
+function seedLimitWeekly(r, rrule, dtstart, limit) {
+  if (!("BYMONTH" in r) || !("BYDAY" in r) || r.FREQ !== "WEEKLY") return null;
+  const inner = Math.min(4000, limit * 12 + 60);
+  const alt = tryExpand(withoutParts(rrule, ["BYMONTH", "COUNT", "UNTIL"]),
+                        dtstart, { limit: inner });
+  if (!alt) return null;
+  const iv = r.INTERVAL, stride = 7 * iv;
+  const dsOrd = parts(dtstart).ord;
+  const dsWeek = weekStart(dsOrd, r.WKST);
+  const months = new Set(r.BYMONTH);
+  const kept = alt.filter((t) => {
+    const n = Math.floor((weekStart(parts(t).ord, r.WKST) - dsWeek) / stride);
+    return months.has(fromOrd(dsOrd + n * stride)[1]);
+  });
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  return (until === null ? kept : kept.filter((t) => t <= until)).slice(0, cap);
+}
+
+/**
+ * ctx: { rrule, dtstart, dateOnly, occurrences, limit }
+ * returns [{ id, severity, title, body, evidence, compare }]
+ *   severity: "error" | "diverges" | "note"
+ *   compare (optional): { label, occurrences } -- an alternative expansion to
+ *   show beside the main one.
+ */
+function analyze(ctx) {
+  const { rrule, dtstart, dateOnly, occurrences, limit } = ctx;
+  const out = [];
+  let r;
+  try { r = parse(rrule); } catch { return out; }
+  const has = (k) => k in r;
+  const ds = parts(dtstart);
+  const show = (ts) => ts.map((t) => fmt(t, dateOnly));
+
+  // --- the rule does not fire at all ------------------------------------
+  if (occurrences.length === 0) {
+    out.push({
+      id: "empty",
+      severity: "error",
+      title: "This rule produces no occurrences at all",
+      body:
+        "Within the window searched, nothing matches. The usual causes are a combination " +
+        "that cannot be satisfied (BYMONTH=2 with BYMONTHDAY=30), or an ordinal BYDAY " +
+        "under a FREQ that does not permit one. Note that implementations differ here: " +
+        "some return an empty set, some raise, and some silently ignore the part they " +
+        "cannot apply.",
+      evidence: [],
+    });
+    return out;
+  }
+
+  // --- DTSTART is not the rule's own first occurrence -------------------
+  // RFC 5545 3.8.5.3 declares the recurrence set undefined in this case, and
+  // implementations then differ on whether DTSTART is emitted anyway. This is
+  // computed, not guessed: the expansion simply does not begin at DTSTART.
+  if (occurrences[0] !== dtstart) {
+    out.push({
+      id: "unsynchronized-dtstart",
+      severity: "diverges",
+      title: "DTSTART does not match this rule",
+      body:
+        `DTSTART is ${fmt(dtstart, dateOnly)}, but the first date this rule actually ` +
+        `describes is ${fmt(occurrences[0], dateOnly)}. RFC 5545 3.8.5.3: “The ‘DTSTART’ ` +
+        "property value SHOULD be synchronized with the recurrence rule, if specified. The " +
+        "recurrence set generated with a ‘DTSTART’ property value not synchronized with the " +
+        "recurrence rule is undefined.” Undefined means the answer is up to the library: " +
+        "some emit DTSTART as an extra first occurrence, " +
+        "some do not. This is one of the most common real causes of “the same rule " +
+        "gives different results in two systems”. If you did not intend it, move " +
+        "DTSTART onto a date the rule matches.",
+      evidence: [RFC5545("3.8.5.3", "3.8.5.3"), F("020-synchronization-is-reading-dependent")],
+    });
+  }
+
+  // --- BYSETPOS and the period containing DTSTART -----------------------
+  if (has("BYSETPOS")) {
+    const other = tryExpand(rrule, dtstart, { limit, truncateFirstPeriod: true });
+    if (other && !sameList(other, occurrences)) {
+      out.push({
+        id: "bysetpos-first-period",
+        severity: "diverges",
+        title: "BYSETPOS: this rule's first occurrences depend on a contested reading",
+        body:
+          "When BYSETPOS selects from the period that contains DTSTART, does it index the " +
+          "whole period, or the period cut short at DTSTART? RFC 5545 3.3.10 answers it: " +
+          "“A set of recurrence instances starts at the beginning of the interval " +
+          "defined by the FREQ rule part.” That is the whole-period reading, shown on " +
+          "the left. python-dateutil and the implementations descended from it truncate the " +
+          "first period at DTSTART instead, giving the answer on the right. Your rule is " +
+          "affected — the two readings disagree on the dates below.",
+        evidence: [
+          F("021-bysetpos-first-interval-resolved"),
+          F("004-bysetpos-first-period-truncation"),
+          { label: "dateutil/dateutil#1398", url: "https://github.com/dateutil/dateutil/issues/1398" },
+        ],
+        compare: { label: "first period truncated at DTSTART (python-dateutil lineage)", occurrences: show(other) },
+      });
+    }
+    if (has("UNTIL")) {
+      out.push({
+        id: "bysetpos-until-order",
+        severity: "note",
+        title: "BYSETPOS with UNTIL: the order of the two matters",
+        body:
+          "RFC 5545 3.3.10 evaluates BYSETPOS first and only then COUNT and UNTIL. An " +
+          "implementation that folds UNTIL into its search window instead applies it first, " +
+          "which truncates the final period and can change which instance BYSETPOS selects " +
+          "there. This is the last-period twin of the first-period question above.",
+        evidence: [F("014-metamorphic-properties")],
+      });
+    }
+    if (r.FREQ === "WEEKLY" && has("BYMONTH")) {
+      out.push({
+        id: "libical-weekly-bymonth-bysetpos",
+        severity: "diverges",
+        title: "FREQ=WEEKLY with BYMONTH and BYSETPOS: older libical drops occurrences",
+        body:
+          "In a week that straddles a BYMONTH boundary, libical loses occurrences that the " +
+          "specification's reading produces. This was reported as libical issue 1374 and " +
+          "fixed upstream on 2026-09-10 in commit 4edd39a; at that commit all eight of this " +
+          "project's corpus cases pass, with no regression elsewhere. It is still present in " +
+          "every released version, including the 3.0.20 in Debian trixie, where it is part " +
+          "of a larger BYSETPOS failure class. So this depends on which libical you have, " +
+          "and most deployed calendars still have an affected one. If your stack goes " +
+          "through libical — evolution, and much of the C/C++ calendar world does — check " +
+          "this rule against your build directly rather than against master.",
+        evidence: [
+          F("019-libical-weekly-bymonth-bysetpos"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
+      });
+    }
+  }
+
+  // --- FREQ=WEEKLY: what does BYMONTH limit? ----------------------------
+  // Finding 022. Computed, not syntactic: the seed-limit expansion is built
+  // and compared, so this fires only on rules the reading actually changes.
+  if (r.FREQ === "WEEKLY" && has("BYMONTH") && has("BYDAY")) {
+    const alt = seedLimitWeekly(r, rrule, dtstart, limit);
+    const k = alt ? Math.min(alt.length, occurrences.length) : 0;
+    const differs = k > 0 && !sameList(alt.slice(0, k), occurrences.slice(0, k));
+    if (differs) {
+      const dropsDtstart = occurrences[0] === dtstart && alt[0] !== dtstart;
+      const named = r.BYMONTH.map((m) => MONTHS[m - 1]).join(", ");
+      out.push({
+        id: "weekly-bymonth-seed-limit",
+        severity: has("BYSETPOS") ? "diverges" : "note",
+        title: "FREQ=WEEKLY with BYMONTH: two readings of what BYMONTH limits",
+        body:
+          "RFC 5545 3.3.10 applies BYMONTH before BYDAY, and under FREQ=WEEKLY BYMONTH " +
+          "limits while BYDAY expands — so BYMONTH runs before the week has become days. " +
+          "What it limits is not stated. On one reading it restricts the instants the week " +
+          `finally yields, so nothing outside ${named} survives; that is the list above. On ` +
+          "the other it applies to the single DTSTART-derived seed of each week, selecting " +
+          "whole weeks, which BYDAY then expands across the week — " +
+          `including into months outside ${named}. That is the list beside it.` +
+          (has("BYSETPOS")
+            ? " Your rule has BYSETPOS, which is where the readings have been seen to part " +
+              "company in shipped code. python-dateutil 2.9.0.post0, rrule.js and dmfs " +
+              "lib-recur 0.17.1 produce the list above. ical4j 4.1.1 and libical master do " +
+              "not: on some rules of this shape each returns exactly the seed-limit list, " +
+              "and on others a third list that is neither reading, so the alternative here " +
+              "is not a prediction of what they will do with your rule. It is what the " +
+              "other reading of 3.3.10 would cost, computed on your rule. This is a " +
+              "separate question from the released-libical defect noted above, which is a " +
+              "bug in versions rather than a disagreement about the text."
+            : " Without BYSETPOS this is a reading question rather than a measured split: " +
+              "all six implementations this project runs — including libical master and " +
+              "ical4j 4.1.1 — produce the list above. The other reading is shown because it " +
+              "was argued for on libical issue 1374 by a maintainer, and because the price " +
+              "of it is visible beside your own rule rather than in the abstract.") +
+          (dropsDtstart
+            ? " Note what the seed-limit list costs here: DTSTART itself is not in it. " +
+              "RFC 5545 3.8.5.3 says DTSTART defines the first instance of the recurrence " +
+              "set, and excuses an implementation only when DTSTART is not synchronised " +
+              "with the rule — which is itself decided by whichever reading you take."
+            : ""),
+        evidence: [
+          F("022-weekly-bymonth-ordering"),
+          RFC5545("3.3.10", "3.3.10"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
+        compare: {
+          label: "seed-limit reading — BYMONTH selects whole weeks by the month of their seed",
+          occurrences: show(alt),
+        },
+      });
+    }
+  }
+
+  // --- BYDAY mixing signed and unsigned entries -------------------------
+  if (has("BYDAY") && ["MONTHLY", "YEARLY"].includes(r.FREQ)) {
+    const signed = r.BYDAY.filter(([n]) => n !== null);
+    const plain = r.BYDAY.filter(([n]) => n === null);
+    if (signed.length && plain.length) {
+      out.push({
+        id: "byday-mixed-signed",
+        severity: "diverges",
+        title: "BYDAY mixes a numbered weekday with a plain one",
+        body:
+          `Your BYDAY list contains both ${signed.map(([n, d]) => (n > 0 ? "+" : "") + n + d).join(", ")} ` +
+          `and ${plain.map(([, d]) => d).join(", ")}. A BYDAY list is a union of its elements, ` +
+          "so this means “the numbered day, and also every one of the plain days”. " +
+          "python-dateutil 2.9.0.post0 returns no occurrences at all for such a list: it " +
+          "splits BYDAY into a numbered and an unnumbered set and then requires a date to " +
+          "satisfy both. Its own BYMONTHDAY handling, three lines away in the same condition, " +
+          "gets the signed/unsigned union right.",
+        evidence: [F("013-byday-mixed-signed-and-unsigned")],
+      });
+    }
+  }
+
+  // --- FREQ=YEARLY: expand over the year, or inherit from DTSTART? ------
+  // RFC 5545 3.3.10's table classes BYMONTHDAY and BYWEEKNO as Expand for
+  // YEARLY. Three implementations sharing no code (libical, ical4j 4.1.1, dmfs
+  // lib-recur 0.17.1) instead inherit the unspecified component from DTSTART.
+  // This was the largest single failure family in all three.
+  //
+  // This said "two" until 2026-09-11, which was written before libical was
+  // adapted and never revisited. Finding 017 had already counted three: 41
+  // BYMONTHDAY cases where all three agree against the corpus, and a check of
+  // the BYWEEKNO branch adds 15 of 42. Undercounting mattered because the
+  // whole point of the sentence is how much weight the other reading carries.
+  if (r.FREQ === "YEARLY") {
+    let pinKey = null, pinVal = null, what = null;
+    if (has("BYMONTHDAY") && !has("BYMONTH")) {
+      pinKey = "BYMONTH"; pinVal = ds.mo;
+      what = `the month is not fixed, so the specification's table expands this over every month ` +
+             `(the 15th of January, February, March, …). The other reading takes the month ` +
+             `from DTSTART — ${MONTHS[ds.mo - 1]} — and yields one occurrence a year.`;
+    } else if (has("BYWEEKNO") && !has("BYDAY")) {
+      pinKey = "BYDAY"; pinVal = DAYS[weekday(ds.ord)];
+      what = `the weekday is not fixed, so the specification's table expands this over all seven ` +
+             `days of the named week. The other reading takes the weekday from DTSTART — ` +
+             `${DAYNAMES[DAYS[weekday(ds.ord)]]} — and yields one occurrence a year.`;
+    }
+    if (pinKey) {
+      const alt = tryExpand(withPart(rrule, pinKey, pinVal), dtstart, { limit });
+      if (alt && alt.length && !sameList(alt, occurrences)) {
+        out.push({
+          id: "yearly-expand-vs-inherit",
+          severity: "diverges",
+          title: `FREQ=YEARLY with ${pinKey === "BYMONTH" ? "BYMONTHDAY" : "BYWEEKNO"}: two readings, and both are in use`,
+          body:
+            `Under FREQ=YEARLY, ${what} RFC 5545 3.3.10's table classifies this part as ` +
+            "“Expand”, which is the left-hand answer. python-dateutil and rrule.js " +
+            "produce it, but those two are one lineage: rrule.js is a documented port. " +
+            "Three implementations that share no code with it or with each other — " +
+            "libical, ical4j 4.1.1 and dmfs lib-recur 0.17.1 — produce the right-hand " +
+            "answer instead, and a libical maintainer has argued in public for reading " +
+            "these parts as limiting each other. Whether that is a defect in three " +
+            "libraries or a widely-taken pragmatic reading of an awkward table is not " +
+            `settled. If it matters to you, say so explicitly by adding ${pinKey} to the rule.`,
+          evidence: [F("016-independent-lineage-results"), F("017-libical-third-lineage"),
+                     RFC5545("3.3.10", "3.3.10")],
+          compare: {
+            label: `component inherited from DTSTART (the libical / ical4j / lib-recur reading, shown here by pinning ${pinKey}=${pinVal})`,
+            occurrences: show(alt),
+          },
+        });
+      }
+    }
+  }
+
+  // --- BYWEEKNO ---------------------------------------------------------
+  if (has("BYWEEKNO")) {
+    const odd = r.BYWEEKNO.filter((v) => v === 53 || v === -53 || v < 0);
+    out.push({
+      id: "byweekno",
+      severity: "diverges",
+      title: "BYWEEKNO is the least reliably implemented part of RRULE",
+      body:
+        "Week numbering follows ISO 8601 generalised to your WKST: week 1 is the first week " +
+        "with at least four days in the year, so early January can belong to the previous " +
+        "year's last week and late December to the next year's first. python-dateutil " +
+        "2.9.0.post0 gets the year boundary wrong; there is an open upstream fix " +
+        "(dateutil/dateutil#1537). What a date's week number is when its week straddles a " +
+        "year boundary and FREQ=YEARLY is asking about a single year is a genuine gap in " +
+        "the specification, not just a bug." +
+        (odd.length
+          ? " Your rule uses " + odd.join(", ") +
+            ". Note that most years have no week 53 — a rule asking for it fires only " +
+            "in the years that have one, which is not the same as “the last week of the year” " +
+            "(that is BYWEEKNO=-1)."
+          : ""),
+      evidence: [
+        F("008-byweekno-previous-year-last-week"),
+        F("002-byweekno-year-boundary"),
+        { label: "dateutil/dateutil#1537", url: "https://github.com/dateutil/dateutil/pull/1537" },
+      ],
+    });
+  }
+
+  // --- does WKST change the answer? -------------------------------------
+  // Computed by re-expanding under each of the seven values. WKST defaults to
+  // MO and is very often left out of a rule that needs it.
+  {
+    const differ = [];
+    for (const d of DAYS) {
+      if (d === r.WKST) continue;
+      const alt = tryExpand(withPart(rrule, "WKST", d), dtstart, { limit });
+      if (alt && !sameList(alt, occurrences)) differ.push(d);
+    }
+    if (differ.length) {
+      out.push({
+        id: "wkst-sensitive",
+        severity: "diverges",
+        title: `This rule's answer changes with WKST (${differ.join(", ")} all differ from ${r.WKST})`,
+        body:
+          (rrule.toUpperCase().includes("WKST=")
+            ? `Your rule sets WKST=${r.WKST}. `
+            : "Your rule does not set WKST, so the default of MO applies. ") +
+          "Changing it to " + differ.join(", ") + " gives a different set of dates. WKST is " +
+          "the part most often dropped when a rule is copied between systems, and a calendar " +
+          "that localises the first day of the week can supply a different default than the " +
+          "one you tested against. If the answer matters, write WKST into the rule.",
+        evidence: [RFC5545("3.3.10", "3.3.10")],
+      });
+    }
+  }
+
+  // --- the rule skips periods -------------------------------------------
+  // BYMONTHDAY=31, BYYEARDAY=366, BYWEEKNO=53 and February 29 all produce
+  // recurrences with holes. Computed from the expansion, so it says which
+  // periods are actually missing rather than which parts look suspicious.
+  {
+    const unit = { YEARLY: "year", MONTHLY: "month" }[r.FREQ];
+    if (unit && occurrences.length >= 2) {
+      const key = (t) => (unit === "year" ? parts(t).y : parts(t).y * 12 + parts(t).mo - 1);
+      const seen = [...new Set(occurrences.map(key))];
+      const holes = [];
+      for (let i = 1; i < seen.length; i++) {
+        const gap = seen[i] - seen[i - 1];
+        if (gap > r.INTERVAL) holes.push([seen[i - 1], seen[i], gap]);
+      }
+      if (holes.length) {
+        const label = (k) => (unit === "year" ? String(k) : `${Math.floor(k / 12)}-${String((k % 12) + 1).padStart(2, "0")}`);
+        out.push({
+          id: "skipped-periods",
+          severity: "note",
+          title: `This rule skips ${unit}s`,
+          body:
+            `It does not fire in every ${unit}. Between ${label(holes[0][0])} and ` +
+            `${label(holes[0][1])} there is a gap of ${holes[0][2]} ${unit}s` +
+            (holes.length > 1 ? `, and there are ${holes.length} such gaps in the dates shown` : "") +
+            ". That is usually intended (a rule for the 31st cannot fire in a 30-day month), " +
+            "but it is also what “the event silently disappeared for a year” looks " +
+            "like. RFC 5545 3.3.10: “Recurrence rules may generate recurrence instances " +
+            "with an invalid date (e.g., February 30) … Such recurrence instances MUST be " +
+            "ignored and MUST NOT be counted as part of the recurrence set.”",
+          evidence: [RFC5545("3.3.10", "3.3.10")],
+        });
+      }
+    }
+  }
+
+  // --- DATE-valued DTSTART with time-of-day parts -----------------------
+  if (dateOnly && ["BYHOUR", "BYMINUTE", "BYSECOND"].some(has)) {
+    out.push({
+      id: "date-value-with-time-parts",
+      severity: "note",
+      title: "A time-of-day BYxxx part with a DATE-valued DTSTART",
+      body:
+        "DTSTART here is a date with no time, as an all-day event has. RFC 5545 3.3.10 says " +
+        "BYSECOND, BYMINUTE and BYHOUR MUST NOT be specified when DTSTART is a DATE value. " +
+        "Implementations do not agree on what to do with such a rule; the dates below drop " +
+        "the time-of-day parts.",
+      evidence: [F("011-date-valued-dtstart"), RFC5545("3.3.10", "3.3.10")],
+    });
+  }
+
+  return out;
+}
+
+return {analyze};
+})();
+
+// ---- src/icalinput.js --------------------------------------------------
+__M['src/icalinput.js'] = (() => {
+// Read what people actually have, instead of what the expander wants.
+//
+// Nobody has a bare RRULE string. They have a .ics file, or the fragment of
+// one that a colleague or a bug tracker pasted at them. Before this file, the
+// tool required them to split DTSTART out by hand into a second box -- which
+// is precisely the step where a TZID or a VALUE=DATE gets dropped, and
+// dropping either one changes the answer. That made the user do, unaided, a
+// piece of the parsing this tool exists to do.
+//
+// parseInput(text) accepts:
+//   * a bare rule            FREQ=MONTHLY;BYDAY=-1FR
+//   * a prefixed rule        RRULE:FREQ=MONTHLY;BYDAY=-1FR
+//   * loose content lines    DTSTART;TZID=Europe/Paris:...  + RRULE:...
+//   * a whole VEVENT or VCALENDAR
+//
+// and returns { rrule, dtstart, notes[] }. It never silently discards a line:
+// anything recognised and not used produces a note, because the failure mode
+// of a tool like this is looking like it considered something it ignored.
+
+const WANTED = new Set(["RRULE", "DTSTART"]);
+
+// Properties that change the recurrence set but that this tool does not
+// implement. Each maps to what its presence means for the answer shown.
+const AFFECTS_THE_ANSWER = {
+  EXDATE: "removes occurrences from the set. The dates below do not have them removed.",
+  RDATE: "adds occurrences to the set. The dates below do not include them.",
+  EXRULE: "removes occurrences from the set (RFC 2445; dropped in RFC 5545). " +
+          "The dates below do not have them removed.",
+};
+
+// Properties that are simply not this tool's subject. Worth naming so the
+// user can see they were read and set aside, rather than wonder.
+const NOT_OUR_SUBJECT = new Set([
+  "DTEND", "DURATION", "SUMMARY", "DESCRIPTION", "LOCATION", "UID", "ORGANIZER",
+  "ATTENDEE", "STATUS", "SEQUENCE", "CREATED", "LAST-MODIFIED", "DTSTAMP",
+  "TRANSP", "CLASS", "CATEGORIES", "PRIORITY", "URL", "RECURRENCE-ID",
+]);
+
+/** RFC 5545 3.1: undo line folding before anything else looks at the text. */
+function unfold(text) {
+  return String(text).replace(/\r\n|\r/g, "\n").replace(/\n[ \t]/g, "");
+}
+
+/** Split one content line into { name, params, value }. */
+function contentLine(line) {
+  // The colon that ends the name+params is the first one not inside a quoted
+  // parameter value: TZID="A:B":20260101T000000 is legal.
+  let inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') inQuote = !inQuote;
+    else if (c === ":" && !inQuote) {
+      const head = line.slice(0, i);
+      const value = line.slice(i + 1);
+      const segs = [];
+      let cur = "", q = false;
+      for (const ch of head) {
+        if (ch === '"') { q = !q; cur += ch; }
+        else if (ch === ";" && !q) { segs.push(cur); cur = ""; }
+        else cur += ch;
+      }
+      segs.push(cur);
+      const params = {};
+      for (const s of segs.slice(1)) {
+        const eq = s.indexOf("=");
+        if (eq > 0) params[s.slice(0, eq).toUpperCase()] = s.slice(eq + 1).replace(/^"|"$/g, "");
+      }
+      return { name: segs[0].trim().toUpperCase(), params, value: value.trim() };
+    }
+  }
+  return null;
+}
+
+function looksLikeBareRule(text) {
+  // A bare rule is one line of KEY=VALUE pairs. This is also the format the
+  // shared-link fragment carries, so it must keep working untouched.
+  return !text.includes("\n") && !/^\s*(RRULE|DTSTART|BEGIN)\b[;:]/i.test(text) &&
+         /^\s*[A-Z-]+=/i.test(text);
+}
+
+function parseInput(text) {
+  const notes = [];
+  const raw = String(text == null ? "" : text).trim();
+  if (!raw) return { rrule: "", dtstart: "", notes };
+
+  if (looksLikeBareRule(raw)) return { rrule: raw, notes };
+
+  const lines = unfold(raw).split("\n").map((l) => l.trim()).filter(Boolean);
+
+  // Track the component stack. This matters more than it looks: a real
+  // VCALENDAR usually carries a VTIMEZONE, and its STANDARD and DAYLIGHT
+  // subcomponents each hold their own DTSTART *and their own RRULE* -- the
+  // daylight-saving transition rules. Taking "the first RRULE in the text"
+  // would hand the user the timezone's DST rule and call it their event.
+  const stack = [];
+  const EVENTISH = new Set(["VEVENT", "VTODO", "VJOURNAL"]);
+  const found = { RRULE: [], DTSTART: [] };
+  const ignored = new Map();       // name -> count, from event scope only
+  let eventCount = 0, sawTimezone = false, sawComponent = false;
+
+  for (const line of lines) {
+    const cl = contentLine(line);
+    if (!cl) continue;
+    if (cl.name === "BEGIN") {
+      stack.push(cl.value.toUpperCase());
+      sawComponent = true;
+      if (EVENTISH.has(cl.value.toUpperCase())) eventCount++;
+      if (cl.value.toUpperCase() === "VTIMEZONE") sawTimezone = true;
+      continue;
+    }
+    if (cl.name === "END") { stack.pop(); continue; }
+
+    const inTimezone = stack.includes("VTIMEZONE");
+    if (inTimezone) continue;      // its RRULEs are the zone's, not the user's
+    // Outside any component (loose pasted lines) counts as event scope.
+    const inEvent = stack.length === 0 || EVENTISH.has(stack[stack.length - 1]);
+    if (!inEvent) continue;
+
+    if (WANTED.has(cl.name)) { found[cl.name].push(cl); continue; }
+    if (cl.name in AFFECTS_THE_ANSWER || !NOT_OUR_SUBJECT.has(cl.name)) {
+      if (!/^X-/.test(cl.name) && cl.name in AFFECTS_THE_ANSWER)
+        ignored.set(cl.name, (ignored.get(cl.name) || 0) + 1);
+    }
+  }
+
+  if (eventCount > 1) {
+    return {
+      rrule: "", dtstart: "",
+      notes: [{ level: "error", title: "More than one event in this paste", text:
+        `This paste contains ${eventCount} components with their own recurrence ` +
+        "(VEVENT/VTODO/VJOURNAL). This tool debugs one rule at a time and will not " +
+        "guess which one you meant. Paste a single event." }],
+    };
+  }
+  if (sawComponent && eventCount === 0 && !found.RRULE.length) {
+    const what = sawTimezone ? "only a VTIMEZONE, whose RRULEs describe the zone's " +
+      "daylight-saving transitions rather than any event" : "no VEVENT, VTODO or VJOURNAL";
+    return { rrule: "", dtstart: "",
+             notes: [{ level: "error", title: "No event to expand", text:
+               `This paste contains ${what}. Nothing to expand.` }] };
+  }
+
+  if (!found.RRULE.length) {
+    return { rrule: "", dtstart: "",
+             notes: [{ level: "error", title: "No RRULE in this paste", text:
+               "No RRULE line found. Paste an event that has one, or type the rule itself " +
+               "(FREQ=...)." }] };
+  }
+  if (found.RRULE.length > 1) {
+    notes.push({ level: "warn", title: "More than one RRULE", text:
+      `This event has ${found.RRULE.length} RRULE lines; only the first is expanded below. ` +
+      "RFC 5545 3.6.1 allows at most one RRULE in a VEVENT, and implementations differ on " +
+      "what they do with more." });
+  }
+
+  const rrule = found.RRULE[0].value.trim();
+  let dtstart = "", dsNotes = [];
+  if (found.DTSTART.length) {
+    const d = found.DTSTART[0];
+    dtstart = d.value.trim();
+    dsNotes = dtstartNotes(d, rrule);
+  } else {
+    notes.push({ level: "warn", title: "No DTSTART in the paste", text:
+      "No DTSTART line in the paste, so the DTSTART box was left as it was. Every answer " +
+      "this tool gives depends on it: RFC 5545 3.8.5.3 says “The ‘DTSTART’ " +
+      "property defines the first instance in the recurrence set.”" });
+  }
+  notes.push(...dsNotes);
+
+  for (const [name, n] of ignored) {
+    notes.push({ level: "warn", title: `${name} was not applied`, text:
+      `${name}${n > 1 ? ` (×${n})` : ""} is present and was not applied. It ` +
+      AFFECTS_THE_ANSWER[name] });
+  }
+
+  return { rrule, dtstart, notes };
+}
+
+/** What a DTSTART's parameters mean for an expander that has no timezone data. */
+function dtstartNotes(d, rrule) {
+  const out = [];
+  const tzid = d.params.TZID;
+  const isUtc = /Z$/i.test(d.value);
+  const valueDate = (d.params.VALUE || "").toUpperCase() === "DATE";
+
+  if (valueDate && /T/i.test(d.value)) {
+    out.push({ level: "warn", title: "VALUE=DATE disagrees with the value", text:
+      "DTSTART says VALUE=DATE but its value carries a time. They disagree; the value was " +
+      "used as written." });
+  }
+  if (tzid) {
+    // Deliberately not a refusal. A recurrence rule is evaluated against the
+    // local time of DTSTART, so the wall-clock dates below are the right
+    // wall-clock dates for that zone -- this tool just never converts them to
+    // instants. The place it can actually be wrong is UNTIL, and DST.
+    let text = `DTSTART carries TZID=${tzid}. This tool has no timezone database: it expands ` +
+      "in wall-clock time, which is what the rule is evaluated against, so the dates below " +
+      "are the local dates in that zone. It does not convert them to UTC instants.";
+    if (/(^|;)UNTIL=/i.test(rrule)) {
+      text += " This rule also has an UNTIL, and that is where the omission bites: RFC 5545 " +
+        "3.3.10 says “If the ‘DTSTART’ property is specified as a date with " +
+        "UTC time or a date with local time and time zone reference, then the UNTIL rule " +
+        "part MUST be specified as a date with UTC time.” So UNTIL is an instant in UTC " +
+        "while the occurrences are local, and this tool compares them directly. The last " +
+        "occurrence or two may be wrong by the zone's offset.";
+      out.push({ level: "error", title: `UNTIL is UTC but DTSTART is in ${tzid}`, text });
+      return out;
+    }
+    out.push({ level: "warn", title: `TZID=${tzid} was read but not applied`, text });
+  } else if (isUtc) {
+    out.push({ level: "info", title: "DTSTART is UTC", text:
+      "DTSTART is in UTC (trailing Z). The dates below are UTC." });
+  }
+  return out;
+}
+
+return {unfold, contentLine, parseInput};
+})();
+
+// ---- src/why.js --------------------------------------------------------
+__M['src/why.js'] = (() => {
+// "Why is this date not in my list?" -- part-by-part, for one date.
+//
+// The commonest question about a recurrence rule is not what it expands to.
+// It is why one particular date the user expected is missing, or why one they
+// did not expect is there. See jkbrzt/rrule#621, where the reporter's whole
+// description of the bug is "it skips the correct one and gives me the one
+// after": the rule and the dates were both in front of them, and neither said
+// which rule part did it.
+//
+// This module answers that for a single date. It deliberately does NOT
+// re-decide whether the date is an occurrence -- `naive.js` decides that, the
+// same code that produced the list on the page. Every predicate below is
+// imported from the expander rather than rewritten, and the assembled verdict
+// is compared against `matches()` and against membership of the real expansion
+// before it is shown. If they ever disagree the answer says so instead of
+// picking one; `tests/test_why.py` replays the corpus through both.
+//
+// Order of the checks follows RFC 5545 3.3.10, which fixes it.
+
+const {
+  parse, parts, fmt, mk, toOrd, fromOrd, weekday, daysInMonth, weekNumber,
+  periodIndex, periodStart, matches, expand, Budget,
+  monthdayMatches, yeardayMatches, weeknoMatches, bydayMatches, pinned, finer,
+  DAYS, FREQS,
+} = __M['src/naive.js'];
+const RFC = (section, anchor) => ({
+  label: `RFC 5545 ${section}`,
+  url: `https://www.rfc-editor.org/rfc/rfc5545.html#section-${anchor}`,
+});
+const S3310 = RFC("§3.3.10", "3.3.10");
+const S3853 = RFC("§3.8.5.3", "3.8.5.3");
+
+const DAYNAMES = { MO: "Monday", TU: "Tuesday", WE: "Wednesday", TH: "Thursday",
+                   FR: "Friday", SA: "Saturday", SU: "Sunday" };
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+const COMP = {
+  mo: { noun: "month", of: (p) => `${MONTHS[p.mo - 1]}`, rules: "BYMONTH" },
+  d: { noun: "day of the month", of: (p) => `the ${ordinal(p.d)}`,
+       rules: "BYMONTHDAY, BYDAY, BYYEARDAY or BYWEEKNO" },
+  h: { noun: "hour", of: (p) => `${pad(p.h)}`, rules: "BYHOUR" },
+  mi: { noun: "minute", of: (p) => `${pad(p.mi)}`, rules: "BYMINUTE" },
+  s: { noun: "second", of: (p) => `${pad(p.s)}`, rules: "BYSECOND" },
+};
+const pad = (n) => String(n).padStart(2, "0");
+function ordinal(n) {
+  const t = n % 100;
+  if (t >= 11 && t <= 13) return `${n}th`;
+  return `${n}${["th", "st", "nd", "rd"][n % 10] || "th"}`;
+}
+function human(t, dateOnly) {
+  const p = parts(t);
+  const day = DAYNAMES[DAYS[weekday(p.ord)]];
+  const date = `${day} ${p.y}-${pad(p.mo)}-${pad(p.d)}`;
+  return dateOnly ? date : `${date} at ${pad(p.h)}:${pad(p.mi)}:${pad(p.s)}`;
+}
+const list = (xs) => xs.join(", ");
+
+/**
+ * Read the date the user is asking about. Accepts the same shapes as DTSTART,
+ * plus the ISO-ish forms a person types by hand.
+ */
+function parseQuery(v, dateOnly) {
+  let t = String(v).trim().replace(/^DTSTART[^:]*:/i, "").trim().replace(/Z$/i, "");
+  t = t.replace(/[/.]/g, "-");
+  let m = /^(\d{4})-?(\d{2})-?(\d{2})[T ]?(\d{2}):?(\d{2})(?::?(\d{2}))?$/.exec(t);
+  if (m) return { t: mk(+m[1], +m[2], +m[3], +m[4], +m[5], +(m[6] || 0)), hadTime: true };
+  m = /^(\d{4})-?(\d{2})-?(\d{2})$/.exec(t);
+  if (m) return { t: mk(+m[1], +m[2], +m[3]), hadTime: false };
+  throw new Error(`cannot read ${JSON.stringify(v)} as a date; try 20260130 or 20260130T090000`);
+}
+
+// --- the part-by-part checks ---------------------------------------------
+//
+// Each returns { id, ok, title, detail, evidence }. `ok: null` means the check
+// does not apply to this rule and is not shown as a hurdle the date cleared.
+
+function byChecks(t, r, dtstart, dateOnly) {
+  const p = parts(t), ds = parts(dtstart);
+  const freq = r.FREQ, wkst = r.WKST;
+  const out = [];
+  const add = (id, ok, title, detail, evidence = [S3310]) =>
+    out.push({ id, ok, title, detail, evidence });
+
+  // FREQ + INTERVAL: is the date even in a period the rule visits?
+  const n = periodIndex(t, freq, wkst) - periodIndex(dtstart, freq, wkst);
+  if (r.INTERVAL === 1) {
+    add("interval", true, `FREQ=${freq}`,
+        `Every ${periodNoun(freq)} is visited (INTERVAL is 1, its default), and this date is ` +
+        `${n === 0 ? "in the same" : `${Math.abs(n)} ${periodNoun(freq)}${Math.abs(n) === 1 ? "" : "s"} ` +
+          (n > 0 ? "after the" : "before the")} ${periodNoun(freq)} DTSTART is in.`);
+  } else {
+    const ok = n % r.INTERVAL === 0;
+    add("interval", ok, `FREQ=${freq};INTERVAL=${r.INTERVAL}`,
+        `Number the ${periodNoun(freq)}s from DTSTART's, which is 0. This date is in ${periodNoun(freq)} ` +
+        `${n}. The rule visits every ${r.INTERVAL}${nth(r.INTERVAL)} one, so it reaches ${n} only if ` +
+        `${n} is a multiple of ${r.INTERVAL}` +
+        (ok ? `, and it is.` : `. It is not: ${n} = ${r.INTERVAL}×${Math.trunc(n / r.INTERVAL)} + ` +
+          `${((n % r.INTERVAL) + r.INTERVAL) % r.INTERVAL}.`));
+  }
+
+  if ("BYMONTH" in r) {
+    add("BYMONTH", r.BYMONTH.includes(p.mo), `BYMONTH=${list(r.BYMONTH)}`,
+        `This date is in ${MONTHS[p.mo - 1]} (month ${p.mo}).`);
+  }
+  if ("BYWEEKNO" in r) {
+    const got = weekNumber(p.ord, wkst);
+    add("BYWEEKNO", weeknoMatches(p, r.BYWEEKNO, wkst), `BYWEEKNO=${list(r.BYWEEKNO)}`,
+        got === null
+          ? `This date falls before week 1 of its own year under WKST=${wkst}, so it is in no ` +
+            `week of it. Week numbering here is ISO 8601's, which WKST moves: week 1 is the first ` +
+            `week with at least four days in the year.`
+          : `Under WKST=${wkst} this date is in week ${got[1]} of ${got[0]}` +
+            (got[0] !== p.y ? ` — a different year from the date's own, which is what week ` +
+              `numbering does at a year boundary.` : `.`));
+  }
+  if ("BYYEARDAY" in r) {
+    const doy = p.ord - toOrd(p.y, 1, 1) + 1;
+    add("BYYEARDAY", yeardayMatches(p, r.BYYEARDAY), `BYYEARDAY=${list(r.BYYEARDAY)}`,
+        `This date is day ${doy} of ${p.y}, and day ${doy - (isLeapYear(p.y) ? 366 : 365) - 1} ` +
+        `counting back from the end.`);
+  }
+  if ("BYMONTHDAY" in r) {
+    const last = daysInMonth(p.y, p.mo);
+    add("BYMONTHDAY", monthdayMatches(p, r.BYMONTHDAY), `BYMONTHDAY=${list(r.BYMONTHDAY)}`,
+        `This date is the ${ordinal(p.d)} of a ${last}-day month, so it is also ` +
+        `${p.d - last - 1} counting back from the end.`);
+  }
+  if ("BYDAY" in r) {
+    const wd = DAYS[weekday(p.ord)];
+    const spans = bydaySpan(p, freq, "BYMONTH" in r);
+    add("BYDAY", bydayMatches(p, r.BYDAY, freq, "BYMONTH" in r),
+        `BYDAY=${r.BYDAY.map(([o, d]) => (o === null ? "" : (o > 0 ? `+${o}` : o)) + d).join(",")}`,
+        `This date is a ${DAYNAMES[wd]}` + (spans ? `, and the ${ordinal(spans[0])} ${DAYNAMES[wd]} ` +
+          `of ${spans[2]} — also the ${ordinal(spans[1] - spans[0] + 1)} from its end.` : `. Under ` +
+          `FREQ=${freq} a number in front of a weekday has no period to count within, so this rule ` +
+          `part can select only bare weekdays.`));
+  }
+  for (const [key, comp, noun] of [["BYHOUR", "h", "hour"], ["BYMINUTE", "mi", "minute"],
+                                   ["BYSECOND", "s", "second"]]) {
+    if (!(key in r)) continue;
+    add(key, r[key].includes(p[comp]), `${key}=${list(r[key])}`,
+        `This time's ${noun} is ${p[comp]}.`);
+  }
+
+  // FREQ=WEEKLY with no BYDAY: the weekday comes from DTSTART.
+  if (freq === "WEEKLY" && !("BYDAY" in r)) {
+    const ok = weekday(p.ord) === weekday(ds.ord);
+    add("weekly-weekday", ok, "the weekday comes from DTSTART",
+        `The rule names no BYDAY, so the only weekday it can mean is DTSTART's, which is ` +
+        `${DAYNAMES[DAYS[weekday(ds.ord)]]}. This date is a ${DAYNAMES[DAYS[weekday(p.ord)]]}.`,
+        [S3853]);
+  }
+
+  // Everything finer than FREQ that no BY rule pins down is inherited from
+  // DTSTART. This is the one that surprises people: setting BYHOUR does not
+  // free the minutes, and a MONTHLY rule does not fire on all 31 days.
+  const pin = pinned(r, freq);
+  for (const comp of finer(freq)) {
+    if (pin.has(comp)) continue;
+    const c = COMP[comp];
+    const ok = p[comp] === ds[comp];
+    add(`inherit-${comp}`, ok, `the ${c.noun} comes from DTSTART`,
+        `FREQ=${freq} does not fix the ${c.noun}, and no ${c.rules} in this rule does either, so ` +
+        `it stays at DTSTART's: ${c.of(ds)}. This date's is ${c.of(p)}.`, [S3853]);
+  }
+  return out;
+}
+
+function isLeapYear(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; }
+function nth(n) { return n === 2 ? "nd" : n === 3 ? "rd" : "th"; }
+function periodNoun(freq) {
+  return { YEARLY: "year", MONTHLY: "month", WEEKLY: "week", DAILY: "day",
+           HOURLY: "hour", MINUTELY: "minute", SECONDLY: "second" }[freq];
+}
+/** [nth of its weekday in the span, how many there are, name of the span] */
+function bydaySpan(p, freq, hasBymonth) {
+  let lo, hi, name;
+  if (freq === "MONTHLY" || (freq === "YEARLY" && hasBymonth)) {
+    lo = toOrd(p.y, p.mo, 1); hi = toOrd(p.y, p.mo, daysInMonth(p.y, p.mo));
+    name = `${MONTHS[p.mo - 1]} ${p.y}`;
+  } else if (freq === "YEARLY") {
+    lo = toOrd(p.y, 1, 1); hi = toOrd(p.y, 12, 31); name = String(p.y);
+  } else {
+    return null;
+  }
+  const first = lo + ((weekday(p.ord) - weekday(lo) + 7) % 7);
+  return [Math.floor((p.ord - first) / 7) + 1, Math.floor((hi - first) / 7) + 1, name];
+}
+
+/**
+ * Which instant did the user mean?
+ *
+ * A DTSTART with a time of day makes every occurrence an instant, but people
+ * type a bare date -- "why is 2026-01-29 not in there?" -- and mean the day.
+ * Answering about midnight on that day is true and useless: it explains a
+ * date they never asked about, and the failing check is always the inherited
+ * hour.
+ *
+ * So a time-less question about a rule with times is resolved to a time on
+ * that day: the one the rule actually produces there if it produces one,
+ * otherwise DTSTART's own time of day. Either way the caller is told, because
+ * the answer is then about an instant the user did not type.
+ *
+ * The candidate times below mirror the expander's own; this is only a reading
+ * of the *question*, though. Whatever instant comes out is still put through
+ * why(), and through matches(), before anything is claimed about it.
+ */
+function resolveQuery(r, dtstart, q, dateOnly) {
+  if (dateOnly || q.hadTime) return { t: q.t, note: null };
+  const ds = parts(dtstart);
+  const day = Math.floor(q.t / 86400) * 86400;
+  const seq = (n) => Array.from({ length: n }, (_, i) => i);
+  const freq = r.FREQ;
+  const hours = "BYHOUR" in r ? r.BYHOUR
+    : (["HOURLY", "MINUTELY", "SECONDLY"].includes(freq) ? seq(24) : [ds.h]);
+  const mins = "BYMINUTE" in r ? r.BYMINUTE
+    : (["MINUTELY", "SECONDLY"].includes(freq) ? seq(60) : [ds.mi]);
+  const secs = "BYSECOND" in r ? r.BYSECOND : (freq === "SECONDLY" ? seq(60) : [ds.s]);
+  const hit = [];
+  for (const h of hours) for (const mi of mins) for (const s of secs) {
+    const t = day + h * 3600 + mi * 60 + s;
+    if (t >= dtstart && matches(t, r, dtstart)) hit.push(t);
+  }
+  hit.sort((a, b) => a - b);
+  if (hit.length) {
+    return {
+      t: hit[0],
+      // "the time the rule's parts point at", not "the time it produces":
+      // BYSETPOS can still drop this instant, and the verdict below may say
+      // exactly that.
+      note: `You asked about a date, and this rule works in times of day. Taking the ` +
+            (hit.length === 1 ? `one time of day its parts point at there` :
+             `first of the ${hit.length} times of day its parts point at there`) +
+            `: ${fmt(hit[0])}.`,
+    };
+  }
+  const t = day + ds.h * 3600 + ds.mi * 60 + ds.s;
+  return {
+    t,
+    note: `You asked about a date, and this rule works in times of day. Its parts point at no time ` +
+          `at all on that day, so the question is answered at DTSTART's own time of day, ${fmt(t)}.`,
+  };
+}
+
+// --- the verdict ----------------------------------------------------------
+
+/**
+ * Why is `t` in, or not in, the recurrence set of `rrule` from `dtstart`?
+ *
+ * Returns { status, headline, checks, index, evidence, compare }.
+ * status: "occurrence" | "before-dtstart" | "rule" | "bysetpos" | "until"
+ *       | "count" | "unknown" | "inconsistent"
+ */
+function why(rrule, dtstart, t, opts = {}) {
+  const dateOnly = !!opts.dateOnly;
+  const r = typeof rrule === "string" ? parse(rrule) : rrule;
+  if (!FREQS.includes(r.FREQ)) throw new Error(`FREQ: ${JSON.stringify(r.FREQ)} is not a frequency`);
+  const said = human(t, dateOnly);
+
+  if (t < dtstart) {
+    return {
+      status: "before-dtstart", index: null, checks: [],
+      headline: `No — ${said} is before DTSTART, so no rule part can put it in the set.`,
+      body: "A recurrence rule never generates anything earlier than DTSTART: RFC 5545 §3.8.5.3 " +
+            "says “The ‘DTSTART’ property defines the first instance in the recurrence set.” " +
+            "If this date should be in the event, DTSTART is what has to move — or it belongs in " +
+            "an RDATE, which this tool does not expand.",
+      evidence: [S3853],
+    };
+  }
+
+  const checks = byChecks(t, r, dtstart, dateOnly);
+  const failed = checks.filter((c) => c.ok === false);
+  const agrees = matches(t, r, dtstart);
+  if (agrees !== (failed.length === 0)) {
+    return {
+      status: "inconsistent", index: null, checks,
+      headline: "This tool cannot explain this date.",
+      body: "The part-by-part check above and the expander that produced the list disagree about " +
+            "this date. That is a bug in this tool, not in your rule. Please report it with the " +
+            "link in the address bar — a case that breaks it is the most useful thing to send.",
+      evidence: [],
+    };
+  }
+
+  if (failed.length) {
+    const first = failed[0];
+    return {
+      status: "rule", index: null, checks,
+      headline: `No — ${said} is not what this rule describes.`,
+      body: failed.length === 1
+        ? `One rule part rules it out: ${first.title}.`
+        : `${failed.length} of the rule's parts rule it out; the first, in the order §3.3.10 ` +
+          `applies them, is ${first.title}.`,
+      evidence: [S3310],
+    };
+  }
+
+  // It matches the pattern. What is left is the machinery that runs *after*
+  // the BYxxx parts: BYSETPOS selects within a period, and COUNT and UNTIL cut
+  // the sequence. §3.3.10 fixes that order.
+  let plain;
+  const bare = { ...r };
+  delete bare.COUNT; delete bare.UNTIL;
+  try {
+    plain = expand(bare, dtstart, { horizon: t, limit: 1e9, maxSteps: opts.maxSteps ?? 2e6 });
+  } catch (e) {
+    if (!(e instanceof Budget)) throw e;
+    return {
+      status: "unknown", index: null, checks,
+      headline: `${said} matches every part of this rule, but this tool could not count that far.`,
+      body: `Deciding whether it is actually in the set means expanding the rule from DTSTART up ` +
+            `to it, and that ${e.message}. Every rule part above still holds. Try a DTSTART ` +
+            `nearer the date you are asking about.`,
+      evidence: [],
+    };
+  }
+
+  const idx = plain.indexOf(t);
+  if (idx < 0) {
+    // Only BYSETPOS can drop a date that matched every BYxxx part.
+    const info = setposDetail(r, dtstart, t, dateOnly);
+    return {
+      status: "bysetpos", index: null, checks,
+      headline: `No — ${said} matches every part of the rule, and then BYSETPOS drops it.`,
+      body: info,
+      evidence: [S3310],
+    };
+  }
+  if ("UNTIL" in r && t > r.UNTIL) {
+    return {
+      status: "until", index: null, checks,
+      headline: `No — ${said} is what the rule describes, but it is past UNTIL.`,
+      body: `UNTIL is ${fmt(r.UNTIL, dateOnly)}, and §3.3.10 says “The UNTIL rule part defines a ` +
+            `DATE or DATE-TIME value that bounds the recurrence rule in an inclusive manner.” ` +
+            `Inclusive: a date exactly equal to UNTIL is still in. This one is later. Without ` +
+            `UNTIL it would have been occurrence ${idx + 1}.`,
+      evidence: [S3310],
+    };
+  }
+  if ("COUNT" in r && idx + 1 > r.COUNT) {
+    return {
+      status: "count", index: null, checks,
+      headline: `No — ${said} is what the rule describes, but COUNT has already run out.`,
+      body: `It would be occurrence ${idx + 1}, and COUNT is ${r.COUNT}. §3.3.10: “The ` +
+            `‘DTSTART’ property value always counts as the first occurrence.” So a ` +
+            `COUNT of ${r.COUNT} reaches ${fmt(plain[r.COUNT - 1], dateOnly)} and stops.`,
+      evidence: [S3310],
+    };
+  }
+  return {
+    status: "occurrence", index: idx + 1, checks,
+    headline: idx === 0
+      ? `Yes — ${said} is the first occurrence. It is DTSTART.`
+      : `Yes — ${said} is occurrence ${idx + 1}.`,
+    body: checks.length
+      ? `Every part of the rule holds for it:`
+      : `The rule has nothing to check beyond its frequency.`,
+    evidence: [],
+  };
+}
+
+/** What BYSETPOS saw in this date's period, and why it did not pick this one. */
+function setposDetail(r, dtstart, t, dateOnly) {
+  const start = periodStart(t, r.FREQ, r.WKST);
+  const key = periodIndex(t, r.FREQ, r.WKST);
+  const bare = { ...r };
+  delete bare.BYSETPOS; delete bare.COUNT; delete bare.UNTIL;
+  let inPeriod;
+  try {
+    inPeriod = expand(bare, start < dtstart ? dtstart : start, {
+      horizon: t + 400 * 86400, limit: 400, maxSteps: 2e6,
+    }).filter((x) => periodIndex(x, r.FREQ, r.WKST) === key);
+  } catch {
+    return `BYSETPOS=${list(r.BYSETPOS)} selects only some of the dates the rest of the rule ` +
+           `matches in each ${periodNoun(r.FREQ)}, and this date is not among the selected ones.`;
+  }
+  const pos = inPeriod.indexOf(t) + 1;
+  const shown = inPeriod.map((x) => fmt(x, dateOnly));
+  return `§3.3.10: “BYSETPOS operates on a set of recurrence instances in one interval of the ` +
+         `recurrence rule.” The interval here is one ${periodNoun(r.FREQ)}, and in it the rest of ` +
+         `the rule matches ${inPeriod.length} date${inPeriod.length === 1 ? "" : "s"}: ` +
+         `${abridge(shown)}. This date is ${pos > 0 ? `number ${pos} of ${inPeriod.length} ` +
+         `(also ${pos - inPeriod.length - 1} counting back)` : "not in that set"}, and ` +
+         `BYSETPOS=${list(r.BYSETPOS)} does not name it.`;
+}
+
+/** A set of dates a reader can take in: the ends, and a count for the middle. */
+function abridge(xs, keep = 3) {
+  if (xs.length <= keep * 2 + 1) return xs.join(", ");
+  return `${xs.slice(0, keep).join(", ")}, … (${xs.length - keep * 2} more) …, ` +
+         `${xs.slice(-keep).join(", ")}`;
+}
+
+return {parseQuery, resolveQuery, why};
+})();
+
+// ---- src/describe.js ---------------------------------------------------
+__M['src/describe.js'] = (() => {
+// "Is this what you meant?" -- an RRULE rendered as one English sentence.
+//
+// Why this exists, and why it is not the same as the ones that already exist.
+//
+// On libical/libical#1374, when two readings of BYSETPOS were being weighed
+// against each other, CMendia reached for exactly this: translate the rule
+// into plain English and see which reading the English matches. That is a
+// reasonable instinct, and it is what the rendering has to be good enough for.
+//
+// It is not good enough today. rrule.js ships `toText()` and an
+// `isFullyConvertibleToText()` guard. Over the 1613 distinct rules in this
+// repository's corpus the guard says 1583 are fully convertible -- and among
+// those, 301 rules fall into 35 groups where two rules with *different*
+// occurrence sets are given the identical sentence. For instance
+//
+//   FREQ=DAILY;BYHOUR=9,8               -> "every day at 9 and 8"
+//   FREQ=DAILY;BYHOUR=9,8;BYSETPOS=-1   -> "every day at 9 and 8"
+//
+// which fire twice a day and once a day respectively. A sentence that cannot
+// tell those apart cannot settle an argument about BYSETPOS.
+//
+// So the property this module is built around, and which tests/test_describe.py
+// checks over the whole corpus, is:
+//
+//   INJECTIVITY -- if two rules get the same sentence, they must have the
+//   same expansion from the same DTSTART.
+//
+// plus the weaker but cheaper:
+//
+//   COVERAGE -- every RRULE part present in the input is accounted for by
+//   some clause, and no clause is emitted without a part behind it.
+//
+// Neither property says the English is *well written*; a human has to judge
+// that. What they do say is that it is not quietly dropping the part that
+// changes the answer, which is the failure mode that makes a description
+// worse than none at all.
+//
+// Every clause records the RRULE parts it speaks for, so the page can show
+// which words came from which part of the rule.
+
+const {
+  DAYS, parts, weekday, daysInMonth, fmt, pinned, finer,
+} = __M['src/naive.js'];
+const DAYNAMES = { MO: "Monday", TU: "Tuesday", WE: "Wednesday", TH: "Thursday",
+                   FR: "Friday", SA: "Saturday", SU: "Sunday" };
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+const PERIOD = { YEARLY: "year", MONTHLY: "month", WEEKLY: "week", DAILY: "day",
+                 HOURLY: "hour", MINUTELY: "minute", SECONDLY: "second" };
+const PLURAL = { YEARLY: "years", MONTHLY: "months", WEEKLY: "weeks", DAILY: "days",
+                 HOURLY: "hours", MINUTELY: "minutes", SECONDLY: "seconds" };
+
+const pad = (n) => String(n).padStart(2, "0");
+
+function ordinal(n) {
+  const a = Math.abs(n);
+  const t = a % 100;
+  const suffix = t >= 11 && t <= 13 ? "th" : ["th", "st", "nd", "rd"][a % 10] || "th";
+  return `${a}${suffix}`;
+}
+
+/** "a, b and c" -- the serial comma is deliberate; "1, 2 and 3" reads as a set. */
+function and(xs) {
+  if (xs.length <= 1) return xs.join("");
+  if (xs.length === 2) return `${xs[0]} and ${xs[1]}`;
+  return `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+}
+
+/** Which BY* keys the raw rule text actually carries. Defaults do not count. */
+function presentParts(rrule) {
+  let s = String(rrule).trim();
+  if (s.toUpperCase().startsWith("RRULE:")) s = s.slice(6);
+  const out = new Set();
+  for (const p of s.split(";")) {
+    if (!p.trim()) continue;
+    const k = p.split("=")[0].trim().toUpperCase();
+    if (k) out.add(k);
+  }
+  return out;
+}
+
+// --- the pieces that name a value ----------------------------------------
+
+function monthday(n) {
+  if (n === -1) return "the last day of the month";
+  if (n < 0) return `the ${ordinal(n)}-to-last day of the month`;
+  return `the ${ordinal(n)}`;
+}
+function yearday(n) {
+  if (n === -1) return "the last day of the year";
+  if (n < 0) return `the ${ordinal(n)}-to-last day of the year`;
+  return `day ${n} of the year`;
+}
+function bydayTerm([ord, day], freq, hasBymonth) {
+  const name = DAYNAMES[day];
+  if (ord === null) return name;
+  // An ordinal BYDAY counts inside the month when the rule is monthly, or
+  // yearly with BYMONTH; inside the year when it is yearly without. Anywhere
+  // else RFC 5545 3.3.10 calls it an error, and the expander treats it as
+  // unmatchable rather than silently ignoring it -- so say that.
+  let span;
+  if (freq === "MONTHLY" || (freq === "YEARLY" && hasBymonth)) span = "of the month";
+  else if (freq === "YEARLY") span = "of the year";
+  else return `${name} with the ordinal ${ord >= 0 ? "+" : ""}${ord}, which FREQ=${freq} gives no span to count in, so it can never match`;
+  const which = ord === -1 ? "last" : ord < 0 ? `${ordinal(ord)}-to-last` : ordinal(ord);
+  return `the ${which} ${name} ${span}`;
+}
+function setposTerm(n) {
+  if (n === -1) return "the last";
+  if (n < 0) return `the ${ordinal(n)} from the end`;
+  return `the ${ordinal(n)}`;
+}
+
+/** Is WKST capable of changing this rule's expansion at all? */
+function wkstMatters(r, present) {
+  if (present.has("BYWEEKNO")) return true;
+  if (r.FREQ !== "WEEKLY") return false;
+  return r.INTERVAL > 1 || present.has("BYSETPOS");
+}
+
+// --- the description ------------------------------------------------------
+
+/**
+ * Describe `r` (a parsed rule) as clauses and one sentence.
+ *
+ * `rrule` is the raw text, used only to tell a stated part from a default.
+ * `dtstart` may be omitted; without it the clauses that quote DTSTART's own
+ * values are left out, and the sentence says so rather than inventing them.
+ *
+ * Returns { sentence, clauses: [{ text, parts: [KEY...] }], covered: [KEY...] }.
+ */
+function describe(r, rrule, dtstart = null, opts = {}) {
+  const dateOnly = !!opts.dateOnly;
+  const present = presentParts(rrule);
+  const freq = r.FREQ;
+  const clauses = [];
+  const add = (kind) => (text, ...keys) => clauses.push({ text, kind, parts: keys });
+  const base = add("base"), restrict = add("restrict"), time = add("time"), setpos = add("setpos");
+  const note = (text, ...keys) => clauses.push({ text, kind: "note", parts: keys });
+
+  if (!freq) {
+    const t = "This rule has no FREQ, so it describes nothing; RFC 5545 requires one.";
+    return { sentence: t, headline: t, clauses: [], covered: [] };
+  }
+
+  // 1. how often
+  const every = r.INTERVAL === 1
+    ? `Every ${PERIOD[freq]}`
+    : `Every ${r.INTERVAL} ${PLURAL[freq]}`;
+  base(every, "FREQ", ...(present.has("INTERVAL") ? ["INTERVAL"] : []));
+  if (r.INTERVAL > 1 && dtstart) {
+    note(`The ${PLURAL[freq]} are counted from the one containing DTSTART, not from any calendar boundary.`, "INTERVAL");
+  }
+
+  // 2. the limits, in the order RFC 5545 3.3.10 evaluates them
+  if (present.has("BYMONTH")) {
+    restrict(`in ${and(r.BYMONTH.map((m) => MONTHS[m - 1] || `month ${m}`))}`, "BYMONTH");
+  }
+  if (present.has("BYWEEKNO")) {
+    // The week numbering needs a week start, and the rule may not state one.
+    // Naming Monday without saying where it came from reads as if the rule
+    // said so; RFC 5545 3.3.10 is where it actually comes from.
+    const start = present.has("WKST")
+      ? `starting on ${DAYNAMES[r.WKST]}`
+      : `starting on Monday, the RFC 5545 default, since this rule has no WKST`;
+    restrict(`in ${and(r.BYWEEKNO.map((w) => w < 0 ? `the ${ordinal(w)}-to-last week of the year` : `week ${w}`))}`
+           + ` (weeks numbered ISO-style, ${start})`,
+           "BYWEEKNO", ...(present.has("WKST") ? ["WKST"] : []));
+  }
+  if (present.has("BYYEARDAY")) {
+    restrict(`on ${and(r.BYYEARDAY.map(yearday))}`, "BYYEARDAY");
+  }
+  if (present.has("BYMONTHDAY")) {
+    restrict(`on ${and(r.BYMONTHDAY.map(monthday))}`, "BYMONTHDAY");
+  }
+  if (present.has("BYDAY")) {
+    restrict(`on ${and(r.BYDAY.map((v) => bydayTerm(v, freq, present.has("BYMONTH"))))}`, "BYDAY");
+    // BYDAY beside BYMONTHDAY or BYYEARDAY is the one place the table in
+    // 3.3.10 turns an expanding part into a limiting one (its Notes 1 and 2),
+    // and a comma-separated list of restrictions reads as a union to anyone
+    // who has not memorised that table. Reading it as a union is a mistake
+    // that ships: it is what makes a Friday-the-13th rule fire on every
+    // Friday. Say the intersection out loud.
+    const limiters = ["BYMONTHDAY", "BYYEARDAY"].filter(
+      (k) => present.has(k) && (k === "BYMONTHDAY" ? freq === "MONTHLY" || freq === "YEARLY"
+                                                   : freq === "YEARLY"));
+    if (limiters.length) {
+      // With BYSETPOS the narrowed set is then selected from, so "only
+      // removes" would be false of the output: dropping BYDAY changes which
+      // member BYSETPOS lands on. The claim that survives either way is about
+      // the candidate set, so say which one applies.
+      note(`BYDAY narrows here rather than adding. With ${and(limiters)} present, `
+         + `RFC 5545 section 3.3.10 makes BYDAY limit rather than expand: it contributes `
+         + `no dates of its own, `
+         + (present.has("BYSETPOS")
+            ? `it only narrows the dates ${and(limiters)} chose, and BYSETPOS then selects `
+              + `from what is left — so a change to BYDAY can move which date is picked.`
+            : `and only removes ones ${and(limiters)} already chose, so a date has to `
+              + `satisfy both.`),
+           "BYDAY", ...limiters);
+    }
+  } else if (freq === "WEEKLY" && dtstart) {
+    // The rule pins the weekday even though it never mentions one.
+    restrict(`on ${DAYNAMES[DAYS[weekday(parts(dtstart).ord)]]}`, "FREQ");
+    note("The weekday is not in the rule: FREQ=WEEKLY with no BYDAY takes it from DTSTART.", "FREQ");
+  }
+  for (const [key, noun, fmtv] of [
+    ["BYHOUR", "hour", (v) => `${pad(v)}:00`],
+    ["BYMINUTE", "minute", (v) => `minute ${pad(v)}`],
+    ["BYSECOND", "second", (v) => `second ${pad(v)}`],
+  ]) {
+    if (present.has(key)) time(`${and(r[key].map(fmtv))}`, key);
+    else void noun;
+  }
+
+  // 3. what the unstated finer components inherit. This is the clause no
+  //    other renderer has, and it is the answer to "why does my monthly rule
+  //    not fire on every day of the month".
+  if (dtstart) {
+    const pin = pinned(r, freq);
+    const ds = parts(dtstart);
+    const NOUN = { mo: ["month", (p) => MONTHS[p.mo - 1]],
+                   d: ["day of the month", (p) => `the ${ordinal(p.d)}`],
+                   h: ["hour", (p) => pad(p.h)],
+                   mi: ["minute", (p) => pad(p.mi)],
+                   s: ["second", (p) => pad(p.s)] };
+    const inherited = finer(freq).filter((c) => !pin.has(c))
+      .filter((c) => !(dateOnly && (c === "h" || c === "mi" || c === "s")));
+    if (inherited.length) {
+      const bits = inherited.map((c) => `${NOUN[c][0]} ${NOUN[c][1](ds)}`);
+      note(`Nothing in the rule fixes the ${and(inherited.map((c) => NOUN[c][0]))}, so ${inherited.length === 1 ? "it stays" : "they stay"} at DTSTART's: ${and(bits)}.`,
+           "FREQ");
+    }
+  }
+
+  // 4. BYSETPOS last, because it selects from what everything above produced,
+  //    and name the period it selects within -- that is the whole of the
+  //    disagreement it usually causes.
+  if (present.has("BYSETPOS")) {
+    setpos(`and then only ${and(r.BYSETPOS.map(setposTerm))} of the times that ${PERIOD[freq]} produces`,
+           "BYSETPOS");
+  }
+
+  // 5. WKST, but only when it can change the answer. Saying "weeks start on
+  //    Monday" about a rule where the week boundary is never consulted is
+  //    true and misleading.
+  if (present.has("WKST") && !present.has("BYWEEKNO")) {
+    if (wkstMatters(r, present)) {
+      note(`Weeks start on ${DAYNAMES[r.WKST]}, which moves the ${PERIOD[freq]} boundaries this rule counts in.`, "WKST");
+    } else {
+      note(`WKST=${r.WKST} is stated but cannot change this rule's occurrences.`, "WKST");
+    }
+  }
+
+  // 6. the stop condition
+  // 6. the stop condition, as its own sentence -- it is a separate fact about
+  //    the rule, and burying it in a comma list is how it gets skimmed past.
+  const stop = [];
+  if (present.has("COUNT")) stop.push({ text: `Stops after ${r.COUNT} occurrence${r.COUNT === 1 ? "" : "s"} in total.`, parts: ["COUNT"] });
+  if (present.has("UNTIL")) stop.push({ text: `No occurrences after ${fmt(r.UNTIL, dateOnly)}.`, parts: ["UNTIL"] });
+  if (!stop.length) stop.push({ text: "Repeats forever.", parts: ["FREQ"] });
+  for (const st of stop) clauses.push({ ...st, kind: "stop" });
+
+  const pick = (k) => clauses.filter((c) => c.kind === k).map((c) => c.text);
+  const times = pick("time"), restricts = pick("restrict"), sp = pick("setpos");
+  let head = pick("base")[0];
+  if (times.length) head += ` at ${times.join(", ")}`;
+  if (restricts.length) head += `, but only ${restricts.join(", ")}`;
+  if (sp.length) head += `, ${sp.join(", ")}`;
+  head += ".";
+  const sentence = [head, ...pick("note"), ...pick("stop")].join(" ");
+  const covered = [...new Set(clauses.flatMap((c) => c.parts))];
+  return { sentence, headline: head, clauses, covered: covered.sort() };
+}
+
+return {ordinal, presentParts, wkstMatters, describe};
+})();
+
+// ---- src/compare.js ----------------------------------------------------
+__M['src/compare.js'] = (() => {
+// What did that edit actually do to my schedule?
+//
+// The failure this answers is not hypothetical. Superset's schedule picker
+// silently rewrote `FREQ=DAILY;BYHOUR=9,17` as `FREQ=DAILY;BYHOUR=9` when the
+// user touched an unrelated field, turning a twice-daily job into a
+// once-daily one with nothing on screen to show it (superset-sh/superset,
+// issue 5670). The same shape recurs wherever a UI round-trips a rule through
+// a simplified model: the rule that comes back is a different rule, and the
+// difference is invisible because both render as reasonable-looking RRULEs.
+//
+// Two rules, one DTSTART, and the question is exactly: which dates did I
+// lose, which did I gain, and which are unchanged.
+//
+// THE CAP IS NOT A PROPERTY OF THE RULES. Each expansion is truncated at the
+// occurrence count the user asked for. Two truncated lists say nothing about
+// what happens after the earlier of their two last occurrences, so the
+// comparison is restricted to the window both lists cover and that window is
+// stated on the page. Without this a rule that merely fires more often looks
+// like a rule that drops every later date.
+const { expand } = __M['src/naive.js'];
+/**
+ * Compare the recurrence sets of two parsed rules from one DTSTART.
+ *
+ * @param {object} a    parsed rule, as from parse()
+ * @param {object} b    parsed rule
+ * @param {number} dtstart
+ * @param {{limit?: number, maxSteps?: number}} opts
+ * @returns {{
+ *   both: number[], onlyA: number[], onlyB: number[],
+ *   same: boolean, complete: boolean, until: number|null,
+ *   countA: number, countB: number
+ * }}
+ */
+function compareRules(a, b, dtstart, opts = {}) {
+  const limit = opts.limit || 24;
+  const maxSteps = opts.maxSteps || 8e6;
+  const A = expand(a, dtstart, { limit, maxSteps });
+  const B = expand(b, dtstart, { limit, maxSteps });
+
+  // A list shorter than the cap is the whole recurrence set, and covers every
+  // future date. A list at the cap was cut off, and covers nothing after its
+  // own last occurrence.
+  const horizon = (occ) => (occ.length < limit ? Infinity
+                            : occ.length ? occ[occ.length - 1] : Infinity);
+  const until = Math.min(horizon(A), horizon(B));
+  const complete = until === Infinity;
+
+  const inWindow = (occ) => occ.filter((t) => t <= until);
+  const wa = inWindow(A), wb = inWindow(B);
+  const sb = new Set(wb), sa = new Set(wa);
+
+  const both = wa.filter((t) => sb.has(t));
+  const onlyA = wa.filter((t) => !sb.has(t));
+  const onlyB = wb.filter((t) => !sa.has(t));
+
+  return {
+    both, onlyA, onlyB,
+    same: onlyA.length === 0 && onlyB.length === 0,
+    complete,
+    until: complete ? null : until,
+    countA: wa.length,
+    countB: wb.length,
+  };
+}
+
+const n = (k, word) => `${k} ${word}${k === 1 ? "" : "s"}`;
+
+/**
+ * One sentence a reader can act on, plus the qualification that sentence
+ * depends on. Kept apart from compareRules() so the facts can be checked by a
+ * test without the prose.
+ *
+ * @param {ReturnType<typeof compareRules>} c
+ * @param {(t: number) => string} fmtDate  renders one occurrence for display
+ */
+function summarize(c, fmtDate) {
+  const scope = c.complete
+    ? "over the whole of both recurrence sets"
+    : `up to ${fmtDate(c.until)}, which is as far as both lists reach`;
+
+  let headline;
+  if (c.same && c.countA === 0) {
+    headline = "Neither rule produces any dates here.";
+  } else if (c.same) {
+    headline = "Both rules produce exactly the same dates.";
+  } else if (c.onlyA.length && !c.onlyB.length) {
+    headline = `The second rule drops ${n(c.onlyA.length, "date")} and adds none.`;
+  } else if (c.onlyB.length && !c.onlyA.length) {
+    headline = `The second rule adds ${n(c.onlyB.length, "date")} and drops none.`;
+  } else {
+    headline = `The second rule drops ${n(c.onlyA.length, "date")} and adds ` +
+               `${n(c.onlyB.length, "date")}.`;
+  }
+
+  const notes = [];
+  notes.push(c.same
+    ? `Checked ${scope}.`
+    : `${n(c.both.length, "date")} unchanged. Compared ${scope}.`);
+  if (!c.complete) {
+    notes.push("Both rules were cut off at the occurrence count you asked for, " +
+               "so nothing here is a claim about dates after that. Raise the " +
+               "count to compare further.");
+  }
+  return { headline, notes };
+}
+
+return {compareRules, summarize};
+})();
+
+// ---- app.js ------------------------------------------------------------
+__M['app.js'] = (() => {
+const { expand, parse, parseDtstart, parts, fmt, weekday, daysInMonth, toOrd, DAYS, Budget } = __M['src/naive.js'];
+const { violations, NOT_CHECKED } = __M['src/validity.js'];
+const { analyze } = __M['src/diagnostics.js'];
+const { parseInput } = __M['src/icalinput.js'];
+const { why, parseQuery, resolveQuery } = __M['src/why.js'];
+const { describe } = __M['src/describe.js'];
+const { compareRules, summarize } = __M['src/compare.js'];
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, text) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+};
+
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+                "August", "September", "October", "November", "December"];
+const DAYNAMES = { MO: "Mon", TU: "Tue", WE: "Wed", TH: "Thu", FR: "Fri", SA: "Sat", SU: "Sun" };
+const MAX_GRIDS = 14;
+
+// --- shareable state in the URL fragment ---------------------------------
+// A developer debugging this with a colleague wants to send them the case,
+// not a screenshot. Everything needed is in the fragment, which never leaves
+// the browser.
+function readHash() {
+  const p = new URLSearchParams(location.hash.replace(/^#/, ""));
+  if (p.get("rrule")) $("rrule").value = p.get("rrule");
+  if (p.get("dtstart")) $("dtstart").value = p.get("dtstart");
+  if (p.get("limit")) $("limit").value = p.get("limit");
+  if (p.get("why")) $("why").value = p.get("why");
+  if (p.get("cmp")) $("cmp").value = p.get("cmp");
+}
+function writeHash() {
+  const fields = {
+    rrule: $("rrule").value.trim(),
+    dtstart: $("dtstart").value.trim(),
+    limit: $("limit").value,
+  };
+  // Only carried when it is asked, so an ordinary expansion still shares as a
+  // short link.
+  if ($("why").value.trim()) fields.why = $("why").value.trim();
+  if ($("cmp").value.trim()) fields.cmp = $("cmp").value.trim();
+  const p = new URLSearchParams(fields);
+  history.replaceState(null, "", "#" + p.toString());
+}
+
+// --- rendering ------------------------------------------------------------
+
+function occurrenceList(occ, dateOnly, dtstart) {
+  const wrap = el("div", "occ-list");
+  let prev = null;
+  for (const t of occ) {
+    const p = parts(t);
+    const line = el("div", "occ");
+    line.appendChild(el("span", "occ-day", DAYNAMES[DAYS[weekday(p.ord)]]));
+    line.appendChild(el("span", "occ-date", `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`));
+    if (!dateOnly) {
+      line.appendChild(el("span", "occ-time",
+        `${String(p.h).padStart(2, "0")}:${String(p.mi).padStart(2, "0")}:${String(p.s).padStart(2, "0")}`));
+    }
+    if (prev !== null) {
+      const days = Math.floor(t / 86400) - Math.floor(prev / 86400);
+      line.appendChild(el("span", "occ-gap", days === 0 ? "same day" : `+${days}d`));
+    } else if (t === dtstart) {
+      line.appendChild(el("span", "occ-tag", "DTSTART"));
+    }
+    if (prev !== null && t === dtstart) line.appendChild(el("span", "occ-tag", "DTSTART"));
+    prev = t;
+    wrap.appendChild(line);
+  }
+  return wrap;
+}
+
+function monthGrids(occ, dtstart, wkst) {
+  const days = new Set(occ.map((t) => Math.floor(t / 86400)));
+  const months = [];
+  const seen = new Set();
+  for (const t of occ) {
+    const p = parts(t);
+    const key = p.y * 12 + p.mo - 1;
+    if (!seen.has(key)) { seen.add(key); months.push([p.y, p.mo]); }
+  }
+  const shown = months.slice(0, MAX_GRIDS);
+  const wrap = el("div", "grids");
+  const order = [];
+  const start = DAYS.indexOf(wkst) < 0 ? 0 : DAYS.indexOf(wkst);
+  for (let i = 0; i < 7; i++) order.push(DAYS[(start + i) % 7]);
+
+  for (const [y, mo] of shown) {
+    const box = el("section", "month");
+    box.appendChild(el("h3", null, `${MONTHS[mo - 1]} ${y}`));
+    const grid = el("div", "grid");
+    for (const d of order) grid.appendChild(el("div", "dow", DAYNAMES[d]));
+    const first = toOrd(y, mo, 1);
+    const lead = (weekday(first) - start + 7) % 7;
+    for (let i = 0; i < lead; i++) grid.appendChild(el("div", "pad"));
+    for (let d = 1; d <= daysInMonth(y, mo); d++) {
+      const ord = toOrd(y, mo, d);
+      const cell = el("div", "cell", String(d));
+      if (days.has(ord)) cell.classList.add("hit");
+      if (ord === Math.floor(dtstart / 86400)) cell.classList.add("start");
+      grid.appendChild(cell);
+    }
+    box.appendChild(grid);
+    wrap.appendChild(box);
+  }
+  if (months.length > shown.length) {
+    wrap.appendChild(el("p", "more", `…and ${months.length - shown.length} more months in the list above.`));
+  }
+  return wrap;
+}
+
+function noteBox(note) {
+  const box = el("article", `note note-${note.severity}`);
+  const head = el("h3");
+  head.appendChild(el("span", "badge",
+    note.severity === "error" ? "problem" : note.severity === "diverges" ? "implementations disagree" : "worth knowing"));
+  head.appendChild(document.createTextNode(note.title));
+  box.appendChild(head);
+  box.appendChild(el("p", null, note.body));
+  if (note.compare) {
+    const cmp = el("div", "compare");
+    cmp.appendChild(el("h4", null, note.compare.label));
+    const list = el("div", "compare-dates");
+    for (const s of note.compare.occurrences.slice(0, 12)) list.appendChild(el("code", null, s));
+    cmp.appendChild(list);
+    box.appendChild(cmp);
+  }
+  if (note.evidence && note.evidence.length) {
+    const ev = el("p", "evidence");
+    ev.appendChild(document.createTextNode("Evidence: "));
+    note.evidence.forEach((e, i) => {
+      if (i) ev.appendChild(document.createTextNode(" · "));
+      const a = el("a", null, e.label);
+      a.href = e.url; a.rel = "noopener"; a.target = "_blank";
+      ev.appendChild(a);
+    });
+    box.appendChild(ev);
+  }
+  return box;
+}
+
+// --- the date explainer ---------------------------------------------------
+
+/**
+ * "Is this what you meant?" -- the rule as one English sentence.
+ *
+ * Shown above the dates, because it is the thing a reader can check against
+ * their own intention without reading a list of timestamps. The qualifying
+ * notes are kept visually separate from the headline: the headline is the
+ * rule, the notes are the parts of the behaviour the rule does not state.
+ *
+ * What makes this safe to show is not the wording but
+ * `tests/test_describe.py`, which requires that no two corpus rules with
+ * different occurrences ever get the same sentence.
+ */
+function sayIt(rrule, r, ds) {
+  const box = $("say-out");
+  let d;
+  try { d = describe(r, rrule, ds.t, { dateOnly: ds.dateOnly }); }
+  catch { return; }
+  const art = el("article", "say");
+  art.appendChild(el("h2", "say-head", d.headline));
+  const notes = d.clauses.filter((c) => c.kind === "note" || c.kind === "stop");
+  if (notes.length) {
+    const ul = el("ul", "say-notes");
+    for (const c of notes) ul.appendChild(el("li", null, c.text));
+    art.appendChild(ul);
+  }
+  box.appendChild(art);
+}
+
+function whyBox(w) {
+  const box = el("article", "why " + (w.status === "occurrence" ? "yes"
+    : w.status === "inconsistent" ? "broken" : "no"));
+  box.appendChild(el("h3", null, w.headline));
+  if (w.body) box.appendChild(el("p", null, w.body));
+  if (w.checks && w.checks.length) {
+    const ul = el("ul", "checks");
+    for (const c of w.checks) {
+      const li = el("li", c.ok === false ? "check-no" : "check-yes");
+      li.appendChild(el("span", "mark", c.ok === false ? "\u2717" : "\u2713"));
+      const text = el("span");
+      // Rule parts are set in code type; the checks that are prose ("the
+      // minute comes from DTSTART") are a sentence, not a token, and reading
+      // them as code makes them look like something the user could have typed.
+      text.appendChild(el("span", /^(FREQ|INTERVAL|BY)/.test(c.title) ? "check-part" : "check-name", c.title));
+      text.appendChild(document.createTextNode(" \u2014 "));
+      text.appendChild(el("span", "check-detail", c.detail));
+      li.appendChild(text);
+      ul.appendChild(li);
+    }
+    box.appendChild(ul);
+  }
+  if (w.evidence && w.evidence.length) {
+    const ev = el("p", "evidence");
+    ev.appendChild(document.createTextNode("Evidence: "));
+    w.evidence.forEach((e, i) => {
+      if (i) ev.appendChild(document.createTextNode(" \u00b7 "));
+      const a = el("a", null, e.label);
+      a.href = e.url; a.rel = "noopener"; a.target = "_blank";
+      ev.appendChild(a);
+    });
+    box.appendChild(ev);
+  }
+  return box;
+}
+
+// The answer goes ABOVE the divergence notes and the dates. Someone who typed
+// a date into this box asked one question, and it is the only thing on the
+// page they are looking for.
+function runWhy(rrule, ds, r) {
+  const box = $("why-out");
+  box.textContent = "";
+  const raw = $("why").value.trim();
+  if (!raw) return;
+  let q;
+  try {
+    q = parseQuery(raw, ds.dateOnly);
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      body: "Dates go in as 20260227 or 20260227T090000; a hyphenated 2026-02-27 works too.",
+      checks: [], evidence: [] }));
+    return;
+  }
+  // A DATE-valued DTSTART has no time of day to compare against, so a time
+  // typed here would be measured against a midnight that is an artefact of
+  // the value type rather than anything the user wrote.
+  const dropped = ds.dateOnly && q.hadTime;
+  let w, resolved;
+  try {
+    resolved = resolveQuery(r, ds.t, { ...q, t: ds.dateOnly ? Math.floor(q.t / 86400) * 86400 : q.t },
+                            ds.dateOnly);
+    w = why(r, ds.t, resolved.t, { dateOnly: ds.dateOnly, maxSteps: 2e6 });
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      checks: [], evidence: [] }));
+    return;
+  }
+  if (resolved.note) w = { ...w, body: `${resolved.note} ${w.body || ""}`.trim() };
+  if (dropped) {
+    w = { ...w, body: (w.body || "") + " (DTSTART is a DATE, with no time of day, so the time " +
+          "you typed was not used \u2014 this rule can only produce whole dates.)" };
+  }
+  box.appendChild(whyBox(w));
+}
+
+// --- comparing two rules ---------------------------------------------------
+
+/**
+ * "What did that edit actually do?"
+ *
+ * A schedule picker that round-trips a rule through a simplified model can
+ * hand back a different rule, and both look like reasonable RRULEs; the user
+ * finds out when a run does not happen. This box answers it in dates.
+ *
+ * The qualification carried in `summarize()` is not decoration. Both
+ * expansions stop at the occurrence count asked for, so a comparison that ran
+ * past the earlier of the two last occurrences would report the more frequent
+ * rule as gaining dates it does not gain. See `tests/test_compare.py`.
+ */
+function dateColumn(title, occ, cls, dateOnly) {
+  const col = el("div", "cmp-col " + cls);
+  col.appendChild(el("h4", null, title));
+  const list = el("div", "cmp-dates");
+  for (const t of occ.slice(0, 24)) {
+    const p = parts(t);
+    list.appendChild(el("code", null,
+      `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}` +
+      (dateOnly ? "" : ` ${String(p.h).padStart(2, "0")}:${String(p.mi).padStart(2, "0")}`)));
+  }
+  if (occ.length > 24) list.appendChild(el("span", "more", `…and ${occ.length - 24} more`));
+  col.appendChild(list);
+  return col;
+}
+
+function runCompare(a, ds, limit) {
+  const box = $("cmp-out");
+  box.textContent = "";
+  const raw = $("cmp").value.trim();
+  if (!raw) return;
+  const other = (parseInput(raw).rrule || raw).replace(/^RRULE:/i, "").trim();
+  let b, c;
+  try {
+    b = parse(other);
+    c = compareRules(a, b, ds.t, { limit, maxSteps: 8e6 });
+  } catch (e) {
+    const bad = el("article", "cmp bad");
+    bad.appendChild(el("h3", null, "The second rule could not be expanded"));
+    bad.appendChild(el("p", null, String(e.message || e)));
+    box.appendChild(bad);
+    return;
+  }
+  const art = el("article", "cmp " + (c.same ? "cmp-same" : "cmp-diff"));
+  const sum = summarize(c, (t) => {
+    const p = parts(t);
+    return `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+  });
+  art.appendChild(el("h2", null, sum.headline));
+  for (const n of sum.notes) art.appendChild(el("p", null, n));
+  if (!c.same) {
+    const cols = el("div", "cmp-cols");
+    if (c.onlyA.length) cols.appendChild(dateColumn("Dropped", c.onlyA, "dropped", ds.dateOnly));
+    if (c.onlyB.length) cols.appendChild(dateColumn("Added", c.onlyB, "added", ds.dateOnly));
+    art.appendChild(cols);
+  }
+  art.appendChild(el("p", "cmp-foot",
+    "Both rules are expanded from the same DTSTART — the one above. A second " +
+    "DTSTART in anything pasted here is ignored, because two rules starting at " +
+    "different instants are not the same edit."));
+  box.appendChild(art);
+}
+
+// --- the run --------------------------------------------------------------
+
+// DTSTART is derived-and-overridable: a paste that carries one fills the box,
+// but a value the user typed there themselves survives further typing in the
+// paste area. `lastDerived` is how the two are told apart -- if the box still
+// holds exactly what the last paste put there, the paste still owns it.
+let lastDerived = null;
+
+function run() {
+  const input = parseInput($("rrule").value);
+  const rrule = (input.rrule || "").replace(/^RRULE:/i, "");
+  if (input.dtstart && input.dtstart !== lastDerived &&
+      ($("dtstart").value.trim() === (lastDerived || "") || !$("dtstart").value.trim())) {
+    $("dtstart").value = input.dtstart;
+    lastDerived = input.dtstart;
+  }
+  const dtstartRaw = $("dtstart").value.trim();
+  const limit = Math.max(1, Math.min(500, parseInt($("limit").value, 10) || 24));
+  const errBox = $("error"), notes = $("notes"), result = $("result");
+  errBox.hidden = true; errBox.textContent = "";
+  notes.textContent = ""; result.textContent = ""; $("why-out").textContent = "";
+  $("say-out").textContent = ""; $("cmp-out").textContent = "";
+
+  // Anything the input parser read and set aside is said before the dates, not
+  // after them. A caveat under the answer is a caveat the reader has already
+  // acted on.
+  for (const n of input.notes || []) {
+    notes.appendChild(noteBox({
+      severity: n.level === "error" ? "error" : "info",
+      title: n.title || "About this input",
+      body: n.text,
+    }));
+  }
+  if (!rrule) { writeHash(); return; }
+  writeHash();
+
+  // Validity is checked first and independently of the expander: a rule can
+  // violate a MUST NOT of 3.3.10 and still expand to something.
+  let vios = [];
+  try { vios = violations(rrule); } catch { /* reported by the parser below */ }
+  for (const v of vios) {
+    notes.appendChild(noteBox({
+      severity: "error",
+      title: `${v.part}: ${v.detail}`,
+      body: `RFC 5545 §3.3.10: “${v.rfc}” Implementations differ on what they do with a rule ` +
+            "that breaks this — some reject it, some silently ignore the offending part, " +
+            "some apply it anyway. The dates below are one reading, not an authority.",
+      evidence: [{ label: "RFC 5545 §3.3.10", url: "https://www.rfc-editor.org/rfc/rfc5545.html#section-3.3.10" }],
+    }));
+  }
+
+  let ds, occ, r;
+  try {
+    ds = parseDtstart(dtstartRaw);
+    r = parse(rrule);
+    occ = expand(r, ds.t, { limit, maxSteps: 8e6 });
+  } catch (e) {
+    errBox.hidden = false;
+    errBox.textContent = e instanceof Budget
+      ? `This rule is too sparse to expand here: ${e.message}. The expander is a brute force ` +
+        "over candidate times, which is what makes it easy to check against the specification " +
+        "and slow on rules that almost never fire. Try a nearer DTSTART or fewer occurrences."
+      : String(e.message || e);
+    return;
+  }
+
+  sayIt(rrule, r, ds);
+  runCompare(r, ds, limit);
+  runWhy(rrule, ds, r);
+
+  // Count what is on the page before the divergence notes, so the "nothing
+  // applies" box below is decided by whether *analyze* said anything -- not by
+  // whether the page happens to be empty, which input notes now also affect.
+  const beforeDiagnostics = notes.children.length;
+  // ...and whether the input itself was reported as a problem. The "nothing
+  // applies" box is about *measured divergences between implementations*,
+  // which is a different axis from "your TZID was dropped". Printing the
+  // reassurance directly under a red box reads as withdrawing it.
+  const inputProblem = (input.notes || []).some((n) => n.level === "error");
+  for (const note of analyze({ rrule, dtstart: ds.t, dateOnly: ds.dateOnly, occurrences: occ, limit })) {
+    notes.appendChild(noteBox(note));
+  }
+  if (notes.children.length === beforeDiagnostics && !inputProblem) {
+    const ok = el("article", "note note-clear");
+    ok.appendChild(el("h3", null, "No known divergence applies to this rule."));
+    ok.appendChild(el("p", null,
+      "Nothing this tool knows about affects it: no MUST NOT of §3.3.10 is broken, DTSTART is " +
+      "the rule's own first occurrence, and the answer does not change under any reading or " +
+      "WKST value this tool checks. That is not a proof of agreement — it is the absence of " +
+      "the specific disagreements listed in the findings."));
+    notes.appendChild(ok);
+  }
+
+  if (occ.length) {
+    const h = el("h2", null, `${occ.length} occurrence${occ.length === 1 ? "" : "s"}`);
+    if (occ.length < limit) h.appendChild(el("span", "hint", " — the whole recurrence set"));
+    result.appendChild(h);
+    result.appendChild(occurrenceList(occ, ds.dateOnly, ds.t));
+    result.appendChild(monthGrids(occ, ds.t, r.WKST));
+  }
+
+  const caveat = el("details", "caveat");
+  caveat.appendChild(el("summary", null, "What this tool does not check"));
+  const ul = el("ul");
+  for (const s of NOT_CHECKED) ul.appendChild(el("li", null, s));
+  ul.appendChild(el("li", null,
+    "time zones and DST — every date here is floating local time, exactly as typed"));
+  ul.appendChild(el("li", null,
+    "EXDATE, RDATE and EXRULE, and any other component of the recurrence set besides this one RRULE"));
+  ul.appendChild(el("li", null,
+    "anything more than about thirty years after DTSTART \u2014 the list stops there even when " +
+    "fewer occurrences than you asked for have been found. \u201cExplain one date\u201d is not " +
+    "bounded that way and will answer past it."));
+  ul.appendChild(el("li", null,
+    "divergences that no finding has measured yet. Absence of a note is not agreement."));
+  caveat.appendChild(ul);
+  result.appendChild(caveat);
+}
+
+// --- wiring ---------------------------------------------------------------
+let timer = null;
+const schedule = () => { clearTimeout(timer); timer = setTimeout(run, 120); };
+const autosize = () => {
+  const t = $("rrule");
+  t.style.height = "auto";
+  t.style.height = Math.min(t.scrollHeight + 2, 340) + "px";
+};
+for (const id of ["rrule", "dtstart", "limit", "why", "cmp"]) $(id).addEventListener("input", schedule);
+$("rrule").addEventListener("input", autosize);
+$("form").addEventListener("submit", (e) => { e.preventDefault(); run(); });
+for (const b of document.querySelectorAll(".ex")) {
+  b.addEventListener("click", () => {
+    $("rrule").value = b.dataset.r;
+    $("dtstart").value = b.dataset.d;
+    // An example may carry the question it is an example of; otherwise a
+    // question about the previous rule is not about this one.
+    $("why").value = b.dataset.w || "";
+    $("cmp").value = b.dataset.c || "";
+    lastDerived = null;      // the example owns both boxes now
+    run();
+    autosize();
+  });
+}
+window.addEventListener("hashchange", () => { readHash(); run(); autosize(); });
+readHash();
+run();
+autosize();
+
+return {};
+})();
+</script>
+</body>
+</html>

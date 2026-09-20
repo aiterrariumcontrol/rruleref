@@ -1,6 +1,10 @@
 import { expand, parse, parseDtstart, parts, fmt, weekday, daysInMonth, toOrd, DAYS, Budget } from "./src/naive.js";
 import { violations, NOT_CHECKED } from "./src/validity.js";
 import { analyze } from "./src/diagnostics.js";
+import { parseInput } from "./src/icalinput.js";
+import { why, parseQuery, resolveQuery } from "./src/why.js";
+import { describe } from "./src/describe.js";
+import { compareRules, summarize } from "./src/compare.js";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, cls, text) => {
@@ -24,13 +28,20 @@ function readHash() {
   if (p.get("rrule")) $("rrule").value = p.get("rrule");
   if (p.get("dtstart")) $("dtstart").value = p.get("dtstart");
   if (p.get("limit")) $("limit").value = p.get("limit");
+  if (p.get("why")) $("why").value = p.get("why");
+  if (p.get("cmp")) $("cmp").value = p.get("cmp");
 }
 function writeHash() {
-  const p = new URLSearchParams({
+  const fields = {
     rrule: $("rrule").value.trim(),
     dtstart: $("dtstart").value.trim(),
     limit: $("limit").value,
-  });
+  };
+  // Only carried when it is asked, so an ordinary expansion still shares as a
+  // short link.
+  if ($("why").value.trim()) fields.why = $("why").value.trim();
+  if ($("cmp").value.trim()) fields.cmp = $("cmp").value.trim();
+  const p = new URLSearchParams(fields);
   history.replaceState(null, "", "#" + p.toString());
 }
 
@@ -130,16 +141,211 @@ function noteBox(note) {
   return box;
 }
 
+// --- the date explainer ---------------------------------------------------
+
+/**
+ * "Is this what you meant?" -- the rule as one English sentence.
+ *
+ * Shown above the dates, because it is the thing a reader can check against
+ * their own intention without reading a list of timestamps. The qualifying
+ * notes are kept visually separate from the headline: the headline is the
+ * rule, the notes are the parts of the behaviour the rule does not state.
+ *
+ * What makes this safe to show is not the wording but
+ * `tests/test_describe.py`, which requires that no two corpus rules with
+ * different occurrences ever get the same sentence.
+ */
+function sayIt(rrule, r, ds) {
+  const box = $("say-out");
+  let d;
+  try { d = describe(r, rrule, ds.t, { dateOnly: ds.dateOnly }); }
+  catch { return; }
+  const art = el("article", "say");
+  art.appendChild(el("h2", "say-head", d.headline));
+  const notes = d.clauses.filter((c) => c.kind === "note" || c.kind === "stop");
+  if (notes.length) {
+    const ul = el("ul", "say-notes");
+    for (const c of notes) ul.appendChild(el("li", null, c.text));
+    art.appendChild(ul);
+  }
+  box.appendChild(art);
+}
+
+function whyBox(w) {
+  const box = el("article", "why " + (w.status === "occurrence" ? "yes"
+    : w.status === "inconsistent" ? "broken" : "no"));
+  box.appendChild(el("h3", null, w.headline));
+  if (w.body) box.appendChild(el("p", null, w.body));
+  if (w.checks && w.checks.length) {
+    const ul = el("ul", "checks");
+    for (const c of w.checks) {
+      const li = el("li", c.ok === false ? "check-no" : "check-yes");
+      li.appendChild(el("span", "mark", c.ok === false ? "\u2717" : "\u2713"));
+      const text = el("span");
+      // Rule parts are set in code type; the checks that are prose ("the
+      // minute comes from DTSTART") are a sentence, not a token, and reading
+      // them as code makes them look like something the user could have typed.
+      text.appendChild(el("span", /^(FREQ|INTERVAL|BY)/.test(c.title) ? "check-part" : "check-name", c.title));
+      text.appendChild(document.createTextNode(" \u2014 "));
+      text.appendChild(el("span", "check-detail", c.detail));
+      li.appendChild(text);
+      ul.appendChild(li);
+    }
+    box.appendChild(ul);
+  }
+  if (w.evidence && w.evidence.length) {
+    const ev = el("p", "evidence");
+    ev.appendChild(document.createTextNode("Evidence: "));
+    w.evidence.forEach((e, i) => {
+      if (i) ev.appendChild(document.createTextNode(" \u00b7 "));
+      const a = el("a", null, e.label);
+      a.href = e.url; a.rel = "noopener"; a.target = "_blank";
+      ev.appendChild(a);
+    });
+    box.appendChild(ev);
+  }
+  return box;
+}
+
+// The answer goes ABOVE the divergence notes and the dates. Someone who typed
+// a date into this box asked one question, and it is the only thing on the
+// page they are looking for.
+function runWhy(rrule, ds, r) {
+  const box = $("why-out");
+  box.textContent = "";
+  const raw = $("why").value.trim();
+  if (!raw) return;
+  let q;
+  try {
+    q = parseQuery(raw, ds.dateOnly);
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      body: "Dates go in as 20260227 or 20260227T090000; a hyphenated 2026-02-27 works too.",
+      checks: [], evidence: [] }));
+    return;
+  }
+  // A DATE-valued DTSTART has no time of day to compare against, so a time
+  // typed here would be measured against a midnight that is an artefact of
+  // the value type rather than anything the user wrote.
+  const dropped = ds.dateOnly && q.hadTime;
+  let w, resolved;
+  try {
+    resolved = resolveQuery(r, ds.t, { ...q, t: ds.dateOnly ? Math.floor(q.t / 86400) * 86400 : q.t },
+                            ds.dateOnly);
+    w = why(r, ds.t, resolved.t, { dateOnly: ds.dateOnly, maxSteps: 2e6 });
+  } catch (e) {
+    box.appendChild(whyBox({ status: "inconsistent", headline: String(e.message || e),
+      checks: [], evidence: [] }));
+    return;
+  }
+  if (resolved.note) w = { ...w, body: `${resolved.note} ${w.body || ""}`.trim() };
+  if (dropped) {
+    w = { ...w, body: (w.body || "") + " (DTSTART is a DATE, with no time of day, so the time " +
+          "you typed was not used \u2014 this rule can only produce whole dates.)" };
+  }
+  box.appendChild(whyBox(w));
+}
+
+// --- comparing two rules ---------------------------------------------------
+
+/**
+ * "What did that edit actually do?"
+ *
+ * A schedule picker that round-trips a rule through a simplified model can
+ * hand back a different rule, and both look like reasonable RRULEs; the user
+ * finds out when a run does not happen. This box answers it in dates.
+ *
+ * The qualification carried in `summarize()` is not decoration. Both
+ * expansions stop at the occurrence count asked for, so a comparison that ran
+ * past the earlier of the two last occurrences would report the more frequent
+ * rule as gaining dates it does not gain. See `tests/test_compare.py`.
+ */
+function dateColumn(title, occ, cls, dateOnly) {
+  const col = el("div", "cmp-col " + cls);
+  col.appendChild(el("h4", null, title));
+  const list = el("div", "cmp-dates");
+  for (const t of occ.slice(0, 24)) {
+    const p = parts(t);
+    list.appendChild(el("code", null,
+      `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}` +
+      (dateOnly ? "" : ` ${String(p.h).padStart(2, "0")}:${String(p.mi).padStart(2, "0")}`)));
+  }
+  if (occ.length > 24) list.appendChild(el("span", "more", `…and ${occ.length - 24} more`));
+  col.appendChild(list);
+  return col;
+}
+
+function runCompare(a, ds, limit) {
+  const box = $("cmp-out");
+  box.textContent = "";
+  const raw = $("cmp").value.trim();
+  if (!raw) return;
+  const other = (parseInput(raw).rrule || raw).replace(/^RRULE:/i, "").trim();
+  let b, c;
+  try {
+    b = parse(other);
+    c = compareRules(a, b, ds.t, { limit, maxSteps: 8e6 });
+  } catch (e) {
+    const bad = el("article", "cmp bad");
+    bad.appendChild(el("h3", null, "The second rule could not be expanded"));
+    bad.appendChild(el("p", null, String(e.message || e)));
+    box.appendChild(bad);
+    return;
+  }
+  const art = el("article", "cmp " + (c.same ? "cmp-same" : "cmp-diff"));
+  const sum = summarize(c, (t) => {
+    const p = parts(t);
+    return `${p.y}-${String(p.mo).padStart(2, "0")}-${String(p.d).padStart(2, "0")}`;
+  });
+  art.appendChild(el("h2", null, sum.headline));
+  for (const n of sum.notes) art.appendChild(el("p", null, n));
+  if (!c.same) {
+    const cols = el("div", "cmp-cols");
+    if (c.onlyA.length) cols.appendChild(dateColumn("Dropped", c.onlyA, "dropped", ds.dateOnly));
+    if (c.onlyB.length) cols.appendChild(dateColumn("Added", c.onlyB, "added", ds.dateOnly));
+    art.appendChild(cols);
+  }
+  art.appendChild(el("p", "cmp-foot",
+    "Both rules are expanded from the same DTSTART — the one above. A second " +
+    "DTSTART in anything pasted here is ignored, because two rules starting at " +
+    "different instants are not the same edit."));
+  box.appendChild(art);
+}
+
 // --- the run --------------------------------------------------------------
 
+// DTSTART is derived-and-overridable: a paste that carries one fills the box,
+// but a value the user typed there themselves survives further typing in the
+// paste area. `lastDerived` is how the two are told apart -- if the box still
+// holds exactly what the last paste put there, the paste still owns it.
+let lastDerived = null;
+
 function run() {
-  const rrule = $("rrule").value.trim().replace(/^RRULE:/i, "");
+  const input = parseInput($("rrule").value);
+  const rrule = (input.rrule || "").replace(/^RRULE:/i, "");
+  if (input.dtstart && input.dtstart !== lastDerived &&
+      ($("dtstart").value.trim() === (lastDerived || "") || !$("dtstart").value.trim())) {
+    $("dtstart").value = input.dtstart;
+    lastDerived = input.dtstart;
+  }
   const dtstartRaw = $("dtstart").value.trim();
   const limit = Math.max(1, Math.min(500, parseInt($("limit").value, 10) || 24));
   const errBox = $("error"), notes = $("notes"), result = $("result");
   errBox.hidden = true; errBox.textContent = "";
-  notes.textContent = ""; result.textContent = "";
-  if (!rrule) return;
+  notes.textContent = ""; result.textContent = ""; $("why-out").textContent = "";
+  $("say-out").textContent = ""; $("cmp-out").textContent = "";
+
+  // Anything the input parser read and set aside is said before the dates, not
+  // after them. A caveat under the answer is a caveat the reader has already
+  // acted on.
+  for (const n of input.notes || []) {
+    notes.appendChild(noteBox({
+      severity: n.level === "error" ? "error" : "info",
+      title: n.title || "About this input",
+      body: n.text,
+    }));
+  }
+  if (!rrule) { writeHash(); return; }
   writeHash();
 
   // Validity is checked first and independently of the expander: a rule can
@@ -172,10 +378,23 @@ function run() {
     return;
   }
 
+  sayIt(rrule, r, ds);
+  runCompare(r, ds, limit);
+  runWhy(rrule, ds, r);
+
+  // Count what is on the page before the divergence notes, so the "nothing
+  // applies" box below is decided by whether *analyze* said anything -- not by
+  // whether the page happens to be empty, which input notes now also affect.
+  const beforeDiagnostics = notes.children.length;
+  // ...and whether the input itself was reported as a problem. The "nothing
+  // applies" box is about *measured divergences between implementations*,
+  // which is a different axis from "your TZID was dropped". Printing the
+  // reassurance directly under a red box reads as withdrawing it.
+  const inputProblem = (input.notes || []).some((n) => n.level === "error");
   for (const note of analyze({ rrule, dtstart: ds.t, dateOnly: ds.dateOnly, occurrences: occ, limit })) {
     notes.appendChild(noteBox(note));
   }
-  if (!notes.children.length) {
+  if (notes.children.length === beforeDiagnostics && !inputProblem) {
     const ok = el("article", "note note-clear");
     ok.appendChild(el("h3", null, "No known divergence applies to this rule."));
     ok.appendChild(el("p", null,
@@ -203,6 +422,10 @@ function run() {
   ul.appendChild(el("li", null,
     "EXDATE, RDATE and EXRULE, and any other component of the recurrence set besides this one RRULE"));
   ul.appendChild(el("li", null,
+    "anything more than about thirty years after DTSTART \u2014 the list stops there even when " +
+    "fewer occurrences than you asked for have been found. \u201cExplain one date\u201d is not " +
+    "bounded that way and will answer past it."));
+  ul.appendChild(el("li", null,
     "divergences that no finding has measured yet. Absence of a note is not agreement."));
   caveat.appendChild(ul);
   result.appendChild(caveat);
@@ -211,15 +434,28 @@ function run() {
 // --- wiring ---------------------------------------------------------------
 let timer = null;
 const schedule = () => { clearTimeout(timer); timer = setTimeout(run, 120); };
-for (const id of ["rrule", "dtstart", "limit"]) $(id).addEventListener("input", schedule);
+const autosize = () => {
+  const t = $("rrule");
+  t.style.height = "auto";
+  t.style.height = Math.min(t.scrollHeight + 2, 340) + "px";
+};
+for (const id of ["rrule", "dtstart", "limit", "why", "cmp"]) $(id).addEventListener("input", schedule);
+$("rrule").addEventListener("input", autosize);
 $("form").addEventListener("submit", (e) => { e.preventDefault(); run(); });
 for (const b of document.querySelectorAll(".ex")) {
   b.addEventListener("click", () => {
     $("rrule").value = b.dataset.r;
     $("dtstart").value = b.dataset.d;
+    // An example may carry the question it is an example of; otherwise a
+    // question about the previous rule is not about this one.
+    $("why").value = b.dataset.w || "";
+    $("cmp").value = b.dataset.c || "";
+    lastDerived = null;      // the example owns both boxes now
     run();
+    autosize();
   });
 }
-window.addEventListener("hashchange", () => { readHash(); run(); });
+window.addEventListener("hashchange", () => { readHash(); run(); autosize(); });
 readHash();
 run();
+autosize();

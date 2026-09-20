@@ -14,7 +14,7 @@
 //     measured. Where it cannot be computed from the rule alone, the note says
 //     which implementations were tested and does not generalise past them.
 
-import { expand, parse, parts, fmt, weekday, DAYS } from "./naive.js";
+import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, DAYS } from "./naive.js";
 
 const F = (name) => ({
   label: `finding ${name.slice(0, 3)}`,
@@ -41,6 +41,48 @@ function sameList(a, b) {
 }
 function tryExpand(rrule, dtstart, opts) {
   try { return expand(rrule, dtstart, opts); } catch { return null; }
+}
+
+/** Rebuild an RRULE string with the named parts removed. */
+function withoutParts(rrule, keys) {
+  return rrule.split(";")
+    .filter((c) => c && !keys.includes(c.split("=")[0].trim().toUpperCase()))
+    .join(";");
+}
+
+/**
+ * Finding 022's *seed-limit* reading of RFC 5545 3.3.10, for FREQ=WEEKLY.
+ *
+ * 3.3.10 applies BYMONTH before BYDAY, and for FREQ=WEEKLY BYMONTH is a limit
+ * while BYDAY is an expand -- so BYMONTH runs while "the current set of
+ * evaluated occurrences" is still the single DTSTART-derived seed for the
+ * week. Under that reading BYMONTH selects *weeks*, by the month of their
+ * seed; a selected week is then expanded by BYDAY across the whole week,
+ * including into months BYMONTH does not name.
+ *
+ * That is computed here by re-expanding the rule with BYMONTH deleted -- which
+ * is exactly "the week, unrestricted, with BYSETPOS applied to it" -- and then
+ * keeping only the occurrences whose week's seed falls in a named month.
+ * COUNT and UNTIL are deleted first and reapplied afterwards, because they are
+ * evaluated after BYSETPOS and would otherwise be spent on filtered-out weeks.
+ */
+function seedLimitWeekly(r, rrule, dtstart, limit) {
+  if (!("BYMONTH" in r) || !("BYDAY" in r) || r.FREQ !== "WEEKLY") return null;
+  const inner = Math.min(4000, limit * 12 + 60);
+  const alt = tryExpand(withoutParts(rrule, ["BYMONTH", "COUNT", "UNTIL"]),
+                        dtstart, { limit: inner });
+  if (!alt) return null;
+  const iv = r.INTERVAL, stride = 7 * iv;
+  const dsOrd = parts(dtstart).ord;
+  const dsWeek = weekStart(dsOrd, r.WKST);
+  const months = new Set(r.BYMONTH);
+  const kept = alt.filter((t) => {
+    const n = Math.floor((weekStart(parts(t).ord, r.WKST) - dsWeek) / stride);
+    return months.has(fromOrd(dsOrd + n * stride)[1]);
+  });
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  return (until === null ? kept : kept.filter((t) => t <= until)).slice(0, cap);
 }
 
 /**
@@ -140,14 +182,77 @@ export function analyze(ctx) {
       out.push({
         id: "libical-weekly-bymonth-bysetpos",
         severity: "diverges",
-        title: "FREQ=WEEKLY with BYMONTH and BYSETPOS: libical drops occurrences",
+        title: "FREQ=WEEKLY with BYMONTH and BYSETPOS: older libical drops occurrences",
         body:
-          "In a week that straddles a BYMONTH boundary, libical (measured on master 48d52b4, " +
-          "and on 3.0.20 as part of a larger BYSETPOS failure class) loses occurrences that " +
-          "the specification's reading produces. If your calendar stack goes through libical " +
-          "— evolution, and much of the C/C++ calendar world does — check this " +
-          "rule against it directly.",
-        evidence: [F("019-libical-weekly-bymonth-bysetpos")],
+          "In a week that straddles a BYMONTH boundary, libical loses occurrences that the " +
+          "specification's reading produces. This was reported as libical issue 1374 and " +
+          "fixed upstream on 2026-09-10 in commit 4edd39a; at that commit all eight of this " +
+          "project's corpus cases pass, with no regression elsewhere. It is still present in " +
+          "every released version, including the 3.0.20 in Debian trixie, where it is part " +
+          "of a larger BYSETPOS failure class. So this depends on which libical you have, " +
+          "and most deployed calendars still have an affected one. If your stack goes " +
+          "through libical — evolution, and much of the C/C++ calendar world does — check " +
+          "this rule against your build directly rather than against master.",
+        evidence: [
+          F("019-libical-weekly-bymonth-bysetpos"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
+      });
+    }
+  }
+
+  // --- FREQ=WEEKLY: what does BYMONTH limit? ----------------------------
+  // Finding 022. Computed, not syntactic: the seed-limit expansion is built
+  // and compared, so this fires only on rules the reading actually changes.
+  if (r.FREQ === "WEEKLY" && has("BYMONTH") && has("BYDAY")) {
+    const alt = seedLimitWeekly(r, rrule, dtstart, limit);
+    const k = alt ? Math.min(alt.length, occurrences.length) : 0;
+    const differs = k > 0 && !sameList(alt.slice(0, k), occurrences.slice(0, k));
+    if (differs) {
+      const dropsDtstart = occurrences[0] === dtstart && alt[0] !== dtstart;
+      const named = r.BYMONTH.map((m) => MONTHS[m - 1]).join(", ");
+      out.push({
+        id: "weekly-bymonth-seed-limit",
+        severity: has("BYSETPOS") ? "diverges" : "note",
+        title: "FREQ=WEEKLY with BYMONTH: two readings of what BYMONTH limits",
+        body:
+          "RFC 5545 3.3.10 applies BYMONTH before BYDAY, and under FREQ=WEEKLY BYMONTH " +
+          "limits while BYDAY expands — so BYMONTH runs before the week has become days. " +
+          "What it limits is not stated. On one reading it restricts the instants the week " +
+          `finally yields, so nothing outside ${named} survives; that is the list above. On ` +
+          "the other it applies to the single DTSTART-derived seed of each week, selecting " +
+          "whole weeks, which BYDAY then expands across the week — " +
+          `including into months outside ${named}. That is the list beside it.` +
+          (has("BYSETPOS")
+            ? " Your rule has BYSETPOS, which is where the readings have been seen to part " +
+              "company in shipped code. python-dateutil 2.9.0.post0, rrule.js and dmfs " +
+              "lib-recur 0.17.1 produce the list above. ical4j 4.1.1 and libical master do " +
+              "not: on some rules of this shape each returns exactly the seed-limit list, " +
+              "and on others a third list that is neither reading, so the alternative here " +
+              "is not a prediction of what they will do with your rule. It is what the " +
+              "other reading of 3.3.10 would cost, computed on your rule. This is a " +
+              "separate question from the released-libical defect noted above, which is a " +
+              "bug in versions rather than a disagreement about the text."
+            : " Without BYSETPOS this is a reading question rather than a measured split: " +
+              "all six implementations this project runs — including libical master and " +
+              "ical4j 4.1.1 — produce the list above. The other reading is shown because it " +
+              "was argued for on libical issue 1374 by a maintainer, and because the price " +
+              "of it is visible beside your own rule rather than in the abstract.") +
+          (dropsDtstart
+            ? " Note what the seed-limit list costs here: DTSTART itself is not in it. " +
+              "RFC 5545 3.8.5.3 says DTSTART defines the first instance of the recurrence " +
+              "set, and excuses an implementation only when DTSTART is not synchronised " +
+              "with the rule — which is itself decided by whichever reading you take."
+            : ""),
+        evidence: [
+          F("022-weekly-bymonth-ordering"),
+          RFC5545("3.3.10", "3.3.10"),
+          { label: "libical/libical#1374", url: "https://github.com/libical/libical/issues/1374" },
+        ],
+        compare: {
+          label: "seed-limit reading — BYMONTH selects whole weeks by the month of their seed",
+          occurrences: show(alt),
+        },
       });
     }
   }
@@ -176,9 +281,15 @@ export function analyze(ctx) {
 
   // --- FREQ=YEARLY: expand over the year, or inherit from DTSTART? ------
   // RFC 5545 3.3.10's table classes BYMONTHDAY and BYWEEKNO as Expand for
-  // YEARLY. Two implementations sharing no code (ical4j 4.1.1, dmfs lib-recur
-  // 0.17.1) instead inherit the unspecified component from DTSTART. This was
-  // the largest single failure family in both.
+  // YEARLY. Three implementations sharing no code (libical, ical4j 4.1.1, dmfs
+  // lib-recur 0.17.1) instead inherit the unspecified component from DTSTART.
+  // This was the largest single failure family in all three.
+  //
+  // This said "two" until 2026-09-11, which was written before libical was
+  // adapted and never revisited. Finding 017 had already counted three: 41
+  // BYMONTHDAY cases where all three agree against the corpus, and a check of
+  // the BYWEEKNO branch adds 15 of 42. Undercounting mattered because the
+  // whole point of the sentence is how much weight the other reading carries.
   if (r.FREQ === "YEARLY") {
     let pinKey = null, pinVal = null, what = null;
     if (has("BYMONTHDAY") && !has("BYMONTH")) {
@@ -201,15 +312,18 @@ export function analyze(ctx) {
           title: `FREQ=YEARLY with ${pinKey === "BYMONTH" ? "BYMONTHDAY" : "BYWEEKNO"}: two readings, and both are in use`,
           body:
             `Under FREQ=YEARLY, ${what} RFC 5545 3.3.10's table classifies this part as ` +
-            "“Expand”, which is the left-hand answer, and it is what python-dateutil " +
-            "and rrule.js produce. ical4j 4.1.1 and dmfs lib-recur 0.17.1 — two " +
-            "implementations that share no code — both produce the right-hand answer " +
-            "instead. Whether that is a defect in two libraries or a widely-taken pragmatic " +
-            "reading of an awkward table is not settled. If it matters to you, say so " +
-            `explicitly by adding ${pinKey} to the rule.`,
-          evidence: [F("016-independent-lineage-results"), RFC5545("3.3.10", "3.3.10")],
+            "“Expand”, which is the left-hand answer. python-dateutil and rrule.js " +
+            "produce it, but those two are one lineage: rrule.js is a documented port. " +
+            "Three implementations that share no code with it or with each other — " +
+            "libical, ical4j 4.1.1 and dmfs lib-recur 0.17.1 — produce the right-hand " +
+            "answer instead, and a libical maintainer has argued in public for reading " +
+            "these parts as limiting each other. Whether that is a defect in three " +
+            "libraries or a widely-taken pragmatic reading of an awkward table is not " +
+            `settled. If it matters to you, say so explicitly by adding ${pinKey} to the rule.`,
+          evidence: [F("016-independent-lineage-results"), F("017-libical-third-lineage"),
+                     RFC5545("3.3.10", "3.3.10")],
           compare: {
-            label: `component inherited from DTSTART (ical4j / lib-recur reading, shown here by pinning ${pinKey}=${pinVal})`,
+            label: `component inherited from DTSTART (the libical / ical4j / lib-recur reading, shown here by pinning ${pinKey}=${pinVal})`,
             occurrences: show(alt),
           },
         });
