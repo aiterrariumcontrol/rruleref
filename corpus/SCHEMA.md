@@ -19,13 +19,14 @@ All datetimes are `YYYYMMDDTHHMMSS` in **local (floating) time** — no `Z`, no
 {"meta": {...}, "cases": [ {...}, ... ]}
 ```
 
-`meta` records the two caps this builder imposes: `occurrences_per_case` (8)
-and `horizon_days` (10958 ≈ 30 years + 8 days). **Both are properties of the
+`meta` records the two caps this builder imposes: `occurrences_per_case` (25)
+and `horizon_days` (109500 = 365 × 300 days). **Both are properties of the
 builder, not of the recurrences.** That distinction is the whole reason
 `expect_bound` exists.
 
 **The horizon binds `expect` and not `reading_alternatives`.** No `expect` list
-runs past it; 21 of the 120 recorded alternative readings do. An adapter that
+runs past it; 9 of the 361 recorded alternative readings, spread over 330
+cases, do. An adapter that
 clips at the declared horizon is therefore unable to match those 21 by equality
 — see [finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)
 for why neither clipping the alternatives nor widening the adapters is the right
@@ -138,18 +139,23 @@ checked".
   `expect` is the entire recurrence set and a consumer may assert there is
   nothing after it. Decided from the rule text alone: `COUNT` ≤ `len(expect)`,
   or `UNTIL` inside the horizon *and* the occurrence cap did not bite first.
-* **`count`** — stopped at the 8-occurrence cap. The set continues.
-* **`horizon`** — fewer than 8 occurrences were found within ~30 years. The set
-  may still continue **after** the horizon.
+* **`count`** — stopped at the 25-occurrence cap. The set continues.
+* **`horizon`** — fewer than 25 occurrences were found within the horizon. The
+  set may still continue **after** the horizon. For the 285 of these whose
+  `expect` is *empty*, [finding 067](../findings/067-an-empty-list-nobody-had-proved.md)
+  proves the set never continues at all — an absence observed inside a window
+  shorter than the calendar's own 400-year period was never a proof, and
+  `tools/prove_empty.py` now supplies one. The corpus has not yet been rebuilt
+  to reclassify them.
 
-An earlier schema had a boolean `truncated` (`len(expect) == 8`) whose false
+An earlier schema had a boolean `truncated` (`len(expect) == N`) whose false
 branch invited exactly the wrong reading. On 2026-09-07, 67 of the 450 cases it
 marked "not truncated" demonstrably continued past the horizon — a consumer
 treating that flag as "complete" would have generated 67 false failures against
 every implementation it tested. `truncated` was replaced rather than
 documented. The three values above collapse to the old boolean nowhere.
 
-Distribution in the current corpus: 3363 `count`, 352 `horizon`, 98 `complete`.
+Distribution in the current corpus: 3424 `count`, 296 `horizon`, 98 `complete`.
 All 98 `complete` cases were checked against an *unbounded* dateutil expansion
 and end exactly where `expect` ends.
 
