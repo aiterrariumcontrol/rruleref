@@ -138,15 +138,27 @@ checked".
 * **`complete`** — the rule provably terminates inside the recorded window, so
   `expect` is the entire recurrence set and a consumer may assert there is
   nothing after it. Decided from the rule text alone: `COUNT` ≤ `len(expect)`,
-  or `UNTIL` inside the horizon *and* the occurrence cap did not bite first.
+  `UNTIL` inside the horizon *and* the occurrence cap did not bite first, or —
+  for an *empty* `expect` — a proof that the rule never fires at all.
 * **`count`** — stopped at the 25-occurrence cap. The set continues.
-* **`horizon`** — fewer than 25 occurrences were found within the horizon. The
-  set may still continue **after** the horizon. For the 285 of these whose
-  `expect` is *empty*, [finding 067](../findings/067-an-empty-list-nobody-had-proved.md)
-  proves the set never continues at all — an absence observed inside a window
-  shorter than the calendar's own 400-year period was never a proof, and
-  `tools/prove_empty.py` now supplies one. The corpus has not yet been rebuilt
-  to reclassify them.
+* **`horizon`** — fewer than 25 occurrences were found within the horizon, and
+  the set may still continue **after** the horizon. This is the corpus's only
+  bound that is a statement about the *window* rather than about the rule, and
+  it is now down to 11 cases.
+
+An empty `expect` used to land here, and that was the weakest claim in the
+corpus: an absence observed inside a window is not an absence.
+[Finding 067](../findings/067-an-empty-list-nobody-had-proved.md) supplies the
+missing decision procedure. The proleptic Gregorian calendar is exactly
+periodic over 146097 days (400 years = 4800 months = 20871 weeks), every `BY*`
+part is a predicate on a date's position inside that structure, and `INTERVAL=k`
+extends the period to an `lcm` — so searching one full period decides emptiness
+outright. Every one of the 285 empty lists was outside its own decision bound:
+the shortest period any of them needs is 146097 days and the horizon is 109500.
+`tools/prove_empty.py` proves all 285 empty (61 structurally, 224 by period
+search) and `src/build_corpus.py` now calls it, so those cases are `complete`.
+Where the argument does not reach — sub-daily `FREQ`, or an `UNTIL` past the
+horizon — an empty `expect` still says `horizon`, which remains honest.
 
 An earlier schema had a boolean `truncated` (`len(expect) == N`) whose false
 branch invited exactly the wrong reading. On 2026-09-07, 67 of the 450 cases it
@@ -155,9 +167,13 @@ treating that flag as "complete" would have generated 67 false failures against
 every implementation it tested. `truncated` was replaced rather than
 documented. The three values above collapse to the old boolean nowhere.
 
-Distribution in the current corpus: 3424 `count`, 296 `horizon`, 98 `complete`.
-All 98 `complete` cases were checked against an *unbounded* dateutil expansion
-and end exactly where `expect` ends.
+Distribution in the current corpus: 3424 `count`, 11 `horizon`, 383 `complete`
+(before finding 067 was applied: 3424 / 296 / 98). The 98 `complete` cases that
+predate 067 were checked against an *unbounded* dateutil expansion and end
+exactly where `expect` ends; the 285 added by 067 are empty and proved so. The
+11 that remain `horizon` are genuinely sparse rules — `FREQ=YEARLY;INTERVAL=3`
+and `INTERVAL=4` shapes, and one `MONTHLY;INTERVAL=2;BYSETPOS` pair — that do
+fire but not 25 times in 300 years.
 
 ## `disputed.json`
 

@@ -154,10 +154,35 @@ the 11 horizon-bounded cases that are genuinely truncated rather than empty.
 That is the largest single improvement available to the corpus's honesty, and
 it costs 90 seconds of build time rather than centuries of horizon.
 
-It is deliberately **not applied in this finding**, on the same rhythm 065 and
+It was deliberately **not applied in this finding**, on the same rhythm 065 and
 066 used: measure and decide first, change the corpus second, so that if a
-number moves it is clear which change moved it. The change itself is a
-`build_corpus.py` edit plus a full rebuild and `verify_corpus.py` pass.
+number moves it is clear which change moved it.
+
+### Applied, 2026-09-20
+
+`src/build_corpus.py`'s `expect_bound()` now calls `prove_empty.prove()` when
+`occ` is empty and nothing else has already bounded the case, and upgrades the
+bound to `complete` only when the proof returns `empty is True`. A full rebuild
+gives exactly the predicted result:
+
+| | before | after |
+|---|---|---|
+| `count` | 3424 | 3424 |
+| `horizon` | 296 | **11** |
+| `complete` | 98 | **383** |
+| corroborated / disputed | 3818 / 28 | 3818 / 28 |
+
+Compared field by field against the committed build, **`expect_bound` is the
+only field that differs anywhere in the corpus**, in exactly 285 cases, every
+one of them `horizon` → `complete`. No `expect` list moved, no case was gained
+or lost, no dispute changed. That was the prediction and separating it from the
+measurement is what made it checkable.
+
+The 11 that stay `horizon` are the genuinely sparse rules — nine `FREQ=YEARLY`
+with `INTERVAL` 2–4 and a `MONTHLY;INTERVAL=2;BYSETPOS` pair — which do fire,
+but fewer than 25 times in 300 years. For those the bound is still an honest
+statement about the window, because for those the window is genuinely what
+stopped the list.
 
 A second consequence is smaller and sharper. The horizon is no longer the only
 tool for the job, so it no longer has to be chosen with emptiness in mind. 064

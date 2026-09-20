@@ -36,6 +36,8 @@ import grammar
 import enumerate_cells
 import enumerate_branches
 import pairs
+sys.path.insert(0, os.path.join(env.REPO, "tools"))
+import prove_empty
 
 #: The committed corpus. Inputs (hand adjudications, the DATE-value
 #: cases) are always read from here; outputs go wherever the caller asks,
@@ -93,6 +95,17 @@ def expect_bound(rule, dtstart, occ):
                 cases in the 2026-09-06 corpus it demonstrably did -- which is
                 why this is not merged with "complete".
 
+    An *empty* `occ` is the one case where "horizon" was never a measurement.
+    `expect: []` at the horizon says nothing about the rule; it says the window
+    saw nothing. Finding 067 supplies the missing decision procedure: the
+    proleptic Gregorian calendar is exactly periodic over 146097 days, every
+    `BY*` part is a predicate on a date's position inside that structure, and
+    `INTERVAL=k` extends the period by an lcm -- so searching one full period
+    decides emptiness outright. When `tools/prove_empty.py` proves the set
+    empty, `expect: []` *is* the entire recurrence set and the bound is
+    "complete". Where the argument does not apply (sub-daily FREQ, or an UNTIL
+    past the horizon) the case stays "horizon", which remains honest.
+
     Before 2026-09-07 this was a boolean `truncated` (= len(occ) == N), whose
     false branch was read as "complete" and was wrong for those 67 cases.
     """
@@ -109,6 +122,13 @@ def expect_bound(rule, dtstart, occ):
         raw = m.group(1).rstrip("Z")
         fmtstr = "%Y%m%dT%H%M%S" if "T" in raw else "%Y%m%d"
         if datetime.strptime(raw, fmtstr) <= _horizon(dtstart):
+            return "complete"
+    if not occ:
+        # Finding 067: an empty list is decidable, and the horizon never could
+        # decide it. Only `empty is True` upgrades the bound; False would mean
+        # the horizon hid a real occurrence (it has never happened, and a
+        # rebuild would show it as a dispute) and None means out of scope.
+        if prove_empty.prove(rule, dtstart)["empty"] is True:
             return "complete"
     return "horizon"
 
