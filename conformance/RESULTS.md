@@ -214,6 +214,28 @@ rather than a stable count — see the note below.
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 72 | 0 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 |
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1163 | 368 [‡](#dtical-split) | 69 | 0 | 127 [‡](#dtical-split) |
+| `ical.js` | 2.2.1 | port of libical (JS) [♦](#icaljs-lineage) | 1376 | 236 | 31 | 0 | 84 [◊](#icaljs-abort) |
+
+<a id="icaljs-lineage"></a>
+**♦ `ical.js` is not an independent witness.** Its recurrence iterator is a port
+of `libical`'s `icalrecur.c` — same `expand_map`/`CONTRACT` constants, same
+`check_contracting_rules`, same eight checks in the same order. It was added to
+this table expecting a fourth independent implementation and it is not one, so
+`ical.js` agreeing with `libical` counts once (rule 24).
+[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md).
+
+<a id="icaljs-abort"></a>
+**◊ 42 of `ical.js`'s 84 errors are the adapter's deadline, not a refusal.**
+`ical.js` 2.2.1 enters an unbounded search inside a single `iterator.next()`
+whenever a `BY` part that *contracts* under the rule's own `FREQ` carries a
+negative value — `FREQ=DAILY;BYMONTHDAY=-1` is enough. It does not hang
+politely; it allocates until the Node heap is exhausted and the process aborts,
+so the adapter runs the library in a child process with a per-case deadline and
+reports a timeout for the case that killed it. The other 42 errors are ordinary
+parse refusals. All 72 corpus cases carrying such a negative value are wrong in
+`ical.js`: 42 abort, 27 return a list with the negative value's occurrences
+silently missing, 3 match a rival reading.
+[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md).
 
 <a id="go-truncation"></a>
 **§ `rrule-go`'s three.** They are not in any column above: they fall in a

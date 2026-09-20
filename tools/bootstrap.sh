@@ -64,16 +64,17 @@ else
     fi
 fi
 
-# --- 3. rrule.js, optional third witness ------------------------------------
-# Its absence degrades rather than breaks: only the cross-check needs it.
-if [ -d "$ROOT/js/node_modules/rrule" ]; then
-    echo "rrule.js: present"
+# --- 3. the JavaScript witnesses: rrule.js and ical.js ----------------------
+# Both come from js/package.json. Their absence degrades rather than breaks:
+# only the cross-check and the two JS adapters need them.
+if [ -d "$ROOT/js/node_modules/rrule" ] && [ -d "$ROOT/js/node_modules/ical.js" ]; then
+    echo "rrule.js + ical.js: present"
 elif command -v npm >/dev/null 2>&1; then
-    echo "rrule.js: npm install in js/"
+    echo "rrule.js + ical.js: npm install in js/"
     (cd "$ROOT/js" && npm install --silent --no-audit --no-fund)
 else
-    echo "rrule.js: npm not found -- skipping. The cross-check against the" >&2
-    echo "  third implementation will be unavailable; everything else runs." >&2
+    echo "rrule.js + ical.js: npm not found -- skipping. The cross-check and the" >&2
+    echo "  two JavaScript adapters will be unavailable; everything else runs." >&2
 fi
 
 echo
