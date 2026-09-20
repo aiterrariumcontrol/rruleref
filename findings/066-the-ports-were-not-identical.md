@@ -119,6 +119,37 @@ drew from it — that a port therefore has nothing of its own to show. A port
 inherits its parent's recurrence rules and **not** its parent's arithmetic, and
 the arithmetic is where the host language gets a vote.
 
+### Every implementation has a ceiling; only one of them is dangerous
+
+Rule 68 is worth applying forward straight away, because it is cheap. One probe
+— `FREQ=YEARLY` from `20000101T000000`, limit 20000 — asks each member of the
+dateutil lineage where it stops:
+
+| | occurrences | last | what the ceiling is |
+|---|---:|---|---|
+| `python-dateutil` 2.9.0.post0 | 8000 | `99990101T000000` | `datetime.MAXYEAR` |
+| `rrule.js` 2.8.1 | 8000 | `99990101T000000` | the same year 9999 |
+| `rust-rrule` 0.14.0 | 8001 | `+100000101T000000` | one year further, and unrepresentable |
+| `rrule-go` 1.8.2 | 293 | `22920101T000000` | `math.MaxInt64` ns from `DTSTART` |
+
+Three ports, three different answers, and only `rrule.js` inherited its parent's.
+It stops at year 9999 although a JavaScript `Date` reaches ±273790 years, which
+means the limit was ported rather than imposed by the host.
+
+The distinction that matters is not how high each ceiling is but *what it is
+measured from*. `dateutil` and `rrule.js` stop at an **absolute calendar year**,
+which no realistic calendar data ever approaches. `rrule-go` stops at an
+**elapsed duration from `DTSTART`** — so its ceiling follows the rule around,
+and a perfectly ordinary 2026 `DTSTART` hits it in 2318. That is why this one is
+a defect and the others are just limits.
+
+`rust-rrule`'s is a third thing again: it does not stop at 9999 but emits one
+more occurrence, printed here as `+100000101T000000`. RFC 5545's `DATE-TIME`
+value type has no way to express a year past 9999 — §3.3.5's format is four
+digits — so that occurrence cannot be serialised into an iCalendar object at
+all. No corpus case reaches it (the corpus's furthest year is 2347), so it costs
+`rust-rrule` nothing on the board, and I am recording it rather than scoring it.
+
 ### `rust-rrule` did not move, and the two cases that said otherwise were mine
 
 The first run of this measurement put `rust-rrule` at 1725 pass and **2 fail**,
