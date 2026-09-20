@@ -279,6 +279,16 @@ def _pinned(r, freq):
     return out
 
 
+#: The default expansion horizon, in days from DTSTART. THIS IS THE ONLY
+#: DEFINITION of the number. `differ.py` used to carry a second copy, and
+#: finding 064 found that the two were obeyed inconsistently: callers that
+#: went through `compare()` saw one horizon and callers that relied on this
+#: default saw the other, with nothing to make them disagree loudly. A
+#: horizon defined in two modules is a horizon only one of them can be
+#: changed by. See standing rule 66.
+HORIZON_DAYS = 365 * 30 + 8
+
+
 def expand(rrule, dtstart, horizon=None, limit=1000,
            truncate_first_period=False, week_based_year=False):
     """Return occurrences at or after dtstart, in order.
@@ -302,7 +312,7 @@ def expand(rrule, dtstart, horizon=None, limit=1000,
     r["_WEEK_BASED_YEAR"] = bool(week_based_year) and freq == "YEARLY" \
         and "BYWEEKNO" in r
     if horizon is None:
-        horizon = dtstart + timedelta(days=365 * 30 + 8)
+        horizon = dtstart + timedelta(days=HORIZON_DAYS)
     out = []
     setpos = "BYSETPOS" in r
     until = r.get("UNTIL")

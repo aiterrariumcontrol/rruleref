@@ -6,6 +6,7 @@ import env
 env.add_dateutil_to_path()
 from datetime import datetime, timedelta
 import dateutil.rrule as du
+import naive
 from naive import expand
 import validity
 
@@ -20,12 +21,13 @@ def du_expand(rule, dtstart, n):
     except Exception as e:
         return "ERROR:" + type(e).__name__
 
-HORIZON_DAYS = 365 * 30 + 8
-
 def compare(rule, dtstart, n=8):
-    horizon = dtstart + timedelta(days=HORIZON_DAYS)
+    # Read through `naive` rather than binding a copy at import time, so that
+    # a caller raising the horizon (build_corpus.py --horizon-days) reaches
+    # this function too. See finding 064 and standing rule 66.
+    horizon = dtstart + timedelta(days=naive.HORIZON_DAYS)
     try:
-        mine = expand(rule, dtstart, limit=n)[:n]
+        mine = expand(rule, dtstart, horizon=horizon, limit=n)[:n]
     except Exception as e:
         return ("ERROR:" + type(e).__name__, du_expand(rule, dtstart, n))
     theirs = du_expand(rule, dtstart, n)

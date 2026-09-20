@@ -15,7 +15,20 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import env
 env.add_dateutil_to_path()
 from datetime import datetime, timedelta
-from differ import compare, gen, DTSTARTS, du_expand, HORIZON_DAYS
+import naive
+from differ import compare, gen, DTSTARTS, du_expand
+
+
+def _horizon(ds):
+    """The corpus horizon for this DTSTART.
+
+    Read through `naive` rather than imported by value, so that
+    `--horizon-days` reaches every call site instead of just the ones that
+    happen to look it up late. Finding 064 found the horizon defined in two
+    modules and obeyed by neither consistently; `naive.HORIZON_DAYS` is now
+    the single definition and this is the only way the corpus asks for it.
+    """
+    return ds + timedelta(days=naive.HORIZON_DAYS)
 from naive import expand
 import validity
 import coverage
@@ -42,7 +55,7 @@ def is_synchronized(rule, dtstart):
     recurrence set is *undefined* when it is not. Operationally, DTSTART is
     synchronized exactly when it is itself the first occurrence the rule
     generates from it."""
-    occ = expand(rule, dtstart, limit=1)
+    occ = expand(rule, dtstart, horizon=_horizon(dtstart), limit=1)
     return bool(occ) and occ[0] == dtstart
 
 
@@ -60,7 +73,7 @@ def dtstart_variants(rule, base):
     so a badly chosen DTSTART shows up as a dispute rather than a false pass.
     """
     out = [base]
-    occ = expand(rule, base, limit=1)
+    occ = expand(rule, base, horizon=_horizon(base), limit=1)
     if occ and occ[0] != base:
         out.append(occ[0])
     return out
@@ -95,7 +108,7 @@ def expect_bound(rule, dtstart, occ):
     if m:
         raw = m.group(1).rstrip("Z")
         fmtstr = "%Y%m%dT%H%M%S" if "T" in raw else "%Y%m%d"
-        if datetime.strptime(raw, fmtstr) <= dtstart + timedelta(days=HORIZON_DAYS):
+        if datetime.strptime(raw, fmtstr) <= _horizon(dtstart):
             return "complete"
     return "horizon"
 
@@ -341,7 +354,7 @@ def record(rule, ds, cell, agreed, disputed, seen):
     branches = sorted(grammar.classify(rule))
     diff = compare(rule, ds, N)
     if diff is None:
-        occ = expand(rule, ds, limit=N)[:N]
+        occ = expand(rule, ds, horizon=_horizon(ds), limit=N)[:N]
         exp = [fmt(x) for x in occ]
         # Does `expect` depend on which reading of 3.3.10 the builder took?
         # Both expanders agreeing does not answer this: they share the
@@ -349,7 +362,7 @@ def record(rule, ds, cell, agreed, disputed, seen):
         # answer to that answer, so a consumer can see both rather than inherit
         # mine silently. Two are known: the first-period question (finding 018)
         # and the DTSTART-fill question (finding 024).
-        alts = _readings(rule, ds, len(occ), exp)
+        alts = _readings(rule, ds, len(occ), exp, horizon=_horizon(ds))
         agreed.append({
             "rrule": rule,
             "dtstart": fmt(ds),
@@ -420,7 +433,7 @@ def main(seeds=(7, 11, 13, 17, 23), per=300, out=None, systematic=True):
     disputed.sort(key=lambda c: (c["rrule"], c["dtstart"]))
     meta = {
         "about": "Cross-implementation RFC 5545 RRULE conformance corpus.",
-        "horizon_days": HORIZON_DAYS,
+        "horizon_days": naive.HORIZON_DAYS,
         "occurrences_per_case": N,
         "cases": len(agreed),
     }
@@ -546,4 +559,14 @@ if __name__ == "__main__":
         if "--out" not in argv:
             sys.exit("--occurrences requires --out: it must not overwrite the "
                      "committed N=%d corpus" % 8)
+    # --horizon-days D builds at a different horizon, under the same rule: it
+    # must not overwrite the committed build either. The two flags exist to be
+    # used *together*, because finding 062 showed raising the bound converts
+    # count-bounded cases into horizon-bounded ones and finding 064 showed a
+    # longer horizon converts them back. Neither number can be chosen alone.
+    if "--horizon-days" in argv:
+        if "--out" not in argv:
+            sys.exit("--horizon-days requires --out: it must not overwrite the "
+                     "committed %d-day corpus" % naive.HORIZON_DAYS)
+        naive.HORIZON_DAYS = int(argv[argv.index("--horizon-days") + 1])
     sys.exit(main(out=dest))
