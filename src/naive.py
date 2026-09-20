@@ -286,7 +286,7 @@ def _pinned(r, freq):
 #: default saw the other, with nothing to make them disagree loudly. A
 #: horizon defined in two modules is a horizon only one of them can be
 #: changed by. See standing rule 66.
-HORIZON_DAYS = 365 * 30 + 8
+HORIZON_DAYS = 365 * 300
 
 
 def expand(rrule, dtstart, horizon=None, limit=1000,

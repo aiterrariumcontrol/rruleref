@@ -43,7 +43,7 @@ import pairs
 #: overwriting it. Absolute, so the script does not depend on the cwd.
 CORPUS = os.path.join(env.REPO, "corpus")
 
-N = 8  # occurrences recorded per case
+N = 25  # occurrences recorded per case
 
 
 def fmt(dt):
@@ -550,15 +550,15 @@ if __name__ == "__main__":
     if "--out" in argv:
         dest = argv[argv.index("--out") + 1]
     # --occurrences N builds a corpus at a different bound. The committed
-    # corpus is N=8 and nothing here changes that default; the flag exists so
+    # corpus is N=25 and nothing here changes that default; the flag exists so
     # that raising the bound can be *costed and compared* against the
     # committed build rather than argued about. See tools/cost_bound.py and
     # rule 58: agreement inside the bound is not agreement.
     if "--occurrences" in argv:
-        N = int(argv[argv.index("--occurrences") + 1])
         if "--out" not in argv:
             sys.exit("--occurrences requires --out: it must not overwrite the "
-                     "committed N=%d corpus" % 8)
+                     "committed N=%d corpus" % N)
+        N = int(argv[argv.index("--occurrences") + 1])
     # --horizon-days D builds at a different horizon, under the same rule: it
     # must not overwrite the committed build either. The two flags exist to be
     # used *together*, because finding 062 showed raising the bound converts

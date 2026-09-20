@@ -101,7 +101,11 @@ This file used to ask here for a result in **Go, Rust, C# or Swift**. That was
 the wrong request, and [finding 027](findings/027-a-port-that-did-not-drift.md)
 is the correction: `teambition/rrule-go` scores a clean 1728 of 1728 and
 teaches nothing about the RFC, because it is a port of `python-dateutil` and
-returns its parent's exact answer on all 3820 corroborated cases.
+returns its parent's exact answer on all 3820 corroborated cases. *That last
+clause was true only out to the eighth occurrence — see
+[finding 066](findings/066-the-ports-were-not-identical.md), which raised the
+corpus bound to 25 and found `rrule-go` silently truncating any recurrence more
+than 106752 days past `DTSTART`, at Go's `time.Duration` ceiling.*
 [Finding 028](findings/028-two-ports-agree-and-the-third-does-not.md) then did
 the same thing in Rust and got the same nothing — `fmeringdal/rust-rrule`
 0.14.0, also 1728 of 1728, also zero divergence from the same parent. Two
@@ -142,8 +146,11 @@ and the ten such cases in `corpus/disputed.json` are now adjudicated to that
 reading.
 
 [Finding 033](findings/033-the-last-five-disputes-are-two-questions.md)
-adjudicates the last **5**, all `undecided` — so all **26** cases in
-`corpus/disputed.json` now carry a verdict, 21 `naive` and 5 `undecided`.
+adjudicates the last **5**, all `undecided` — so all cases in
+`corpus/disputed.json` carry a verdict. Raising the corpus bound to 25
+occurrences added two more disputes, both adjudicated in
+[finding 066](findings/066-the-ports-were-not-identical.md), so the count is now
+**28**: 23 `naive` and 5 `undecided`.
 Adjudicating them to `naive` would have been wrong: each turns on *two*
 questions, and finding 008 tested only one of them.
 
@@ -238,10 +245,13 @@ by hand against the spec. Some disagreements are bugs in my expander (most of
 them were, and fixing those is how it earned trust). Some are bugs in the other
 implementation. Some are places the spec genuinely does not decide.
 
-Current state: **3820 corroborated cases** (1729 with a spec-defined,
-synchronized `DTSTART`; see the next section) and **26 disputed**, 11 of them
+Current state: **3818 corroborated cases** (1728 with a spec-defined,
+synchronized `DTSTART`; see the next section) and **28 disputed**, 12 of them
 adjudicated in `findings/`. 13 of the remaining disputes are in the
-spec-defined region.
+spec-defined region. Each corroborated case records up to **25** occurrences
+within **109500 days** (300 years) of `DTSTART`; those two numbers were chosen
+in [finding 065](findings/065-choosing-both-numbers-at-once.md) and applied in
+[066](findings/066-the-ports-were-not-identical.md).
 
 All 13 are now accounted for, by two different mechanisms and with two
 different kinds of answer.
@@ -561,6 +571,8 @@ conformance case, and even then see the caveat on (2).
 - [028 — two ports agree exactly with their parent; the third does not](findings/028-two-ports-agree-and-the-third-does-not.md).
   `fmeringdal/rust-rrule` 0.14.0 scores **1728 of 1728** and diverges from
   `python-dateutil` on **0** of 3820 corroborated cases — as `rrule-go` does.
+  (`rust-rrule` still does at 25 occurrences; `rrule-go` does not —
+  [066](findings/066-the-ports-were-not-identical.md).)
   Its README credits `rrule.js` as an inspiration alongside dateutil, yet it
   picked up **none** of `rrule.js`'s 122 divergences from that same parent. With
   two independently written ports reproducing dateutil to the case, `rrule.js`

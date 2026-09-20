@@ -190,9 +190,13 @@ measurement.
 **¶ prefix of other reading.** A non-empty *proper prefix* of one of the case's
 recorded `reading_alternatives`: the answer agreed with that reading for its
 whole length and then stopped. Counted apart from `fail` because stopping short
-is the signature of a window rather than of a disagreement — here, of the Java
-adapters' own `DTSTART` + 10958-day clip, which is the corpus's declared horizon
-and which the corpus does not apply to its own alternative readings. The bucket
+is the signature of a window rather than of a disagreement. Until 2026-09-20
+this bucket was almost entirely an artifact of the Java adapters' own `DTSTART`
++ 10958-day clip, which was the corpus's declared horizon and which the corpus
+did not apply to its own alternative readings; raising the corpus horizon to
+109500 days and raising both Java adapters' windows with it removed 13 of those
+14 entries, and the bucket now reports behaviour rather than my harness
+([finding 066](../findings/066-the-ports-were-not-identical.md)). The bucket
 asserts the prefix and nothing more: it does not claim the implementation would
 have continued correctly.
 [Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
@@ -384,11 +388,16 @@ vote on §3.3.10 comes from `_yearly_recurrence` and is unaffected.
 `python-dateutil`'s 1728 is **not a result**: it is one of the two expanders
 every case was corroborated by, so it only checks the harness.
 
-`rrule-go`'s and `rust-rrule`'s 1728 are **not independent evidence** either,
+`rrule-go`'s and `rust-rrule`'s scores are **not independent evidence** either,
 for a different reason. Both are `python-dateutil` descendants by their own
-READMEs' account, and both return the identical list to their parent on all
-3820 corroborated cases, not merely on the 1728 scored here — so counting
-either as a lineage would double-count dateutil.
+READMEs' account, so counting either as a lineage would double-count dateutil.
+When the corpus recorded 8 occurrences per case both returned the identical list
+to their parent on all 3820 corroborated cases. At 25 occurrences `rust-rrule`
+still does and `rrule-go` does not: it silently truncates at 106752 days past
+`DTSTART`, which is `math.MaxInt64` nanoseconds, Go's `time.Duration` ceiling
+([finding 066](../findings/066-the-ports-were-not-identical.md)). That is a
+defect of the port and not of the recurrence logic it inherited, and it does not
+change the lineage count.
 [Finding 027](../findings/027-a-port-that-did-not-drift.md) has the Go
 measurement and sizes `rrule.js`'s divergence from the same parent at 122 of
 the 3813 corroborated cases that existed when it ran — the seven added since
