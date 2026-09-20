@@ -52,6 +52,14 @@ The cost splits in two:
   2.801 s at N=8 and 2.847 s at N=25. They are bounded by the 30-year horizon
   scan, not by how many occurrences are wanted, so asking for three times as
   many is free for them.
+
+  **Correction, 2026-09-20 ([064](064-the-horizon-i-chose-is-not-the-one-i-pay-for.md)):**
+  the cause named here is wrong. Timed apart, that case is `0.022 s` of naive
+  expansion at the 30-year horizon and **`2.679 s` of dateutil**, which scans to
+  `datetime.MAXYEAR` before conceding that the list is empty. The slow tail *is*
+  flat in N — it is flat in the horizon too, and in everything else — but it is
+  not the horizon's doing. The conclusion below stands; this attribution does
+  not.
 - the **N-sensitive cost is concentrated in the rival readings**. Cases
   carrying `reading_alternatives` went 0.149 s → 0.265 s per case, 1.77×,
   because `_readings` runs the expander up to four more times. Plain
