@@ -17,14 +17,19 @@ sys.path.insert(0, os.path.join(REPO, "src"))
 
 
 class TestBoundFlag(unittest.TestCase):
-    def test_default_is_eight(self):
-        import build_corpus
-        self.assertEqual(build_corpus.N, 8)
+    def test_the_default_is_what_the_committed_corpus_was_built_at(self):
+        """Asserted as an agreement rather than as a literal.
 
-    def test_committed_corpus_records_its_own_bound(self):
-        import json
+        This pair of assertions was written against 8 and had to be edited when
+        066 raised the bound to 25, which is the wrong shape for a test whose
+        subject is a number meant to change. What must never drift is that
+        `build_corpus.N` and the committed `meta` describe the same build: if
+        they disagree, either the corpus was built by a flag nobody recorded or
+        the default moved without a rebuild.
+        """
+        import build_corpus, json
         meta = json.load(open(os.path.join(REPO, "corpus", "corroborated.json")))["meta"]
-        self.assertEqual(meta["occurrences_per_case"], 8)
+        self.assertEqual(build_corpus.N, meta["occurrences_per_case"])
 
     def test_occurrences_without_out_refuses(self):
         p = subprocess.run([sys.executable, "src/build_corpus.py", "--occurrences", "25"],

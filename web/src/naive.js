@@ -327,6 +327,24 @@ export class Budget extends Error {
 }
 
 /**
+ * The default expansion horizon, in days.
+ *
+ * This is a SECOND COPY of `src/naive.py`'s `HORIZON_DAYS`, and it has to be:
+ * the two run in different languages and nothing links them at run time. What
+ * keeps them from drifting is `tests/test_web_port.py`, which fails if these
+ * two numbers disagree.
+ *
+ * It drifted once. Finding 064 found `HORIZON_DAYS` declared in two Python
+ * modules and repaired it to one definition; this third copy, in another
+ * language, was not in that repair's field of view. When 066 raised the Python
+ * horizon from 10958 to 109500 this file kept 10958, and the port silently
+ * stopped agreeing with the corpus on 95 cases -- every one of them a proper
+ * prefix of the right answer, which is exactly the signature of a short
+ * window. Standing rule 66 is about definitions, not about modules.
+ */
+export const HORIZON_DAYS = 109500;
+
+/**
  * Occurrences at or after dtstart, in order, as datetime integers.
  *
  * opts: { limit, horizon, truncateFirstPeriod, maxSteps }
@@ -346,7 +364,7 @@ export function expand(rrule, dtstart, opts = {}) {
   if (!Number.isInteger(r.INTERVAL) || r.INTERVAL < 1) throw new Error("INTERVAL must be a positive integer");
   if (!DAYS.includes(r.WKST)) throw new Error(`WKST: ${JSON.stringify(r.WKST)} is not a weekday`);
 
-  let horizon = opts.horizon ?? dtstart + (365 * 30 + 8) * DAY;
+  let horizon = opts.horizon ?? dtstart + HORIZON_DAYS * DAY;
   const out = [];
   const setpos = "BYSETPOS" in r;
   const until = "UNTIL" in r ? r.UNTIL : null;

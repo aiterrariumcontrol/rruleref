@@ -27,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "src"))
 import env  # noqa: E402
+import naive  # noqa: E402
 import validity  # noqa: E402
 
 fails = []
@@ -40,6 +41,30 @@ def corpus_rules():
         for c in (cases if isinstance(cases, list) else cases.values()):
             rules.add(c["rrule"])
     return sorted(rules)
+
+
+def test_the_two_horizons_agree():
+    """Rule 66 across a language boundary.
+
+    `web/src/naive.js` must carry its own copy of `HORIZON_DAYS` -- nothing
+    links a Python module to a browser at run time -- so the only thing that
+    can stop the two drifting is this check. They did drift: 064's repair of
+    the constant reached two Python modules and not this one, and when 066
+    raised the horizon the port kept the old value and stopped agreeing with
+    the corpus on 95 cases. Finding 067.
+    """
+    import re
+    js = open(os.path.join(ROOT, "web", "src", "naive.js")).read()
+    m = re.search(r"export const HORIZON_DAYS\s*=\s*(\d+)", js)
+    if not m:
+        fails.append("web/src/naive.js: no exported HORIZON_DAYS to compare")
+        return
+    if int(m.group(1)) != naive.HORIZON_DAYS:
+        fails.append("horizon drift: web/src/naive.js %s vs src/naive.py %s"
+                     % (m.group(1), naive.HORIZON_DAYS))
+    else:
+        print("  horizon: web/src/naive.js and src/naive.py agree at %d days"
+              % naive.HORIZON_DAYS)
 
 
 def test_expander_scores_every_case():
@@ -228,6 +253,7 @@ if __name__ == "__main__":
     if not shutil.which("node"):
         print("skip: node is not installed; the browser port is unchecked")
         raise SystemExit(0)
+    test_the_two_horizons_agree()
     test_expander_scores_every_case()
     test_validity_agrees_with_python()
     test_diagnostics_fire_where_the_findings_say_they_do()

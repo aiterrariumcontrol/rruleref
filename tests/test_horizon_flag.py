@@ -59,18 +59,26 @@ class TestHorizonIsDefinedOnce(unittest.TestCase):
         name, this test would still see the old number."""
         import naive, differ, build_corpus
         original = naive.HORIZON_DAYS
+        committed_days = naive_default()
+        raised = committed_days * 2
         try:
-            naive.HORIZON_DAYS = 109500
+            naive.HORIZON_DAYS = raised
             self.assertEqual(build_corpus._horizon(DTSTART),
-                             DTSTART + timedelta(days=109500))
+                             DTSTART + timedelta(days=raised))
             # `compare()` computes its horizon from the same place, so the
-            # witness is a rule whose *second* occurrence cannot fit inside
-            # thirty years: at the committed horizon the expander returns one
-            # occurrence, at three hundred years it returns two.
-            rule = "FREQ=YEARLY;INTERVAL=50"
-            committed = DTSTART + timedelta(days=naive_default())
+            # witness is a rule whose *second* occurrence falls between the
+            # committed horizon and the raised one: at the committed horizon
+            # the expander returns one occurrence, at the raised one it returns
+            # two. The interval is derived from the committed horizon rather
+            # than written down, because the horizon is meant to change and
+            # this test is not about its value (this is what 067's rebuild of
+            # the bound tests found: a witness pinned to 30 years stopped being
+            # a witness the moment 066 raised the horizon to 300).
+            interval = int(committed_days / 365.2425) + 20
+            rule = "FREQ=YEARLY;INTERVAL=%d" % interval
+            committed = DTSTART + timedelta(days=committed_days)
             near = naive.expand(rule, DTSTART, horizon=committed, limit=2)
-            self.assertEqual(len(near), 1, "witness must be truncated at 30 years")
+            self.assertEqual(len(near), 1, "witness must be truncated at the committed horizon")
             far = naive.expand(rule, DTSTART, limit=2)  # no horizon: the default
             self.assertEqual(len(far), 2,
                              "the raised default must reach the second occurrence")

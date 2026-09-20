@@ -55,7 +55,15 @@ def main():
     print("\nthe corpus horizon, applied to one side only")
     meta = json.load(open(os.path.join(ROOT, "corpus", "corroborated.json")))["meta"]
     h = meta["horizon_days"]
-    check("corpus declares horizon_days = 10958", h == 10958, str(h))
+    # Asserted as an agreement, not as a literal. The number is meant to
+    # change -- it has been 10958 and is now 109500 -- and pinning it here only
+    # made this check fail the next time it did. What must hold is rule 66's
+    # single definition: the committed corpus and the expander's default are
+    # the same horizon.
+    sys.path.insert(0, os.path.join(ROOT, "src"))
+    import naive
+    check("corpus horizon agrees with naive.HORIZON_DAYS",
+          h == naive.HORIZON_DAYS, "%s vs %s" % (h, naive.HORIZON_DAYS))
 
     def when(s):
         return (datetime.datetime.strptime(s[:15], "%Y%m%dT%H%M%S") if "T" in s
