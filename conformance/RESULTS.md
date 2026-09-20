@@ -167,13 +167,14 @@ nothing at all for the `dateutil` lineage or `sabre`. The `dtstart_fill` counts
 in the paragraphs above are unchanged: the composed reading gets its own name, so
 no case that scored `dtstart_fill` moved.
 
-`DateTime::Event::ICal`'s row was **not** re-run. Its residual is load-dependent
-and has never reproduced across runs
+`DateTime::Event::ICal`'s row has since been re-run on the 25-occurrence corpus
+under `TZ=UTC`, on 2026-09-20, and the figures above are that run:
+**1163 pass, 368 fail, 69 other reading, 127 error**, against 1179/385/67/97 at
+eight occurrences. Its residual is load-dependent and has never reproduced
+across runs
 ([finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)),
-so re-running it would change numbers for reasons unrelated to this edit and
-leave the reader unable to tell which cause did what. Adding a reading can only
-move cases out of `fail`, so its 385 is now an upper bound rather than a
-measurement.
+so the `fail`/`error` boundary in particular should be read as one observation
+rather than a stable count — see the note below.
 
 | implementation | version | lineage | pass | fail | other reading | prefix of other reading [¶](#prefix) | error |
 |---|---|---|---:|---:|---:|---:|---:|
@@ -187,7 +188,7 @@ measurement.
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1601 | 19 | 72 | 0 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 72 | 0 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 |
-| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1179 | 385 [‡](#dtical-split) | 67 [‡](#dtical-split) | 97 [‡](#dtical-split) |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1163 | 368 [‡](#dtical-split) | 69 | 0 | 127 [‡](#dtical-split) |
 
 <a id="go-truncation"></a>
 **§ `rrule-go`'s three.** They are not in any column above: they fall in a
@@ -372,9 +373,14 @@ answer when the alarm fires, so a timed-out case is always `error` and never a
 short list; when the alarm does *not* fire the case lands in whichever answer
 bucket it belongs to, and that can be `other reading` as easily as `fail`. The
 whole of this delta is two cases arriving from `error` and one leaving for it.
-Only `pass` has reproduced across all three runs. Read this row as
-**1179 passing and 549 not**, and treat any comparison of its `fail`, `error` or
-`other reading` columns against an earlier run of this document as noise. The seven cases added on
+Only `pass` had reproduced across those three runs — and the fourth run, on the
+25-occurrence corpus of 2026-09-20 under `TZ=UTC`, moves it too: `1163 / 368 /
+69 / 127`. That is expected, because this is the first run whose *input*
+changed: at 25 occurrences a case has three times as long to diverge and the
+adapter has three times as much work to do inside the same 20-second alarm.
+Read this row as **1163 passing and 564 not**, and treat any comparison of its
+`fail`, `error` or `other reading` columns against an earlier run of this
+document as noise. The seven cases added on
 2026-09-17 account for 3 of the passes and 4 of the failures; the rest of the
 movement from the previous row is the alarm, not the corpus. This is
 [finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)'s point
@@ -389,7 +395,7 @@ corpus's 291 `BYSETPOS` cases and moves 5 of them from disagree to agree. See
 [finding 046](../findings/046-the-iterator-and-the-next-chain-disagree.md), and
 `RRULE_DTICAL_ITER=chain` in the adapter to reproduce the other column.
 
-`DateTime::Event::ICal`'s 400 mismatches and 98 errors are not 498 separate
+`DateTime::Event::ICal`'s 437 mismatches and 127 errors are not 564 separate
 problems (and, per the note above, are not a stable split of 498 either). [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
 accounts for the `BYMONTH` share of both: at `FREQ=WEEKLY` and `FREQ=MONTHLY`
 the library reads `BYMONTH` as *month ∈ `BYMONTH` **and** day-of-month =
