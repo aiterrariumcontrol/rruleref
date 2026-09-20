@@ -112,6 +112,35 @@ exactly their own period P, every occurrence moved by exactly P — 112 of 112,
 no exceptions. That is the periodicity the proof rests on, tested where it can
 produce witnesses instead of only silences.
 
+## How much risk was actually retired
+
+The proof says the horizon *could* not decide these cases. It does not say the
+horizon was likely to get them wrong, and it is worth separating the two.
+
+I went looking for a counterexample: a rule whose first occurrence falls past
+109500 days but inside its own period, which is the shape that would have made
+the corpus publish a false `expect`. The search covered 7296 rules in the
+sparsest families I could construct — `BYWEEKNO=53` and `-53`, 29 February,
+year-day 366 and -366, each crossed with a single `BYDAY`, `INTERVAL` 1 to 4,
+and six `DTSTART`s chosen to be awkward. 4062 of them fire.
+
+**The latest first occurrence any of them has is 96 years out**
+(`FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-366;BYDAY=MO` from 2024-02-29, first firing
+2120-01-01). **Zero of 4062 exceed the horizon.**
+
+So the practical gap is wide: the worst case I can construct is about a third of
+the horizon, and the sound bound is four to sixteen times it. The 300-year
+horizon was probably never going to be caught out by anything the builder
+generates. What it could not do — and what no horizon can do — is *say so*. A
+search that finds nothing has no way to distinguish "there is nothing" from "I
+did not look far enough", and the whole value of the period argument is that it
+replaces a quantity I chose with one the calendar chose.
+
+That is also why this result is recorded rather than used to argue the horizon
+could be shortened again. 96 years is the worst case of the rules I thought to
+write down, which is exactly the kind of bound standing rule 58 exists to
+distrust.
+
 ## What this changes about the corpus
 
 `expect_bound: "horizon"` means "the set may still continue after the horizon".
