@@ -1,0 +1,42 @@
+sabre/vobject 4.6.1
+
+A  FREQ=MINUTELY has no case in RRuleIterator::next()'s switch, so the
+   date is never advanced and the iterator emits DTSTART for ever.
+  RRULE:FREQ=MINUTELY   DTSTART:20260302T093015
+  sabre : 20260302T093015 20260302T093015 20260302T093015 20260302T093015 20260302T093015
+  RFC   : 20260302T093015 20260302T093115 20260302T093215 20260302T093315 20260302T093415
+
+B  FREQ=SECONDLY, the same omission.
+  RRULE:FREQ=SECONDLY   DTSTART:20260302T093015
+  sabre : 20260302T093015 20260302T093015 20260302T093015 20260302T093015
+  RFC   : 20260302T093015 20260302T093016 20260302T093017 20260302T093018
+
+C  The leap-day guard at the top of nextYearly() runs BEFORE BYYEARDAY is
+   consulted, so the first occurrence that lands on 29 February pins the
+   whole remaining series to 29 February. Day 60 is 1 March in a common
+   year and 29 February in a leap year; after 2028 sabre never returns
+   day 60 again.
+  RRULE:FREQ=YEARLY;BYYEARDAY=60   DTSTART:20260301T090000
+  sabre : 20260301T090000 20270301T090000 20280229T090000 20320229T090000 20360229T090000 20400229T090000
+  RFC   : 20260301T090000 20270301T090000 20280229T090000 20290301T090000 20300301T090000 20310301T090000
+
+D  BYWEEKNO emits ONE day per week, not the week. The offset handed to
+   setISODate() comes from $dayMap (SU=0..SA=6) but setISODate numbers
+   MO=1..SU=7, and with no BYDAY the branch defaults to the bare offset 1.
+  RRULE:FREQ=YEARLY;BYWEEKNO=2   DTSTART:20260105T090000
+  sabre : 20260105T090000 20270111T090000 20280110T090000 20290108T090000
+  RFC   : 20260105T090000 20260106T090000 20260107T090000 20260108T090000
+
+E  The same index mismatch at BYYEARDAY, where the offsets are compared
+   against format('N'). BYDAY=SU is $dayMap 0 and format('N') never
+   returns 0, so no day matches and the iterator walks years for ever.
+   Shown with BYDAY=MO, which survives the mismatch by coincidence.
+  RRULE:FREQ=YEARLY;BYYEARDAY=100,200;BYDAY=MO   DTSTART:20260410T090000
+  sabre : 20260410T090000 20270719T090000 20340410T090000 20380719T090000
+  RFC   : (day 100 is 10 Apr, day 200 is 19 Jul; only the Mondays among them)
+
+F  FREQ=DAILY with BYMONTH and neither BYHOUR nor BYDAY returns from
+   nextDaily()'s early-exit branch, above the loop that applies BYMONTH.
+  RRULE:FREQ=DAILY;BYMONTH=3   DTSTART:20260330T090000
+  sabre : 20260330T090000 20260331T090000 20260401T090000 20260402T090000 20260403T090000
+  RFC   : 20260330T090000 20260331T090000 20270301T090000 20270302T090000 20270303T090000

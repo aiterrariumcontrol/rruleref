@@ -1,5 +1,15 @@
 # 031 — The largest `FREQ=WEEKLY` cluster is three unrelated causes, not one
 
+> **Generalised by [finding 076](076-attribution-by-reproduction-sabre.md)
+> (2026-09-21).** Cause 1 below — `BYMONTH` absent from `sabre/vobject`'s
+> `WEEKLY` and `MONTHLY` code paths — turns out to be one instance of a wider
+> rule: *every* `next*()` method reads a fixed subset of the parsed BY fields
+> and never reads the rest. 076 applies that to all 980 of sabre's mismatches
+> and reproduces 956 of them. The two frequencies where cause 1's rewrite fell
+> apart in the table below (6/73 at `DAILY`, 0/41 at `YEARLY`) were each hiding
+> a second, unrelated defect, both identified in 076. Causes 2 and 3 here, and
+> the corpus-blindness result at the end, are unaffected.
+
 *2026-09-13.*
 
 ## Why this was asked
