@@ -1,0 +1,90 @@
+{
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "finding": "077",
+ "ical4j_locale_prefix_case": "c5175bbb94b8 (the single fail_prefix, identical in all three locales)",
+ "measured_utc": "2026-09-21",
+ "note": "Bucket counts for every row re-measured at finding 077. Adapters run under TZ=UTC via conformance/score.py against cases_id 7bd9731d3a48. The three libical rows are NOT here: each needs its own rebuild and the tree is left on 4edd39a3. dtical is not here either (>25 min).",
+ "rows": {
+  "dateutil": {
+   "error": 0,
+   "fail": 0,
+   "fail_other_reading": 0,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 0,
+   "pass": 1727,
+   "sum": 1727
+  },
+  "dmfs (en-GB)": {
+   "error": 12,
+   "fail": 4,
+   "fail_other_reading": 71,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 0,
+   "pass": 1640,
+   "sum": 1727
+  },
+  "ical4j (ar-EG)": {
+   "error": 0,
+   "fail": 243,
+   "fail_other_reading": 75,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 1,
+   "pass": 1408,
+   "sum": 1727
+  },
+  "ical4j (en-GB)": {
+   "error": 0,
+   "fail": 215,
+   "fail_other_reading": 76,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 1,
+   "pass": 1435,
+   "sum": 1727
+  },
+  "ical4j (en-US)": {
+   "error": 0,
+   "fail": 230,
+   "fail_other_reading": 76,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 1,
+   "pass": 1420,
+   "sum": 1727
+  },
+  "rrule-go": {
+   "error": 0,
+   "fail": 0,
+   "fail_other_reading": 0,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 3,
+   "pass": 1724,
+   "sum": 1727
+  },
+  "rrulejs": {
+   "error": 0,
+   "fail": 28,
+   "fail_other_reading": 0,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 0,
+   "pass": 1699,
+   "sum": 1727
+  },
+  "rust-rrule": {
+   "error": 0,
+   "fail": 0,
+   "fail_other_reading": 0,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 0,
+   "pass": 1727,
+   "sum": 1727
+  },
+  "sabre": {
+   "error": 4,
+   "fail": 980,
+   "fail_other_reading": 23,
+   "fail_other_reading_prefix": 0,
+   "fail_prefix": 0,
+   "pass": 720,
+   "sum": 1727
+  }
+ }
+}

@@ -54,15 +54,18 @@ rather than footnoted. [Finding 056](../findings/056-two-scopes-for-one-word.md)
 found 7 of `ical4j`'s plain failures and 7 of `dmfs`'s to be a proper *prefix* of
 a rival reading the corpus records, returned short because the Java adapter's
 window is `DTSTART` + 10958 days, and reported by a scorer that recognised a
-rival reading only by exact equality. `score.py` now has a bucket for it, and
-the **prefix of other reading** column below is that bucket.
+rival reading only by exact equality. `score.py` now has a bucket for it. It is one of two prefix buckets,
+and the **short** column below is their sum — see [¶](#prefix).
 
 [Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md)
 rescored every row against the new scorer. The two JVM rows moved by exactly 7
 each; **every other row reproduced its published numbers cell for cell**, and
-`fail_prefix` — a prefix of the corpus's *own* answer — is zero everywhere,
-measured rather than assumed. The 7 are the *same* 7 cases for both adapters, in
-all three JVM locales, which is what identifies the cause as the harness: the
+`fail_prefix` — a prefix of the corpus's *own* answer — was zero everywhere,
+measured rather than assumed. *That last clause has since expired:* raising the
+horizon on 2026-09-20 pushed three `rrule-go` cases and one `ical4j` case into
+it, and the sentence stood here unrevised until
+[finding 077](../findings/077-a-table-that-outlived-its-corpus.md). The 7 are
+the *same* 7 cases for both adapters, in all three JVM locales, which is what identifies the cause as the harness: the
 corpus applies `horizon_days` to every `expect` list and to only 99 of its 120
 `reading_alternatives` lists, so an adapter clipping at the declared horizon
 cannot match the other 21 by equality. Those 21 are the exact bound on this
@@ -186,8 +189,10 @@ taken to belong to the period of the year that *owns* the week rather than the
 calendar year they sit in. Again no `expect` list changed, so again no case can
 move except from `fail` to `other reading`. Every row above was rescored on the
 new cases file. `ical4j` 187 → **183** (and 199 → 196 on `ar`-`EG`,
-168 → **164** on `en`-`GB`), `dmfs lib-recur` 6 → **4**, `libical` master
-`4edd39a3` 8 → **6**, master `48d52b4b` 16 → **14**, `3.0.20` 108 → **107**, and
+168 → **164** on `en`-`GB`) — those are the counts *as of 2026-09-19*, before
+the horizon was raised; the current `ical4j` figures are 230/243/215 and the
+locale table below has been re-measured. `dmfs lib-recur` 6 → **4**,
+`libical` master `4edd39a3` 8 → **6**, master `48d52b4b` 16 → **14**, `3.0.20` 108 → **107**, and
 nothing at all for the `dateutil` lineage or `sabre`. The `dtstart_fill` counts
 in the paragraphs above are unchanged: the composed reading gets its own name, so
 no case that scored `dtstart_fill` moved.
@@ -201,11 +206,12 @@ across runs
 so the `fail`/`error` boundary in particular should be read as one observation
 rather than a stable count — see the note below.
 
-| implementation | version | lineage | pass | fail | other reading | prefix of other reading [¶](#prefix) | error |
+<!-- rowsum: total=cases cols=pass:4,fail:5,other:6,prefix:7,error:8 -->
+| implementation | version | lineage | pass | fail | other reading | short [¶](#prefix) | error |
 |---|---|---|---:|---:|---:|---:|---:|
 | `python-dateutil` | 2.9.0.post0 | corroborating expander | 1727 | 0 | 0 | 0 | 0 |
 | `rrule.js` | 2.8.1 | port of dateutil | 1699 | 28 | 0 | 0 | 0 |
-| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1724 | 0 [§](#go-truncation) | 0 | 0 | 0 |
+| `rrule-go` | 1.8.2 | port of dateutil (Go) | 1724 | 0 | 0 | 3 [§](#go-truncation) | 0 |
 | `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1727 | 0 | 0 | 0 | 0 |
 | `ical4j` | 4.1.1 | independent (Java, 2004) | 1420 [†](#ical4j-locale) | 230 | 76 | 1 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1640 | 4 | 71 | 0 | 12 |
@@ -263,29 +269,40 @@ checks every `error` column in this table the same way and finds
 `DateTime::Event::ICal`'s the only one that moves.
 
 <a id="go-truncation"></a>
-**§ `rrule-go`'s three.** They are not in any column above: they fall in a
-*fourth* failure bucket, `fail_prefix`, a proper prefix of the corpus's own
-`expect`. All three stop at exactly 105189 days past their own `DTSTART` and
+**§ `rrule-go`'s three.** They are `fail_prefix` — a proper prefix of the
+corpus's own `expect` — and until 2026-09-21 they appeared in no column at all
+([finding 077](../findings/077-a-table-that-outlived-its-corpus.md)).
+All three stop at exactly 105189 days past their own `DTSTART` and
 the corpus's next occurrence falls at exactly 107380 days. `math.MaxInt64`
 nanoseconds is 106751.99 days, so `rrule-go` silently truncates any recurrence
 reaching beyond Go's `time.Duration` ceiling.
 [Finding 066](../findings/066-the-ports-were-not-identical.md). `ical4j` has one
 entry in the same bucket, which is finding 050's sub-daily `BYYEARDAY` defect;
-every other row is zero there.
+every other re-measured row is zero there.
 
 <a id="prefix"></a>
-**¶ prefix of other reading.** A non-empty *proper prefix* of one of the case's
-recorded `reading_alternatives`: the answer agreed with that reading for its
-whole length and then stopped. Counted apart from `fail` because stopping short
-is the signature of a window rather than of a disagreement. Until 2026-09-20
-this bucket was almost entirely an artifact of the Java adapters' own `DTSTART`
-+ 10958-day clip, which was the corpus's declared horizon and which the corpus
-did not apply to its own alternative readings; raising the corpus horizon to
-109500 days and raising both Java adapters' windows with it removed all 14, and
-the column is now zero for every implementation on the board
-([finding 066](../findings/066-the-ports-were-not-identical.md)). The bucket
-asserts the prefix and nothing more: it does not claim the implementation would
-have continued correctly.
+**¶ short.** A non-empty *proper prefix* of the answer the case expects: the
+implementation agreed for its whole length and then stopped early. Counted
+apart from `fail` because stopping short is the signature of a window rather
+than of a disagreement. `score.py` splits this in two — `fail_prefix`, a prefix
+of `expect`, and `fail_other_reading_prefix`, a prefix of a recorded
+`reading_alternatives` list — and this column is their sum.
+`fail_other_reading_prefix` is **zero on all eight rows re-measured on
+2026-09-21**, so every entry in this column today is `fail_prefix`.
+
+Until 2026-09-20 the second of the two was almost entirely an artifact of the
+Java adapters' own `DTSTART` + 10958-day clip, which was the corpus's declared
+horizon and which the corpus did not apply to its own alternative readings;
+raising the corpus horizon to 109500 days and raising both Java adapters'
+windows with it removed all 14
+([finding 066](../findings/066-the-ports-were-not-identical.md)). The two
+entries that remain are the *first* bucket and were published under the second
+one's heading until
+[finding 077](../findings/077-a-table-that-outlived-its-corpus.md) merged the
+column: `rrule-go`'s 3 were omitted from the table altogether, which is why its
+row summed to 1724 against a 1727-case set. The bucket asserts the prefix and
+nothing more: it does not claim the implementation would have continued
+correctly.
 [Finding 057](../findings/057-a-horizon-the-corpus-keeps-on-one-side-only.md).
 
 <a id="ical4j-locale"></a>
@@ -294,18 +311,36 @@ When an `RRULE` omits `WKST`, `ical4j` takes the first day of the week from the
 JVM's default locale rather than RFC 5545's stated default of `MO`
 ([finding 036](../findings/036-a-score-that-depends-on-the-host-locale.md)).
 The run above was made on an `en`-`US` JVM, where the week starts on Sunday.
-The same build, same corpus, changing only the locale:
+The same build, same corpus, changing only the locale — re-measured
+2026-09-21 against `cases_id` `7bd9731d3a48`, the identifier at the top of this
+page:
 
-| JVM locale | first day of week | pass | fail | prefix |
-|---|---|---:|---:|---:|
-| `ar`-`EG` | Saturday | 1456 | 196 | 7 |
-| `en`-`US` | Sunday | 1468 | 183 | 7 |
-| `en`-`GB` | Monday | 1487 | 164 | 7 |
+<!-- rowsum: total=cases cols=pass:3,fail:4,other:5,short:6 -->
+| JVM locale | first day of week | pass | fail | other reading | short |
+|---|---|---:|---:|---:|---:|
+| `ar`-`EG` | Saturday | 1408 | 243 | 75 | 1 |
+| `en`-`US` | Sunday | 1420 | 230 | 76 | 1 |
+| `en`-`GB` | Monday | 1435 | 215 | 76 | 1 |
 
-19 net of the 183 are the locale and not the algorithm. The prefix column does
-not move with the locale at all — the same 7 cases in all three rows, which is
-part of how finding 057 identifies them as the harness. Of the 164 that remain
-on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
+The `en`-`US` row is the `ical4j` row of the main table, cell for cell.
+
+**This table published 1456/196/7, 1468/183/7 and 1487/164/7 until 2026-09-21.**
+Those were measurements of the pre-2026-09-20 corpus, left unrevised when the
+corpus was raised to 25 occurrences and 109500 days, and they summed to 1659,
+1658 and 1658 against a 1727-case set. Every number in this section that was
+derived from them has been recomputed or marked below.
+[Finding 077](../findings/077-a-table-that-outlived-its-corpus.md).
+
+**15** net of the 230 are the locale and not the algorithm, and the move is not
+a clean subset: going from Sunday to Monday takes 16 cases out of the
+plain-failure column and puts 1 in. The `short` column does not move with the
+locale at all — the same single case, `c5175bbb94b8`, in all three rows, which
+is part of how finding 057 identifies that bucket as the harness. The *other
+reading* column barely moves either, by one case between Saturday and the other
+two. Of the 215 that remain
+on the `en`-`GB` row, **72 were one defect in its two forms** when finding 049
+counted them on the smaller corpus (they have not been recounted here — see
+finding 077) — 69 where the
 negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
 resolved correctly when the rule part expands and compared raw when the same
 rule part limits, so `FREQ=DAILY;BYMONTHDAY=-1` matches nothing. Finding 049
@@ -314,7 +349,10 @@ about the corpus, not about `ical4j`, and the seven cases added on 2026-09-17
 show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.0 fixes it for `BYMONTHDAY`
 and not for `BYYEARDAY`, and the scored set now shows exactly that split:
 4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
-`BYYEARDAY` ones (1556 / 99 / 66 / 7 on the `en`-`GB` row of the same corpus)
+`BYYEARDAY` ones (1556 / 99 / 66 / 7 on the `en`-`GB` row — pre-2026-09-20
+corpus, and those four cells sum to 1728, one more than that corpus held;
+**the 4.3.0 jar is not in this tree, so no 4.3.0 number on this page can be
+reproduced from the committed files**, finding 077)
 ([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)).
 
 **The plain failures that survive that fix are now attributed.**
@@ -381,8 +419,8 @@ also caught a locale-dependent *formatter* in this repository's own `dmfs`
 adapter, which on an Arabic-locale machine would have scored that row 0 of 1728;
 it is fixed, and the `dmfs` row above is unchanged by the fix.
 
-Of the 183 that remain on the `en`-`GB` row — the row where `WKST` defaults to
-the value RFC 5545 specifies — **18 are one defect**, characterised in
+Of the **215** that remain on the `en`-`GB` row — the row where `WKST` defaults
+to the value RFC 5545 specifies — **18 are one defect**, characterised in
 [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md):
 at `FREQ=WEEKLY` the `BYMONTH` limit is applied to the period seed rather than
 to the expanded occurrences, so over a common horizon all 18 both return dates
@@ -390,10 +428,12 @@ in months the rule excludes and omit dates it requires. The same behaviour appea
 corroborated cases that this set excludes because their `DTSTART` is
 unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
 the current release. [Finding 039](../findings/039-what-bysetpos-selects-from.md)
-extends the same defect to the corpus's `BYSETPOS` cases: a further **8** of the
-183 are it, and six more cases carry the defect but only past the horizon their
-corpus entry runs to, so 183 is a count of disagreements within these horizons
-and undercounts this defect.
+extends the same defect to the corpus's `BYSETPOS` cases: a further **8** are
+it, and six more cases carry the defect but only past the horizon their corpus
+entry runs to, so the row is a count of disagreements within these horizons and
+undercounts this defect. The 18 and the 8 were counted by findings 037 and 039
+against the pre-2026-09-20 corpus, when this row stood at 164; they have not
+been recounted at 215 (finding 077).
 
 Every row is out of 1728. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
@@ -410,6 +450,7 @@ Seven rules covering every *limiting* cell of the two parts are now in the
 scored set, and they are the whole of the difference between these rows and the
 previous run. Per case, out of seven:
 
+<!-- rowsum: skip reason="seven hand-picked probe cases, not the scored set" -->
 | implementation | correct | how it is wrong |
 |---|---:|---|
 | `python-dateutil`, `rrule.js`, `rrule-go`, `rust-rrule` | 7 | — |
@@ -537,6 +578,7 @@ returned occurrence satisfies the rule's own BY parts, and reports only those
 constraints that RFC 5545's application order guarantees survive to the output
 (see [`invariants.py`](invariants.py)).
 
+<!-- rowsum: skip reason="two overlapping property counts, not a partition" -->
 | implementation | guaranteed violations | order-dependent mismatches |
 |---|---:|---:|
 | `python-dateutil` 2.9.0.post0 | 0 | 0 |
@@ -560,6 +602,7 @@ purpose*.
 When `BYSETPOS` asks for the nth member of a set with fewer than n members, the
 correct result for that period is the empty set.
 
+<!-- rowsum: skip reason="one case, answers not counts" -->
 | implementation | `FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=6;BYSETPOS=-3` |
 |---|---|
 | `python-dateutil`, `rust-rrule`, `dmfs`, `ical4j` | *(empty — correct)* |

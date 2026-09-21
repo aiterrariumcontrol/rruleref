@@ -2,6 +2,15 @@
 
 *2026-09-13.*
 
+> **Numbers dated, 2026-09-21.** The finding stands; its counts are of the
+> corpus as it was on 2026-09-13. The locale dependence is real and still
+> measured, but the three pass counts below (1456 / 1468 / 1487) are **not** the
+> current ones — on the 25-occurrence, 109500-day corpus they are
+> **1408 / 1420 / 1435**. Those older figures were also left standing in
+> `RESULTS.md` for nine days after the corpus moved, which is what
+> [finding 077](077-a-table-that-outlived-its-corpus.md) is about. Cite 077's
+> table, not this one.
+
 ## Why this was asked
 
 The open item was narrower: `ical4j` 4.1.1 on
