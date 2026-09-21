@@ -1,0 +1,13 @@
+{"id":"P1","rrule":"FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=30","dtstart":"20240101T090000","limit":6}
+{"id":"P2","rrule":"FREQ=MONTHLY;BYMONTHDAY=31","dtstart":"20240131T090000","limit":8}
+{"id":"P3","rrule":"FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29","dtstart":"20240229T090000","limit":6}
+{"id":"P4","rrule":"FREQ=MONTHLY;BYMONTHDAY=15,29;BYSETPOS=1","dtstart":"20260115T090000","limit":6}
+{"id":"P5","rrule":"FREQ=MONTHLY;BYDAY=MO;BYSETPOS=1","dtstart":"20260105T090000","limit":4}
+{"id":"P6","rrule":"FREQ=YEARLY;BYMONTHDAY=15","dtstart":"20260115T090000","limit":6}
+{"id":"P7","rrule":"FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=15","dtstart":"20260115T090000","limit":5}
+{"id":"P8","rrule":"FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,-1;BYDAY=WE","dtstart":"20260930T090000","limit":5}
+{"id":"Q1","rrule":"FREQ=YEARLY;BYMONTH=3;BYDAY=MO;BYSETPOS=1","dtstart":"20260302T090000","limit":4}
+{"id":"Q2","rrule":"FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=2","dtstart":"20260106T090000","limit":4}
+{"id":"Q3","rrule":"FREQ=MONTHLY;BYDAY=MO;BYMONTHDAY=5,12;BYSETPOS=1","dtstart":"20260105T090000","limit":4}
+{"id":"Q4","rrule":"FREQ=YEARLY;BYYEARDAY=100,200;BYSETPOS=1","dtstart":"20260410T090000","limit":4}
+{"id":"Q5","rrule":"FREQ=YEARLY;BYDAY=SU;BYSETPOS=-1","dtstart":"20241229T090000","limit":4}

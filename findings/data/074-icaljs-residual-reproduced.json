@@ -1,0 +1,128 @@
+{
+ "attribution": {
+  "070-B  BYHOUR not applied": 1,
+  "070-B  BYSECOND not applied": 1,
+  "074-E  BYSETPOS and BYMONTHDAY not applied": 1,
+  "074-E  BYSETPOS not applied": 37,
+  "074-F  INTERVAL not applied": 11,
+  "074-G  YEARLY: monthday confined to DTSTART's month, invalid date rolls over": 4,
+  "074-H  DTSTART omitted": 2,
+  "074-H  interval phase one period late": 4,
+  "074-I  BYMONTH expanded at MONTHLY (duplicate instances)": 1,
+  "unexplained": 23
+ },
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "counts": {
+  "error": 84,
+  "fail": 236,
+  "fail_other_reading": 31,
+  "pass": 1376
+ },
+ "ids": {
+  "070-B  BYHOUR not applied": [
+   "6e74ec2d96a8"
+  ],
+  "070-B  BYSECOND not applied": [
+   "a844fe388868"
+  ],
+  "074-E  BYSETPOS and BYMONTHDAY not applied": [
+   "fe2685e6b007"
+  ],
+  "074-E  BYSETPOS not applied": [
+   "dfb87b3673dc",
+   "c0d84d9e2603",
+   "b43e08335d6e",
+   "c01fe3acef33",
+   "f4c007e4d68c",
+   "9e1f525849c4",
+   "a902949aa231",
+   "da5898342cc6",
+   "1872a9f72003",
+   "69003bbaa6dc",
+   "6a36cb2eea7b",
+   "15c161858dd7",
+   "4d58053b1f56",
+   "b5f9a68d5fe3",
+   "435f4d6ed9f7",
+   "afd39eca7f70",
+   "973625f5bdce",
+   "9f97d6721337",
+   "1133012800b2",
+   "83eaa8263f82",
+   "8d309f818409",
+   "0a4f58346b6a",
+   "c6f0480694c4",
+   "9fcabd67bba1",
+   "868638645e3b",
+   "814225d050b4",
+   "71e916ccd496",
+   "878343eeb8f3",
+   "db14c11184bb",
+   "c35161abad0e",
+   "def8f022bc92",
+   "7da30553d37d",
+   "f637082ae88e",
+   "ace0114b7e31",
+   "d3530d0293cc",
+   "020c9901ea52",
+   "c1ca995a3bff"
+  ],
+  "074-F  INTERVAL not applied": [
+   "9fc2359f8fd3",
+   "b2190283a93b",
+   "9863c51f9ff4",
+   "da134f35324f",
+   "1b15bd19e17f",
+   "66a62d82ec8c",
+   "e9d15d685db0",
+   "e81b9a50415b",
+   "b51b9fc7a8b6",
+   "2faa91801178",
+   "3144c7c129c9"
+  ],
+  "074-G  YEARLY: monthday confined to DTSTART's month, invalid date rolls over": [
+   "20c1cdf4f009",
+   "b92091affdcf",
+   "ab95817454e6",
+   "697698e84f91"
+  ],
+  "074-H  DTSTART omitted": [
+   "c2f621c37301",
+   "7d4fae58c978"
+  ],
+  "074-H  interval phase one period late": [
+   "30437d29f489",
+   "8199cbc01433",
+   "f3522c17f441",
+   "6abbfd68562e"
+  ],
+  "074-I  BYMONTH expanded at MONTHLY (duplicate instances)": [
+   "9a0e0b909bf8"
+  ],
+  "unexplained": [
+   "a3b31c376a82",
+   "d27c58ae379a",
+   "9ef3e4e23567",
+   "2e2cff862cec",
+   "e1b4925a5263",
+   "aba2c7ab25c4",
+   "0fdd7d614fc6",
+   "d7a9ed17f9fb",
+   "111d7647f8a8",
+   "be630fe23f8c",
+   "3939127583ee",
+   "7251092e97dd",
+   "f9f6ec0cf765",
+   "0fcc0ebb9669",
+   "9346b18d8869",
+   "83ed4e4655a6",
+   "5b57fff10b12",
+   "88a59d144b92",
+   "71c5fc332bd4",
+   "1952128a3c40",
+   "7a381d6a4176",
+   "7a6256afbb5b",
+   "57bd6869b586"
+  ]
+ }
+}
