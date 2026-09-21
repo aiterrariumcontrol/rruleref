@@ -1,0 +1,688 @@
+{
+ "finding": 73,
+ "wake": 108,
+ "measured": "2026-09-21",
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "question": "Which published `error` columns are wall-clock deadlines rather than properties of the subject (standing rule 80), and are those counts stable?",
+ "adapters_with_a_per_case_deadline": {
+  "perl/dtical_adapter.pl": "RRULE_CASE_TIMEOUT, default 10s, SIGALRM. DEADLINE-DEPENDENT: findings 046, 047, 072.",
+  "php/vobject_adapter.php": "RRULE_CASE_TIMEOUT, default 10s, pcntl_alarm. Measured here.",
+  "icaljs_adapter.js": "RRULE_CASE_TIMEOUT_MS, default 2000 ms, supervisor kills and restarts the worker. Measured here; the constant was hard-coded before this finding and the two runs below used a one-line copy of the adapter identical to the committed one apart from that read."
+ },
+ "adapters_without_one": [
+  "dateutil_adapter.py",
+  "rrulejs_adapter.js",
+  "rust",
+  "go",
+  "java/Ical4jAdapter.java",
+  "java/DmfsAdapter.java",
+  "c (libical)"
+ ],
+ "sabre": {
+  "counts_at_deadline_10s": {
+   "error": 4,
+   "fail": 980,
+   "fail_other_reading": 23,
+   "pass": 720
+  },
+  "error_split": {
+   "deadline": 4,
+   "refusal": 0
+  },
+  "deadline_members": [
+   {
+    "id": "3f7ddf899c51",
+    "rrule": "FREQ=YEARLY;BYDAY=SU;BYYEARDAY=+60",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "RuntimeException: no answer within 10s"
+   },
+   {
+    "id": "7ffc2958e359",
+    "rrule": "FREQ=YEARLY;BYDAY=SU;BYYEARDAY=60",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "RuntimeException: no answer within 10s"
+   },
+   {
+    "id": "f66114c34325",
+    "rrule": "FREQ=YEARLY;BYDAY=SU;BYYEARDAY=60,59",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "RuntimeException: no answer within 10s"
+   },
+   {
+    "id": "12397b77fc94",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=100,1;BYDAY=1WE,-1MO",
+    "dtstart": "20310101T090000",
+    "limit": 25,
+    "error": "RuntimeException: no answer within 10s"
+   }
+  ],
+  "reprobe_at_180s": {
+   "ran": "TZ=UTC RRULE_CASE_TIMEOUT=180 php conformance/adapters/php/vobject_adapter.php < the 4 cases",
+   "wall_clock": "12m0.021s real, 11m59.888s user -- one core pegged for the whole of each case",
+   "result": "all four still unanswered at 180s, i.e. at 18x the published deadline",
+   "verdict": "DEADLINE-INDEPENDENT. Corroborates finding 029's source reading: RRuleIterator::nextYearly's BYYEARDAY branch has an unbounded while(true) and compares a PHP `w` daymap against an ISO `N` weekday, so BYDAY=SU and any ordinal BYDAY match no date in any year."
+  }
+ },
+ "icaljs": {
+  "counts_at_2000ms": {
+   "error": 84,
+   "fail": 236,
+   "fail_other_reading": 31,
+   "pass": 1376
+  },
+  "counts_at_10000ms": {
+   "error": 84,
+   "fail": 236,
+   "fail_other_reading": 31,
+   "pass": 1376
+  },
+  "scores_identical": true,
+  "error_split_at_2000ms": {
+   "deadline": 42,
+   "refusal": 42
+  },
+  "error_split_at_10000ms": {
+   "deadline": 42,
+   "refusal": 42
+  },
+  "deadline_membership_identical": true,
+  "refusal_membership_identical": true,
+  "deadline_members": [
+   {
+    "id": "ca23424a17d0",
+    "rrule": "FREQ=DAILY;BYDAY=FR,MO,SU;BYMONTHDAY=-1;WKST=WE",
+    "dtstart": "20240331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "43c2d278895e",
+    "rrule": "FREQ=DAILY;BYDAY=FR,TH;BYMONTHDAY=-2,-1",
+    "dtstart": "20260130T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "5c1401f8fbf1",
+    "rrule": "FREQ=DAILY;BYDAY=SA,TH,WE;BYMONTHDAY=-1",
+    "dtstart": "20260930T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "00c477d3a6ca",
+    "rrule": "FREQ=DAILY;BYDAY=WE;BYMONTHDAY=-5;WKST=MO",
+    "dtstart": "20260527T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "9b05187767dc",
+    "rrule": "FREQ=DAILY;BYMONTH=2,12;BYMONTHDAY=-5",
+    "dtstart": "20260224T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "8e98e121b143",
+    "rrule": "FREQ=DAILY;BYMONTH=3;BYMONTHDAY=-2",
+    "dtstart": "20240330T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "efd33eccbfab",
+    "rrule": "FREQ=DAILY;BYMONTH=4;BYMONTHDAY=-2",
+    "dtstart": "20240429T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "18a92a27f558",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "0918809e7231",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+    "dtstart": "20260531T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "a83990f8f788",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1,-2",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "e807aaed95c7",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYDAY=SA,WE;WKST=WE",
+    "dtstart": "20270331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "18536896ba73",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=-1",
+    "dtstart": "20260131T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "d06591cc8529",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=1",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "c76c994d0bf2",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+    "dtstart": "20260429T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "f3ea3ac70da5",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+    "dtstart": "20270130T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "edde065121cd",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-2,-5;WKST=WE",
+    "dtstart": "20270127T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "e22221230633",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYMONTH=10,11;BYSETPOS=-1",
+    "dtstart": "20261030T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "e5e2ad8b9365",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYSETPOS=1",
+    "dtstart": "20260130T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "9089e2fa724c",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+    "dtstart": "20240327T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "d833be6a57be",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+    "dtstart": "20270127T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "440733e70f61",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-1;BYDAY=MO",
+    "dtstart": "20260727T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "f40f2b4a86aa",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-2;BYSETPOS=-1",
+    "dtstart": "20270127T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "f8fce77e81e5",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=1,7",
+    "dtstart": "20270127T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "73311add759b",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=4,6",
+    "dtstart": "20240426T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "13ddec31f768",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=-5;WKST=SU",
+    "dtstart": "20260527T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "b2b4e497e183",
+    "rrule": "FREQ=DAILY;BYMONTHDAY=31,-5;BYMONTH=11;WKST=WE",
+    "dtstart": "20241126T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "de49bcc656ad",
+    "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=2;BYMONTHDAY=-1,-2",
+    "dtstart": "20270227T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "5c6ebd82f88b",
+    "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=7;BYMONTHDAY=-2",
+    "dtstart": "20270730T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "6d203462b76d",
+    "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-2;BYDAY=SU,TH,WE;WKST=SU",
+    "dtstart": "20260730T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "e2a2bb03d989",
+    "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-5;WKST=MO",
+    "dtstart": "20240527T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "f4da1574fbbf",
+    "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1",
+    "dtstart": "20260731T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "35ba86842f90",
+    "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1,-5;WKST=SU",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "ed25284350a7",
+    "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-5,-2;BYMONTH=4,7",
+    "dtstart": "20260727T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "60f3ff6433a7",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=MO,SA,TU;BYMONTHDAY=-1",
+    "dtstart": "20240831T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "c71118c4a08c",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTH=11;BYMONTHDAY=-2",
+    "dtstart": "20261129T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "5d1934136c6c",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1",
+    "dtstart": "20240229T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "fbedb357db8f",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=10,12;BYSETPOS=-1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "4cce25487b52",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=9,12",
+    "dtstart": "20260930T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "cec09007e66d",
+    "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-5",
+    "dtstart": "20270426T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "62c703f07862",
+    "rrule": "FREQ=HOURLY;BYMONTHDAY=-1",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "cc1dcffc4bbb",
+    "rrule": "FREQ=MINUTELY;BYMONTHDAY=-1",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   },
+   {
+    "id": "c76d3879a009",
+    "rrule": "FREQ=SECONDLY;BYMONTHDAY=-1",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "timeout: no answer in 2000ms"
+   }
+  ],
+  "refusal_members": [
+   {
+    "id": "801c98adc80a",
+    "rrule": "FREQ=HOURLY;BYYEARDAY=-1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "c5175bbb94b8",
+    "rrule": "FREQ=HOURLY;BYYEARDAY=60",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "3ada1d7ed4be",
+    "rrule": "FREQ=MINUTELY;BYYEARDAY=-1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "8dbe294e9505",
+    "rrule": "FREQ=MINUTELY;BYYEARDAY=60",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "a7cd948df256",
+    "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1,30;BYDAY=WE",
+    "dtstart": "20270331T090000",
+    "limit": 25,
+    "error": "Malformed values in BYDAY part"
+   },
+   {
+    "id": "e62c8a71a032",
+    "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=MO,TU",
+    "dtstart": "20260331T090000",
+    "limit": 25,
+    "error": "Malformed values in BYDAY part"
+   },
+   {
+    "id": "4c7b07c2449b",
+    "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,30;BYDAY=MO",
+    "dtstart": "20260330T090000",
+    "limit": 25,
+    "error": "Malformed values in BYDAY part"
+   },
+   {
+    "id": "af0275ff7b50",
+    "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,15;BYDAY=WE",
+    "dtstart": "20270331T090000",
+    "limit": 25,
+    "error": "Malformed values in BYDAY part"
+   },
+   {
+    "id": "3fcd47799486",
+    "rrule": "FREQ=SECONDLY;BYYEARDAY=-1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "aab167af82ff",
+    "rrule": "FREQ=SECONDLY;BYYEARDAY=60",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "BYYEARDAY may only appear in YEARLY rules"
+   },
+   {
+    "id": "dbf074888378",
+    "rrule": "FREQ=YEARLY;BYMONTH=4;BYYEARDAY=-60,100",
+    "dtstart": "20270410T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "8a5c88de1d34",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,15;BYYEARDAY=366,200",
+    "dtstart": "20281231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "fbc71855357e",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,-1;BYYEARDAY=-60,-1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "f2776576ee91",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
+    "dtstart": "20270105T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "d41c364d7f42",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=30,1;BYYEARDAY=60,365;WKST=SU",
+    "dtstart": "20270301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "9996c6ffbd63",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1",
+    "dtstart": "20301230T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "75f63349f562",
+    "rrule": "FREQ=YEARLY;BYMONTHDAY=31,29;BYWEEKNO=-1,52;WKST=WE",
+    "dtstart": "20241229T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "cca24657755f",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,52;BYYEARDAY=365",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "c6d0be82ba4a",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=-1,53;BYMONTHDAY=28,-1;WKST=SU",
+    "dtstart": "20241228T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "1589af3bc253",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=-2,-1;BYYEARDAY=365;WKST=SU",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "67c2e7444c3b",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31",
+    "dtstart": "20291231T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "ec9aeb012c8f",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28",
+    "dtstart": "20241228T090000",
+    "limit": 25,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "3636394ced72",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=52,-1;BYYEARDAY=365,200",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "2b11373ebe0b",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=52;BYYEARDAY=-1;WKST=WE",
+    "dtstart": "20291231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "f10e6679dbb8",
+    "rrule": "FREQ=YEARLY;BYWEEKNO=53,1;BYYEARDAY=365;BYSETPOS=1",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "f5dcbdfc509e",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=+60;BYMONTH=3",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "d35067576ac3",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=+60;BYMONTH=3,4",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "7bd0c809c29f",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=-60,-1;BYWEEKNO=20,1",
+    "dtstart": "20291231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "3e9bc8319dc6",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=365,100;BYMONTHDAY=5,30",
+    "dtstart": "20241230T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "f35a131b25d8",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=366,100;BYMONTH=4",
+    "dtstart": "20270410T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "e38b2fc9aae3",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYMONTH=3,11",
+    "dtstart": "20270301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "3f01d1d37c94",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=60,59;BYMONTH=3",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "12c9d8025d76",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=60,59;BYMONTH=3,4",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "3c45714c6614",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=60;BYMONTH=3",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "c5d525fb394f",
+    "rrule": "FREQ=YEARLY;BYYEARDAY=60;BYMONTH=3,4",
+    "dtstart": "20260301T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "878cf1f25ae0",
+    "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTH=6,11;BYYEARDAY=-60",
+    "dtstart": "20261102T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "6819ae4065e7",
+    "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=-1;BYYEARDAY=100,366;BYSETPOS=1",
+    "dtstart": "20321231T090000",
+    "limit": 24,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "7b92dd911bbb",
+    "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
+    "dtstart": "20530105T090000",
+    "limit": 19,
+    "error": "BYWEEKNO does not fit to BYMONTHDAY"
+   },
+   {
+    "id": "5c4804d492a3",
+    "rrule": "FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-1,-60;BYWEEKNO=52",
+    "dtstart": "20381231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "9bee4d9a4870",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYWEEKNO=1;BYYEARDAY=200,366;WKST=WE",
+    "dtstart": "20321231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "1bb00e23e3de",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=100,365;BYWEEKNO=52",
+    "dtstart": "20341231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   },
+   {
+    "id": "9641ee2de6ea",
+    "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=200,-1;BYWEEKNO=53,-1;WKST=MO",
+    "dtstart": "20261231T090000",
+    "limit": 25,
+    "error": "Invalid BYYEARDAY rule"
+   }
+  ],
+  "verdict": "DEADLINE-INDEPENDENT at 5x. The 42 are heap aborts, not slow answers: the worker dies and the supervisor's timer is only how the death is noticed."
+ },
+ "classifier": "findings/repro/073-split-error-column.py"
+}

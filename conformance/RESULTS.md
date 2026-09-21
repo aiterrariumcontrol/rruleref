@@ -212,7 +212,7 @@ rather than a stable count — see the note below.
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 107 | 47 | 0 | 56 |
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1601 | 19 | 72 | 0 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 72 | 0 | 35 |
-| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 |
+| `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 [∞](#sabre-loop) |
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1163 | 368 [‡](#dtical-split) | 69 | 0 | 127 [‡](#dtical-split) |
 | `ical.js` | 2.2.1 | port of libical (JS) [♦](#icaljs-lineage) | 1376 | 236 | 31 | 0 | 84 [◊](#icaljs-abort) |
 
@@ -238,8 +238,26 @@ so the adapter runs the library in a child process with a per-case deadline and
 reports a timeout for the case that killed it. The other 42 errors are ordinary
 parse refusals. All 72 corpus cases carrying such a negative value are wrong in
 `ical.js`: 42 abort, 27 return a list with the negative value's occurrences
-silently missing, 3 match a rival reading.
-[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md).
+silently missing, 3 match a rival reading. The 42/42 split is stable: raising
+the deadline to 10000 ms reproduces the whole score and the *same* case ids on
+both sides of it, because an exhausted heap is not a slow answer.
+[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md),
+[finding 073](../findings/073-which-error-columns-are-really-the-clock.md).
+
+<a id="sabre-loop"></a>
+**∞ All four of `sabre/vobject`'s errors are the adapter's alarm, and none of
+them is the clock.** `RRuleIterator::nextYearly`'s `BYYEARDAY` branch is a
+`while (true)` with no year ceiling, testing a day map numbered PHP's `w` way
+(`SU => 0`) against `format('N')`, where Sunday is 7; `BYDAY=SU` and any
+*ordinal* `BYDAY` match no date in any year, so the loop never exits
+([finding 029](../findings/029-the-fourth-lineage-and-a-loop-that-does-not-end.md)).
+Re-run at a 180 s per-case deadline — eighteen times the published one — the
+same four still return nothing, with `user` time equal to `real` to the tenth
+of a second. The count is deadline-*reported* but not deadline-*dependent*
+(standing rule 80);
+[finding 073](../findings/073-which-error-columns-are-really-the-clock.md)
+checks every `error` column in this table the same way and finds
+`DateTime::Event::ICal`'s the only one that moves.
 
 <a id="go-truncation"></a>
 **§ `rrule-go`'s three.** They are not in any column above: they fall in a

@@ -25,9 +25,6 @@
 const path = require('path');
 const readline = require('readline');
 
-// Overridable so that the deadline's own effect on the score can be measured
-// (standing rule 80; finding 073). The Perl and PHP adapters take
-// RRULE_CASE_TIMEOUT in seconds; this one is in milliseconds, hence the name.
 const CASE_TIMEOUT_MS = Number(process.env.RRULE_CASE_TIMEOUT_MS) || 2000;
 const WORKER_HEAP_MB = 256;
 
@@ -81,27 +78,50 @@ function runSupervisor() {
     let child = null;
     let timer = null;
     let rl = null;
+    let caseStart = 0;
 
     const start = () => {
-      child = spawn(process.execPath, ['--max-old-space-size=' + WORKER_HEAP_MB, __filename, '--worker'],
+      const c = spawn(process.execPath, ['--max-old-space-size=' + WORKER_HEAP_MB, __filename, '--worker'],
         { stdio: ['pipe', 'pipe', 'ignore'] });
-      // A worker that dies mid-case leaves `next()` unanswered; the deadline
-      // below is what reports it, so nothing is needed here.
-      child.on('error', () => {});
-      rl = readline.createInterface({ input: child.stdout, terminal: false });
-      rl.on('line', line => { clearTimeout(timer); process.stdout.write(line + '\n'); i++; step(); });
+      child = c;
+      c.on('error', () => {});
+      // A worker that dies mid-case is NOT the deadline. It is the library
+      // exhausting a 256 MB heap, which is a fact about ical.js and not about
+      // this machine's clock. Report it separately so the error column can be
+      // split into a deadline-dependent and a deadline-independent part
+      // (rule 80). `c.intentional` marks the kills WE issue, and is per-child
+      // on purpose: `exit` is asynchronous, so a flag shared across restarts is
+      // cleared by the next start() before the old child's exit is delivered.
+      c.on('exit', (code, signal) => {
+        if (c.intentional || timer === null) return;
+        clearTimeout(timer); timer = null;
+        const t = Date.now() - caseStart;
+        const id = JSON.parse(cases[i]).id;
+        process.stdout.write(JSON.stringify({ id,
+          error: 'worker aborted after ' + t + 'ms: ' + (signal ? 'signal ' + signal : 'exit ' + code) }) + '\n');
+        i++;
+        restart();
+        step();
+      });
+      rl = readline.createInterface({ input: c.stdout, terminal: false });
+      rl.on('line', line => {
+        clearTimeout(timer); timer = null;
+        process.stderr.write('ELAPSED ' + JSON.parse(cases[i]).id + ' ' + (Date.now() - caseStart) + '\n');
+        process.stdout.write(line + '\n');
+        i++; step();
+      });
     };
 
-    const restart = () => {
-      if (rl) rl.close();
-      if (child) child.kill('SIGKILL');
-      start();
-    };
+    const stop = () => { if (child) { child.intentional = true; child.kill('SIGKILL'); } };
+
+    const restart = () => { if (rl) rl.close(); stop(); start(); };
 
     const step = () => {
-      if (i >= cases.length) { if (child) child.kill('SIGKILL'); return; }
+      if (i >= cases.length) { stop(); return; }
       const line = cases[i];
+      caseStart = Date.now();
       timer = setTimeout(() => {
+        timer = null;
         const id = JSON.parse(line).id;
         process.stdout.write(JSON.stringify({ id, error: 'timeout: no answer in ' + CASE_TIMEOUT_MS + 'ms' }) + '\n');
         i++;
