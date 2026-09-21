@@ -97,6 +97,17 @@ per-case deadline:
 | `->iterator` (published column) | 175 | 81 | 35 |
 | repeated `->next` | 180 | 78 | 33 |
 
+> **Amended 2026-09-21 by [finding 072](072-an-audit-of-my-own-derived-counts.md).**
+> This table and the 68 below were published without the script that produced
+> them. The comparison has since been written down as
+> [`repro/046-two-traversals.py`](repro/046-two-traversals.py) and re-run
+> against the same `cases_id`; it gives 168/68/55 and 179/73/39, and a headline
+> of **73**, not 68. The cause is the timeout column: a ten-second per-case
+> deadline is a property of the machine, not of the library. The
+> deadline-independent number is **57** — the cases where both traversals
+> answered and answered differently. Nothing else in this finding depends on
+> the count. The original text is left as written.
+
 **68 of the 291 cases return different answers under the two traversals** —
 twenty-two times the three rows finding 045 left over. The scored difference is
 much smaller (five cases move from disagree to agree) because in most of the 68

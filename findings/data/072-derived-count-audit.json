@@ -1,0 +1,27 @@
+{
+ "what": "Audit of every published derived count in rruleref -- a count computed by a classifier of mine over a score, as distinct from a score itself. Rule 79, applied retroactively after finding 071 discovered by accident that finding 070's '123 unattributed' does not reproduce.",
+ "produced": "2026-09-21, finding 072",
+ "question_asked_of_each": "Is the derivation -- the classifier, not only its output -- saved somewhere a later reader could run or read?",
+ "enumeration": {
+  "method": "Two mechanical passes over findings/*.md and conformance/RESULTS.md, then manual triage of the hits. Pass 1: lines matching '<n> of <n>' or '<n> are|remain|fall|split|account'. Pass 2: files containing 'unattributed|residual|unexplained|attribut'. A finding was triaged out when its numbers were scores (recomputable from score.py plus a cases_id, rule 77), corpus-structure counts emitted by committed code in src/, qualitative tables, or test assertions.",
+  "limits": "This enumeration is textual. A derived count phrased in a way neither pass matches would have been missed. The audit does not claim completeness; it claims that everything it did find has been given a verdict."
+ },
+ "verdicts": {
+  "009": {"count": "21 of 57 table cells covered", "verdict": "derivation saved", "where": "src/coverage.py, src/enumerate_cells.py, tests/test_coverage.py", "note": "Measured against a 2,541-case corpus and stated as such inline. Historical, not stale-by-surprise."},
+  "012": {"count": "2751 of 3081 pairs realizable; 1485 of 2751 covered", "verdict": "derivation saved", "where": "src/pairs.py, tests/test_pairs.py", "note": "The refusal table carries a reason per pair and a test pins the one refusal reason that would be my fault to zero."},
+  "015": {"count": "1722 of 3813 cases in the scored subset", "verdict": "derivation saved", "where": "conformance/build_cases.py, which prints 'N of M'", "note": "Now 1727 of a larger corpus. Superseded by later re-scores; a dated snapshot, not an unreproducible one."},
+  "017": {"count": "libical master fixes 89 of 3.0.20's 211 failures, 0 regressions", "verdict": "REPRODUCED EXACTLY", "where": "findings/data/019-libical-3.0.20-score.json and 019-libical-master-score.json", "recomputed_2026_09_21": {"failures_3_0_20": 211, "failures_master": 122, "fixed_by_master": 89, "regressions": 0}},
+  "045": {"count": "of 1721 scored cases at horizon 64: 1075 agree long, 330 visible, 146 timeouts, 114 inconclusive, 56 hidden", "verdict": "REPRODUCED EXACTLY", "where": "conformance/horizon_sweep.py is the classifier; conformance/horizon_sweep_dtical_64.json is its output", "recomputed_2026_09_21": {"agrees_long": 1075, "visible_at_corpus_limit": 330, "subject_error": 146, "inconclusive_control": 114, "hidden_content": 56, "hidden_rows_saved": 56}},
+  "046": {"count": "68 of 291 BYSETPOS cases answer differently under ->iterator and repeated ->next; 175/81/35 and 180/78/33", "verdict": "EXPOSURE -- no derivation was saved; reproduced and saved by this audit", "where_now": "findings/repro/046-two-traversals.py, findings/data/046-two-traversals.json", "note": "The traversal switch itself was in the repo (RRULE_DTICAL_ITER in the dtical adapter); the comparison that produced the table was not."},
+  "051": {"count": "114 plain failures split 29/15/27/11/16/16", "verdict": "PARTIAL EXPOSURE -- totals saved, membership and classifier not", "where": "findings/data/051-residual-ical4j-attribution.json records category_totals and an honest caveat that categories C/E/F are assigned by shape, but keeps only 2 of the failing cases and no classifier", "narrowed_by": ["findings/data/054-category-c-rederived.json (per_case)", "findings/data/056-category-f-attribution.json (cases)"], "residue": "Categories A, B, D and E were never re-derived with membership saved.", "arithmetic_check_2026_09_21": "29+15+27+11+16+16 = 114, and 11+16+16 = 43, which is the '43 remain unaccounted for' of RESULTS.md. Self-consistent."},
+  "070": {"count": "123 unattributed", "verdict": "EXPOSURE, already published as such", "where": "finding 071 records that it does not reproduce and that the classifier is gone", "note": "The occasion for rule 79. Not re-opened here."}
+ },
+ "summary": {
+  "checked": 8,
+  "reproduced_exactly": 2,
+  "derivation_saved_in_committed_code": 3,
+  "full_exposures": 2,
+  "partial_exposures": 1,
+  "new_exposures_found_by_this_audit": 1
+ }
+}
