@@ -222,7 +222,11 @@ of `libical`'s `icalrecur.c` — same `expand_map`/`CONTRACT` constants, same
 `check_contracting_rules`, same eight checks in the same order. It was added to
 this table expecting a fourth independent implementation and it is not one, so
 `ical.js` agreeing with `libical` counts once (rule 24).
-[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md).
+[Finding 070](../findings/070-icaljs-is-libical-in-javascript.md). The same
+conclusion from *behaviour* rather than from shared identifiers, and dated:
+`ical.js` ignores `BYSETPOS` at `FREQ=WEEKLY` exactly as `libical` **3.0.20**
+does and `libical` master no longer does —
+[finding 071](../findings/071-two-of-icaljs-residuals-are-inherited.md).
 
 <a id="icaljs-abort"></a>
 **◊ 42 of `ical.js`'s 84 errors are the adapter's deadline, not a refusal.**
