@@ -1,0 +1,11 @@
+{"id":"J1","rrule":"FREQ=YEARLY;BYYEARDAY=200;BYMONTHDAY=15","dtstart":"20260101T090000","limit":6}
+{"id":"J2","rrule":"FREQ=YEARLY;BYWEEKNO=1;BYMONTHDAY=29","dtstart":"20270101T090000","limit":6}
+{"id":"S1","rrule":"FREQ=YEARLY;BYMONTH=4;BYYEARDAY=306","dtstart":"20270101T090000","limit":6}
+{"id":"W1","rrule":"FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=8","dtstart":"20240802T090000","limit":12}
+{"id":"N1","rrule":"FREQ=DAILY;BYMONTHDAY=-1","dtstart":"20260331T090000","limit":4}
+{"id":"N2","rrule":"FREQ=HOURLY;BYYEARDAY=-1","dtstart":"20261231T090000","limit":4}
+{"id":"N3","rrule":"FREQ=DAILY;BYMONTHDAY=1,-1","dtstart":"20260301T090000","limit":6}
+{"id":"O1","rrule":"FREQ=MONTHLY;BYDAY=1SU;BYMONTHDAY=1","dtstart":"20240901T090000","limit":4}
+{"id":"O2","rrule":"FREQ=MONTHLY;BYDAY=SU;BYMONTHDAY=1","dtstart":"20240901T090000","limit":4}
+{"id":"D1","rrule":"FREQ=MONTHLY;BYMONTHDAY=31,-1","dtstart":"20260531T090000","limit":6}
+{"id":"D2","rrule":"FREQ=MONTHLY;BYDAY=1FR,1FR","dtstart":"20240301T090000","limit":4}

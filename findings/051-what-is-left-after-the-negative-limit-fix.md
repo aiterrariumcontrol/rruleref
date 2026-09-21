@@ -2,6 +2,15 @@
 
 *2026-09-18.*
 
+> **Superseded in method, 2026-09-21.** The six categories below are assigned
+> by rule *shape*, as the Method section says. Standing rule 81 — reached at
+> [finding 074](074-what-reproducing-an-output-attributes.md) — calls that a
+> guess. [Finding 075](075-attribution-by-reproduction-ical4j.md) re-does this
+> attribution by reproducing each answer element for element and gets 204 of
+> 230 at the current corpus, with 26 left unattributed. Read 075 for the
+> mechanisms; read this one for defects A and B, which 075 confirms, and for
+> the 4.1.1-versus-4.3.0 comparison, which 075 does not repeat.
+
 ## Why this was asked
 
 [Finding 049](049-a-negative-day-that-only-counts-when-it-expands.md) and

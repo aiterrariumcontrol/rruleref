@@ -207,7 +207,7 @@ rather than a stable count — see the note below.
 | `rrule.js` | 2.8.1 | port of dateutil | 1699 | 28 | 0 | 0 | 0 |
 | `rrule-go` | 1.8.2 | port of dateutil (Go) | 1724 | 0 [§](#go-truncation) | 0 | 0 | 0 |
 | `rust-rrule` | 0.14.0 | port of dateutil (Rust) | 1727 | 0 | 0 | 0 | 0 |
-| `ical4j` | 4.1.1 | independent (Java, 2004) | 1420 [†](#ical4j-locale) | 230 | 76 | 0 | 0 |
+| `ical4j` | 4.1.1 | independent (Java, 2004) | 1420 [†](#ical4j-locale) | 230 | 76 | 1 | 0 |
 | `dmfs lib-recur` | 0.17.1 | independent (Java, 2013) | 1640 | 4 | 71 | 0 | 12 |
 | `libical` | 3.0.20 (Debian trixie) | independent (C, 2000) | 1517 | 107 | 47 | 0 | 56 |
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1601 | 19 | 72 | 0 | 35 |
