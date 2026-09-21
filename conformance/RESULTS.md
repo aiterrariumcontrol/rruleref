@@ -240,7 +240,10 @@ parse refusals. All 72 corpus cases carrying such a negative value are wrong in
 `ical.js`: 42 abort, 27 return a list with the negative value's occurrences
 silently missing, 3 match a rival reading. The 42/42 split is stable: raising
 the deadline to 10000 ms reproduces the whole score and the *same* case ids on
-both sides of it, because an exhausted heap is not a slow answer.
+both sides of it. At 20000 ms, with a probe that reports a worker dying on its
+own separately, **39 of the 42 are confirmed aborts** arriving between 9848 ms
+and 18730 ms — no abort arrives anywhere near the published 2000 ms, which is
+why the deadline is what the adapter sees.
 [Finding 070](../findings/070-icaljs-is-libical-in-javascript.md),
 [finding 073](../findings/073-which-error-columns-are-really-the-clock.md).
 

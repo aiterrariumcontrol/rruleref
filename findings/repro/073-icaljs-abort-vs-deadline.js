@@ -1,12 +1,22 @@
-// Reference adapter: ical.js (kewisch/ical.js), the Thunderbird calendaring
-// library. Run from the repository root after tools/bootstrap.sh has
-// npm-installed ical.js in js/.
+// 073 — does ical.js's error bucket hold slow answers or dead workers?
 //
-//   node conformance/adapters/icaljs_adapter.js
+// A copy of conformance/adapters/icaljs_adapter.js with one behavioural
+// difference: when the worker process dies on its own it is reported as
+//   worker aborted after <N>ms: signal SIGABRT
+// instead of being folded into the supervisor's deadline. The published
+// adapter cannot tell the two apart, because its 2000 ms timer fires first and
+// kills the child, and the child's own exit then looks like our kill.
 //
-// Unlike the rrule.js adapter this one needs no timezone trick: an ICAL.Time
-// built from a bare date-time string carries the `floating` zone, which is
-// exactly what the corpus is. Datetimes go in and come back out naive.
+// Run it the way score.py runs any adapter, from the repository root, with the
+// deadline raised past the time an abort actually takes:
+//
+//   TZ=UTC RRULE_CASE_TIMEOUT_MS=20000 python3 conformance/score.py \
+//       --json out.json -- node findings/repro/073-icaljs-abort-vs-deadline.js
+//
+// Result at 20000 ms: of the 42 error cases that are not parse refusals, 39
+// are confirmed aborts arriving between 9848 ms and 18730 ms, and 3 are still
+// the deadline. At the published 2000 ms every one of the 42 reads as a
+// timeout, because no abort arrives anywhere near that fast.
 //
 // WHY THIS ADAPTER IS TWO PROCESSES
 //

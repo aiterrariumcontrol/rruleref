@@ -682,7 +682,532 @@
     "error": "Invalid BYYEARDAY rule"
    }
   ],
-  "verdict": "DEADLINE-INDEPENDENT at 5x. The 42 are heap aborts, not slow answers: the worker dies and the supervisor's timer is only how the death is noticed."
+  "verdict": "DEADLINE-INDEPENDENT at 5x: identical score and identical membership at 2000 and 10000 ms. Mechanism then measured directly at 20000 ms: 39 of the 42 are confirmed heap aborts, 3 remain deadline-bounded even there.",
+  "abort_probe_at_20000ms": {
+   "instrument": "findings/repro/073-icaljs-abort-vs-deadline.js",
+   "counts": {
+    "error": 84,
+    "fail": 236,
+    "fail_other_reading": 31,
+    "pass": 1376
+   },
+   "split": {
+    "abort": 39,
+    "deadline": 3,
+    "refusal": 42
+   },
+   "abort_ms_range": [
+    9848,
+    18730
+   ],
+   "note": "39 of the 42 non-refusal errors are the worker dying on its own (SIGABRT, heap exhausted), arriving between 9848 and 18730 ms. 3 are still the 20000 ms deadline. At the published 2000 ms deadline all 42 read as a timeout because no abort arrives anywhere near that fast -- which is why the split needed this probe.",
+   "rows": [
+    {
+     "id": "ca23424a17d0",
+     "rrule": "FREQ=DAILY;BYDAY=FR,MO,SU;BYMONTHDAY=-1;WKST=WE",
+     "kind": "abort",
+     "ms": 9876
+    },
+    {
+     "id": "43c2d278895e",
+     "rrule": "FREQ=DAILY;BYDAY=FR,TH;BYMONTHDAY=-2,-1",
+     "kind": "abort",
+     "ms": 10121
+    },
+    {
+     "id": "5c1401f8fbf1",
+     "rrule": "FREQ=DAILY;BYDAY=SA,TH,WE;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 10087
+    },
+    {
+     "id": "00c477d3a6ca",
+     "rrule": "FREQ=DAILY;BYDAY=WE;BYMONTHDAY=-5;WKST=MO",
+     "kind": "abort",
+     "ms": 9848
+    },
+    {
+     "id": "9b05187767dc",
+     "rrule": "FREQ=DAILY;BYMONTH=2,12;BYMONTHDAY=-5",
+     "kind": "abort",
+     "ms": 10423
+    },
+    {
+     "id": "8e98e121b143",
+     "rrule": "FREQ=DAILY;BYMONTH=3;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 10494
+    },
+    {
+     "id": "efd33eccbfab",
+     "rrule": "FREQ=DAILY;BYMONTH=4;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 10139
+    },
+    {
+     "id": "18a92a27f558",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 10430
+    },
+    {
+     "id": "0918809e7231",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 10407
+    },
+    {
+     "id": "a83990f8f788",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1,-2",
+     "kind": "abort",
+     "ms": 10092
+    },
+    {
+     "id": "e807aaed95c7",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYDAY=SA,WE;WKST=WE",
+     "kind": "abort",
+     "ms": 10953
+    },
+    {
+     "id": "18536896ba73",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=-1",
+     "kind": "abort",
+     "ms": 10372
+    },
+    {
+     "id": "d06591cc8529",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=1",
+     "kind": "abort",
+     "ms": 9976
+    },
+    {
+     "id": "c76c994d0bf2",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 10663
+    },
+    {
+     "id": "f3ea3ac70da5",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 9991
+    },
+    {
+     "id": "edde065121cd",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-2,-5;WKST=WE",
+     "kind": "abort",
+     "ms": 10262
+    },
+    {
+     "id": "e22221230633",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYMONTH=10,11;BYSETPOS=-1",
+     "kind": "abort",
+     "ms": 10569
+    },
+    {
+     "id": "e5e2ad8b9365",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYSETPOS=1",
+     "kind": "abort",
+     "ms": 10413
+    },
+    {
+     "id": "9089e2fa724c",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+     "kind": "abort",
+     "ms": 10099
+    },
+    {
+     "id": "d833be6a57be",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+     "kind": "abort",
+     "ms": 10211
+    },
+    {
+     "id": "440733e70f61",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-1;BYDAY=MO",
+     "kind": "abort",
+     "ms": 10037
+    },
+    {
+     "id": "f40f2b4a86aa",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-2;BYSETPOS=-1",
+     "kind": "abort",
+     "ms": 10945
+    },
+    {
+     "id": "f8fce77e81e5",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=1,7",
+     "kind": "abort",
+     "ms": 10334
+    },
+    {
+     "id": "73311add759b",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=4,6",
+     "kind": "abort",
+     "ms": 10137
+    },
+    {
+     "id": "13ddec31f768",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=-5;WKST=SU",
+     "kind": "abort",
+     "ms": 10679
+    },
+    {
+     "id": "b2b4e497e183",
+     "rrule": "FREQ=DAILY;BYMONTHDAY=31,-5;BYMONTH=11;WKST=WE",
+     "kind": "abort",
+     "ms": 10257
+    },
+    {
+     "id": "de49bcc656ad",
+     "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=2;BYMONTHDAY=-1,-2",
+     "kind": "abort",
+     "ms": 17520
+    },
+    {
+     "id": "5c6ebd82f88b",
+     "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=7;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 17174
+    },
+    {
+     "id": "6d203462b76d",
+     "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-2;BYDAY=SU,TH,WE;WKST=SU",
+     "kind": "abort",
+     "ms": 17563
+    },
+    {
+     "id": "e2a2bb03d989",
+     "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-5;WKST=MO",
+     "kind": "abort",
+     "ms": 18268
+    },
+    {
+     "id": "f4da1574fbbf",
+     "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 17609
+    },
+    {
+     "id": "35ba86842f90",
+     "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1,-5;WKST=SU",
+     "kind": "abort",
+     "ms": 17815
+    },
+    {
+     "id": "ed25284350a7",
+     "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-5,-2;BYMONTH=4,7",
+     "kind": "abort",
+     "ms": 17866
+    },
+    {
+     "id": "60f3ff6433a7",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=MO,SA,TU;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 18421
+    },
+    {
+     "id": "c71118c4a08c",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTH=11;BYMONTHDAY=-2",
+     "kind": "abort",
+     "ms": 18404
+    },
+    {
+     "id": "5d1934136c6c",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1",
+     "kind": "abort",
+     "ms": 17676
+    },
+    {
+     "id": "fbedb357db8f",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=10,12;BYSETPOS=-1",
+     "kind": "abort",
+     "ms": 18730
+    },
+    {
+     "id": "4cce25487b52",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=9,12",
+     "kind": "abort",
+     "ms": 18195
+    },
+    {
+     "id": "cec09007e66d",
+     "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-5",
+     "kind": "abort",
+     "ms": 18569
+    },
+    {
+     "id": "62c703f07862",
+     "rrule": "FREQ=HOURLY;BYMONTHDAY=-1",
+     "kind": "deadline",
+     "ms": null
+    },
+    {
+     "id": "801c98adc80a",
+     "rrule": "FREQ=HOURLY;BYYEARDAY=-1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "c5175bbb94b8",
+     "rrule": "FREQ=HOURLY;BYYEARDAY=60",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "cc1dcffc4bbb",
+     "rrule": "FREQ=MINUTELY;BYMONTHDAY=-1",
+     "kind": "deadline",
+     "ms": null
+    },
+    {
+     "id": "3ada1d7ed4be",
+     "rrule": "FREQ=MINUTELY;BYYEARDAY=-1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "8dbe294e9505",
+     "rrule": "FREQ=MINUTELY;BYYEARDAY=60",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "a7cd948df256",
+     "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1,30;BYDAY=WE",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "e62c8a71a032",
+     "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=MO,TU",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "4c7b07c2449b",
+     "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,30;BYDAY=MO",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "af0275ff7b50",
+     "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,15;BYDAY=WE",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "c76d3879a009",
+     "rrule": "FREQ=SECONDLY;BYMONTHDAY=-1",
+     "kind": "deadline",
+     "ms": null
+    },
+    {
+     "id": "3fcd47799486",
+     "rrule": "FREQ=SECONDLY;BYYEARDAY=-1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "aab167af82ff",
+     "rrule": "FREQ=SECONDLY;BYYEARDAY=60",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "dbf074888378",
+     "rrule": "FREQ=YEARLY;BYMONTH=4;BYYEARDAY=-60,100",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "8a5c88de1d34",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,15;BYYEARDAY=366,200",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "fbc71855357e",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,-1;BYYEARDAY=-60,-1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "f2776576ee91",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "d41c364d7f42",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=30,1;BYYEARDAY=60,365;WKST=SU",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "9996c6ffbd63",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "75f63349f562",
+     "rrule": "FREQ=YEARLY;BYMONTHDAY=31,29;BYWEEKNO=-1,52;WKST=WE",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "cca24657755f",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=-1,52;BYYEARDAY=365",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "c6d0be82ba4a",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=-1,53;BYMONTHDAY=28,-1;WKST=SU",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "1589af3bc253",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=-2,-1;BYYEARDAY=365;WKST=SU",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "67c2e7444c3b",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "ec9aeb012c8f",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "3636394ced72",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=52,-1;BYYEARDAY=365,200",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "2b11373ebe0b",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=52;BYYEARDAY=-1;WKST=WE",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "f10e6679dbb8",
+     "rrule": "FREQ=YEARLY;BYWEEKNO=53,1;BYYEARDAY=365;BYSETPOS=1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "f5dcbdfc509e",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=+60;BYMONTH=3",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "d35067576ac3",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=+60;BYMONTH=3,4",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "7bd0c809c29f",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=-60,-1;BYWEEKNO=20,1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "3e9bc8319dc6",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=365,100;BYMONTHDAY=5,30",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "f35a131b25d8",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=366,100;BYMONTH=4",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "e38b2fc9aae3",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=60,1;BYMONTH=3,11",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "3f01d1d37c94",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=60,59;BYMONTH=3",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "12c9d8025d76",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=60,59;BYMONTH=3,4",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "3c45714c6614",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=60;BYMONTH=3",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "c5d525fb394f",
+     "rrule": "FREQ=YEARLY;BYYEARDAY=60;BYMONTH=3,4",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "878cf1f25ae0",
+     "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTH=6,11;BYYEARDAY=-60",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "6819ae4065e7",
+     "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=-1;BYYEARDAY=100,366;BYSETPOS=1",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "7b92dd911bbb",
+     "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "5c4804d492a3",
+     "rrule": "FREQ=YEARLY;INTERVAL=3;BYYEARDAY=-1,-60;BYWEEKNO=52",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "9bee4d9a4870",
+     "rrule": "FREQ=YEARLY;INTERVAL=4;BYWEEKNO=1;BYYEARDAY=200,366;WKST=WE",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "1bb00e23e3de",
+     "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=100,365;BYWEEKNO=52",
+     "kind": "refusal",
+     "ms": null
+    },
+    {
+     "id": "9641ee2de6ea",
+     "rrule": "FREQ=YEARLY;INTERVAL=4;BYYEARDAY=200,-1;BYWEEKNO=53,-1;WKST=MO",
+     "kind": "refusal",
+     "ms": null
+    }
+   ]
+  }
  },
  "classifier": "findings/repro/073-split-error-column.py"
 }

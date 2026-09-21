@@ -81,11 +81,30 @@ rather than from a throwaway copy of it.)
 | `CASE_TIMEOUT_MS = 10000` | 1376 | 236 | 31 | 84 | 42 + 42 |
 
 Not merely equal totals: **the same 42 case ids on both sides, and the same 42
-on the other side.** The whole score is identical. The reason is the mechanism
-070 already described — those cases do not answer slowly, they exhaust the
-worker's 256 MB heap and abort. The supervisor's timer is not what limits them;
-it is only how their death is noticed. A dead worker does not become alive with
-more seconds.
+on the other side.** The whole score is identical.
+
+That is stability, but it is not yet the mechanism. 070 says these cases do not
+answer slowly — they exhaust the worker's 256 MB heap and abort — and the
+published adapter cannot actually tell the difference, because its 2000 ms timer
+fires first, kills the child, and the child's own death then looks like our
+kill. So the mechanism was measured too, with a copy of the adapter that reports
+a worker dying *on its own* separately
+([`repro/073-icaljs-abort-vs-deadline.js`](repro/073-icaljs-abort-vs-deadline.js)),
+at a 20000 ms deadline:
+
+| | count |
+|---|---:|
+| worker aborted on its own (`SIGABRT`, heap exhausted) | **39** |
+| still the deadline at 20000 ms | 3 |
+| parse refusals | 42 |
+
+The aborts arrive between **9848 ms and 18730 ms**. That is the whole reason the
+split needed a probe: *no abort arrives anywhere near 2000 ms*, so at the
+published deadline all 42 necessarily read as timeouts, and the error string
+alone cannot separate them. 070's mechanism is now shown for 39 of the 42
+directly; the remaining 3 are presumably slower instances of the same thing, and
+I am not claiming more than that. A dead worker does not become alive with more
+seconds — but three of these were not yet observed dead.
 
 So of the three deadline-bearing adapters, **one is deadline-dependent and two
 are not**, and the one that is was already caught and annotated.
@@ -102,12 +121,13 @@ are not**, and the one that is was already caught and annotated.
   `ical.js`'s forty-two were *shown* to be deadline-independent, at a cost of
   about twenty machine-minutes; before this they were merely believed to be, on
   the strength of a source reading in one case and a mechanism sketch in the
-  other. The rule asks for the check, not for a particular answer.
+  other. The rule asks for the check, not for a particular answer — and in
+  `ical.js`'s case the check turned a sketch into 39 observed `SIGABRT`s.
 
 One honest limit: "deadline-independent at 18×" and "at 5×" are not "at
 infinity". A case that answers in 200 s would still read as non-terminating
 here. For sabre that gap is closed by 029's source reading; for `ical.js` it is
-closed by the heap abort being a different event from a slow answer.
+closed by 39 observed aborts and left open for 3.
 
 ## Prior art
 
