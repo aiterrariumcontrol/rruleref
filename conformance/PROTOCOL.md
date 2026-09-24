@@ -38,6 +38,26 @@ Input line:
   [Finding 082](../findings/082-the-specs-own-examples-were-not-on-the-board.md),
   standing rule 87.
 
+* **`dtstart` has no value type, and that excludes less than it looks like
+  too.** RFC 5545 allows `DTSTART` to be a `DATE` rather than a `DATE-TIME`,
+  and this line cannot say so. `corpus/date-value-type.json`'s 18 such cases
+  were therefore never selected by `build_cases.py` and never posed to an
+  adapter. Measured: **10 of the 18 rules refer to no value type at all** and
+  are ordinary cases posed at `00:00:00`; **6 carry `BYSECOND`/`BYMINUTE`/
+  `BYHOUR`**, which §3.3.10 says to ignore under a DATE start, and §3.3.10's
+  own remedy is a reduction whose reduced rule this line carries fine; **2
+  carry a DATE-valued `UNTIL`** and those are prohibited here for the reason
+  in the next bullet, running the other way. Nine of thirteen builds return the
+  corpus's DATE answer on all 12 scorable rules.
+  [Finding 083](../findings/083-the-date-value-type-was-not-a-wall.md),
+  standing rules 87 and 88.
+
+  Careful with the second group: asked *as written* at a `DATE-TIME` start,
+  the literal reading is the **correct** answer and the §3.3.10 answer would be
+  a defect, because MUST-ignore is conditioned on a value type this line cannot
+  express. `sabre/vobject` gives the §3.3.10 answer on two of them for an
+  unrelated reason and is not thereby conformant.
+
 * **`UNTIL` may not carry a `Z` here.** §3.3.10: "if the 'DTSTART' property is
   specified as a date with local time, then the UNTIL rule part MUST also be
   specified as a date with local time." Every `dtstart` in this protocol is

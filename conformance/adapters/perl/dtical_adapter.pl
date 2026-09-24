@@ -29,10 +29,14 @@ my $ITER = $ENV{RRULE_DTICAL_ITER} || 'iterator';
 my %INTLIST = map { $_ => 1 } qw(
     bysecond byminute byhour bymonthday byyearday byweekno bymonth bysetpos);
 
-sub parse_dtstart {
-    my ($s) = @_;
+# Used for DTSTART and for UNTIL. PROTOCOL.md prescribes YYYYMMDDTHHMMSS for
+# both, so a DATE-valued UNTIL is refused HERE and the library is never asked.
+# That refusal is the harness's, not DateTime::Event::ICal's -- see finding 083.
+sub parse_datetime {
+    my ($s, $what) = @_;
+    $what ||= 'dtstart';
     $s =~ /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})$/
-        or die "bad dtstart: $s";
+        or die "adapter refuses $what, not YYYYMMDDTHHMMSS: $s";
     return DateTime->new(year => $1, month => $2, day => $3,
                          hour => $4, minute => $5, second => $6);
 }
@@ -49,7 +53,7 @@ sub parse_rrule {
         } elsif ($k eq 'interval' || $k eq 'count') {
             $args{$k} = $v + 0;
         } elsif ($k eq 'until') {
-            $args{until} = parse_dtstart($v =~ s/Z$//r);
+            $args{until} = parse_datetime($v =~ s/Z$//r, 'until');
         } elsif ($k eq 'wkst') {
             $args{wkst} = lc $v;
         } elsif ($k eq 'byday') {
@@ -76,7 +80,7 @@ while (my $line = <STDIN>) {
     eval {
         local $SIG{ALRM} = sub { die "no answer within ${DEADLINE}s\n" };
         alarm $DEADLINE;
-        my $dtstart = parse_dtstart($case->{dtstart});
+        my $dtstart = parse_datetime($case->{dtstart});
         my %args = parse_rrule($case->{rrule});
         my $set = DateTime::Event::ICal->recur(dtstart => $dtstart, %args);
         if ($ITER eq 'chain') {

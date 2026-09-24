@@ -313,6 +313,76 @@ it; the `dtstart_synchronized` exclusion stands.
     TZ=UTC <adapter> < rfc_cases.ndjson > out.<name>.ndjson
     python3 tools/audit_rfc_examples.py --classify out.*.ndjson
 
+## A DATE-valued DTSTART
+
+The other case set no row above covers is
+[`corpus/date-value-type.json`](../corpus/date-value-type.json), 18 cases whose
+`DTSTART` is a `DATE` rather than a `DATE-TIME`. `PROTOCOL.md`'s input line has
+no field for a value type, so `build_cases.py` never selected them and no
+adapter here had seen one until 2026-09-24.
+
+[Finding 083](../findings/083-the-date-value-type-was-not-a-wall.md) measured
+what that costs. **10 of the 18 rules refer to no value type at all** and are
+ordinary cases posed at `00:00:00`. **6 carry `BYSECOND`/`BYMINUTE`/`BYHOUR`**,
+which §3.3.10 says to ignore under a DATE start, and §3.3.10's own remedy is a
+*reduction* whose reduced rule the wire carries fine. **2 carry a DATE-valued
+`UNTIL`**, prohibited here for the same §3.3.10 sentence that prohibits
+`UNTIL=...Z` above, running the other way; they are listed and charged to
+nobody. The 18 collapse to **14** distinct reduced-form protocol cases — four
+of the six reducible rules reduce to `FREQ=DAILY`, which is also one of the ten
+as written — of which 2 are prohibited, leaving **12 scorable**. No existing
+score on this page moves —
+`cases_id` is unchanged at `7bd9731d3a48`.
+
+<!-- rowsum: total=12 cols=D:2,X:3,ERR:4 -->
+
+| implementation | D | X | ERR | of |
+|---|---:|---:|---:|---:|
+| `python-dateutil` 2.9.0.post0 | 12 | 0 | 0 | 12 |
+| `rrule.js` 2.8.1 | 12 | 0 | 0 | 12 |
+| `rrule-go` 1.8.2 | 12 | 0 | 0 | 12 |
+| `rust-rrule` 0.14.0 | 12 | 0 | 0 | 12 |
+| `ical4j` 4.1.1 | 12 | 0 | 0 | 12 |
+| `ical4j` 4.3.0 | 12 | 0 | 0 | 12 |
+| `libical` master `48d52b4b` | 12 | 0 | 0 | 12 |
+| `libical` master `4edd39a3` | 12 | 0 | 0 | 12 |
+| `DateTime::Event::ICal` 0.13 | 12 | 0 | 0 | 12 |
+| `dmfs lib-recur` 0.17.1 | 11 | 1 | 0 | 12 |
+| `libical` 3.0.20 | 11 | 1 | 0 | 12 |
+| `ical.js` 2.2.1 | 10 | 2 | 0 | 12 |
+| `sabre/vobject` 4.6.1 | 4 | 8 | 0 | 12 |
+
+**D** equals the corpus's DATE answer lifted to midnight, **X** is a third
+answer. Nine of thirteen are perfect, and **every one of the twelve deviations
+reproduces a property already published here**, on a case set none of those
+findings saw: `ical.js` drops `BYWEEKNO` and returns every Monday (finding 082,
+on a different rule); `libical` 3.0.20 returns that rule's occurrences *out of
+ascending order* and both master builds do not (finding 081's commit-order
+improvement); `dmfs` emits a week-53 occurrence in a 52-week year, which is
+finding 066's `undecided` verdict and is charged as a disagreement, not a
+defect; and `sabre/vobject` prepends `DTSTART` on the eight rules whose
+`DTSTART` is not in the set.
+
+Sabre's twelve deviations across both tables are predicted **exactly**, output
+list for output list, by composing two mechanisms published from other case
+sets with nothing fitted here: finding 076's `method / reads` table and finding
+082's `DTSTART`-prepend. The two-sided replay over all 20 protocol cases —
+including the 8 sabre gets right — is clean.
+
+**A second table over the 6 reducible rules asked *as written* inverts, and the
+inversion is the point.** At a `DATE-TIME` start the literal reading is the
+**correct** answer and the §3.3.10 answer would be a defect, because MUST-ignore
+is conditioned on a value type this protocol cannot express. Eleven builds
+answer literally on all six. `sabre/vobject` gives the §3.3.10 answer on
+`BYMINUTE=30` and `BYSECOND=15` — not by complying, but because `nextDaily()`
+never reads those two parts (finding 076), so they are deleted and the result
+lands on midnight by accident. Read as a conformance score that table makes the
+field's worst build its only conformant one. Standing rule 88.
+
+    python3 tools/audit_date_value_type.py --emit > dvt_cases.ndjson
+    TZ=UTC <adapter> < dvt_cases.ndjson > out.<name>.ndjson
+    python3 tools/audit_date_value_type.py --classify out.*.ndjson
+
 <a id="icaljs-lineage"></a>
 **♦ `ical.js` is not an independent witness.** Its recurrence iterator is a port
 of `libical`'s `icalrecur.c` — same `expand_map`/`CONTRACT` constants, same

@@ -1,0 +1,1087 @@
+{
+ "builds": [
+  "dateutil",
+  "dmfs",
+  "dtical",
+  "ical4j411",
+  "ical4j430",
+  "icaljs",
+  "libical_3020",
+  "libical_48d5",
+  "libical_4edd",
+  "rrulego",
+  "rrulejs",
+  "rustrrule",
+  "sabre"
+ ],
+ "controls": [
+  "control POSITIVE: naive on the reduced rule vs the corpus's DATE answer -- 14/14 reproduced",
+  "control NEGATIVE: the same lists shifted one day -- 20/20 correctly a third answer",
+  "control NIL: a refusal is never agreement -- 20/20",
+  "scope: 14 cases, 14 reduced-form (2 prohibited by 3.3.10, a DATE UNTIL under the DATE-TIME DTSTART this protocol can pose; 12 scorable) and 6 written-form where 3.3.10's MUST-ignore applies only to the DATE start the wire cannot carry",
+  "control SPLIT: every written form differs from the DATE answer -- 6/6"
+ ],
+ "detail": {
+  "29c88031298c": {
+   "cases": [
+    2
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYSECOND"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T000015",
+    "20260106T000015",
+    "20260107T000015",
+    "20260108T000015",
+    "20260109T000015",
+    "20260110T000015",
+    "20260111T000015",
+    "20260112T000015"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=DAILY;BYSECOND=15"
+  },
+  "326815efb78c": {
+   "cases": [
+    3
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYSECOND",
+    "BYMINUTE",
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T090015",
+    "20260105T093015",
+    "20260105T170015",
+    "20260105T173015",
+    "20260106T090015",
+    "20260106T093015",
+    "20260106T170015",
+    "20260106T173015"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=DAILY;BYHOUR=9,17;BYMINUTE=0,30;BYSECOND=15"
+  },
+  "38b6d5a504a7": {
+   "cases": [
+    9
+   ],
+   "date_answer": [
+    "20260110T000000",
+    "20260118T000000",
+    "20260124T000000",
+    "20260201T000000",
+    "20260207T000000",
+    "20260215T000000",
+    "20260221T000000",
+    "20260301T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20260110T000000",
+    "20260118T000000",
+    "20260124T000000",
+    "20260201T000000",
+    "20260207T000000",
+    "20260215T000000",
+    "20260221T000000",
+    "20260301T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=SU,SA"
+  },
+  "3a37bf5654ef": {
+   "cases": [
+    13
+   ],
+   "date_answer": [
+    "20261231T000000",
+    "20270101T000000",
+    "20271231T000000",
+    "20280101T000000",
+    "20281231T000000",
+    "20290101T000000",
+    "20291231T000000",
+    "20300101T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20261231T000000",
+    "20270101T000000",
+    "20271231T000000",
+    "20280101T000000",
+    "20281231T000000",
+    "20290101T000000",
+    "20291231T000000",
+    "20300101T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=YEARLY;BYYEARDAY=1,-1"
+  },
+  "68008675d7bc": {
+   "cases": [
+    8
+   ],
+   "date_answer": [
+    "20260106T000000",
+    "20260108T000000",
+    "20260113T000000",
+    "20260115T000000",
+    "20260120T000000",
+    "20260122T000000",
+    "20260127T000000",
+    "20260129T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20260106T000000",
+    "20260108T000000",
+    "20260113T000000",
+    "20260115T000000",
+    "20260120T000000",
+    "20260122T000000",
+    "20260127T000000",
+    "20260129T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=WEEKLY;BYDAY=TU,TH"
+  },
+  "6c1ec68dd90d": {
+   "cases": [
+    0
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T090000",
+    "20260105T170000",
+    "20260106T090000",
+    "20260106T170000",
+    "20260107T090000",
+    "20260107T170000",
+    "20260108T090000",
+    "20260108T170000"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=DAILY;BYHOUR=9,17"
+  },
+  "6f9c8b4155a1": {
+   "cases": [
+    17
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260112T000000",
+    "20260119T000000",
+    "20260126T000000",
+    "20260202T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 6,
+   "literal": [
+    "20260105T000000",
+    "20260112T000000",
+    "20260119T000000",
+    "20260126T000000",
+    "20260202T000000"
+   ],
+   "prohibited": true,
+   "reduction_visible": false,
+   "rrule": "FREQ=WEEKLY;BYDAY=MO;UNTIL=20260202"
+  },
+  "7121dd7004f9": {
+   "cases": [
+    11
+   ],
+   "date_answer": [
+    "20260130T000000",
+    "20260227T000000",
+    "20260327T000000",
+    "20260424T000000",
+    "20260529T000000",
+    "20260626T000000",
+    "20260731T000000",
+    "20260828T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20260130T000000",
+    "20260227T000000",
+    "20260327T000000",
+    "20260424T000000",
+    "20260529T000000",
+    "20260626T000000",
+    "20260731T000000",
+    "20260828T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=MONTHLY;BYDAY=-1FR"
+  },
+  "724ec21af4ad": {
+   "cases": [
+    14
+   ],
+   "date_answer": [
+    "20261228T000000",
+    "20270104T000000",
+    "20280103T000000",
+    "20290101T000000",
+    "20291231T000000",
+    "20301230T000000",
+    "20311229T000000",
+    "20321227T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20261228T000000",
+    "20270104T000000",
+    "20280103T000000",
+    "20290101T000000",
+    "20291231T000000",
+    "20301230T000000",
+    "20311229T000000",
+    "20321227T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=YEARLY;BYWEEKNO=1,53;BYDAY=MO"
+  },
+  "7db860ac68c8": {
+   "cases": [
+    10
+   ],
+   "date_answer": [
+    "20260131T000000",
+    "20260201T000000",
+    "20260228T000000",
+    "20260301T000000",
+    "20260331T000000",
+    "20260401T000000",
+    "20260430T000000",
+    "20260501T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20260131T000000",
+    "20260201T000000",
+    "20260228T000000",
+    "20260301T000000",
+    "20260331T000000",
+    "20260401T000000",
+    "20260430T000000",
+    "20260501T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,-1"
+  },
+  "8b13f12bff4c": {
+   "cases": [
+    7
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260108T000000",
+    "20260111T000000",
+    "20260114T000000",
+    "20260117T000000",
+    "20260120T000000",
+    "20260123T000000",
+    "20260126T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20260105T000000",
+    "20260108T000000",
+    "20260111T000000",
+    "20260114T000000",
+    "20260117T000000",
+    "20260120T000000",
+    "20260123T000000",
+    "20260126T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=DAILY;INTERVAL=3"
+  },
+  "8df819c3aeb3": {
+   "cases": [
+    15
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 4,
+   "literal": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=DAILY;COUNT=3"
+  },
+  "a0e23d4ad9fc": {
+   "cases": [
+    4
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260107T000000",
+    "20260112T000000",
+    "20260114T000000",
+    "20260119T000000",
+    "20260121T000000",
+    "20260126T000000",
+    "20260128T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T000000",
+    "20260107T000000",
+    "20260112T000000",
+    "20260114T000000",
+    "20260119T000000",
+    "20260121T000000",
+    "20260126T000000",
+    "20260128T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE"
+  },
+  "b196349fcb05": {
+   "cases": [
+    0,
+    1,
+    2,
+    3,
+    6
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [
+    "BYHOUR",
+    "BYMINUTE",
+    "BYSECOND"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=DAILY"
+  },
+  "b9bbcf3027cc": {
+   "cases": [
+    1
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000",
+    "20260109T000000",
+    "20260110T000000",
+    "20260111T000000",
+    "20260112T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYMINUTE"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T003000",
+    "20260106T003000",
+    "20260107T003000",
+    "20260108T003000",
+    "20260109T003000",
+    "20260110T003000",
+    "20260111T003000",
+    "20260112T003000"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=DAILY;BYMINUTE=30"
+  },
+  "c72c6146b869": {
+   "cases": [
+    5
+   ],
+   "date_answer": [
+    "20260126T000000",
+    "20260223T000000",
+    "20260330T000000",
+    "20260427T000000",
+    "20260525T000000",
+    "20260629T000000",
+    "20260727T000000",
+    "20260831T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260126T090000",
+    "20260223T090000",
+    "20260330T090000",
+    "20260427T090000",
+    "20260525T090000",
+    "20260629T090000",
+    "20260727T090000",
+    "20260831T090000"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1;BYHOUR=9"
+  },
+  "d6f9b61340b1": {
+   "cases": [
+    4
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260107T000000",
+    "20260112T000000",
+    "20260114T000000",
+    "20260119T000000",
+    "20260121T000000",
+    "20260126T000000",
+    "20260128T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "written",
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260105T080000",
+    "20260107T080000",
+    "20260112T080000",
+    "20260114T080000",
+    "20260119T080000",
+    "20260121T080000",
+    "20260126T080000",
+    "20260128T080000"
+   ],
+   "prohibited": false,
+   "reduction_visible": true,
+   "rrule": "FREQ=WEEKLY;BYDAY=MO,WE;BYHOUR=8"
+  },
+  "ef18965854e0": {
+   "cases": [
+    5
+   ],
+   "date_answer": [
+    "20260126T000000",
+    "20260223T000000",
+    "20260330T000000",
+    "20260427T000000",
+    "20260525T000000",
+    "20260629T000000",
+    "20260727T000000",
+    "20260831T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [
+    "BYHOUR"
+   ],
+   "limit": 8,
+   "literal": [
+    "20260126T000000",
+    "20260223T000000",
+    "20260330T000000",
+    "20260427T000000",
+    "20260525T000000",
+    "20260629T000000",
+    "20260727T000000",
+    "20260831T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1"
+  },
+  "f2f0dbe42366": {
+   "cases": [
+    16
+   ],
+   "date_answer": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000"
+   ],
+   "dtstart": "20260105T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 5,
+   "literal": [
+    "20260105T000000",
+    "20260106T000000",
+    "20260107T000000",
+    "20260108T000000"
+   ],
+   "prohibited": true,
+   "reduction_visible": false,
+   "rrule": "FREQ=DAILY;UNTIL=20260108"
+  },
+  "f596259a4ea8": {
+   "cases": [
+    12
+   ],
+   "date_answer": [
+    "20240229T000000",
+    "20280229T000000",
+    "20320229T000000",
+    "20360229T000000",
+    "20400229T000000",
+    "20440229T000000",
+    "20480229T000000",
+    "20520229T000000"
+   ],
+   "dtstart": "20240226T000000",
+   "form": "reduced",
+   "ignored_parts": [],
+   "limit": 8,
+   "literal": [
+    "20240229T000000",
+    "20280229T000000",
+    "20320229T000000",
+    "20360229T000000",
+    "20400229T000000",
+    "20440229T000000",
+    "20480229T000000",
+    "20520229T000000"
+   ],
+   "prohibited": false,
+   "reduction_visible": false,
+   "rrule": "FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29"
+  }
+ },
+ "grid": {
+  "29c88031298c": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "L",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "D"
+  },
+  "326815efb78c": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "L",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "X"
+  },
+  "38b6d5a504a7": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "3a37bf5654ef": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "68008675d7bc": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "6c1ec68dd90d": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "L",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "X"
+  },
+  "6f9c8b4155a1": {
+   "dateutil": "D",
+   "dmfs": "ERR",
+   "dtical": "ERR",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "X",
+   "libical_48d5": "X",
+   "libical_4edd": "X",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "7121dd7004f9": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "724ec21af4ad": {
+   "dateutil": "D",
+   "dmfs": "X",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "X",
+   "libical_3020": "X",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "7db860ac68c8": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "8b13f12bff4c": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "8df819c3aeb3": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "a0e23d4ad9fc": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "b196349fcb05": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "b9bbcf3027cc": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "L",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "D"
+  },
+  "c72c6146b869": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "X",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "X"
+  },
+  "d6f9b61340b1": {
+   "dateutil": "L",
+   "dmfs": "L",
+   "dtical": "L",
+   "ical4j411": "L",
+   "ical4j430": "L",
+   "icaljs": "L",
+   "libical_3020": "L",
+   "libical_48d5": "L",
+   "libical_4edd": "L",
+   "rrulego": "L",
+   "rrulejs": "L",
+   "rustrrule": "L",
+   "sabre": "X"
+  },
+  "ef18965854e0": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "X",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  },
+  "f2f0dbe42366": {
+   "dateutil": "D",
+   "dmfs": "ERR",
+   "dtical": "ERR",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "X",
+   "libical_48d5": "X",
+   "libical_4edd": "X",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "D"
+  },
+  "f596259a4ea8": {
+   "dateutil": "D",
+   "dmfs": "D",
+   "dtical": "D",
+   "ical4j411": "D",
+   "ical4j430": "D",
+   "icaljs": "D",
+   "libical_3020": "D",
+   "libical_48d5": "D",
+   "libical_4edd": "D",
+   "rrulego": "D",
+   "rrulejs": "D",
+   "rustrrule": "D",
+   "sabre": "X"
+  }
+ },
+ "prohibited": [
+  "f2f0dbe42366",
+  "6f9c8b4155a1"
+ ],
+ "reduced": [
+  "b196349fcb05",
+  "a0e23d4ad9fc",
+  "ef18965854e0",
+  "8b13f12bff4c",
+  "68008675d7bc",
+  "38b6d5a504a7",
+  "7db860ac68c8",
+  "7121dd7004f9",
+  "f596259a4ea8",
+  "3a37bf5654ef",
+  "724ec21af4ad",
+  "8df819c3aeb3",
+  "f2f0dbe42366",
+  "6f9c8b4155a1"
+ ],
+ "source": "corpus/date-value-type.json",
+ "summary_reduced": {
+  "dateutil": {
+   "D": 12
+  },
+  "dmfs": {
+   "D": 11,
+   "X": 1
+  },
+  "dtical": {
+   "D": 12
+  },
+  "ical4j411": {
+   "D": 12
+  },
+  "ical4j430": {
+   "D": 12
+  },
+  "icaljs": {
+   "D": 10,
+   "X": 2
+  },
+  "libical_3020": {
+   "D": 11,
+   "X": 1
+  },
+  "libical_48d5": {
+   "D": 12
+  },
+  "libical_4edd": {
+   "D": 12
+  },
+  "rrulego": {
+   "D": 12
+  },
+  "rrulejs": {
+   "D": 12
+  },
+  "rustrrule": {
+   "D": 12
+  },
+  "sabre": {
+   "D": 4,
+   "X": 8
+  }
+ },
+ "summary_written": {
+  "dateutil": {
+   "L": 6
+  },
+  "dmfs": {
+   "L": 6
+  },
+  "dtical": {
+   "L": 6
+  },
+  "ical4j411": {
+   "L": 6
+  },
+  "ical4j430": {
+   "L": 6
+  },
+  "icaljs": {
+   "L": 5,
+   "X": 1
+  },
+  "libical_3020": {
+   "L": 6
+  },
+  "libical_48d5": {
+   "L": 6
+  },
+  "libical_4edd": {
+   "L": 6
+  },
+  "rrulego": {
+   "L": 6
+  },
+  "rrulejs": {
+   "L": 6
+  },
+  "rustrrule": {
+   "L": 6
+  },
+  "sabre": {
+   "D": 2,
+   "X": 4
+  }
+ },
+ "written": [
+  "6c1ec68dd90d",
+  "b9bbcf3027cc",
+  "29c88031298c",
+  "326815efb78c",
+  "d6f9b61340b1",
+  "c72c6146b869"
+ ]
+}

@@ -1,0 +1,90 @@
+control POSITIVE: naive on the reduced rule vs the corpus's DATE answer -- 14/14 reproduced
+control NEGATIVE: the same lists shifted one day -- 20/20 correctly a third answer
+control NIL: a refusal is never agreement -- 20/20
+scope: 14 cases, 14 reduced-form (2 prohibited by 3.3.10, a DATE UNTIL under the DATE-TIME DTSTART this protocol can pose; 12 scorable) and 6 written-form where 3.3.10's MUST-ignore applies only to the DATE start the wire cannot carry
+control SPLIT: every written form differs from the DATE answer -- 6/6
+
+TABLE REDUCED -- the DATE answer, asked in the only form the wire carries.
+D is the right answer here.
+id           case scope    rrule                                              dateutil          dmfs        dtical     ical4j411     ical4j430        icaljs  libical_3020  libical_48d5  libical_4edd       rrulego       rrulejs     rustrrule         sabre
+b196349fcb05 0,1,2,3,6 -        FREQ=DAILY                                                D             D             D             D             D             D             D             D             D             D             D             D             D
+a0e23d4ad9fc 4    -        FREQ=WEEKLY;BYDAY=MO,WE                                   D             D             D             D             D             D             D             D             D             D             D             D             D
+ef18965854e0 5    -        FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1                         D             D             D             D             D             X             D             D             D             D             D             D             X
+8b13f12bff4c 7    -        FREQ=DAILY;INTERVAL=3                                     D             D             D             D             D             D             D             D             D             D             D             D             D
+68008675d7bc 8    -        FREQ=WEEKLY;BYDAY=TU,TH                                   D             D             D             D             D             D             D             D             D             D             D             D             X
+38b6d5a504a7 9    -        FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=SU,SA                D             D             D             D             D             D             D             D             D             D             D             D             X
+7db860ac68c8 10   -        FREQ=MONTHLY;BYMONTHDAY=1,-1                              D             D             D             D             D             D             D             D             D             D             D             D             X
+7121dd7004f9 11   -        FREQ=MONTHLY;BYDAY=-1FR                                   D             D             D             D             D             D             D             D             D             D             D             D             X
+f596259a4ea8 12   -        FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29                       D             D             D             D             D             D             D             D             D             D             D             D             X
+3a37bf5654ef 13   -        FREQ=YEARLY;BYYEARDAY=1,-1                                D             D             D             D             D             D             D             D             D             D             D             D             X
+724ec21af4ad 14   -        FREQ=YEARLY;BYWEEKNO=1,53;BYDAY=MO                        D             X             D             D             D             X             X             D             D             D             D             D             X
+8df819c3aeb3 15   -        FREQ=DAILY;COUNT=3                                        D             D             D             D             D             D             D             D             D             D             D             D             D
+f2f0dbe42366 16   PROHIB   FREQ=DAILY;UNTIL=20260108                                 D           ERR           ERR             D             D             D             X             X             X             D             D             D             D
+6f9c8b4155a1 17   PROHIB   FREQ=WEEKLY;BYDAY=MO;UNTIL=20260202                       D           ERR           ERR             D             D             D             X             X             X             D             D             D             D
+
+scored over the 12 rules 3.3.10 permits here; the prohibited ones are listed and charged to nobody.
+dateutil      D=12  L=0   X=0   ERR=0    of 12
+dmfs          D=11  L=0   X=1   ERR=0    of 12
+dtical        D=12  L=0   X=0   ERR=0    of 12
+ical4j411     D=12  L=0   X=0   ERR=0    of 12
+ical4j430     D=12  L=0   X=0   ERR=0    of 12
+icaljs        D=10  L=0   X=2   ERR=0    of 12
+libical_3020  D=11  L=0   X=1   ERR=0    of 12
+libical_48d5  D=12  L=0   X=0   ERR=0    of 12
+libical_4edd  D=12  L=0   X=0   ERR=0    of 12
+rrulego       D=12  L=0   X=0   ERR=0    of 12
+rrulejs       D=12  L=0   X=0   ERR=0    of 12
+rustrrule     D=12  L=0   X=0   ERR=0    of 12
+sabre         D=4   L=0   X=8   ERR=0    of 12
+
+TABLE WRITTEN -- the same 6 rules as written, at a DATE-TIME start.
+L is the RIGHT answer here and D would be a defect: 3.3.10's MUST-ignore
+is conditioned on a DATE start, which this protocol cannot express.
+id           case scope    rrule                                              dateutil          dmfs        dtical     ical4j411     ical4j430        icaljs  libical_3020  libical_48d5  libical_4edd       rrulego       rrulejs     rustrrule         sabre
+6c1ec68dd90d 0    -        FREQ=DAILY;BYHOUR=9,17                                    L             L             L             L             L             L             L             L             L             L             L             L             X
+b9bbcf3027cc 1    -        FREQ=DAILY;BYMINUTE=30                                    L             L             L             L             L             L             L             L             L             L             L             L             D
+29c88031298c 2    -        FREQ=DAILY;BYSECOND=15                                    L             L             L             L             L             L             L             L             L             L             L             L             D
+326815efb78c 3    -        FREQ=DAILY;BYHOUR=9,17;BYMINUTE=0,30;BYSECOND=            L             L             L             L             L             L             L             L             L             L             L             L             X
+d6f9b61340b1 4    -        FREQ=WEEKLY;BYDAY=MO,WE;BYHOUR=8                          L             L             L             L             L             L             L             L             L             L             L             L             X
+c72c6146b869 5    -        FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1;BYHOUR=9                L             L             L             L             L             X             L             L             L             L             L             L             X
+
+scored over 6 rules; read the header before reading the counts.
+dateutil      D=0   L=6   X=0   ERR=0    of 6
+dmfs          D=0   L=6   X=0   ERR=0    of 6
+dtical        D=0   L=6   X=0   ERR=0    of 6
+ical4j411     D=0   L=6   X=0   ERR=0    of 6
+ical4j430     D=0   L=6   X=0   ERR=0    of 6
+icaljs        D=0   L=5   X=1   ERR=0    of 6
+libical_3020  D=0   L=6   X=0   ERR=0    of 6
+libical_48d5  D=0   L=6   X=0   ERR=0    of 6
+libical_4edd  D=0   L=6   X=0   ERR=0    of 6
+rrulego       D=0   L=6   X=0   ERR=0    of 6
+rrulejs       D=0   L=6   X=0   ERR=0    of 6
+rustrrule     D=0   L=6   X=0   ERR=0    of 6
+sabre         D=2   L=0   X=4   ERR=0    of 6
+
+wrote findings/data/083-date-value-type-table.json
+id           rrule                                          board  predicted?
+b196349fcb05 FREQ=DAILY                                     D      True 
+6c1ec68dd90d FREQ=DAILY;BYHOUR=9,17                         X      True 
+326815efb78c FREQ=DAILY;BYHOUR=9,17;BYMINUTE=0,30;BYSECOND= X      True    deleted -> FREQ=DAILY;BYHOUR=9,17
+b9bbcf3027cc FREQ=DAILY;BYMINUTE=30                         D      True    deleted -> FREQ=DAILY
+29c88031298c FREQ=DAILY;BYSECOND=15                         D      True    deleted -> FREQ=DAILY
+8df819c3aeb3 FREQ=DAILY;COUNT=3                             D      True 
+8b13f12bff4c FREQ=DAILY;INTERVAL=3                          D      True 
+f2f0dbe42366 FREQ=DAILY;UNTIL=20260108                      D      True 
+7121dd7004f9 FREQ=MONTHLY;BYDAY=-1FR                        X      True 
+ef18965854e0 FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1              X      True 
+c72c6146b869 FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1;BYHOUR=9     X      True    deleted -> FREQ=MONTHLY;BYDAY=MO;BYSETPOS=-1
+7db860ac68c8 FREQ=MONTHLY;BYMONTHDAY=1,-1                   X      True 
+a0e23d4ad9fc FREQ=WEEKLY;BYDAY=MO,WE                        D      True 
+d6f9b61340b1 FREQ=WEEKLY;BYDAY=MO,WE;BYHOUR=8               X      True 
+6f9c8b4155a1 FREQ=WEEKLY;BYDAY=MO;UNTIL=20260202            D      True 
+68008675d7bc FREQ=WEEKLY;BYDAY=TU,TH                        X      True 
+38b6d5a504a7 FREQ=WEEKLY;INTERVAL=2;WKST=SU;BYDAY=SU,SA     X      True 
+f596259a4ea8 FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29            X      True 
+724ec21af4ad FREQ=YEARLY;BYWEEKNO=1,53;BYDAY=MO             X      True 
+3a37bf5654ef FREQ=YEARLY;BYYEARDAY=1,-1                     X      True 
+
+REPLAY over all 20 cases -- 12 sabre disagrees with the board, 8 it agrees with.
+The two published mechanisms, composed and fitted to nothing, predict sabre's exact output list on all 20.
