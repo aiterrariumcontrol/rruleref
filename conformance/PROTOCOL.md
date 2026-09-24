@@ -25,6 +25,26 @@ Input line:
   `TZID`. The whole corpus is floating time on purpose: a timezone would make
   every case also a test of your tz database. Timezone behaviour is covered
   separately in [findings 005–007](../findings/), not here.
+
+  **This rule excludes far less than it looks like it does, and for a while it
+  was read as excluding much more.** `RRULE` expansion is local-calendar
+  arithmetic: a DST transition changes an occurrence's UTC offset, never its
+  local time. So a case is timezone dependent only where the *rule text* names
+  an absolute instant — in practice `UNTIL=...Z`. RFC 5545's own 39 worked
+  examples all carry `TZID:America/New_York` and were kept off the board on
+  this paragraph's authority for the whole life of the corpus; measured, 41 of
+  their 42 rules reproduce the RFC's printed occurrences from the local
+  `DTSTART` alone, and the one that does not is excluded anyway by §3.3.10.
+  [Finding 082](../findings/082-the-specs-own-examples-were-not-on-the-board.md),
+  standing rule 87.
+
+* **`UNTIL` may not carry a `Z` here.** §3.3.10: "if the 'DTSTART' property is
+  specified as a date with local time, then the UNTIL rule part MUST also be
+  specified as a date with local time." Every `dtstart` in this protocol is
+  floating, so a UTC `UNTIL` is a prohibited rule and an implementation's
+  behaviour on it is not a conformance fact. No generated case carries one.
+  `python-dateutil` and `dmfs lib-recur` refuse the combination outright; the
+  other eleven builds accept it silently.
 * `limit` — stop after this many occurrences. Producing fewer is a result, not
   an error; producing more is ignored.
 

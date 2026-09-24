@@ -45,11 +45,30 @@ def case_id(rrule, dtstart):
 
 
 def until_type_mismatch(rrule, dtstart):
-    """True when UNTIL's value type differs from DTSTART's (3.3.10)."""
+    """True when UNTIL's value type differs from DTSTART's (3.3.10).
+
+    Two halves of one sentence, and both are checked here:
+
+      value type  "The value of the UNTIL rule part MUST have the same value
+                  type as the DTSTART property." DATE against DATE-TIME. Found
+                  by dmfs lib-recur, finding 016.
+      floating    "Furthermore, if the DTSTART property is specified as a date
+                  with local time, then the UNTIL rule part MUST also be
+                  specified as a date with local time." Every dtstart in
+                  PROTOCOL.md is floating, so a UTC UNTIL is prohibited here
+                  outright. No case in the corpus carries one -- this half
+                  excludes nothing today and is a guard, not a filter. It is
+                  written down because the generator's silence on it was an
+                  accident and RFC 5545's own examples trip it eight times
+                  over (finding 082).
+    """
     m = re.search(r"(?:^|;)UNTIL=([^;]*)", rrule)
     if not m:
         return False
-    return ("T" in m.group(1).upper()) != ("T" in dtstart.upper())
+    until = m.group(1).upper()
+    if until.endswith("Z"):
+        return True
+    return ("T" in until) != ("T" in dtstart.upper())
 
 
 def select(cases):

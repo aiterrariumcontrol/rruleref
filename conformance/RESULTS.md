@@ -255,6 +255,64 @@ unmeasured question.
     TZ=UTC <adapter> < disputed.ndjson > out.<name>.ndjson
     python3 tools/audit_disputed.py --classify out.*.ndjson
 
+## RFC 5545's own examples
+
+The table above scores *generated* cases. RFC 5545 §3.8.5.3 prints 39 worked
+examples of its own — 42 `RRULE`s, since three examples give two equivalent
+forms — extracted by program from the hashed RFC text in
+[`corpus/rfc5545-examples.json`](../corpus/rfc5545-examples.json). They are the
+most authoritative cases that exist here, and none of them appeared in any run
+on this page until 2026-09-24, because every one carries `TZID:America/New_York`
+and `PROTOCOL.md` makes the corpus floating time.
+
+That exclusion was much wider than the hazard it was written for.
+[Finding 082](../findings/082-the-specs-own-examples-were-not-on-the-board.md)
+measured it: `naive`, given the local `DTSTART` alone, reproduces the RFC's
+printed occurrences on **41 of 42** rules. Eight rules carry `UNTIL=...Z`, which
+§3.3.10 **prohibits** under a floating `DTSTART`, and the single rule a floating
+reading gets wrong is one of those eight. So 34 rules are scorable, nothing in
+the set is timezone dependent except by way of a prohibited `UNTIL`, and no
+existing score on this page moves — no generated case carries a `Z` in `UNTIL`.
+
+<!-- rowsum: total=34 cols=R:2,X:3,ERR:4 -->
+
+| implementation | R | X | ERR | of |
+|---|---:|---:|---:|---:|
+| `python-dateutil` 2.9.0.post0 | 34 | 0 | 0 | 34 |
+| `rrule.js` 2.8.1 | 34 | 0 | 0 | 34 |
+| `rrule-go` 1.8.2 | 34 | 0 | 0 | 34 |
+| `rust-rrule` 0.14.0 | 34 | 0 | 0 | 34 |
+| `ical4j` 4.1.1 | 34 | 0 | 0 | 34 |
+| `ical4j` 4.3.0 | 34 | 0 | 0 | 34 |
+| `dmfs lib-recur` 0.17.1 | 34 | 0 | 0 | 34 |
+| `libical` 3.0.20 | 34 | 0 | 0 | 34 |
+| `libical` master `48d52b4b` | 34 | 0 | 0 | 34 |
+| `libical` master `4edd39a3` | 34 | 0 | 0 | 34 |
+| `DateTime::Event::ICal` 0.13 | 34 | 0 | 0 | 34 |
+| `ical.js` 2.2.1 | 32 | 2 | 0 | 34 |
+| `sabre/vobject` 4.6.1 | 28 | 5 | 1 | 34 |
+
+**R** equals the RFC's printed occurrences, **X** is a third answer, **ERR** a
+refusal. Eleven of thirteen are perfect, which is worth stating plainly: on the
+cases the specification adjudicates for itself the field is in good shape, and
+the long failure columns above are about generated cases, not about the spec's
+own. `ical.js` drops the numeric prefix in `FREQ=YEARLY;BYDAY=20MO` and drops
+`BYWEEKNO` in `FREQ=YEARLY;BYWEEKNO=20;BYDAY=MO`, returning *every Monday* for
+both. `sabre/vobject` returns `DTSTART` repeated for every `FREQ=MINUTELY`
+example, and drops `BYMINUTE` in the `FREQ=DAILY` form of the same example the
+RFC gives twice. One of `sabre`'s five is example 27, whose `DTSTART` is
+unsynchronized — a case this corpus excludes by rule — so the count against it
+on rules the corpus would also score is **4**.
+
+Example 27 is also where §3.8.5.3 contradicts itself: the prose calls a
+recurrence set with an unsynchronized `DTSTART` *undefined*, and the section's
+own example list then prints one. Finding 082 records that and does not resolve
+it; the `dtstart_synchronized` exclusion stands.
+
+    python3 tools/audit_rfc_examples.py --emit > rfc_cases.ndjson
+    TZ=UTC <adapter> < rfc_cases.ndjson > out.<name>.ndjson
+    python3 tools/audit_rfc_examples.py --classify out.*.ndjson
+
 <a id="icaljs-lineage"></a>
 **♦ `ical.js` is not an independent witness.** Its recurrence iterator is a port
 of `libical`'s `icalrecur.c` — same `expand_map`/`CONTRACT` constants, same
