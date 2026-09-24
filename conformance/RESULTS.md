@@ -25,11 +25,19 @@ mechanical; it kept having to be remembered instead.
 `cases.ndjson` has not changed since commit `5d6745e`, which raised the corpus
 to 25 occurrences and 109500 days, and every row below was measured at or after
 that commit — so the identifier above really does cover the whole table. The
-corpus around it *has* moved since: applying
+corpus around it *has* moved since, four times, and `cases_id` has not moved
+once: applying
 [finding 067](../findings/067-an-empty-list-nobody-had-proved.md) on 2026-09-20
-relabelled 285 cases from `horizon` to `complete`, changing `corpus_id` and not
-`cases_id`, because none of those cases is in the scored subset. That is
-precisely the distinction the two identifiers exist to make. The `scorer_id` in
+relabelled 285 cases from `horizon` to `complete`;
+[081](../findings/081-what-the-board-says-about-the-disputed-cases.md) amended
+two verdicts in `disputed.json`;
+[084](../findings/084-a-corpus-file-that-never-rebuilt-the-same-way.md) added
+`reproduced_by` and stopped `date-value-type.json` reseeding itself from the
+wall clock; and
+[085](../findings/085-four-red-builds-and-a-trailing-newline.md) removed a
+trailing byte. None of those touched a case in the scored subset, so `corpus_id`
+changed each time and `cases_id` never did. That is precisely the distinction
+the two identifiers exist to make. The `scorer_id` in
 `VERSION.json` likewise now differs from the one the rows physically ran under:
 adding this reporting changed `score.py` and no bucket in it.
 
