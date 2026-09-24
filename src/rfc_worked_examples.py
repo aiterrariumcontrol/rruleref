@@ -43,6 +43,7 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import env
+import builds
 from datetime import datetime, timedelta
 
 RFC_PATH = env.rfc_path("5545", require=False)
@@ -234,6 +235,50 @@ def parse_expected(expected_raw, default_time):
     return out, prefix_only
 
 
+WITNESS_FILE = "findings/data/082-rfc-examples-audit.json"
+
+
+def attach_witnesses(usable, path=None):
+    """Record which measured builds reproduced each example's printed answer.
+
+    The expectation in this file comes from RFC 5545's own text, not from an
+    expander, so there is nothing here for `corroborated_by` to mean and the
+    field does not exist. What finding 082 measured is a different and weaker
+    claim -- that a build returns what the document prints -- so it gets its
+    own name, `reproduced_by`, index-aligned with `rrules`.
+
+    An entry is `null` where the rule cannot be posed on the conformance wire
+    at all (a floating or `UNTIL=...Z` form that `conformance/PROTOCOL.md`
+    cannot carry). That is a property of the harness, not of the example.
+    """
+    here = os.path.dirname(os.path.abspath(__file__))
+    path = path or os.path.join(here, "..", WITNESS_FILE)
+    for ex in usable:
+        ex["reproduced_by"] = [None] * len(ex["rrules"])
+    if not os.path.exists(path):
+        return
+    with open(path) as f:
+        table = json.load(f)
+    seen = 0
+    for key, entry in table["detail"].items():
+        ex = usable[entry["example"]]
+        try:
+            i = ex["rrules"].index(entry["rrule"])
+        except ValueError:
+            raise RuntimeError(
+                "%s measured %r under example %d, which does not carry it; the "
+                "witness file and this builder have drifted apart"
+                % (WITNESS_FILE, entry["rrule"], entry["example"]))
+        if entry["prohibited"]:
+            continue                  # stays None: not posable on the wire
+        ex["reproduced_by"][i] = builds.display_all(
+            b for b, status in table["grid"][key].items() if status == "R")
+        seen += 1
+    if seen != len(table["scored"]):
+        raise RuntimeError("attached %d witness lists, %s scored %d"
+                           % (seen, WITNESS_FILE, len(table["scored"])))
+
+
 def build():
     text = read_rfc()
     examples = parse_examples(section_lines(text))
@@ -272,6 +317,7 @@ def build():
                           "utc_offset_minutes": int(ABBREV_OFFSET[ab].total_seconds() // 60)}
                          for dt, ab in expected],
         })
+    attach_witnesses(usable)
     return {
         "source": {
             "document": "RFC 5545", "section": "3.8.5.3", "url": RFC_URL,

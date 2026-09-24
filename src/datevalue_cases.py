@@ -26,6 +26,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import env
 env.add_dateutil_to_path()
 
+import builds
 import datevalue
 import grammar
 import naive
@@ -113,10 +114,13 @@ const run = (text) => { try {
     const r = rrulestr(text, {forceset:false});
     return r.all((d,i)=>i<N).map(fmt);
   } catch(e) { return ['ERROR:'+e.message]; } };
-console.log(JSON.stringify(cases.map(c => ({
-  with_param: run(`DTSTART;VALUE=DATE:${c.dtstart}\\nRRULE:${c.rrule}`),
-  bare: run(`DTSTART:${c.dtstart}\\nRRULE:${c.rrule}`),
-}))));
+console.log(JSON.stringify({
+  now: fmt(new Date()),
+  cases: cases.map(c => ({
+    with_param: run(`DTSTART;VALUE=DATE:${c.dtstart}\\nRRULE:${c.rrule}`),
+    bare: run(`DTSTART:${c.dtstart}\\nRRULE:${c.rrule}`),
+  })),
+}));
 """ % N
     path = os.path.join(NODE_DIR, "datecases.js")
     with open(path, "w") as f:
@@ -125,7 +129,47 @@ console.log(JSON.stringify(cases.map(c => ({
                          text=True)
     if out.returncode != 0:
         raise RuntimeError(out.stderr)
-    return json.loads(out.stdout)
+    got = json.loads(out.stdout)
+    assert_clock_is_ahead(got["now"])
+    for o in got["cases"]:
+        o["clock_seeded"] = is_clock_seeded(o["with_param"], got["now"])
+    return got["cases"]
+
+
+CLOCK_SEEDED = {
+    "clock_seeded": True,
+    "note": ("rrule.js 2.8.1 accepts `DTSTART;VALUE=DATE:` without parsing the "
+             "value and expands from the instant of the run instead. The "
+             "occurrence list is therefore a function of the wall clock -- "
+             "every field of it, down to the seconds -- so it is a property "
+             "and not a value, and recording a sample of it made this file "
+             "rebuild differently every day for no change in meaning. Rerun "
+             "src/datevalue_cases.py to see the substitution happen."),
+}
+
+
+def is_clock_seeded(got, now):
+    """Did rrule.js expand from the run instant instead of the case's DTSTART?
+
+    Detected, not assumed. Every `DTSTART` in this file is a fixed constant
+    (`BASE`, `LEAP`) and every honest expansion of one lands within a couple of
+    years of it, so an occurrence dated on or after the run itself cannot have
+    come from the case. The first attempt at this detector compared against the
+    run's *date* and missed: the substituted start was 20:55 UTC and the rule's
+    own `BYHOUR=9,17` pushed the first occurrence to 09:00 the next morning.
+    `assert_clock_is_ahead` keeps the inequality from silently inverting.
+    """
+    return bool(got) and not got[0].startswith("ERROR:") and got[0][:8] >= now[:8]
+
+
+def assert_clock_is_ahead(now):
+    """The detector reads `>= now` as "not from the case". Check that holds."""
+    latest = max(BASE, LEAP).strftime("%Y%m%d")
+    if now[:8] <= latest:
+        raise RuntimeError(
+            "the run clock (%s) is not clearly after every DTSTART in this "
+            "file (latest %s); _despatch_clock cannot tell a substituted start "
+            "from a real occurrence and would mislabel one" % (now[:8], latest))
 
 
 def _days(out):
@@ -160,6 +204,44 @@ def corroborate(reduced, dtstart):
     return out
 
 
+WITNESS_FILE = "findings/data/083-date-value-type-table.json"
+
+
+def witnesses(path=WITNESS_FILE):
+    """Which measured builds returned this file's own answer, per case index.
+
+    `corroborated_by` is *provenance*: the two expanders that produced `expect`.
+    The thirteen builds in `conformance/RESULTS.md` are the *subjects*, and
+    putting a subject into the provenance field would make the corpus look as
+    though it were built from the implementations it scores. So finding 083's
+    measurement is attached under its own name, `reproduced_by`, and the two
+    fields never mix.
+
+    Returns {case index: [display name, ...]}, or {case index: None} where the
+    case's rule cannot be posed on the conformance wire at all. That last part
+    is a property of `conformance/PROTOCOL.md`, whose input line has no
+    value-type field, and not of the case: a DATE-valued `UNTIL` beside a
+    DATE-valued `DTSTART` is perfectly ordinary iCalendar.
+    """
+    if not os.path.exists(path):
+        return {}
+    table = json.load(open(path))
+    out = {}
+    for key, entry in table["detail"].items():
+        if entry["form"] != "reduced":
+            continue
+        if entry["prohibited"]:
+            names = None
+        else:
+            names = builds.display_all(b for b, status
+                                       in table["grid"][key].items()
+                                       if status == "D")
+        for idx in entry["cases"]:
+            assert idx not in out, "case %d reduced by two entries" % idx
+            out[idx] = names
+    return out
+
+
 def build():
     cases, undefined = [], []
     js = rrulejs_observed(CASES)
@@ -171,11 +253,22 @@ def build():
             x.time() == time(0, 0, 0) for x in theirs)
         expect = [datevalue.fmt(x) for x in occ]
         du = dateutil_observed(rule, ds)
-        observed = {
+        # Score the raw output, then publish the property in place of it. The
+        # sample drifts; the two questions asked of it do not. rrule.js gets
+        # the *days* right on the two YEARLY rules even from a substituted
+        # start, because BYYEARDAY and BYWEEKNO determine them without it --
+        # dropping the sample before scoring would have silently thrown that
+        # measurement away, and did, until this was caught.
+        raw = {
             "python-dateutil-2.9.0": du,
             "rrule.js-2.8.1;VALUE=DATE": jsout["with_param"],
             "rrule.js-2.8.1 bare": jsout["bare"],
         }
+        same_days = {k: _days(v) == expect for k, v in raw.items()}
+        midnight_only = {k: _midnight_only(v) for k, v in raw.items()}
+        observed = dict(raw)
+        if jsout["clock_seeded"]:
+            observed["rrule.js-2.8.1;VALUE=DATE"] = dict(CLOCK_SEEDED)
         cases.append({
             "rrule": rule,
             "dtstart": datevalue.fmt(ds),
@@ -200,10 +293,8 @@ def build():
             # whether the recurrence *set* is right; `midnight_only` asks
             # whether the time parts were ignored as 3.3.10 requires. A case is
             # expanded conformantly only if both hold.
-            "observed_same_days": {k: _days(v) == expect
-                                   for k, v in observed.items()},
-            "observed_midnight_only": {k: _midnight_only(v)
-                                       for k, v in observed.items()},
+            "observed_same_days": same_days,
+            "observed_midnight_only": midnight_only,
         })
     for rule, ds, why in UNDEFINED:
         try:
@@ -220,6 +311,10 @@ def build():
 
 def main():
     cases, undefined = build()
+    seen = witnesses()
+    for i, case in enumerate(cases):
+        if i in seen:
+            case["reproduced_by"] = seen[i]
     branches = sorted({b for c in cases for b in c["branches"]})
     doc = {
         "meta": {
@@ -232,6 +327,16 @@ def main():
                           "The reduction is RFC 5545 3.3.10's own remedy for "
                           "BYSECOND/BYMINUTE/BYHOUR under a DATE-valued "
                           "DTSTART; it does not exist in RFC 2445."),
+            "reproduced_by": (
+                "Measured builds that returned this case's `expect` when the "
+                "reduced rule was posed on the conformance wire, from finding "
+                "083. Evidence, NOT provenance: `corroborated_by` names the "
+                "two expanders that produced `expect`, and these are the "
+                "subjects `conformance/RESULTS.md` scores. Never merge the "
+                "two fields. `null` means the case cannot be posed on that "
+                "wire at all, because PROTOCOL.md's input line carries no "
+                "value type -- a property of the harness, not of the case."),
+            "reproduced_by_source": WITNESS_FILE,
         },
         "branches": branches,
         "cases": cases,
@@ -246,6 +351,14 @@ def main():
     print("cases=%d undefined=%d branches=%d" % (len(cases), len(undefined),
                                                  len(branches)))
     print("uncorroborated=%d" % sum(1 for c in cases if not c["corroborated_by"]))
+    rep = [c.get("reproduced_by") for c in cases]
+    print("reproduced_by: %d cases witnessed (%d..%d builds), %d not posable, "
+          "%d absent"
+          % (sum(1 for r in rep if r),
+             min([len(r) for r in rep if r] or [0]),
+             max([len(r) for r in rep if r] or [0]),
+             sum(1 for r in rep if r is None),
+             sum(1 for c in cases if "reproduced_by" not in c)))
     for k, (d, m) in sorted(bad.items()):
         print("  %-28s wrong days %d/%d, time parts not ignored %d/%d"
               % (k, d, len(cases), m, len(cases)))

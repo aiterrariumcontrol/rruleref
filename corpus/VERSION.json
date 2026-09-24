@@ -1,8 +1,8 @@
 {
  "about": "Content identifiers for the corpus and the scorer. Recompute with tools/corpus_id.py; a measurement that names a different pair is from a different experiment.",
- "version": "1.0.0",
- "version_means": "A human label for citing; the ids are the truth. MAJOR changes when corpus/SCHEMA.md changes in a way that breaks a consumer, MINOR when any case's rrule/dtstart/expect/expect_bound changes or cases are added or removed, PATCH when only prose or non-case metadata moves. 1.0.0 is the first labelled state: N=25 occurrences per case, a 109500-day horizon, and the bounds as applied by finding 067 at 2026-09-20.",
- "corpus_id": "767afd18df89718232b77b4452326ed4e76a5c5905cd310444029663e7cdbc2f",
+ "version": "1.0.1",
+ "version_means": "A human label for citing; the ids are the truth. MAJOR changes when corpus/SCHEMA.md changes in a way that breaks a consumer, MINOR when any case's rrule/dtstart/expect/expect_bound changes or cases are added or removed, PATCH when only prose or non-case metadata moves. 1.0.0 is the first labelled state: N=25 occurrences per case, a 109500-day horizon, and the bounds as applied by finding 067 at 2026-09-20. 1.0.1 adds `reproduced_by` to date-value-type.json and rfc5545-examples.json and makes both rebuild byte-identically (finding 084); no case's rrule/dtstart/expect/expect_bound moved, and cases_id is unchanged.",
+ "corpus_id": "7d959ef1a5332c0283a0ade345c68c31317c03ffaf2c19a38686e099326935cd",
  "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
  "scorer_id": "434342bbd1984df706a4cc615e8380949039adc2617c68a9820e9e613a4edcaa",
  "occurrences_per_case": 25,
@@ -20,11 +20,11 @@
   "corpus/adjudications.json": "d63891b95f254627feb805e2a92ded9ee4a7f6bcdf978db978409fd5b32562ae",
   "corpus/corroborated.json": "1b1f6fe371161b6cdd9b716f0b2085c1ccd4dabb728b7b19c5ce262400b1d72b",
   "corpus/coverage.json": "ea884d5c804bf00878322d627c3e4776f893c64471b2dc36d6146631589f466a",
-  "corpus/date-value-type.json": "69078f7182617ed0b0eda2eb8c715d1c7935f97318337f3bb6b97dd8ed1d50be",
+  "corpus/date-value-type.json": "83d460fcd9993df57e5f922acc2e2026a45c507a05789e4f1a1180c45ef488fe",
   "corpus/disputed.json": "e0ca838a576f80f79a32d1775e79a7b8f64a44fc713b500119d765c3445f0f51",
   "corpus/grammar-coverage.json": "78d16524422eb81bdf3903066e17db2763313e312c52a73ab00af345bcfd18cf",
   "corpus/pair-coverage.json": "97edd2ae3f6ad12a98e3e26687f5bdc4eda904810a95072c51344de2e29465ab",
-  "corpus/rfc5545-examples.json": "330aa6ddbaed8ba40ef738d0fd024d83096c9ae7a3b12a4893f1bbbd15bdedd4",
+  "corpus/rfc5545-examples.json": "df468436e9b54ed5ca147f85960bf9675e1a76faf28439399fd12e9df3d1d279",
   "conformance/score.py": "edcb02aa5d9468d3ededfa64f194212a0e6981851fd1a31d6f0102a9dafeca8f"
  }
 }

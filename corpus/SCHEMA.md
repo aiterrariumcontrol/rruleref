@@ -54,7 +54,8 @@ Each case:
 | `rule_valid` | no `MUST NOT` of §3.3.10 that `src/validity.py` checks is violated. A *detector*, not a guarantee: `validity.NOT_CHECKED` lists what it does not test. |
 | `reading_dependent` | `expect` would differ under at least one rival reading of §3.3.10. Always present; see below. |
 | `reading_alternatives` | present **only** when `reading_dependent`: a map from the name of each rival reading to what `expect` would have been under it. |
-| `corroborated_by` | the expanders that agreed. Always both, since disagreement files the case elsewhere. |
+| `corroborated_by` | the expanders that agreed. Always both, since disagreement files the case elsewhere. **Provenance.** |
+| `reproduced_by` | *(`date-value-type.json` and `rfc5545-examples.json` only)* the measured builds that returned this case's answer. **Evidence, never provenance** — see below. |
 | `cells` | which cells of §3.3.10's `BYxxx`/`FREQ` table the rule exercises (`src/coverage.py`) |
 | `branches` | which branches of §3.3.10's `RECUR` ABNF it takes (`src/grammar.py`) |
 | `systematic_for` | the cell or branch this case was generated to cover, or `null` for a random case |
@@ -206,13 +207,52 @@ DATE value type and so cannot adjudicate these, so `expect` here comes from
 earlier version compared date strings against date-time strings and was
 measuring formatting.
 
+`observed["rrule.js-2.8.1;VALUE=DATE"]` is normally **not a list**. rrule.js
+2.8.1 accepts `DTSTART;VALUE=DATE:` without parsing the value and expands from
+the instant of the run, so the occurrence list is a function of the wall clock
+down to the second; sixteen of the eighteen cases record the property instead
+of a sample of it, under `clock_seeded`. The two derived booleans are still
+scored from the raw output, so nothing is lost — rrule.js gets the *days* right
+on the two `YEARLY` rules even from a substituted start, because `BYYEARDAY`
+and `BYWEEKNO` determine them without one. Finding 084.
+
 ## `rfc5545-examples.json`
 
 Finding 005: the 39 worked `RRULE` examples printed in RFC 5545 §3.8.5.3,
 extracted **by program** from the hashed RFC text and never retyped.
 `expected_is_prefix_only` marks the examples the RFC itself abbreviates with
 `...`. `errata_applied` records the one place the printed text is corrected,
-citing Verified Erratum 3883 — someone else's finding, not mine.
+citing Verified Erratum 3883 — someone else's finding, not mine. There is no
+`corroborated_by` here and there should not be: the RFC's printed answer *is*
+the authority, so there is nothing for two expanders to corroborate.
+`reproduced_by` is index-aligned with `rrules` and carries finding 082's
+measurement.
+
+## `reproduced_by` is not `corroborated_by`
+
+`corroborated_by` says where `expect` *came from*: two independent expanders,
+or in `date-value-type.json` the RFC's own reduction adjudicated by one of
+them. `reproduced_by` says who *agreed with it afterwards*, and the names in it
+are the thirteen builds `conformance/RESULTS.md` scores — the subjects of the
+experiment.
+
+The two must never be merged, in either direction. A corpus that listed its
+subjects as its sources would be circular: it would appear to have been built
+from the implementations it grades, and a reader could no longer tell an
+expectation derived from the specification from one derived from a majority
+vote of the field. The disjointness is checked in
+`tests/test_corpus_reproducible.py`, not left to care.
+
+`null` rather than a list means the rule cannot be posed on the conformance
+wire at all — `conformance/PROTOCOL.md`'s input line carries no value type, so
+a DATE-valued `UNTIL`, a floating time or an `UNTIL=...Z` beside a local
+`DTSTART` has nowhere to go. That is a property of the harness and says nothing
+about the case. Findings 082 and 083 are about exactly this gap.
+
+Both files are written by generators (`src/rfc_worked_examples.py`,
+`src/datevalue_cases.py`) that read the finding's measurement file, so the
+witnesses are regenerated rather than typed, and the corpus file still rebuilds
+byte-identically.
 
 ## `coverage.json`, `grammar-coverage.json`, `pair-coverage.json`
 
