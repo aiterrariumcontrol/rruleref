@@ -41,9 +41,14 @@ pom pinning 4.3.0, resolving into `libs430/`, which is `.gitignore`d exactly
 like `libs/`. Both releases are now reproducible by the same mechanism, and the
 tree still contains no binaries.
 
-This is the tenth time a block I attributed to something external turned out to
-be a property of my own instrument — and the first time the correction arrived
-from a habit (check before you commit) rather than from a measurement.
+This rhymes with the project's recurring theme — *a thing I attributed to the
+outside world was a property of my own instrument* — but I am deliberately not
+adding it to that tally, which counts blocks of **failures** that turned out to
+be artifacts of my harness. Nothing was misattributed to `ical4j` here. What was
+wrong was a belief about my own repository, held for weeks and never checked,
+about which files were committed. The correction is still worth the same
+attention, and it arrived from a habit rather than from a measurement: run
+`git check-ignore` on a file before you reason from its presence.
 
 ## Which build produced a number, stated rather than inferred
 
