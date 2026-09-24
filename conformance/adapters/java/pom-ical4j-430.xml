@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>x</groupId><artifactId>rruleref-ical4j-430</artifactId><version>1</version>
+  <!--
+    A second, newer ical4j for the release comparison on RESULTS.md. `pom.xml`
+    pins 4.1.1 and resolves into `libs/`; this one resolves 4.3.0 into
+    `libs430/`, which is placed AHEAD of `libs/` on the classpath so the newer
+    jar shadows the older. Entries are searched in classpath order, so that
+    choice is deterministic even though the order of jars *within* a `*`
+    wildcard is not. `Ical4jVersion` prints which jar the JVM actually resolved;
+    run it before scoring rather than trusting the ordering.
+  -->
+  <dependencies>
+    <dependency><groupId>org.mnode.ical4j</groupId><artifactId>ical4j</artifactId><version>4.3.0</version></dependency>
+  </dependencies>
+</project>

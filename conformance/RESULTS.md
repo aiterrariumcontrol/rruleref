@@ -331,6 +331,25 @@ corpus was raised to 25 occurrences and 109500 days, and they summed to 1659,
 derived from them has been recomputed or marked below.
 [Finding 077](../findings/077-a-table-that-outlived-its-corpus.md).
 
+**4.3.0 inherits the locale defect unchanged.** The same three locales on the
+newer release, measured 2026-09-24 at the same `cases_id`, with
+`Ical4jVersion` quoting `Implementation-Version: 4.3.0` for the run:
+
+<!-- rowsum: total=cases cols=pass:3,fail:4,other:5,short:6 -->
+| JVM locale | first day of week | pass | fail | other reading | short |
+|---|---|---:|---:|---:|---:|
+| `ar`-`EG` | Saturday | 1477 | 174 | 75 | 1 |
+| `en`-`US` | Sunday | 1489 | 161 | 76 | 1 |
+| `en`-`GB` | Monday | 1504 | 146 | 76 | 1 |
+
+Every row is 69 cases better than its 4.1.1 twin and the spread across locales
+is 27 in both releases. It is not merely the same size: **the set of cases that
+changes bucket when the locale changes is identical between the two releases**
+— the same 29 that fail on Saturday and not on Monday, the same 2 the other way.
+Two releases apart, the negative-limit defect is fixed and the locale defect
+moves exactly the same cases
+([finding 080](../findings/080-the-second-release-had-no-way-back.md)).
+
 **15** net of the 230 are the locale and not the algorithm, and the move is not
 a clean subset: going from Sunday to Monday takes 16 cases out of the
 plain-failure column and puts 1 in. The `short` column does not move with the
@@ -351,17 +370,24 @@ about the corpus, not about `ical4j`, and the seven cases added on 2026-09-17
 show the same empty answer at `FREQ=HOURLY`, `MINUTELY` and `SECONDLY` too. 4.3.0 fixes it for `BYMONTHDAY`
 and not for `BYYEARDAY`, and the scored set now shows exactly that split:
 4.3.0 passes the four new `BYMONTHDAY` cases and fails the three new
-`BYYEARDAY` ones (1556 / 99 / 66 / 7 on the `en`-`GB` row — pre-2026-09-20
-corpus, and those four cells sum to 1728, one more than that corpus held;
-**the 4.3.0 jar is not in this tree, so no 4.3.0 number on this page can be
-reproduced from the committed files**, finding 077)
+`BYYEARDAY` ones. Its `en`-`GB` row is **1504 / 146 / 76 / 1**, re-measured
+2026-09-24 against `cases_id` `7bd9731d3a48`; it read 1556 / 99 / 66 / 7 until
+then, which was a measurement of the pre-2026-09-20 corpus and summed to 1728,
+one more than that corpus held. Finding 077 could only mark it, because 4.3.0
+was not fetchable from this tree at all; it now is, and the release comparison
+below is reproducible ([finding 080](../findings/080-the-second-release-had-no-way-back.md))
 ([finding 049](../findings/049-a-negative-day-that-only-counts-when-it-expands.md)).
 
 **The plain failures that survive that fix are now attributed.**
 [Finding 051](../findings/051-what-is-left-after-the-negative-limit-fix.md)
 categorises every plain failure of both releases. All 69 cases 4.3.0 repaired
 are the negative-limit defect above; no other block moves by a single case
-between 4.1.1 and 4.3.0. Finding 051 counted 114 of them. Two later corrections
+between 4.1.1 and 4.3.0. That sentence was a count until 2026-09-24 and is now a
+set identity: scoring both releases at `cases_id` `7bd9731d3a48` and subtracting
+the two failure sets case by case gives **exactly the same 69 cases in all three
+JVM locales, every one of them a negative `BYMONTHDAY`, and zero cases failing
+in 4.3.0 that passed in 4.1.1** (finding 080). The three negative-`BYYEARDAY`
+twins are in neither difference: they fail in both. Finding 051 counted 114 of them. Two later corrections
 of mine have since taken 15 out of that column: 8 left for the other reading
 ([finding 053](../findings/053-a-short-list-is-not-always-my-horizon.md)) and 7
 for the new prefix bucket
@@ -429,7 +455,9 @@ to the expanded occurrences, so over a common horizon all 60 both return dates
 in months the rule excludes and omit dates it requires. The same behaviour appears on a further 42
 corroborated cases that this set excludes because their `DTSTART` is
 unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
-the current release. [Finding 039](../findings/039-what-bysetpos-selects-from.md)
+the current release — and "identically" is now a set identity too: the
+`FREQ=WEEKLY`-with-`BYMONTH` failures are the same 81 cases in both releases
+(finding 080). [Finding 039](../findings/039-what-bysetpos-selects-from.md)
 extends the same defect to the corpus's `BYSETPOS` cases: a further **18** are
 it, and the row remains a count of disagreements within these horizons, so it
 undercounts this defect. Findings 037 and 039 counted 18 and 8 against the
