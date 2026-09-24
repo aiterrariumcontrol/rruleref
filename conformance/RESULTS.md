@@ -222,6 +222,39 @@ rather than a stable count — see the note below.
 | `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1164 | 370 [‡](#dtical-split) | 69 | 0 | 124 [‡](#dtical-split) |
 | `ical.js` | 2.2.1 | port of libical (JS) [♦](#icaljs-lineage) | 1376 | 236 | 31 | 0 | 84 [◊](#icaljs-abort) |
 
+## What the board says about the cases it did not help produce
+
+Every row above is a run over `cases.ndjson`, which
+[`build_cases.py`](build_cases.py) selects from the **corroborated** corpus. The
+28 cases in [`corpus/disputed.json`](../corpus/disputed.json) — where the two
+expanders disagree and a verdict of mine stands in for their agreement — were
+therefore in no run on this page until 2026-09-24.
+[Finding 081](../findings/081-what-the-board-says-about-the-disputed-cases.md)
+ran them against thirteen builds at the corpus's own bound of 25 occurrences,
+with both directions controlled: `naive` and the `dateutil` adapter each still
+reproduce their recorded list on 28 of 28, so every dispute in the file is live.
+
+* `python-dateutil` and its three ports return `dateutil`'s list on **112 of
+  112**. Every other build on the board returns it on **0 of 252**.
+* On [finding 013](../findings/013-byday-mixed-signed-and-unsigned.md)'s six
+  cases, **all nine** non-`dateutil` builds reproduce the adjudicated answer
+  exactly on every synchronized case.
+* On [finding 032](../findings/032-a-blind-spot-the-corpus-cannot-see.md)'s ten,
+  `dmfs` and `libical` master `4edd39a3` reproduce it 10 of 10 — and `libical`
+  goes **0, 7, 10** across its three builds in commit order.
+* On the twelve `FREQ=YEARLY;BYWEEKNO` cases, **nobody** agrees with the corpus.
+  Most refuse the rule. Four of the twelve have a cross-family answer instead,
+  reproduced instant for instant by `BYDAY=weekday(DTSTART)` —
+  [finding 024](../findings/024-dtstart-fill-versus-the-table.md)'s split again.
+
+None of that is evidence about what §3.3.10 requires. It is evidence about where
+the corpus sits relative to the field, which is a different and previously
+unmeasured question.
+
+    python3 tools/audit_disputed.py --emit > disputed.ndjson
+    TZ=UTC <adapter> < disputed.ndjson > out.<name>.ndjson
+    python3 tools/audit_disputed.py --classify out.*.ndjson
+
 <a id="icaljs-lineage"></a>
 **♦ `ical.js` is not an independent witness.** Its recurrence iterator is a port
 of `libical`'s `icalrecur.c` — same `expand_map`/`CONTRACT` constants, same
@@ -732,12 +765,16 @@ independent **and** competent on `FREQ=YEARLY`.
 - **A reading of §3.3.10 that settles [finding
   024](../findings/024-dtstart-fill-versus-the-table.md)'s split — the table's
   `Expand` against the `DTSTART`-fill sentence.** Every case in
-  `corpus/disputed.json` now carries a verdict (21 `naive`, 5 `undecided`), and
-  all five `undecided` ones reduce to this question:
+  `corpus/disputed.json` now carries a verdict (**21 `naive`, 7 `undecided`**),
+  and all seven `undecided` ones reduce to this question:
   [finding 033](../findings/033-the-last-five-disputes-are-two-questions.md)
   shows that `BYWEEKNO` without `BYDAY` raises it again, with `libical`, `dmfs`
   and `ical4j` on one side and both of the corpus's own adjudicators on the
-  other. This replaces the previous two entries, which asked for adjudication of
+  other. Those counts read 21 and 5 until 2026-09-24 and described a 26-case
+  file that had held 28 since finding 066; two of the seven are the verdicts
+  [finding 081](../findings/081-what-the-board-says-about-the-disputed-cases.md)
+  amended, and it also reproduced the `DTSTART`-fill side of the split instant
+  for instant across four independent families. This replaces the previous two entries, which asked for adjudication of
   those five and, before that, for a generator producing corpus cases that
   discriminate the contested `FREQ=WEEKLY` readings.
   [Finding 034](../findings/034-when-the-table-arrived.md) narrows what would
