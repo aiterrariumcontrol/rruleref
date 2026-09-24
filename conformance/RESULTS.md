@@ -219,7 +219,7 @@ rather than a stable count — see the note below.
 | `libical` | master `48d52b4b` | independent (C, 2000) | 1601 | 19 | 72 | 0 | 35 |
 | `libical` | master `4edd39a3` | independent (C, 2000) | 1614 | 6 | 72 | 0 | 35 |
 | `sabre/vobject` | 4.6.1 | independent (PHP, 2011) | 720 | 980 | 23 | 0 | 4 [∞](#sabre-loop) |
-| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1163 | 368 [‡](#dtical-split) | 69 | 0 | 127 [‡](#dtical-split) |
+| `DateTime::Event::ICal` | 0.13 | independent (Perl, 2003) | 1164 | 370 [‡](#dtical-split) | 69 | 0 | 124 [‡](#dtical-split) |
 | `ical.js` | 2.2.1 | port of libical (JS) [♦](#icaljs-lineage) | 1376 | 236 | 31 | 0 | 84 [◊](#icaljs-abort) |
 
 <a id="icaljs-lineage"></a>
@@ -496,9 +496,18 @@ Only `pass` had reproduced across those three runs — and the fourth run, on th
 69 / 127`. That is expected, because this is the first run whose *input*
 changed: at 25 occurrences a case has three times as long to diverge and the
 adapter has three times as much work to do inside the same 20-second alarm.
-Read this row as **1163 passing and 564 not**, and treat any comparison of its
+A fifth run, on 2026-09-24 for
+[finding 079](../findings/079-attribution-by-reproduction-dtical.md), gives
+`1164 / 370 / 69 / 124` on the same corpus, moving `pass` by one; that run is
+the one tabulated above.
+Read this row as **1164 passing and 563 not**, and treat any comparison of its
 `fail`, `error` or `other reading` columns against an earlier run of this
-document as noise. The seven cases added on
+document as noise.
+
+**Scoring this adapter needs `--timeout 14400`.** `score.py`'s default 900s
+wall clock is not enough: the run dies in `subprocess.TimeoutExpired` with no
+partial result, so the command as documented elsewhere on this page does not
+reproduce this row. The seven cases added on
 2026-09-17 account for 3 of the passes and 4 of the failures; the rest of the
 movement from the previous row is the alarm, not the corpus. This is
 [finding 047](../findings/047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md)'s point
@@ -513,8 +522,20 @@ corpus's 291 `BYSETPOS` cases and moves 5 of them from disagree to agree. See
 [finding 046](../findings/046-the-iterator-and-the-next-chain-disagree.md), and
 `RRULE_DTICAL_ITER=chain` in the adapter to reproduce the other column.
 
-`DateTime::Event::ICal`'s 437 mismatches and 127 errors are not 564 separate
-problems (and, per the note above, are not a stable split of 498 either). [Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
+`DateTime::Event::ICal`'s 563 disagreements are **fully decomposed** by
+[finding 079](../findings/079-attribution-by-reproduction-dtical.md): all 443
+that are not `BYSETPOS` are reproduced element for element, and 0 are left
+unattributed. The claim there is one property of the library rather than a list
+of defects — `recur()` rewrites the rule into a fixed set-algebra expression
+over `DateTime::Event::Recurrence` and returns whatever that expression means,
+filling every gap the rewrite opens from `DTSTART`. So
+`FREQ=DAILY;BYMONTHDAY=15` returns the 15th of **March** once a year, and
+`FREQ=MINUTELY;BYMINUTE=30` throws an uncaught exception. The 120 `BYSETPOS`
+failures are out of scope there and covered by
+[046](../findings/046-the-iterator-and-the-next-chain-disagree.md) and
+[048](../findings/048-the-last-unswept-column-is-ambient-invariant.md).
+
+[Finding 035](../findings/035-one-deletion-and-a-pinned-day.md)
 accounts for the `BYMONTH` share of both: at `FREQ=WEEKLY` and `FREQ=MONTHLY`
 the library reads `BYMONTH` as *month ∈ `BYMONTH` **and** day-of-month =
 `DTSTART`'s day*, because `recur()` assembles the `BYMONTH` filter from a hash
