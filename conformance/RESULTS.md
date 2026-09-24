@@ -338,10 +338,12 @@ locale at all — the same single case, `c5175bbb94b8`, in all three rows, which
 is part of how finding 057 identifies that bucket as the harness. The *other
 reading* column barely moves either, by one case between Saturday and the other
 two. Of the 215 that remain
-on the `en`-`GB` row, **72 were one defect in its two forms** when finding 049
-counted them on the smaller corpus (they have not been recounted here — see
-finding 077) — 69 where the
-negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. The value is
+on the `en`-`GB` row, **72 are one defect in its two forms** — 69 where the
+negative value is a `BYMONTHDAY` and 3 where it is a `BYYEARDAY`. Finding 049
+counted 72 on the smaller corpus and finding 077 marked the figure as not yet
+recounted; it was recounted on 2026-09-24 against `cases_id` `7bd9731d3a48`,
+by reproduction rather than by rule shape, and it is still 72 with the same
+69/3 split ([finding 078](../findings/078-recounting-the-marked-prose.md)). The value is
 resolved correctly when the rule part expands and compared raw when the same
 rule part limits, so `FREQ=DAILY;BYMONTHDAY=-1` matches nothing. Finding 049
 could only say the 65 it then had were *all* `FREQ=DAILY`; that was a fact
@@ -420,20 +422,23 @@ adapter, which on an Arabic-locale machine would have scored that row 0 of 1728;
 it is fixed, and the `dmfs` row above is unchanged by the fix.
 
 Of the **215** that remain on the `en`-`GB` row — the row where `WKST` defaults
-to the value RFC 5545 specifies — **18 are one defect**, characterised in
+to the value RFC 5545 specifies — **60 are one defect**, characterised in
 [finding 037](../findings/037-a-limit-that-runs-before-the-thing-it-limits.md):
 at `FREQ=WEEKLY` the `BYMONTH` limit is applied to the period seed rather than
-to the expanded occurrences, so over a common horizon all 18 both return dates
+to the expanded occurrences, so over a common horizon all 60 both return dates
 in months the rule excludes and omit dates it requires. The same behaviour appears on a further 42
 corroborated cases that this set excludes because their `DTSTART` is
 unsynchronized; those are not counted as defects. Measured identically on 4.3.0,
 the current release. [Finding 039](../findings/039-what-bysetpos-selects-from.md)
-extends the same defect to the corpus's `BYSETPOS` cases: a further **8** are
-it, and six more cases carry the defect but only past the horizon their corpus
-entry runs to, so the row is a count of disagreements within these horizons and
-undercounts this defect. The 18 and the 8 were counted by findings 037 and 039
-against the pre-2026-09-20 corpus, when this row stood at 164; they have not
-been recounted at 215 (finding 077).
+extends the same defect to the corpus's `BYSETPOS` cases: a further **18** are
+it, and the row remains a count of disagreements within these horizons, so it
+undercounts this defect. Findings 037 and 039 counted 18 and 8 against the
+pre-2026-09-20 corpus, when this row stood at 164, and finding 077 marked both
+as not recounted. They were recounted on 2026-09-24 against `cases_id`
+`7bd9731d3a48`: **60** without `BYSETPOS` and **18** with, 78 together, each one
+reproduced element for element by the `FREQ=WEEKLY` seed-limit model and none of
+them claimed by a narrower mechanism
+([finding 078](../findings/078-recounting-the-marked-prose.md)).
 
 Every row is out of 1728. `dmfs lib-recur`'s 63 is the only one that is not all
 `dtstart_fill`: 60 are, and 3 are `first_period_truncated`.
