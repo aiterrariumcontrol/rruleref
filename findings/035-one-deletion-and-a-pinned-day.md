@@ -47,6 +47,11 @@ between them before being counted. All 332 agreed.
 | **pinned-day model reproduces the output** | **155 / 158** | **117 / 118** |
 | control: the *correct* `BYMONTH` reading reproduces it | **0 / 158** | 52 / 118 |
 
+<!-- provenance: UNCHECKED 155/158 117/118 0/158 52/118 -- dtical figures with no
+     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,
+     which was never retained and is excluded on rule-80 runtime grounds. A real
+     debt, named rather than quietly carried. -->
+
 The control is the point. At `WEEKLY` the correct reading explains **nothing**;
 the pinned model explains 98%. At `MONTHLY` the 52 the control explains are
 exactly the 52 the library passes — `MONTHLY` with no `BYDAY` and no

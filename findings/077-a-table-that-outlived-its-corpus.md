@@ -112,6 +112,9 @@ and still be a year stale — but it is free, it needs no adapter, and it is the
 one that has now caught published errors **three** times: `ical4j`'s main row
 summed to 1726 ([finding 075](075-attribution-by-reproduction-ical4j.md)),
 `rrule-go`'s to 1724, and the locale table's three to 1659/1658/1658. In all
+
+<!-- provenance: EXTRACTION-ARTIFACT 1659/1658 -- a slice of `1659/1658/1658`, not a
+     published fraction. -->
 three cases the error had been sitting in front of me on a page I had reread
 many times.
 

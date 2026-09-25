@@ -29,6 +29,9 @@ It does. It exits 0. It prints different numbers.
 | truncate, `BYMONTH` then `BYSETPOS` | 244 / 244 | 244 / 244 |
 | no truncation, `BYMONTH` then `BYSETPOS` | 244 / 244 | 244 / 244 |
 | truncate, `BYSETPOS` then `BYMONTH` | **237 / 244** | **226 / 244** |
+
+<!-- provenance: RETRACTED-QUOTE 237/244 235/244 -- the published column of the
+     before/after table: exactly the values this finding withdraws. -->
 | no truncation, `BYSETPOS` then `BYMONTH` | **235 / 244** | **226 / 244** |
 | cases discriminating the ordering | **7** | **18** |
 
@@ -154,6 +157,9 @@ check that catches the class from now on.
 Not settled, and named so it is not quietly dropped: of 091's 31 unbacked
 figures, **five are now accounted for** — 032's two reproduce exactly, 087's
 `83% (148 of 178)` was verified by 091, and 031's two stale rows are corrected
+
+<!-- provenance: DERIVED 83% -- quoted from finding 087 with its numerator and
+     denominator intact; 148/178 = 83%. -->
 above. Of the rest, 079's four are a 4-tuple score line the extractor misread as
 ratios, 062's four and 064's three are wall-clock timings that cannot have a
 stored producer by nature, 009's is also a timing, 015's and 038's are scores

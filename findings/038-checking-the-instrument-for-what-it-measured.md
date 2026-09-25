@@ -75,6 +75,9 @@ Fixed by pinning the formatter to `Locale.ROOT`. Both Java adapters also read
 and wrote through the JVM's default charset; those are now pinned to UTF-8,
 which changes nothing today — the protocol is ASCII — but removes a second
 ambient input. `dmfs lib-recur` scores 1637 / 13 / 63 after the fix, identical
+
+<!-- provenance: EXTRACTION-ARTIFACT 1637/13 -- a slice of the 3-tuple score
+     `1637 / 13 / 63`, not a fraction anyone published. -->
 to the published row, so no measurement in this repository changes.
 
 ## What this does not establish

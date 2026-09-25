@@ -61,6 +61,9 @@ with ≥10 accompanied cases in both:
 
 > **Corrected by [090](090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md).**
 > The last two rows were published as −0.70 and −0.80. Those figures are not
+
+<!-- provenance: RETRACTED-QUOTE -0.70 -0.80 -- superseded values, quoted inside the
+     note that retracts them. Finding 090 supplies the replacements. -->
 > reproducible from the stored data under any tie or gating convention; this
 > table was hand-computed and no script existed to print it. The correct values
 > are −0.62 and −0.68, and `findings/repro/090-profile-grid.py` now emits them.

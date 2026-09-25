@@ -74,6 +74,9 @@ heavy-tailed distribution does not work; the sample misses the expensive cases.
 
 What *did* work was extrapolating the **increment**: the sample's N=25 minus
 N=8 difference, 0.0202 s per case over 3846 cases, predicted **+78 s**. The
+
+<!-- provenance: TIMING 0.022 0.149 0.265 0.0202 -- wall-clock seconds per case. No
+     stored artifact can produce a timing; re-running gives a different number. -->
 measured increment was **+77 s**. The increment extrapolates and the total does
 not, and the reason is exactly the split above — the unsampled heavy tail is
 N-flat, so it cancels in the difference. This is rule 49 caught before

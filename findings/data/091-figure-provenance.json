@@ -1,9 +1,20 @@
 {
  "totals": {
-  "DIRECT": 78,
-  "GLOBAL": 154,
-  "NOWHERE": 31
+  "DIRECT": 82,
+  "GLOBAL": 156,
+  "NOWHERE": 40
  },
+ "categories": {
+  "TIMING": 8,
+  "RETRACTED-QUOTE": 10,
+  "EXTRACTION-ARTIFACT": 7,
+  "HISTORICAL-CORPUS": 1,
+  "DERIVED": 2,
+  "QUOTED": 7,
+  "UNCHECKED": 5,
+  "UNCLASSIFIED": 0
+ },
+ "problems": [],
  "findings": [
   {
    "finding": "001-dateutil-weekly-bysetpos.md",
@@ -147,7 +158,9 @@
     {
      "figure": "0.003",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds."
     },
     {
      "figure": "57/57",
@@ -267,7 +280,9 @@
     {
      "figure": "1696 / 1722",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "HISTORICAL-CORPUS",
+     "reason": "scored against the 1722-case corpus of\n     the day. Today's corpus has 1727 cases and cannot reproduce this; the figure is\n     kept as history, not as a current claim."
     }
    ]
   },
@@ -528,13 +543,14 @@
    "artifacts": [
     "findings/repro/031-output.txt",
     "findings/repro/031-weekly-readings-model.py",
-    "findings/repro/031-sabre-weekly-bymonth.php"
+    "findings/repro/031-sabre-weekly-bymonth.php",
+    "findings/repro/baselines/031.txt"
    ],
-   "figures": 15,
+   "figures": 16,
    "counts": {
-    "DIRECT": 0,
+    "DIRECT": 2,
     "GLOBAL": 11,
-    "NOWHERE": 4
+    "NOWHERE": 3
    },
    "rows": [
     {
@@ -555,7 +571,7 @@
     {
      "figure": "244/244",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "DIRECT"
     },
     {
      "figure": "146 / 146",
@@ -595,7 +611,9 @@
     {
      "figure": "0/163",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "UNCHECKED",
+     "reason": "same blocker as finding 035: a dtical figure\n     needing the Perl sweep that was never retained."
     },
     {
      "figure": "4/4",
@@ -605,25 +623,35 @@
     {
      "figure": "237 / 244",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "superseded values, kept visible\n     above the correction note that replaces them. Nothing on disk produces them any\n     more, and that is the point. See finding 092."
     },
     {
      "figure": "235 / 244",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "superseded values, kept visible\n     above the correction note that replaces them. Nothing on disk produces them any\n     more, and that is the point. See finding 092."
+    },
+    {
+     "figure": "226 / 244",
+     "kind": "frac",
+     "status": "DIRECT"
     }
    ]
   },
   {
    "finding": "032-a-blind-spot-the-corpus-cannot-see.md",
    "artifacts": [
-    "findings/repro/032-truncation-blindspot.py"
+    "findings/repro/032-truncation-blindspot.py",
+    "findings/repro/baselines/032.txt"
    ],
    "figures": 4,
    "counts": {
-    "DIRECT": 0,
+    "DIRECT": 2,
     "GLOBAL": 2,
-    "NOWHERE": 2
+    "NOWHERE": 0
    },
    "rows": [
     {
@@ -639,12 +667,12 @@
     {
      "figure": "629 / 800",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "DIRECT"
     },
     {
      "figure": "800 / 800",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "DIRECT"
     }
    ]
   },
@@ -715,22 +743,30 @@
     {
      "figure": "155 / 158",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "UNCHECKED",
+     "reason": "dtical figures with no\n     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,\n     which was never retained and is excluded on rule-80 runtime grounds. A real\n     debt, named rather than quietly carried."
     },
     {
      "figure": "117 / 118",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "UNCHECKED",
+     "reason": "dtical figures with no\n     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,\n     which was never retained and is excluded on rule-80 runtime grounds. A real\n     debt, named rather than quietly carried."
     },
     {
      "figure": "0 / 158",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "UNCHECKED",
+     "reason": "dtical figures with no\n     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,\n     which was never retained and is excluded on rule-80 runtime grounds. A real\n     debt, named rather than quietly carried."
     },
     {
      "figure": "52 / 118",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "UNCHECKED",
+     "reason": "dtical figures with no\n     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,\n     which was never retained and is excluded on rule-80 runtime grounds. A real\n     debt, named rather than quietly carried."
     }
    ]
   },
@@ -804,7 +840,9 @@
     {
      "figure": "1637 / 13",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "a slice of the 3-tuple score\n     `1637 / 13 / 63`, not a fraction anyone published."
     }
    ]
   },
@@ -1350,22 +1388,30 @@
     {
      "figure": "0.022",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds per case. No\n     stored artifact can produce a timing; re-running gives a different number."
     },
     {
      "figure": "0.149",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds per case. No\n     stored artifact can produce a timing; re-running gives a different number."
     },
     {
      "figure": "0.265",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds per case. No\n     stored artifact can produce a timing; re-running gives a different number."
     },
     {
      "figure": "0.0202",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds per case. No\n     stored artifact can produce a timing; re-running gives a different number."
     }
    ]
   },
@@ -1416,7 +1462,9 @@
     {
      "figure": "0.10",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds. Not reproducible by\n     construction; see finding 062."
     },
     {
      "figure": "0.53",
@@ -1431,12 +1479,16 @@
     {
      "figure": "0.01",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds. Not reproducible by\n     construction; see finding 062."
     },
     {
      "figure": "0.022",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "TIMING",
+     "reason": "wall-clock seconds. Not reproducible by\n     construction; see finding 062."
     },
     {
      "figure": "0.212",
@@ -1780,7 +1832,9 @@
     {
      "figure": "1659/1658",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "a slice of `1659/1658/1658`, not a\n     published fraction."
     }
    ]
   },
@@ -1843,22 +1897,30 @@
     {
      "figure": "1164 / 370",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "not published\n     fractions. These are slices the figure extractor cut out of the 4-tuple\n     pass/fail/error/other score lines on this page. There is no claim here to back."
     },
     {
      "figure": "69 / 124",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "not published\n     fractions. These are slices the figure extractor cut out of the 4-tuple\n     pass/fail/error/other score lines on this page. There is no claim here to back."
     },
     {
      "figure": "1163 / 368",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "not published\n     fractions. These are slices the figure extractor cut out of the 4-tuple\n     pass/fail/error/other score lines on this page. There is no claim here to back."
     },
     {
      "figure": "69 / 127",
      "kind": "frac",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "not published\n     fractions. These are slices the figure extractor cut out of the 4-tuple\n     pass/fail/error/other score lines on this page. There is no claim here to back."
     }
    ]
   },
@@ -2104,7 +2166,9 @@
     {
      "figure": "83%",
      "kind": "pct",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "DERIVED",
+     "reason": "stated with its own numerator and denominator on the\n     same line; 148/178 = 83%. The audit recomputes it rather than taking it."
     },
     {
      "figure": "74%",
@@ -2242,7 +2306,9 @@
     {
      "figure": "-0.80",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "a quotation of superseded wording, kept so\n     the correction is legible."
     },
     {
      "figure": "0 / 0",
@@ -2524,12 +2590,16 @@
     {
      "figure": "-0.70",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "superseded values, quoted inside the\n     note that retracts them. Finding 090 supplies the replacements."
     },
     {
      "figure": "-0.80",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "superseded values, quoted inside the\n     note that retracts them. Finding 090 supplies the replacements."
     },
     {
      "figure": "-0.19",
@@ -2547,7 +2617,8 @@
    "finding": "090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md",
    "artifacts": [
     "findings/data/090-profile-grid.json",
-    "findings/repro/090-profile-grid.py"
+    "findings/repro/090-profile-grid.py",
+    "findings/repro/baselines/090.txt"
    ],
    "figures": 13,
    "counts": {
@@ -2584,7 +2655,9 @@
     {
      "figure": "-0.80",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "the left-hand column of the\n     correction table: the values being withdrawn, not asserted."
     },
     {
      "figure": "-0.68",
@@ -2594,7 +2667,9 @@
     {
      "figure": "-0.70",
      "kind": "dec",
-     "status": "NOWHERE"
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "the left-hand column of the\n     correction table: the values being withdrawn, not asserted."
     },
     {
      "figure": "-0.62",
@@ -2620,6 +2695,131 @@
      "figure": "-0.19",
      "kind": "dec",
      "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "092-a-reproduce-command-expires.md",
+   "artifacts": [],
+   "figures": 5,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 3
+   },
+   "rows": [
+    {
+     "figure": "83%",
+     "kind": "pct",
+     "status": "NOWHERE",
+     "category": "DERIVED",
+     "reason": "quoted from finding 087 with its numerator and\n     denominator intact; 148/178 = 83%."
+    },
+    {
+     "figure": "244 / 244",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "237 / 244",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "the published column of the\n     before/after table: exactly the values this finding withdraws."
+    },
+    {
+     "figure": "226 / 244",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "235 / 244",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "the published column of the\n     before/after table: exactly the values this finding withdraws."
+    }
+   ]
+  },
+  {
+   "finding": "093-thirty-one-was-never-thirty-one-errors.md",
+   "artifacts": [],
+   "figures": 9,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 9
+   },
+   "rows": [
+    {
+     "figure": "83%",
+     "kind": "pct",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "087"
+    },
+    {
+     "figure": "0.022",
+     "kind": "dec",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "062"
+    },
+    {
+     "figure": "0.149",
+     "kind": "dec",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "062"
+    },
+    {
+     "figure": "1637 / 13",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "038"
+    },
+    {
+     "figure": "1696 / 1722",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "015"
+    },
+    {
+     "figure": "0/163",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "031"
+    },
+    {
+     "figure": "148/178",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "RETRACTED-QUOTE",
+     "reason": "the form I wrote and withdrew, quoted above so the check that caught it is legible. 087 publishes `(148 of 178)`, not this fraction."
+    },
+    {
+     "figure": "237 / 244",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "QUOTED",
+     "reason": "figures quoted from the findings they belong to, each of which carries its own provenance declaration there. Checked: the audit confirms the source finding still publishes the figure.",
+     "source": "031"
+    },
+    {
+     "figure": "82 / 156",
+     "kind": "frac",
+     "status": "NOWHERE",
+     "category": "EXTRACTION-ARTIFACT",
+     "reason": "a slice of this audit's own summary line `82 DIRECT / 156 GLOBAL`, not a fraction."
     }
    ]
   }

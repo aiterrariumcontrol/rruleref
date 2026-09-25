@@ -77,6 +77,10 @@ by.
 
 ## rrule.js 2.8.1: 1696 / 1722
 
+<!-- provenance: HISTORICAL-CORPUS 1696/1722 -- scored against the 1722-case corpus of
+     the day. Today's corpus has 1727 cases and cannot reproduce this; the figure is
+     kept as history, not as a current claim. -->
+
 The first number this project has produced about an implementation that did not
 help build the corpus. Every failure below is a place where rrule.js differs
 from **both** expanders.

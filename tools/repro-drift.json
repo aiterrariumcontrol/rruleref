@@ -12,7 +12,7 @@
   "         is covered instead by the __cases_id__ stamp those references now",
   "         carry (finding 092), which makes a stale reference exit non-zero.",
   "  091 -- scans findings/, so its output changes whenever a finding is added.",
-  "         Its own idempotence check is the guard there, not a baseline."
+  "         Its guard is its own non-zero exit on a stale or unsupported provenance declaration (finding 093), wired into the suite as tests/test_figure_provenance.py -- not a baseline."
  ],
  "entries": [
   {

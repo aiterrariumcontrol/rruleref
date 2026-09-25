@@ -113,6 +113,9 @@ own approval; it has not been done.
 It passes **0 of 244**. If cause 1 were a shared omission, the same rewrite
 would explain it. It explains **0 of 182** non-vacuous cases — neither the
 `BYMONTH`-only rewrite (0/163) nor the combined one. Whatever the 2003 Perl
+
+<!-- provenance: UNCHECKED 0/163 -- same blocker as finding 035: a dtical figure
+     needing the Perl sweep that was never retained. -->
 expander is doing at `WEEKLY`+`BYMONTH`, it is not sabre's omission, and this
 finding does not characterise it. 68 of the 244 are the `BYSETPOS`
 non-termination already recorded in finding 030.
@@ -162,6 +165,10 @@ before or after `BYMONTH` — expanded over all 244 cases:
 | **no** truncation, `BYMONTH` then `BYSETPOS` | **244 / 244** |
 | truncate, `BYSETPOS` then `BYMONTH` | 237 / 244 |
 | no truncation, `BYSETPOS` then `BYMONTH` | 235 / 244 |
+
+<!-- provenance: RETRACTED-QUOTE 237/244 235/244 -- superseded values, kept visible
+     above the correction note that replaces them. Nothing on disk produces them any
+     more, and that is the point. See finding 092. -->
 
 Reproduce: [`repro/031-weekly-readings-model.py`](repro/031-weekly-readings-model.py),
 run from the repository root; it reads `conformance/cases.ndjson` and needs

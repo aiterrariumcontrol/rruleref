@@ -104,6 +104,8 @@ Candidates are produced in increasing time order, so a period that has been
 left is complete, and `COUNT`/`limit` can terminate the walk. Same rule now
 returns in 0.003 s.
 
+<!-- provenance: TIMING 0.003 -- wall-clock seconds. -->
+
 **The rewrite changes no answer.** All 2,541 pre-existing corroborated cases
 were re-expanded under the new code and reproduced exactly, zero regressions,
 before the corpus was rebuilt. The full test suite (`test_byweekno`,

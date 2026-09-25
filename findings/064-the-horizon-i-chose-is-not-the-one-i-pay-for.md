@@ -90,6 +90,9 @@ half across all **3820** cases:
 | `count` | 3370 | 0.53 s |
 | `horizon`, non-empty | 67 | 0.08 s |
 | `complete` | 98 | 0.01 s |
+
+<!-- provenance: TIMING 0.10 0.01 0.022 -- wall-clock seconds. Not reproducible by
+     construction; see finding 062. -->
 | **total** | **3820** | **140.00 s** |
 
 **7.5% of the cases are 99.5% of the cost**, and what they are buying is the

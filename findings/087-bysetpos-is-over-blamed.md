@@ -84,6 +84,9 @@ The number is not the interesting part. The **split by implementation** is, and 
 runs in both directions:
 
 * `sabre/vobject` is **83% upstream** (148 of 178). Its `BYSETPOS` implementation
+
+<!-- provenance: DERIVED 83% -- stated with its own numerator and denominator on the
+     same line; 148/178 = 83%. The audit recomputes it rather than taking it. -->
   is largely fine and its candidate sets are not. All 49 of its sub-daily and
   `DAILY` failures are upstream without exception.
 * `ical4j` is **74% upstream** (26 of 35) — 037's mechanism, as 039 suspected.

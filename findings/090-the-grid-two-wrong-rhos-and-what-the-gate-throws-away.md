@@ -14,6 +14,9 @@ entries are wrong:
 | pair | 089 published | correct |
 |---|---|---|
 | `ical4j` 4.1.1 vs `sabre` | −0.80 | **−0.68** |
+
+<!-- provenance: RETRACTED-QUOTE -0.80 -0.70 -- the left-hand column of the
+     correction table: the values being withdrawn, not asserted. -->
 | `ical4j` 4.3.0 vs `sabre` | −0.70 | **−0.62** |
 
 The other three (+0.80, +0.40, 0.00) reproduce exactly. I could not recover

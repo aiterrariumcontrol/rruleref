@@ -6,6 +6,9 @@
 > Sweeping three further parts shows the per-part profile does not transfer
 > between implementations (cross-lineage Spearman +0.40 to −0.68). *The
 > parenthesis first read "0.00 to −0.80; the only positive pair is `ical4j`
+
+<!-- provenance: RETRACTED-QUOTE -0.80 -- a quotation of superseded wording, kept so
+     the correction is legible. -->
 > 4.1.1 vs 4.3.0, the same codebase". Both halves were wrong: the endpoints were
 > the two values [090](090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md)
 > found unreproducible, and `ical4j` 4.1.1 vs `ical.js` is cross-lineage and
