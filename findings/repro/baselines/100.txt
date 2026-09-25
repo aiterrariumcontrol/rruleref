@@ -1,0 +1,135 @@
+100 -- ical.js, FREQ=MONTHLY with BOTH BYMONTHDAY and BYDAY
+corpus 7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b   adapter timeout 45000 ms
+sabre is excluded from unanimity counts for its known unconditional DTSTART (finding 024); rrule.js and dateutil are ONE vote (rule 24).
+
+== S1 -- a thrown error whose message names BYDAY, decided by two month lengths
+
+  S1-mar    20260315  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1;BYDAY=SU
+    March DTSTART: anchored into 28-day February, lands on a 31-day month -> REJECTED
+      icaljs     REJECTED: Malformed values in BYDAY part
+      dateutil   20281231 20290930 20300331
+      sabre      20260315 20281231 20290930
+      dmfs       20281231 20290930 20300331
+      ical4j411  20281231 20290930 20300331
+      ical4j430  20281231 20290930 20300331
+
+  S1-int1   20260315  FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=SU
+    INTERVAL=1 does NOT hide S1: still REJECTED. S1 reaches the commonest rule shape
+      icaljs     REJECTED: Malformed values in BYDAY part
+      dateutil   20260531 20270131 20270228
+      sabre      20260315 20260531 20270131
+      dmfs       20260531 20270131 20270228
+      ical4j411  20260531 20270131 20270228
+      ical4j430  20260531 20270131 20270228
+
+  S1-md5    20260315  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-5;BYDAY=SU
+    -5 also anchors into February, but lands on a day <= 28 -> accepted, and WRONG PHASE
+      icaljs     20280827 20281126 20290527
+      dateutil   20261227 20270926 20320926
+      sabre      20260315 20261227 20270926
+      dmfs       20261227 20270926 20320926
+      ical4j411  20261227 20270926 20320926
+      ical4j430  20261227 20270926 20320926
+
+  S1-two    20260315  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,5;BYDAY=SU
+    a second, positive value does not help: only the FIRST listed value is read -> REJECTED
+      icaljs     REJECTED: Malformed values in BYDAY part
+      dateutil   20270905 20271205 20280305
+      sabre      20260315 20270905 20271205
+      dmfs       20270905 20271205 20280305
+      ical4j411  20270905 20271205 20280305
+      ical4j430  20270905 20271205 20280305
+
+== S2 -- the month lattice is on the wrong INTERVAL phase
+  'phase' = month offsets from DTSTART's month, mod INTERVAL. Correct is [0].
+
+  S2-jan    20260131  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1;BYDAY=SA
+    corpus case e1b4925a5263's shape. Accepted, and every month offset is 2 mod 3
+      icaljs     phase [2]      20280930 20290331 20290630 20331231
+      dateutil   phase [0]      20260131 20261031 20270731 20320131
+
+  S2-int2   20260131  FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-1;BYDAY=SA
+    INTERVAL=2: offsets 1 mod 2, and DTSTART 2026-01-31 -- itself a valid match -- is DROPPED
+      icaljs     phase [1]      20260228 20261031 20290630 20300831
+      dateutil   phase [0]      20260131 20270731 20280930 20290331
+
+  S2-md31   20260315  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-31;BYDAY=SU
+    |value| > March's length borrows TWO months back to January -> offsets 1 mod 3, not 2
+      icaljs     phase [1]      20281001 20290701 20340101 20341001
+      dateutil   phase [0]      20301201 20370301 20411201 20430301
+
+== controls. Any failure here refutes the characterisation.
+
+  C-pos         20260131  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=31;BYDAY=SA
+    SAME MEANING for January, positive spelling -> correct phase. The SIGN is load-bearing
+      icaljs     phase [0]      20260131 20261031 20270731 20320131
+      dateutil   phase [0]      20260131 20261031 20270731 20320131
+
+  C-order       20260131  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=15,-1;BYDAY=SA
+    SAME SET as S2-jan's superset, positive FIRST -> correct. Only setup_defaults' [0] is read
+      icaljs     phase [0]      20260131 20261031 20270731 20280115
+      dateutil   phase [0]      20260131 20261031 20270731 20280115
+
+  C-nobyday     20260131  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1
+    099's C-monthly, reproduced: WITHOUT BYDAY the same parts are CORRECT. BYDAY is the difference
+      icaljs     phase [0]      20260131 20260430 20260731 20261031
+      dateutil   phase [0]      20260131 20260430 20260731 20261031
+
+  C-nomonthday  20260131  FREQ=MONTHLY;INTERVAL=3;BYDAY=-1SA
+    WITHOUT BYMONTHDAY a negative ordinal BYDAY is correct: not about negatives in general
+      icaljs     phase [0]      20260131 20260425 20260725 20261031
+      dateutil   phase [0]      20260131 20260425 20260725 20261031
+
+  C-int1pos     20260315  FREQ=MONTHLY;BYMONTHDAY=31;BYDAY=SU
+    S1-int1 with a positive spelling -> accepted. The rejection is not about INTERVAL=1
+      icaljs     phase [0]      20260531 20270131 20271031
+      dateutil   phase [0]      20260531 20270131 20271031
+
+  C-jun         20260615  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1;BYDAY=SU
+    June DTSTART: anchored into 31-day May, so no month is longer -> accepted (wrong phase only)
+      icaljs     phase [2]      20270228 20310831 20311130
+      dateutil   phase [0]      20281231 20290930 20300331
+
+== S1's grid: 12 DTSTART months x 7 weekdays, BYMONTHDAY=-1, INTERVAL=3
+  Predicted from the anchor month's length vs the landing month's length ALONE.
+  R = ical.js rejects, . = accepted;  ! marks a prediction that missed.
+        SU   MO   TU   WE   TH   FR   SA 
+  01/31 .    .    .    .    .    .    .     (anchored in 2025-12, 31 days)
+  02/28 .    .    .    .    .    .    .     (anchored in 2026-01, 31 days)
+  03/31 R    R    R    R    R    R    .     (anchored in 2026-02, 28 days)
+  04/30 .    .    .    .    .    .    .     (anchored in 2026-03, 31 days)
+  05/31 R    R    R    R    .    R    R     (anchored in 2026-04, 30 days)
+  06/30 .    .    .    .    .    .    .     (anchored in 2026-05, 31 days)
+  07/31 R    R    .    .    R    R    .     (anchored in 2026-06, 30 days)
+  08/31 .    .    .    .    .    .    .     (anchored in 2026-07, 31 days)
+  09/30 .    .    .    .    .    .    .     (anchored in 2026-08, 31 days)
+  10/31 R    R    R    .    R    R    .     (anchored in 2026-09, 30 days)
+  11/30 .    .    .    .    .    .    .     (anchored in 2026-10, 31 days)
+  12/31 .    .    R    R    R    R    R     (anchored in 2026-11, 30 days)
+
+  rejection predicted correctly on 84 of 84 grid cells; missed 0 
+  and on the accepted cells the FIRST OCCURRENCE is predicted exactly on 46, missed 12
+  ical.js rejects 26 of 84; the reference rejects 0.
+
+== the corpus cases this finding claims
+  f3787d3b735b 20260429  FREQ=MONTHLY;BYMONTHDAY=-1,-2;BYDAY=WE;WKST=SU             iv=1  shift=-1  icaljs phase [0]    ref phase [0]    AGREE
+  a7cd948df256 20270331  FREQ=MONTHLY;BYMONTHDAY=-1,30;BYDAY=WE                     iv=1  shift=-1  icaljs phase None   ref phase [0]    differs
+  e62c8a71a032 20260331  FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=MO,TU                     iv=1  shift=-1  icaljs phase None   ref phase [0]    differs
+  9c4f012b2d56 20240831  FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=SA                        iv=1  shift=-1  icaljs phase [0]    ref phase [0]    AGREE
+  4c7b07c2449b 20260330  FREQ=MONTHLY;BYMONTHDAY=-2,30;BYDAY=MO                     iv=1  shift=-1  icaljs phase None   ref phase [0]    differs
+  57fccd077995 20260127  FREQ=MONTHLY;BYMONTHDAY=-5,30;BYDAY=MO,SU,TU               iv=1  shift=-1  icaljs phase [0]    ref phase [0]    AGREE
+  dbcc890f1c1d 20260727  FREQ=MONTHLY;BYMONTHDAY=-5;BYDAY=MO;WKST=SU                iv=1  shift=-1  icaljs phase [0]    ref phase [0]    AGREE
+  30437d29f489 20260930  FREQ=MONTHLY;INTERVAL=2;BYDAY=WE;BYMONTHDAY=-2,-1          iv=2  shift=-1  icaljs phase [1]    ref phase [0]    differs
+  8199cbc01433 20260315  FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-1,15;BYDAY=SU,TU       iv=2  shift=-1  icaljs phase [1]    ref phase [0]    differs
+  f3522c17f441 20260331  FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,-1;BYDAY=SA,TH,TU    iv=2  shift=-1  icaljs phase [1]    ref phase [0]    differs
+  6abbfd68562e 20270227  FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,31;BYDAY=SA,SU;WKST=SU iv=2  shift=-1  icaljs phase [1]    ref phase [0]    differs
+  e1b4925a5263 20260131  FREQ=MONTHLY;INTERVAL=3;BYDAY=-1SA,2SU;BYMONTHDAY=-1       iv=3  shift=-1  icaljs phase [2]    ref phase [0]    differs
+  af0275ff7b50 20270331  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,15;BYDAY=WE          iv=3  shift=-1  icaljs phase None   ref phase [0]    differs
+  111d7647f8a8 20260531  FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,5;BYDAY=SU           iv=3  shift=-1  icaljs phase [2]    ref phase [0]    differs
+  be630fe23f8c 20250228  FREQ=MONTHLY;INTERVAL=4;BYMONTHDAY=-5,-1;BYDAY=FR,SA,TU    iv=4  shift=-1  icaljs phase [3]    ref phase [0]    differs
+
+  in-scope corpus cases: 15 of 1727   agree with reference: 4, differ: 11
+  where INTERVAL > 1, the predicted phase -shift mod INTERVAL is exact on 7, missed 0
+
+-- against 074's unattributed residual
+  in scope and unattributed: 3  111d7647f8a8 be630fe23f8c e1b4925a5263

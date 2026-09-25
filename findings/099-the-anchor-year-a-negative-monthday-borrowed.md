@@ -28,6 +28,7 @@ Every one carries a **negative `BYMONTHDAY`**, which no amount of reasoning
 about "wrong from the first element" would have suggested. The two `FREQ=YEARLY`
 cases turned out to be the tractable half and are what this finding is about;
 the three `MONTHLY` ones are a different question and are **not** claimed here.
+*(Pointer added 2026-09-25: they are claimed by [100](100-the-month-that-was-never-there.md), and by the same `setup_defaults()` `[0]` raw return on a third branch. Nothing in this finding changes — in particular the `C-monthly` control below is correct as written. It constrains `FREQ=MONTHLY` with `BYMONTHDAY` and **no** `BYDAY`; 100's cases carry both parts.)*
 
 ## N — the defect: the anchor year is read after a raw negative day is written into it
 
