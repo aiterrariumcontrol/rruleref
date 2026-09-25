@@ -46,6 +46,14 @@
    ],
    "baseline": "090.txt",
    "finding": "090"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/095-ical4j-bymonthday-residual.py"
+   ],
+   "baseline": "095.txt",
+   "finding": "095"
   }
  ]
 }

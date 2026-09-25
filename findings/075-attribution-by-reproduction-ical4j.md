@@ -176,6 +176,19 @@ of that family. The rest do something the model does not capture, and they are
 recorded as unexplained rather than folded into the nearest bucket. That is the
 point: 204 are worth believing *because* 26 are not claimed.
 
+> **Correction, 2026-09-25 ([095](095-a-residual-that-was-not-a-defect-target.md)).**
+> This count is now **25**. One of the 26, `9e1f525849c4`
+> (`FREQ=MONTHLY;BYMONTHDAY=30,-1;BYMONTH=4,12;BYSETPOS=2`), is **defect A**
+> above. April has 30 days, so `BYMONTHDAY=30` and `BYMONTHDAY=-1` name the same
+> day; removing `BYSETPOS` from the rule makes `ical4j` emit 30 April twice, and
+> `BYSETPOS=1` and `BYSETPOS=2` both select it. The duplicate is real and
+> `BYSETPOS` consumes it before it can reach the output. **The method here could
+> not have found this**, and that is the reason worth recording rather than the
+> count: this finding's classifier replays a mechanism and requires
+> element-for-element equality with the output, so a mechanism whose only
+> evidence is an element that a later step removes is invisible to it. The other
+> 25 are unaffected, and the remaining figures on this page are unchanged.
+
 `FREQ=YEARLY;BYWEEKNO` with a negative week number is also unexplained here. It
 looks like the locale's week numbering rather than ISO 8601's — the same root
 as 036 — but "looks like" is exactly what rule 81 forbids, and no predictor

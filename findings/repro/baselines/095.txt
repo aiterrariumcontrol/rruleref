@@ -1,0 +1,19 @@
+ical4j BYMONTHDAY residual after 4.3.0's negative-value repair
+  measured at JVM locale en-US, TZ=UTC, each case at its own corpus limit
+
+  stratum accompanied  residual 26
+  stratum alone        residual 2
+
+  mechanism split of the 28 residual cases:
+    051A-no-deduplication         9
+    051B-ordinal-byday-empty     14
+    075C-chained-expansion        5
+    cases matching >1 mechanism   0
+
+  cross-check against 075's independent attribution:
+    agree 27 / 28   absent from 075 0
+    DIFFER 9e1f525849c4  here=051A-no-deduplication  075=unexplained
+
+  BYMONTHDAY + BYDAY at FREQ=MONTHLY/YEARLY, whole corpus:
+    ical4j411  ordinal BYDAY: 14 empty / 0 non-empty   plain BYDAY: 0 empty / 49 non-empty
+    ical4j430  ordinal BYDAY: 14 empty / 0 non-empty   plain BYDAY: 0 empty / 49 non-empty
