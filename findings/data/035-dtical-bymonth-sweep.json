@@ -1,0 +1,66 @@
+{
+ "bysetpos": "excluded (finding 030)",
+ "control_reproduces": {
+  "monthly": "52/118",
+  "weekly": "0/156"
+ },
+ "historical_n8": {
+  "control_reproduces": {
+   "monthly": "52/118",
+   "weekly": "0/158"
+  },
+  "monthly": {
+   "cases": 127,
+   "control": 52,
+   "die822": 9,
+   "other_error": 0,
+   "output": 118,
+   "passes": 52,
+   "pinned": 117
+  },
+  "pinned_reproduces": {
+   "monthly": "117/118",
+   "weekly": "155/158"
+  },
+  "weekly": {
+   "cases": 205,
+   "control": 0,
+   "die822": 47,
+   "other_error": 0,
+   "output": 158,
+   "passes": 0,
+   "pinned": 155
+  },
+  "why": "finding 035's published figures; the corpus limit was 8 until commit 5d6745e raised it to 25 on 2026-09-20"
+ },
+ "library": "DateTime::Event::ICal 0.13",
+ "limit": "each case's own limit field, as conformance/score.py",
+ "monthly": {
+  "cases": 127,
+  "control": 52,
+  "die822": 9,
+  "other_error": 0,
+  "output": 118,
+  "passes": 52,
+  "pinned": 117
+ },
+ "pinned_reproduces": {
+  "monthly": "117/118",
+  "weekly": "153/156"
+ },
+ "unexplained_ids": [
+  "27747e18123b",
+  "3a19ffd3a74c",
+  "bd77bd7e6d16",
+  "d528d85d7297"
+ ],
+ "weekly": {
+  "cases": 205,
+  "control": 0,
+  "die822": 49,
+  "other_error": 0,
+  "output": 156,
+  "passes": 0,
+  "pinned": 153
+ }
+}

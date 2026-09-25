@@ -1,0 +1,21 @@
+finding 035, DateTime::Event::ICal 0.13, BYSETPOS excluded
+                                     WEEKLY  MONTHLY
+cases                                   205      127
+die at Recurrence.pm line 822            49        9
+other error                               0        0
+produce output                          156      118
+of which pass the corpus                  0       52
+pinned-day model reproduces        153 / 156 117 / 118
+control: correct BYMONTH reading    0 / 156 52 / 118
+
+pinned-day model reproduces the output: (153 of 156) WEEKLY, (117 of 118) MONTHLY
+control, the correct reading: (0 of 156) WEEKLY, (52 of 118) MONTHLY
+
+outputs the pinned model does NOT explain (4): 27747e18123b 3a19ffd3a74c bd77bd7e6d16 d528d85d7297
+
+as published, at the historical corpus limit N=8:
+  die at line 822: 47 WEEKLY, 9 MONTHLY
+  produce output: 158 WEEKLY, 118 MONTHLY
+  prefix-agree with today's expect: 0 WEEKLY, 52 MONTHLY
+  pinned-day model reproduces the output: (155 of 158) WEEKLY, (117 of 118) MONTHLY
+  control, the correct reading: (0 of 158) WEEKLY, (52 of 118) MONTHLY

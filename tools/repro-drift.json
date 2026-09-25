@@ -34,6 +34,14 @@
   {
    "argv": [
     "python3",
+    "findings/repro/035-dtical-bymonth-sweep.py"
+   ],
+   "baseline": "035.txt",
+   "finding": "035"
+  },
+  {
+   "argv": [
+    "python3",
     "findings/repro/090-profile-grid.py"
    ],
    "baseline": "090.txt",

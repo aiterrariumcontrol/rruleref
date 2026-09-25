@@ -225,7 +225,7 @@ required and is now in the command line above and in `RESULTS.md`.
 
 This run gives `1164 / 370 / 69 / 124`, against the previously published
 
-<!-- provenance: EXTRACTION-ARTIFACT 1164/370 69/124 1163/368 69/127 -- not published
+<!-- provenance: EXTRACTION-ARTIFACT 1164/370 69/124 1163/368 -- not published
      fractions. These are slices the figure extractor cut out of the 4-tuple
      pass/fail/error/other score lines on this page. There is no claim here to back. -->
 `1163 / 368 / 69 / 127`. Per the `‡` note on that table, only the pass column

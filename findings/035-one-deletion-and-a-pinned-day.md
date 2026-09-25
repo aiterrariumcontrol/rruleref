@@ -36,21 +36,52 @@ rule, expand the remainder, then keep the occurrences whose month is in
 `BYMONTH` *and* whose day-of-month equals `DTSTART`'s. The stripped rule was
 expanded by **python-dateutil and `dmfs lib-recur` independently** — two
 different lineages — and every one of the 332 cases was checked for agreement
-between them before being counted. All 332 agreed.
+between them before being counted. **All 332 agreed: zero value conflicts.** Two
+caveats found when this was re-run on 2026-09-25, neither of which changes a
+figure. `dmfs lib-recur` stops at a horizon near year 2325, so for 32 of the 332
+cases its agreement covers only part of the depth the model needs — a median 74%
+of the pinned occurrences, never less than 40%, and it contradicts python-dateutil
+nowhere. And the agreement is checked on the *stripped* rule, which is the only
+part dmfs is used for; the pin itself is arithmetic, not a library's opinion.
 
 | | `WEEKLY`+`BYMONTH` | `MONTHLY`+`BYMONTH` |
 | --- | ---: | ---: |
 | cases | 205 | 127 |
-| die at `Recurrence.pm` line 822 | 47 | 9 |
-| produce output | 158 | 118 |
+| die at `Recurrence.pm` line 822 | 49 | 9 |
+| produce output | 156 | 118 |
 | of which **pass** the corpus | **0** | 52 |
-| **pinned-day model reproduces the output** | **155 / 158** | **117 / 118** |
-| control: the *correct* `BYMONTH` reading reproduces it | **0 / 158** | 52 / 118 |
+| **pinned-day model reproduces the output** | **153 / 156** | **117 / 118** |
+| control: the *correct* `BYMONTH` reading reproduces it | **0 / 156** | 52 / 118 |
 
-<!-- provenance: UNCHECKED 155/158 117/118 0/158 52/118 -- dtical figures with no
-     stored producer; re-deriving them needs the Perl DateTime::Event::ICal sweep,
-     which was never retained and is excluded on rule-80 runtime grounds. A real
-     debt, named rather than quietly carried. -->
+Reproduce:
+[`repro/035-dtical-bymonth-sweep.py`](repro/035-dtical-bymonth-sweep.py), which
+re-derives every figure above from the library's stored raw answers in
+[`data/035-dtical-raw.ndjson`](data/035-dtical-raw.ndjson). The Perl sweep costs
+about 13 minutes, which is why the answers are committed rather than recomputed;
+`--run-dtical` regenerates them.
+
+### Correction, 2026-09-25: two of these figures had moved
+
+**As published on 2026-09-13 this table read 47 deaths, 158 producing output,
+155 / 158 for the pinned model and 0 / 158 for the control.** Those figures were
+correct when written. They stopped being correct on 2026-09-20, when commit
+`5d6745e` applied [finding 065](065-choosing-both-numbers-at-once.md)'s
+decision and raised the corpus occurrence limit `N` from 8 to 25 — and nothing
+re-ran this sweep, because no sweep had been retained to re-run.
+
+Two `WEEKLY` cases moved from *produce output* to *die*, and both were cases the
+pinned model explained, which is why three figures shifted by exactly two and the
+control's `0` did not move at all. The cause is not a change in the library: the
+line-822 death is **retry exhaustion inside an iteration search**, so whether a
+case dies depends on how many occurrences you ask it for. Asking for 25 kills two
+cases that survive being asked for 8. See
+[finding 094](094-a-crash-count-is-a-property-of-the-question.md).
+
+The old figures are not merely quoted here; the sweep at `N=8` is retained in
+[`data/035-dtical-raw-n8.ndjson`](data/035-dtical-raw-n8.ndjson) and the repro
+script re-derives them alongside the current ones, so this correction notice is
+checked rather than asserted.
+
 
 The control is the point. At `WEEKLY` the correct reading explains **nothing**;
 the pinned model explains 98%. At `MONTHLY` the 52 the control explains are

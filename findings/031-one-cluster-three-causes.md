@@ -44,6 +44,12 @@ all. The common appearance was an artifact of aggregation.
 | `sabre/vobject` 4.6.1 | E | 62 | 182 | 0 |
 | `DateTime::Event::ICal` 0.13 | F | **0** | 176 | 68 |
 
+The `DateTime::Event::ICal` row's 176 and 68 were measured at corpus limit
+`N`=8. The same sweep at today's `N`=25 gives **172** producing output and **72**
+dying: that library's crash is retry exhaustion and depends on how deep it is
+asked to go ([finding 094](094-a-crash-count-is-a-property-of-the-question.md)).
+The row's point — `0` passes — is unaffected.
+
 **Three** lineages pass every case, including the strongest independent C
 implementation. The failures are not distributed like a contested
 reading; they are concentrated in two weak implementations plus a small
@@ -114,8 +120,13 @@ It passes **0 of 244**. If cause 1 were a shared omission, the same rewrite
 would explain it. It explains **0 of 182** non-vacuous cases — neither the
 `BYMONTH`-only rewrite (0/163) nor the combined one. Whatever the 2003 Perl
 
-<!-- provenance: UNCHECKED 0/163 -- same blocker as finding 035: a dtical figure
-     needing the Perl sweep that was never retained. -->
+<!-- provenance: UNCHECKED 0/163 -- the blocker is NO LONGER the missing sweep.
+     The Perl sweep exists now (repro/035-dtical-bymonth-sweep.py, finding 094).
+     What cannot be re-derived is the DENOMINATOR: "non-vacuous" is defined above
+     as "the rewrite actually changes the answer", and under that definition all
+     244 cases are non-vacuous, not 163. So 163 counts something this finding does
+     not say. The numerator is robust -- the rewrite explains 0 of dtical's outputs
+     under every reading tried. Re-deriving 163 needs a definition, not a sweep. -->
 expander is doing at `WEEKLY`+`BYMONTH`, it is not sabre's omission, and this
 finding does not characterise it. 68 of the 244 are the `BYSETPOS`
 non-termination already recorded in finding 030.

@@ -139,8 +139,6 @@ same way a reproduce command does. Corrected.
 
 <!-- provenance: RETRACTED-QUOTE 148/178 -- the form I wrote and withdrew, quoted above so the check that caught it is legible. 087 publishes `(148 of 178)`, not this fraction. -->
 
-<!-- provenance: EXTRACTION-ARTIFACT 82/156 -- a slice of this audit's own summary line `82 DIRECT / 156 GLOBAL`, not a fraction. -->
-
 ## What did not change
 
 No corpus case was touched. `cases_id` and `corpus_id` are unchanged, no score
