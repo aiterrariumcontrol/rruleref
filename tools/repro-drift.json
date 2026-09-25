@@ -1,0 +1,43 @@
+{
+ "baselined_at_cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "comment": [
+  "Fast, self-contained, deterministic, READ-ONLY reproduce commands only.",
+  "Deliberately excluded, with the reason:",
+  "  024 -- needs four adapters captured first, and libical does not build here.",
+  "  046 -- runs the Perl adapter; killed at a 400s deadline, and its timeout",
+  "         column is a property of the machine by its own admission.",
+  "  087 -- --run <adapter>; a full scoring pass, ~3 min per adapter.",
+  "  088 -- its only adapter-free mode is --reference, which WRITES a tracked",
+  "         data file. A drift check must not have side effects. Staleness there",
+  "         is covered instead by the __cases_id__ stamp those references now",
+  "         carry (finding 092), which makes a stale reference exit non-zero.",
+  "  091 -- scans findings/, so its output changes whenever a finding is added.",
+  "         Its own idempotence check is the guard there, not a baseline."
+ ],
+ "entries": [
+  {
+   "argv": [
+    "python3",
+    "findings/repro/031-weekly-readings-model.py"
+   ],
+   "baseline": "031.txt",
+   "finding": "031"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/032-truncation-blindspot.py"
+   ],
+   "baseline": "032.txt",
+   "finding": "032"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/090-profile-grid.py"
+   ],
+   "baseline": "090.txt",
+   "finding": "090"
+  }
+ ]
+}

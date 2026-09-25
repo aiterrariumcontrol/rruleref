@@ -167,6 +167,32 @@ Reproduce: [`repro/031-weekly-readings-model.py`](repro/031-weekly-readings-mode
 run from the repository root; it reads `conformance/cases.ndjson` and needs
 nothing else.
 
+> **Corrected 2026-09-25 by [finding 092](092-a-reproduce-command-expires.md).
+> The two `BYSETPOS`-first rows above are stale, and the sentence below them
+> understates the corpus by a factor of 2.6.** The script still runs and still
+> exits 0; the corpus moved underneath it. Commit `5d6745e` raised the corpus
+> occurrence count from N=8 to N=25 and the far horizon from 10958 to 109500
+> days, per [finding 065](065-choosing-both-numbers-at-once.md). Longer expansions give
+> the ordering variable more chances to bite. On today's `cases.ndjson` the same
+> script prints:
+>
+> | model | agrees with corpus |
+> | --- | ---: |
+> | truncate, `BYMONTH` then `BYSETPOS` | 244 / 244 |
+> | **no** truncation, `BYMONTH` then `BYSETPOS` | **244 / 244** |
+> | truncate, `BYSETPOS` then `BYMONTH` | **226 / 244** |
+> | no truncation, `BYSETPOS` then `BYMONTH` | **226 / 244** |
+>
+> and **18** discriminating cases, not 7. Checked both ways: the pre-`5d6745e`
+> corpus, reconstructed from git, reproduces the published table exactly, so the
+> published numbers were right when written and the drift is entirely the
+> corpus. Two things to read off the correction. The truncation rows did not
+> move — **zero** still discriminate first-period truncation, and that was and
+> is this section's load-bearing claim. And the ordering rows moved *toward*
+> coverage: the corpus is less blind to the `BYSETPOS`/`BYMONTH` ordering than
+> published, not more. The conclusion below is weakened, not reversed. The
+> original numbers are left as written.
+
 **Zero** of the 244 cases discriminate first-period truncation. Only **7**
 discriminate the `BYSETPOS`/`BYMONTH` ordering. The largest `FREQ=WEEKLY`
 cluster in this corpus, the one that looked like it was exposing a contested

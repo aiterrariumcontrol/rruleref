@@ -1,0 +1,49 @@
+over-blame rate (NOT-NECESSARY share of decided failures), accompanied stratum only
+cells with n < 10 are shown in parentheses and are NEVER correlated or ranked
+
+adapter          BYMONTH     BYWEEKNO        BYDAY   BYMONTHDAY    BYYEARDAY       BYHOUR     BYMINUTE     BYSECOND
+-------------------------------------------------------------------------------------------------------------------
+dateutil               -            -            -            -            -            -            -            -
+dmfs          (100% n=1)    (33% n=3)   (100% n=1)   (100% n=1)            -            -            -            -
+ical4j411      40% n=121     35% n=20    25% n=125      9% n=80     56% n=27            -            -            -
+ical4j430       26% n=98     35% n=20    11% n=106     21% n=33     56% n=27            -            -            -
+icaljs          70% n=70     18% n=11     59% n=98     24% n=58    (62% n=8)     29% n=14     33% n=12     18% n=11
+rrulejs        (29% n=7)            -   (100% n=8)            -   (100% n=3)     (0% n=8)            -            -
+sabre          27% n=366     50% n=26    95% n=317    64% n=187     50% n=52     65% n=31     80% n=15    100% n=23
+
+pooled, and leave-one-out (rule 98)
+pooled         34% n=663     38% n=80    63% n=655    42% n=359    55% n=117     45% n=53     59% n=27     74% n=34
+  -dmfs        34% n=662     38% n=77    63% n=654    41% n=358    55% n=117     45% n=53     59% n=27     74% n=34
+  -ical4j411    33% n=542     38% n=60    72% n=530    51% n=279     54% n=90     45% n=53     59% n=27     74% n=34
+  -ical4j430    35% n=565     38% n=60    72% n=549    44% n=326     54% n=90     45% n=53     59% n=27     74% n=34
+  -icaljs      30% n=593     41% n=69    63% n=557    45% n=301    54% n=109     51% n=39     80% n=15    100% n=23
+  -rrulejs     34% n=656     38% n=80    62% n=647    42% n=359    54% n=114     53% n=45     59% n=27     74% n=34
+  -sabre       42% n=297     31% n=54    33% n=338    17% n=172     58% n=65     18% n=22     33% n=12     18% n=11
+
+profilable adapters (>= 3 gated parts):
+  dateutil    0 gated part(s)   -- NOT profilable
+  dmfs        0 gated part(s)   -- NOT profilable
+  ical4j411   5 gated part(s)
+  ical4j430   5 gated part(s)
+  icaljs      7 gated part(s)
+  rrulejs     0 gated part(s)   -- NOT profilable
+  sabre       8 gated part(s)
+
+pairwise Spearman on per-part rate, parts gated in both
+pair                       n rho(avg) rho(arb)
+ical4j411 vs ical4j430     5    +0.80    +0.80   <- same codebase
+ical4j411 vs icaljs        4    +0.40    +0.40
+ical4j411 vs sabre         5    -0.68    -0.60
+ical4j430 vs icaljs        4    -0.40    -0.40
+ical4j430 vs sabre         5    -0.62    -0.60
+icaljs vs sabre            7    -0.19    -0.29
+
+claim check (rule 101 -- the summary sentence is a claim too)
+  positive pairs:                        ical4j411 vs ical4j430, ical4j411 vs icaljs
+  cross-lineage POSITIVE pairs:          ical4j411 vs icaljs
+  'every cross-lineage pair is <= 0':    False
+  'only positive pair is same codebase': False
+
+sign stability across a version bump (n is small -- check it)
+  icaljs    SIGN FLIPS: ical4j411 +0.40 (n=4)  ical4j430 -0.40 (n=4)
+  sabre     stable:     ical4j411 -0.68 (n=5)  ical4j430 -0.62 (n=5)

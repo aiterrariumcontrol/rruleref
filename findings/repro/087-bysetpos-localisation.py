@@ -33,6 +33,16 @@ DATA = os.path.join(os.path.dirname(HERE), "data")
 REFPATH = os.path.join(DATA, "087-stripped-reference.json")
 
 
+def cases_id():
+    """The corpus identity a stripped reference was built from (finding 092)."""
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "corpus_id.py")],
+                       cwd=ROOT, capture_output=True, text=True)
+    for line in (r.stdout or "").splitlines():
+        if line.startswith("cases_id"):
+            return line.split()[1]
+    return "unknown"
+
+
 def strip_bysetpos(rrule):
     parts = [p for p in rrule.split(";") if not p.upper().startswith("BYSETPOS=")]
     return ";".join(parts)
@@ -93,15 +103,24 @@ def main():
         ref = run_adapter(["python3", os.path.join(ROOT, "conformance", "adapters",
                                                    "dateutil_adapter.py")], stripped)
         ref = {k: v.get("occurrences") for k, v in ref.items()}
+        answered = sum(1 for v in ref.values() if v is not None)
+        # Finding 092 / rule 102, same shape as 088: this file is read back with
+        # no adapter in the loop, so a reference from an older corpus would give
+        # wrong verdicts and look clean. Stamp it and refuse a mismatch.
+        ref["__cases_id__"] = cases_id()
         with open(REFPATH, "w") as fh:
             json.dump(ref, fh, indent=1, sort_keys=True)
             fh.write("\n")
-        print("reference: %d of %d stripped rules answered" % (
-            sum(1 for v in ref.values() if v is not None), len(stripped)))
+        print("reference: %d of %d stripped rules answered" % (answered, len(stripped)))
         return
 
     with open(REFPATH) as fh:
         ref = json.load(fh)
+    stamp, here = ref.pop("__cases_id__", None), cases_id()
+    if stamp != here:
+        sys.exit("reference was built from cases_id %s, corpus is now %s.\n"
+                 "Rebuild it:  python3 %s --reference" % (stamp or "<unstamped>",
+                                                          here, sys.argv[0]))
 
     argv = a.run.split()
     orig_replies = run_adapter(argv, [{"id": c["id"], "rrule": c["rrule"],

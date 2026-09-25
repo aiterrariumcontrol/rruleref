@@ -142,8 +142,16 @@ def main():
     # with no finding edited that could explain it.  Rule 38 again: check the
     # instrument for what it measured.
     SELF = {"091-figure-provenance.json"}
+    # findings/repro/baselines/ holds the captured output of each reproduce
+    # command checked by tools/check_repro_drift.py (finding 092).  Those are
+    # stored artifacts in exactly the sense this audit means, and iterdir() is
+    # not recursive, so they were invisible: 092's own corrected figures came
+    # back NOWHERE while sitting in a file on disk.
+    BASELINES = REPRO / "baselines"
+    baselines = [q for q in sorted(BASELINES.glob("*")) if q.is_file()] \
+                if BASELINES.is_dir() else []
     all_artifacts = [q for q in sorted(DATA.glob("*.json")) if q.name not in SELF] \
-                  + [q for q in REPRO.iterdir() if q.is_file()]
+                  + [q for q in REPRO.iterdir() if q.is_file()] + baselines
     gvals, gtext = artifact_pool(all_artifacts)
 
     report, totals = [], {"DIRECT": 0, "GLOBAL": 0, "NOWHERE": 0}
@@ -154,7 +162,8 @@ def main():
             continue
         own = [q for q in sorted(DATA.glob(f"{num}-*.json")) if q.name not in SELF] \
             + [q for q in REPRO.iterdir()
-               if q.is_file() and q.name.startswith(num + "-")]
+               if q.is_file() and q.name.startswith(num + "-")] \
+            + [q for q in baselines if q.stem.split("-")[0] == num]
         ovals, otext = artifact_pool(own)
         figs = figures(md_path.read_text(errors="replace"))
         # de-duplicate: the same figure repeated in one finding is one claim

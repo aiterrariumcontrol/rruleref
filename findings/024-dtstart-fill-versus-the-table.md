@@ -220,7 +220,20 @@ the `BYWEEKNO` rules as `MALFORMEDDATA` and answers 7 more in a third way.
 python3 findings/repro/024-dtstart-fill-model.py --out findings/data/024-dtstart-fill.json
 ```
 
-Exits non-zero if the model mispredicts a single case. The header of
+> **Corrected 2026-09-25 by [finding 092](092-a-reproduce-command-expires.md).**
+> This command used to default `--outdir` to `/tmp` and exit 0 when what it found
+> there had nothing to do with the corpus. On 2026-09-25 it scored all 1727 cases
+> against 29-line leftovers written by an unrelated probe eight days earlier,
+> reproduced **0**, and reported success — its exit test was `disagreed == 0`, and
+> nothing disagreed for the same reason nothing agreed. It now defaults `--outdir`
+> into the repository, exits 2 naming the per-lineage coverage shortfall when the
+> adapter output is missing or partial, and exits 3 if it reproduces nothing.
+> **The figures below are not re-verified by that fix**: the command needs
+> `libical`, and `libical.so.4.0` does not build in this environment. Nothing
+> found contradicts them; nothing here confirms them either.
+
+Exits non-zero if the model mispredicts a single case, and now also if it
+reproduces none. The header of
 [`repro/024-dtstart-fill-model.py`](repro/024-dtstart-fill-model.py) gives the
 adapter commands. Results: [`data/024-dtstart-fill.json`](data/024-dtstart-fill.json).
 

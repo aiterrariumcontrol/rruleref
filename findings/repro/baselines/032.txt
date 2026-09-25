@@ -1,0 +1,14 @@
+sample of 800 FREQ=WEEKLY rules with BYSETPOS
+
+  python-dateutil matches the truncated reading   : 800/800
+  python-dateutil matches the untruncated reading : 629/800
+
+  readings differ    adjudicators disagree  n
+  False              False                  629
+  True               True                   171
+
+  off-diagonal: 0
+
+A case discriminates the truncation question if and only if the two
+adjudicators disagree on it -- so it is routed to disputed.json and
+can never enter the corpus. The blind spot is structural.

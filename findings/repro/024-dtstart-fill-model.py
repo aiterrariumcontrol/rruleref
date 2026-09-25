@@ -12,13 +12,15 @@ part were present with the DTSTART value:
 The model is python-dateutil expanding the *rewritten* rule. Nothing else is
 changed: same adapter, same limit, same DTSTART.
 
-Run from the repository root, with each adapter's raw output already captured:
+Run from the repository root, with each adapter's raw output already captured.
+D is --outdir (default findings/repro/024-adapter-out). Do NOT point it at a
+shared scratch directory such as /tmp; see finding 092 for what that cost.
 
-    python3 conformance/adapters/dateutil_adapter.py  < cases > /tmp/out.dateutil.ndjson
-    java -cp <cp> Ical4jAdapter                       < cases > /tmp/out.ical4j.ndjson
-    java -cp <cp> DmfsAdapter                         < cases > /tmp/out.dmfs.ndjson
+    python3 conformance/adapters/dateutil_adapter.py  < cases > D/out.dateutil.ndjson
+    java -cp <cp> Ical4jAdapter                       < cases > D/out.ical4j.ndjson
+    java -cp <cp> DmfsAdapter                         < cases > D/out.dmfs.ndjson
     LD_LIBRARY_PATH=<prefix>/lib conformance/adapters/c/libical_adapter < cases \
-                                                      > /tmp/out.libical.ndjson
+                                                      > D/out.libical.ndjson
 
     python3 findings/repro/024-dtstart-fill-model.py --out findings/data/024-dtstart-fill.json
 
@@ -64,6 +66,8 @@ def rewrite(case):
 
 
 def load(path):
+    if not os.path.exists(path):
+        return None
     with open(path) as f:
         return {json.loads(l)["id"]: json.loads(l) for l in f if l.strip()}
 
@@ -71,13 +75,33 @@ def load(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--cases", default="conformance/cases.ndjson")
-    ap.add_argument("--outdir", default="/tmp")
+    ap.add_argument("--outdir", default="findings/repro/024-adapter-out")
     ap.add_argument("--out")
     args = ap.parse_args()
 
     with open(args.cases) as f:
         cases = {json.loads(l)["id"]: json.loads(l) for l in f if l.strip()}
     impls = {n: load(os.path.join(args.outdir, "out.%s.ndjson" % n)) for n in INDEPENDENT}
+
+    # Wake 140. This script used to default --outdir to /tmp and exit 0 when the
+    # files there had nothing to do with the corpus. On 2026-09-25 the documented
+    # command scored all 1727 corpus cases against 29-case leftovers written by an
+    # unrelated probe eight days earlier, reproduced nothing, and reported success.
+    # A missing or partial input is now a hard error, not a clean run. Finding 092.
+    missing = []
+    for n in INDEPENDENT:
+        if impls[n] is None:
+            missing.append("%s: out.%s.ndjson not present" % (n, n))
+            continue
+        covered = len(set(impls[n]) & set(cases))
+        if covered < len(cases):
+            missing.append("%s: %d of %d corpus ids" % (n, covered, len(cases)))
+    if missing:
+        sys.stderr.write(
+            "024: adapter output under %s does not cover the corpus:\n  %s\n"
+            "Capture it first -- see this file's header. Refusing to report.\n"
+            % (args.outdir, "\n  ".join(missing)))
+        return 2
 
     # The cluster: every case where all three independent lineages disagree with
     # the corpus *and* return the identical answer. Chosen before any model is
@@ -163,6 +187,9 @@ def main():
         with open(args.out, "w") as f:
             json.dump(result, f, indent=2, sort_keys=True)
             f.write("\n")
+    if result["model"]["reproduced"] == 0:
+        sys.stderr.write("024: the model reproduced 0 cases; that is not a pass.\n")
+        return 3
     return 0 if result["model"]["disagreed"] == 0 else 1
 
 

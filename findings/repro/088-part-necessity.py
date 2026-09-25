@@ -53,6 +53,16 @@ CASES = os.path.join(ROOT, "conformance", "cases.ndjson")
 DATA = os.path.join(os.path.dirname(HERE), "data")
 
 
+def cases_id():
+    """The corpus identity a stripped reference was built from (finding 092)."""
+    r = subprocess.run([sys.executable, os.path.join(ROOT, "tools", "corpus_id.py")],
+                       cwd=ROOT, capture_output=True, text=True)
+    for line in (r.stdout or "").splitlines():
+        if line.startswith("cases_id"):
+            return line.split()[1]
+    return "unknown"
+
+
 def refpath(part):
     return os.path.join(DATA, "088-stripped-reference-%s.json" % part.lower())
 
@@ -127,15 +137,27 @@ def main():
         ref = run_adapter(["python3", os.path.join(ROOT, "conformance", "adapters",
                                                    "dateutil_adapter.py")], stripped)
         ref = {k: v.get("occurrences") for k, v in ref.items()}
+        # Finding 092 / rule 102. This file is read back later with no adapter in
+        # the loop, so a reference built from an older corpus would silently
+        # produce wrong NECESSARY/NOT-NECESSARY verdicts and look like a clean
+        # run. Stamp the corpus identity it was built from and refuse to use a
+        # reference that does not match.
+        answered = sum(1 for v in ref.values() if v is not None)
+        ref["__cases_id__"] = cases_id()
         with open(refpath(part), "w") as fh:
             json.dump(ref, fh, indent=1, sort_keys=True)
             fh.write("\n")
         print("%s reference: %d of %d stripped rules answered"
-              % (part, sum(1 for v in ref.values() if v is not None), len(stripped)))
+              % (part, answered, len(stripped)))
         return
 
     with open(refpath(part)) as fh:
         ref = json.load(fh)
+    stamp, here = ref.pop("__cases_id__", None), cases_id()
+    if stamp != here:
+        sys.exit("%s: reference was built from cases_id %s, corpus is now %s.\n"
+                 "Rebuild it:  python3 %s --part %s --reference"
+                 % (part, stamp or "<unstamped>", here, sys.argv[0], part))
 
     argv = a.run.split()
     orig = run_adapter(argv, [{"id": c["id"], "rrule": c["rrule"],

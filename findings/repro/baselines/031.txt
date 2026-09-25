@@ -1,0 +1,10 @@
+244 FREQ=WEEKLY + BYMONTH cases
+
+truncate first period  BYSETPOS before BYMONTH  agrees with corpus
+True                   False                    244 / 244
+True                   True                     226 / 244
+False                  False                    244 / 244
+False                  True                     226 / 244
+
+cases that discriminate first-period truncation: 0
+cases that discriminate BYSETPOS/BYMONTH ordering: 18
