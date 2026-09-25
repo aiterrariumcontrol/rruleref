@@ -1,0 +1,338 @@
+{
+ "accompanied": {
+  "passes": 23
+ },
+ "adapter": "dateutil",
+ "alone": {
+  "passes": 23
+ },
+ "argv": [
+  "python3",
+  "conformance/adapters/dateutil_adapter.py"
+ ],
+ "part": "BYSECOND",
+ "rows": [
+  {
+   "dtstart": "20260302T093000",
+   "id": "cbc99eeff1f7",
+   "rrule": "FREQ=DAILY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "f5397f480811",
+   "rrule": "FREQ=HOURLY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "b977225cb1a3",
+   "rrule": "FREQ=MINUTELY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "1f68b75d89f7",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "49c18610a0ea",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "9516c591cfb1",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYDAY=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "0b5c3613393b",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYDAY=SU,MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "f37148da202f",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYHOUR=9",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "9ee246666b67",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYHOUR=9,8",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "534b621b5f0b",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYMINUTE=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "93b63f35515f",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYMINUTE=30,29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "45d423b77e83",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYMONTH=3",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "c29afb854f86",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYMONTH=3,4",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "731b3111a70e",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "92bcec0aec77",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;BYSETPOS=1,2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "21a7c0170525",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=FR",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "467a6ef7dcb4",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "61c4a2378fb6",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=SA",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "bb25f0485dfd",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "0b75fa37cc68",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=TH",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "65966706acdb",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=TU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "8be865e40a26",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15,14;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "b45f0f952af4",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYDAY=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "1afc53a59849",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYDAY=SU,MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "c7788f702241",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYHOUR=9",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "fce004fee7bf",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYHOUR=9,8",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "6648b7f7b5ca",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYMINUTE=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "49f779f6f628",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYMINUTE=30,29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "c449ad421b0a",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYMONTH=3",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "0a56d7af9b38",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYMONTH=3,4",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "f22d73f1e04d",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYSETPOS=+1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "612c7cca3102",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "742b5378a77f",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "88bfb23e0d13",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;BYSETPOS=1,2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "a5303111dcc3",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=FR",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "cb80c0ab4cc5",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "31c53ecb378e",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=SA",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "3d4b1f8db122",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "4eca97ffee1c",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=TH",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "1ca7a046c313",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=TU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093015",
+   "id": "5fc0b0227c6c",
+   "rrule": "FREQ=MINUTELY;BYSECOND=15;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "292f35a6ee1e",
+   "rrule": "FREQ=MONTHLY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "b440374b3e36",
+   "rrule": "FREQ=SECONDLY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T090000",
+   "id": "3cde2a577551",
+   "rrule": "FREQ=SECONDLY;BYSETPOS=-1;BYSECOND=0,15,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "7dd698f2eb09",
+   "rrule": "FREQ=WEEKLY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260302T093000",
+   "id": "a844fe388868",
+   "rrule": "FREQ=YEARLY;BYSECOND=0,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  }
+ ]
+}

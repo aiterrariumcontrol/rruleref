@@ -1,0 +1,1024 @@
+{
+ "grid": {
+  "dateutil": {
+   "byday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 494,
+    "rate": null
+   },
+   "byhour": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 56,
+    "rate": null
+   },
+   "byminute": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 22,
+    "rate": null
+   },
+   "bymonth": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 474,
+    "rate": null
+   },
+   "bymonthday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 268,
+    "rate": null
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 23,
+    "rate": null
+   },
+   "byweekno": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 29,
+    "rate": null
+   },
+   "byyearday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 58,
+    "rate": null
+   }
+  },
+  "dmfs": {
+   "byday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 1,
+    "no_answer": 0,
+    "not_necessary": 1,
+    "passes": 493,
+    "rate": 1.0
+   },
+   "byhour": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 56,
+    "rate": null
+   },
+   "byminute": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 22,
+    "rate": null
+   },
+   "bymonth": {
+    "attributable": 0,
+    "gated": false,
+    "n": 1,
+    "no_answer": 0,
+    "not_necessary": 1,
+    "passes": 473,
+    "rate": 1.0
+   },
+   "bymonthday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 1,
+    "no_answer": 7,
+    "not_necessary": 1,
+    "passes": 260,
+    "rate": 1.0
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 23,
+    "rate": null
+   },
+   "byweekno": {
+    "attributable": 2,
+    "gated": false,
+    "n": 3,
+    "no_answer": 1,
+    "not_necessary": 1,
+    "passes": 25,
+    "rate": 0.3333333333333333
+   },
+   "byyearday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 58,
+    "rate": null
+   }
+  },
+  "ical4j411": {
+   "byday": {
+    "attributable": 94,
+    "gated": true,
+    "n": 125,
+    "no_answer": 0,
+    "not_necessary": 31,
+    "passes": 369,
+    "rate": 0.248
+   },
+   "byhour": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 56,
+    "rate": null
+   },
+   "byminute": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 22,
+    "rate": null
+   },
+   "bymonth": {
+    "attributable": 73,
+    "gated": true,
+    "n": 121,
+    "no_answer": 0,
+    "not_necessary": 48,
+    "passes": 353,
+    "rate": 0.39669421487603307
+   },
+   "bymonthday": {
+    "attributable": 73,
+    "gated": true,
+    "n": 80,
+    "no_answer": 0,
+    "not_necessary": 7,
+    "passes": 188,
+    "rate": 0.0875
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 23,
+    "rate": null
+   },
+   "byweekno": {
+    "attributable": 13,
+    "gated": true,
+    "n": 20,
+    "no_answer": 0,
+    "not_necessary": 7,
+    "passes": 9,
+    "rate": 0.35
+   },
+   "byyearday": {
+    "attributable": 12,
+    "gated": true,
+    "n": 27,
+    "no_answer": 0,
+    "not_necessary": 15,
+    "passes": 31,
+    "rate": 0.5555555555555556
+   }
+  },
+  "ical4j430": {
+   "byday": {
+    "attributable": 94,
+    "gated": true,
+    "n": 106,
+    "no_answer": 0,
+    "not_necessary": 12,
+    "passes": 388,
+    "rate": 0.11320754716981132
+   },
+   "byhour": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 56,
+    "rate": null
+   },
+   "byminute": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 22,
+    "rate": null
+   },
+   "bymonth": {
+    "attributable": 73,
+    "gated": true,
+    "n": 98,
+    "no_answer": 0,
+    "not_necessary": 25,
+    "passes": 376,
+    "rate": 0.25510204081632654
+   },
+   "bymonthday": {
+    "attributable": 26,
+    "gated": true,
+    "n": 33,
+    "no_answer": 0,
+    "not_necessary": 7,
+    "passes": 235,
+    "rate": 0.21212121212121213
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 23,
+    "rate": null
+   },
+   "byweekno": {
+    "attributable": 13,
+    "gated": true,
+    "n": 20,
+    "no_answer": 0,
+    "not_necessary": 7,
+    "passes": 9,
+    "rate": 0.35
+   },
+   "byyearday": {
+    "attributable": 12,
+    "gated": true,
+    "n": 27,
+    "no_answer": 0,
+    "not_necessary": 15,
+    "passes": 31,
+    "rate": 0.5555555555555556
+   }
+  },
+  "icaljs": {
+   "byday": {
+    "attributable": 40,
+    "gated": true,
+    "n": 98,
+    "no_answer": 12,
+    "not_necessary": 58,
+    "passes": 384,
+    "rate": 0.5918367346938775
+   },
+   "byhour": {
+    "attributable": 10,
+    "gated": true,
+    "n": 14,
+    "no_answer": 0,
+    "not_necessary": 4,
+    "passes": 42,
+    "rate": 0.2857142857142857
+   },
+   "byminute": {
+    "attributable": 8,
+    "gated": true,
+    "n": 12,
+    "no_answer": 0,
+    "not_necessary": 4,
+    "passes": 10,
+    "rate": 0.3333333333333333
+   },
+   "bymonth": {
+    "attributable": 21,
+    "gated": true,
+    "n": 70,
+    "no_answer": 23,
+    "not_necessary": 49,
+    "passes": 381,
+    "rate": 0.7
+   },
+   "bymonthday": {
+    "attributable": 44,
+    "gated": true,
+    "n": 58,
+    "no_answer": 41,
+    "not_necessary": 14,
+    "passes": 169,
+    "rate": 0.2413793103448276
+   },
+   "bysecond": {
+    "attributable": 9,
+    "gated": true,
+    "n": 11,
+    "no_answer": 0,
+    "not_necessary": 2,
+    "passes": 12,
+    "rate": 0.18181818181818182
+   },
+   "byweekno": {
+    "attributable": 9,
+    "gated": true,
+    "n": 11,
+    "no_answer": 17,
+    "not_necessary": 2,
+    "passes": 1,
+    "rate": 0.18181818181818182
+   },
+   "byyearday": {
+    "attributable": 3,
+    "gated": false,
+    "n": 8,
+    "no_answer": 25,
+    "not_necessary": 5,
+    "passes": 25,
+    "rate": 0.625
+   }
+  },
+  "rrulejs": {
+   "byday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 8,
+    "no_answer": 0,
+    "not_necessary": 8,
+    "passes": 486,
+    "rate": 1.0
+   },
+   "byhour": {
+    "attributable": 8,
+    "gated": false,
+    "n": 8,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 48,
+    "rate": 0.0
+   },
+   "byminute": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 22,
+    "rate": null
+   },
+   "bymonth": {
+    "attributable": 5,
+    "gated": false,
+    "n": 7,
+    "no_answer": 0,
+    "not_necessary": 2,
+    "passes": 467,
+    "rate": 0.2857142857142857
+   },
+   "bymonthday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 268,
+    "rate": null
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 23,
+    "rate": null
+   },
+   "byweekno": {
+    "attributable": 0,
+    "gated": false,
+    "n": 0,
+    "no_answer": 0,
+    "not_necessary": 0,
+    "passes": 29,
+    "rate": null
+   },
+   "byyearday": {
+    "attributable": 0,
+    "gated": false,
+    "n": 3,
+    "no_answer": 0,
+    "not_necessary": 3,
+    "passes": 55,
+    "rate": 1.0
+   }
+  },
+  "sabre": {
+   "byday": {
+    "attributable": 17,
+    "gated": true,
+    "n": 317,
+    "no_answer": 4,
+    "not_necessary": 300,
+    "passes": 173,
+    "rate": 0.9463722397476341
+   },
+   "byhour": {
+    "attributable": 11,
+    "gated": true,
+    "n": 31,
+    "no_answer": 0,
+    "not_necessary": 20,
+    "passes": 25,
+    "rate": 0.6451612903225806
+   },
+   "byminute": {
+    "attributable": 3,
+    "gated": true,
+    "n": 15,
+    "no_answer": 0,
+    "not_necessary": 12,
+    "passes": 7,
+    "rate": 0.8
+   },
+   "bymonth": {
+    "attributable": 266,
+    "gated": true,
+    "n": 366,
+    "no_answer": 0,
+    "not_necessary": 100,
+    "passes": 108,
+    "rate": 0.273224043715847
+   },
+   "bymonthday": {
+    "attributable": 67,
+    "gated": true,
+    "n": 187,
+    "no_answer": 0,
+    "not_necessary": 120,
+    "passes": 81,
+    "rate": 0.6417112299465241
+   },
+   "bysecond": {
+    "attributable": 0,
+    "gated": true,
+    "n": 23,
+    "no_answer": 0,
+    "not_necessary": 23,
+    "passes": 0,
+    "rate": 1.0
+   },
+   "byweekno": {
+    "attributable": 13,
+    "gated": true,
+    "n": 26,
+    "no_answer": 0,
+    "not_necessary": 13,
+    "passes": 3,
+    "rate": 0.5
+   },
+   "byyearday": {
+    "attributable": 26,
+    "gated": true,
+    "n": 52,
+    "no_answer": 4,
+    "not_necessary": 26,
+    "passes": 2,
+    "rate": 0.5
+   }
+  }
+ },
+ "min_n": 10,
+ "pairs": [
+  {
+   "a": "ical4j411",
+   "b": "ical4j430",
+   "n": 5,
+   "parts": [
+    "byday",
+    "bymonth",
+    "bymonthday",
+    "byweekno",
+    "byyearday"
+   ],
+   "rho_arbitrary_ties": 0.8,
+   "rho_avg_ties": 0.8,
+   "same_codebase": true
+  },
+  {
+   "a": "ical4j411",
+   "b": "icaljs",
+   "n": 4,
+   "parts": [
+    "byday",
+    "bymonth",
+    "bymonthday",
+    "byweekno"
+   ],
+   "rho_arbitrary_ties": 0.4,
+   "rho_avg_ties": 0.4,
+   "same_codebase": false
+  },
+  {
+   "a": "ical4j411",
+   "b": "sabre",
+   "n": 5,
+   "parts": [
+    "byday",
+    "bymonth",
+    "bymonthday",
+    "byweekno",
+    "byyearday"
+   ],
+   "rho_arbitrary_ties": -0.6000000000000001,
+   "rho_avg_ties": -0.675,
+   "same_codebase": false
+  },
+  {
+   "a": "ical4j430",
+   "b": "icaljs",
+   "n": 4,
+   "parts": [
+    "byday",
+    "bymonth",
+    "bymonthday",
+    "byweekno"
+   ],
+   "rho_arbitrary_ties": -0.3999999999999999,
+   "rho_avg_ties": -0.3999999999999999,
+   "same_codebase": false
+  },
+  {
+   "a": "ical4j430",
+   "b": "sabre",
+   "n": 5,
+   "parts": [
+    "byday",
+    "bymonth",
+    "bymonthday",
+    "byweekno",
+    "byyearday"
+   ],
+   "rho_arbitrary_ties": -0.6000000000000001,
+   "rho_avg_ties": -0.625,
+   "same_codebase": false
+  },
+  {
+   "a": "icaljs",
+   "b": "sabre",
+   "n": 7,
+   "parts": [
+    "byday",
+    "byhour",
+    "byminute",
+    "bymonth",
+    "bymonthday",
+    "bysecond",
+    "byweekno"
+   ],
+   "rho_arbitrary_ties": -0.2857142857142858,
+   "rho_avg_ties": -0.1875,
+   "same_codebase": false
+  }
+ ],
+ "pooled": {
+  "byday": {
+   "attributable": 245,
+   "n": 655,
+   "not_necessary": 410,
+   "rate": 0.6259541984732825
+  },
+  "byhour": {
+   "attributable": 29,
+   "n": 53,
+   "not_necessary": 24,
+   "rate": 0.4528301886792453
+  },
+  "byminute": {
+   "attributable": 11,
+   "n": 27,
+   "not_necessary": 16,
+   "rate": 0.5925925925925926
+  },
+  "bymonth": {
+   "attributable": 438,
+   "n": 663,
+   "not_necessary": 225,
+   "rate": 0.3393665158371041
+  },
+  "bymonthday": {
+   "attributable": 210,
+   "n": 359,
+   "not_necessary": 149,
+   "rate": 0.415041782729805
+  },
+  "bysecond": {
+   "attributable": 9,
+   "n": 34,
+   "not_necessary": 25,
+   "rate": 0.7352941176470589
+  },
+  "byweekno": {
+   "attributable": 50,
+   "n": 80,
+   "not_necessary": 30,
+   "rate": 0.375
+  },
+  "byyearday": {
+   "attributable": 53,
+   "n": 117,
+   "not_necessary": 64,
+   "rate": 0.5470085470085471
+  }
+ },
+ "pooled_without": {
+  "dateutil": {
+   "byday": {
+    "attributable": 245,
+    "n": 655,
+    "not_necessary": 410,
+    "rate": 0.6259541984732825
+   },
+   "byhour": {
+    "attributable": 29,
+    "n": 53,
+    "not_necessary": 24,
+    "rate": 0.4528301886792453
+   },
+   "byminute": {
+    "attributable": 11,
+    "n": 27,
+    "not_necessary": 16,
+    "rate": 0.5925925925925926
+   },
+   "bymonth": {
+    "attributable": 438,
+    "n": 663,
+    "not_necessary": 225,
+    "rate": 0.3393665158371041
+   },
+   "bymonthday": {
+    "attributable": 210,
+    "n": 359,
+    "not_necessary": 149,
+    "rate": 0.415041782729805
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 34,
+    "not_necessary": 25,
+    "rate": 0.7352941176470589
+   },
+   "byweekno": {
+    "attributable": 50,
+    "n": 80,
+    "not_necessary": 30,
+    "rate": 0.375
+   },
+   "byyearday": {
+    "attributable": 53,
+    "n": 117,
+    "not_necessary": 64,
+    "rate": 0.5470085470085471
+   }
+  },
+  "dmfs": {
+   "byday": {
+    "attributable": 245,
+    "n": 654,
+    "not_necessary": 409,
+    "rate": 0.6253822629969419
+   },
+   "byhour": {
+    "attributable": 29,
+    "n": 53,
+    "not_necessary": 24,
+    "rate": 0.4528301886792453
+   },
+   "byminute": {
+    "attributable": 11,
+    "n": 27,
+    "not_necessary": 16,
+    "rate": 0.5925925925925926
+   },
+   "bymonth": {
+    "attributable": 438,
+    "n": 662,
+    "not_necessary": 224,
+    "rate": 0.338368580060423
+   },
+   "bymonthday": {
+    "attributable": 210,
+    "n": 358,
+    "not_necessary": 148,
+    "rate": 0.4134078212290503
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 34,
+    "not_necessary": 25,
+    "rate": 0.7352941176470589
+   },
+   "byweekno": {
+    "attributable": 48,
+    "n": 77,
+    "not_necessary": 29,
+    "rate": 0.37662337662337664
+   },
+   "byyearday": {
+    "attributable": 53,
+    "n": 117,
+    "not_necessary": 64,
+    "rate": 0.5470085470085471
+   }
+  },
+  "ical4j411": {
+   "byday": {
+    "attributable": 151,
+    "n": 530,
+    "not_necessary": 379,
+    "rate": 0.7150943396226415
+   },
+   "byhour": {
+    "attributable": 29,
+    "n": 53,
+    "not_necessary": 24,
+    "rate": 0.4528301886792453
+   },
+   "byminute": {
+    "attributable": 11,
+    "n": 27,
+    "not_necessary": 16,
+    "rate": 0.5925925925925926
+   },
+   "bymonth": {
+    "attributable": 365,
+    "n": 542,
+    "not_necessary": 177,
+    "rate": 0.32656826568265684
+   },
+   "bymonthday": {
+    "attributable": 137,
+    "n": 279,
+    "not_necessary": 142,
+    "rate": 0.5089605734767025
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 34,
+    "not_necessary": 25,
+    "rate": 0.7352941176470589
+   },
+   "byweekno": {
+    "attributable": 37,
+    "n": 60,
+    "not_necessary": 23,
+    "rate": 0.38333333333333336
+   },
+   "byyearday": {
+    "attributable": 41,
+    "n": 90,
+    "not_necessary": 49,
+    "rate": 0.5444444444444444
+   }
+  },
+  "ical4j430": {
+   "byday": {
+    "attributable": 151,
+    "n": 549,
+    "not_necessary": 398,
+    "rate": 0.7249544626593807
+   },
+   "byhour": {
+    "attributable": 29,
+    "n": 53,
+    "not_necessary": 24,
+    "rate": 0.4528301886792453
+   },
+   "byminute": {
+    "attributable": 11,
+    "n": 27,
+    "not_necessary": 16,
+    "rate": 0.5925925925925926
+   },
+   "bymonth": {
+    "attributable": 365,
+    "n": 565,
+    "not_necessary": 200,
+    "rate": 0.35398230088495575
+   },
+   "bymonthday": {
+    "attributable": 184,
+    "n": 326,
+    "not_necessary": 142,
+    "rate": 0.43558282208588955
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 34,
+    "not_necessary": 25,
+    "rate": 0.7352941176470589
+   },
+   "byweekno": {
+    "attributable": 37,
+    "n": 60,
+    "not_necessary": 23,
+    "rate": 0.38333333333333336
+   },
+   "byyearday": {
+    "attributable": 41,
+    "n": 90,
+    "not_necessary": 49,
+    "rate": 0.5444444444444444
+   }
+  },
+  "icaljs": {
+   "byday": {
+    "attributable": 205,
+    "n": 557,
+    "not_necessary": 352,
+    "rate": 0.6319569120287253
+   },
+   "byhour": {
+    "attributable": 19,
+    "n": 39,
+    "not_necessary": 20,
+    "rate": 0.5128205128205128
+   },
+   "byminute": {
+    "attributable": 3,
+    "n": 15,
+    "not_necessary": 12,
+    "rate": 0.8
+   },
+   "bymonth": {
+    "attributable": 417,
+    "n": 593,
+    "not_necessary": 176,
+    "rate": 0.29679595278246207
+   },
+   "bymonthday": {
+    "attributable": 166,
+    "n": 301,
+    "not_necessary": 135,
+    "rate": 0.4485049833887043
+   },
+   "bysecond": {
+    "attributable": 0,
+    "n": 23,
+    "not_necessary": 23,
+    "rate": 1.0
+   },
+   "byweekno": {
+    "attributable": 41,
+    "n": 69,
+    "not_necessary": 28,
+    "rate": 0.4057971014492754
+   },
+   "byyearday": {
+    "attributable": 50,
+    "n": 109,
+    "not_necessary": 59,
+    "rate": 0.5412844036697247
+   }
+  },
+  "rrulejs": {
+   "byday": {
+    "attributable": 245,
+    "n": 647,
+    "not_necessary": 402,
+    "rate": 0.6213292117465224
+   },
+   "byhour": {
+    "attributable": 21,
+    "n": 45,
+    "not_necessary": 24,
+    "rate": 0.5333333333333333
+   },
+   "byminute": {
+    "attributable": 11,
+    "n": 27,
+    "not_necessary": 16,
+    "rate": 0.5925925925925926
+   },
+   "bymonth": {
+    "attributable": 433,
+    "n": 656,
+    "not_necessary": 223,
+    "rate": 0.3399390243902439
+   },
+   "bymonthday": {
+    "attributable": 210,
+    "n": 359,
+    "not_necessary": 149,
+    "rate": 0.415041782729805
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 34,
+    "not_necessary": 25,
+    "rate": 0.7352941176470589
+   },
+   "byweekno": {
+    "attributable": 50,
+    "n": 80,
+    "not_necessary": 30,
+    "rate": 0.375
+   },
+   "byyearday": {
+    "attributable": 53,
+    "n": 114,
+    "not_necessary": 61,
+    "rate": 0.5350877192982456
+   }
+  },
+  "sabre": {
+   "byday": {
+    "attributable": 228,
+    "n": 338,
+    "not_necessary": 110,
+    "rate": 0.3254437869822485
+   },
+   "byhour": {
+    "attributable": 18,
+    "n": 22,
+    "not_necessary": 4,
+    "rate": 0.18181818181818182
+   },
+   "byminute": {
+    "attributable": 8,
+    "n": 12,
+    "not_necessary": 4,
+    "rate": 0.3333333333333333
+   },
+   "bymonth": {
+    "attributable": 172,
+    "n": 297,
+    "not_necessary": 125,
+    "rate": 0.4208754208754209
+   },
+   "bymonthday": {
+    "attributable": 143,
+    "n": 172,
+    "not_necessary": 29,
+    "rate": 0.1686046511627907
+   },
+   "bysecond": {
+    "attributable": 9,
+    "n": 11,
+    "not_necessary": 2,
+    "rate": 0.18181818181818182
+   },
+   "byweekno": {
+    "attributable": 37,
+    "n": 54,
+    "not_necessary": 17,
+    "rate": 0.3148148148148148
+   },
+   "byyearday": {
+    "attributable": 27,
+    "n": 65,
+    "not_necessary": 38,
+    "rate": 0.5846153846153846
+   }
+  }
+ },
+ "profilable": [
+  "ical4j411",
+  "ical4j430",
+  "icaljs",
+  "sabre"
+ ],
+ "stratum": "accompanied"
+}

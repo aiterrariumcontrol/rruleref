@@ -56,8 +56,18 @@ with ≥10 accompanied cases in both:
 | `ical4j` 4.1.1 vs `ical4j` 4.3.0 | 5 | **+0.80** |
 | `ical4j` 4.1.1 vs `ical.js` | 4 | +0.40 |
 | `ical.js` vs `sabre` | 5 | 0.00 |
-| `ical4j` 4.3.0 vs `sabre` | 5 | **−0.70** |
-| `ical4j` 4.1.1 vs `sabre` | 5 | **−0.80** |
+| `ical4j` 4.3.0 vs `sabre` | 5 | **−0.62** |
+| `ical4j` 4.1.1 vs `sabre` | 5 | **−0.68** |
+
+> **Corrected by [090](090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md).**
+> The last two rows were published as −0.70 and −0.80. Those figures are not
+> reproducible from the stored data under any tie or gating convention; this
+> table was hand-computed and no script existed to print it. The correct values
+> are −0.62 and −0.68, and `findings/repro/090-profile-grid.py` now emits them.
+> The other three rows reproduce exactly and the conclusion below is unchanged:
+> every cross-lineage pair is zero or negative, the only positive pair is one
+> codebase at two versions. 090 also extends `ical.js` vs `sabre` to n=7 with
+> `BYMINUTE` and `BYSECOND` added, where it is −0.19.
 
 The one strongly positive pair is **the same codebase at two versions** — which
 is the control that says the measurement is not noise. Every genuinely
