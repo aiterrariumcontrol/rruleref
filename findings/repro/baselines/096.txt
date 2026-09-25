@@ -1,0 +1,27 @@
+PROBES -- 7 adapters, reference for the RULE (not for the truth) is dateutil
+  J-min   DIFFERS    all others agree  Feb -1 becomes day 31 from 2027 on, rolling into March; Oct is right
+  J-ctl   matches    all others agree  control: one BYMONTH value, correct
+  J-len   DIFFERS    all others agree  last value April (30) gives day 30, not 31: the length is CARRIED, not a constant
+  J-len2  DIFFERS    all others agree  last value March (31) gives day 31
+  J-all   DIFFERS    all others agree  ONE number for the whole period: April also gets 31, rolling into May
+  J-neg2  DIFFERS    all others agree  -2 against October gives day 30, so April yields the 30th
+  J-same  matches    all others agree  control: every value 30 days, defect invisible
+  K-min   DIFFERS    all others agree  DTSTART month is not the first value and the period has 2 occurrences: set emitted twice
+  K-one   matches    all others agree  control: one occurrence per period, no duplication
+  K-first matches    all others agree  control: DTSTART month IS the first written value, correct
+  K-mid   DIFFERS    all others agree  the duplicated month need not be the last value, only not the first
+  K-byday DIFFERS    all others agree  same with BYDAY: the whole September Monday set twice
+  K-ord   matches    all others agree  control: ordinal BYDAY gives one occurrence per period, no duplication
+  L-min   DIFFERS    all others agree  descending BYMONTH: output not chronological, and it is K's control too
+  L-skip  DIFFERS    all others agree  descending BYMONTH: September 2026 is skipped entirely
+  ical.js alone against a unanimous field on 10 of 15 probes
+
+074's 23 unexplained, re-classified:
+   1  J
+   2  K
+   4  K+074-F
+  16  still unexplained
+
+J, K and K+074-F take 074's residual from 23 to 16.
+Every one of the four K+074-F cases carries INTERVAL; neither mutation
+alone reproduces any of them, which is why 074's one-at-a-time search missed them.

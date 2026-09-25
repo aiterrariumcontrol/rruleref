@@ -48,6 +48,19 @@ anything. 10 are `MONTHLY`, 13 `YEARLY`; the largest shapes are `BYDAY`+`BYMONTH
 and `BYDAY`+`BYMONTHDAY`, five each. Several are probably defect H or G with a
 second thing on top, but "probably" is what 071 already refused to publish.
 
+> **Correction notice added 2026-09-25 (finding
+> [096](096-the-bymonth-cursor-and-a-carried-month-length.md)).** The **23** above
+> was correct as measured and is left standing. Seven of them are now attributed:
+> one to a new defect **J** (at `FREQ=YEARLY` with `BYMONTH`, a negative
+> `BYMONTHDAY` is resolved against the length of the last-written `BYMONTH`
+> value), two to a new defect **K** (at `FREQ=MONTHLY` with two or more `BYMONTH`
+> values, the `DTSTART` period's set is emitted twice), and **four to K composed
+> with defect F above**. Those four are the point: this finding's search tries
+> **one** mutation at a time, so no addition to its predictor list could have
+> reached them. The guess quoted immediately above — "probably H or G with a
+> second thing on top" — was right about the shape and wrong about which
+> defects. The residual is **16**, and 096 does not attribute those.
+
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores
 `BYHOUR` altogether, so on a first pass it "explained" two cases whose only

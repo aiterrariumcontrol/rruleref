@@ -54,6 +54,14 @@
    ],
    "baseline": "095.txt",
    "finding": "095"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/096-icaljs-bymonth-cursor.py"
+   ],
+   "baseline": "096.txt",
+   "finding": "096"
   }
  ]
 }
