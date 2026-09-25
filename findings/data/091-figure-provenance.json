@@ -1,0 +1,2627 @@
+{
+ "totals": {
+  "DIRECT": 78,
+  "GLOBAL": 154,
+  "NOWHERE": 31
+ },
+ "findings": [
+  {
+   "finding": "001-dateutil-weekly-bysetpos.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "002-byweekno-year-boundary.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "003-implementation-lineage.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.3",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "004-bysetpos-first-period-truncation.md",
+   "artifacts": [
+    "findings/data/004-crosscheck.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "005-rfc-worked-examples.md",
+   "artifacts": [
+    "findings/data/005-rfc-examples.json"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "42 / 42",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "006-dst-gap-and-repeat-instances.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "30/30",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "007-vtimezone-examples.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "008-byweekno-previous-year-last-week.md",
+   "artifacts": [
+    "findings/data/008-byweekno-sweep-patched.json",
+    "findings/data/008-byweekno-sweep.json"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "01/02",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "29/30",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "009-corpus-coverage-of-the-3310-table.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "37%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.003",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "57/57",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "010-grammar-branch-coverage.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "57/57",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0/0",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "79/79",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "011-date-valued-dtstart.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "18/18",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "79/79",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "012-branch-pair-coverage.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "100%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "54%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "013-byday-mixed-signed-and-unsigned.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "014-metamorphic-properties.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "015-conformance-harness-and-rrulejs.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "1722/1722",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1696 / 1722",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "016-independent-lineage-results.md",
+   "artifacts": [
+    "findings/repro/016-lib-recur-byweekno-53.java",
+    "findings/repro/016-output-0.17.1.txt"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "017-libical-third-lineage.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "018-reading-dependence-of-the-corpus.md",
+   "artifacts": [
+    "findings/data/018-reading-dependence.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "019-libical-weekly-bymonth-bysetpos.md",
+   "artifacts": [
+    "findings/data/019-libical-3.0.20-score.json",
+    "findings/data/019-libical-4edd39a-score.json",
+    "findings/data/019-libical-master-score.json",
+    "findings/repro/019-output-4edd39a.txt",
+    "findings/repro/019-weekly-bymonth-bysetpos.c",
+    "findings/repro/019-output-48d52b4.txt"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1510 / 154",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "020-synchronization-is-reading-dependent.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "021-bysetpos-first-interval-resolved.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "022-weekly-bymonth-ordering.md",
+   "artifacts": [
+    "findings/repro/022-output.txt",
+    "findings/repro/022-seed-limit-reading.py",
+    "findings/repro/022-probe-cases.ndjson"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "023-byday-limit-footnotes.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "024-dtstart-fill-versus-the-table.md",
+   "artifacts": [
+    "findings/data/024-dtstart-fill.json",
+    "findings/repro/024-dtstart-fill-model.py",
+    "findings/repro/024-probe-cases.ndjson"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "025-nonexistent-local-time-errata.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "30/30",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "026-until-roundtrip-repeated-hour.md",
+   "artifacts": [
+    "findings/repro/026-output.txt",
+    "findings/repro/026-until-roundtrip.py"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "027-a-port-that-did-not-drift.md",
+   "artifacts": [
+    "findings/repro/027-output.txt",
+    "findings/repro/027-port-drift.py"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "028-two-ports-agree-and-the-third-does-not.md",
+   "artifacts": [
+    "findings/repro/028-output.txt",
+    "findings/repro/028-three-ports.py"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "029-the-fourth-lineage-and-a-loop-that-does-not-end.md",
+   "artifacts": [
+    "findings/repro/029-vobject-sunday.py",
+    "findings/repro/029-output.txt"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "030-a-fifth-lineage-that-writes-the-fill-down.md",
+   "artifacts": [
+    "findings/repro/030-output.txt",
+    "findings/repro/030-dtical-dtstart-fill.pl"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1176 / 1721",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "031-one-cluster-three-causes.md",
+   "artifacts": [
+    "findings/repro/031-output.txt",
+    "findings/repro/031-weekly-readings-model.py",
+    "findings/repro/031-sabre-weekly-bymonth.php"
+   ],
+   "figures": 15,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 11,
+    "NOWHERE": 4
+   },
+   "rows": [
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "6/73",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0/41",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "244/244",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "146 / 146",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "36 / 36",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "115 / 115",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "9 / 24",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0 / 47",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0 / 17",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "2 / 13",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0/163",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "4/4",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "237 / 244",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "235 / 244",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "032-a-blind-spot-the-corpus-cannot-see.md",
+   "artifacts": [
+    "findings/repro/032-truncation-blindspot.py"
+   ],
+   "figures": 4,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 2
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "629 / 800",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "800 / 800",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "033-the-last-five-disputes-are-two-questions.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "034-when-the-table-arrived.md",
+   "artifacts": [
+    "findings/data/034-table-provenance.json",
+    "findings/repro/034-table-provenance.py"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "035-one-deletion-and-a-pinned-day.md",
+   "artifacts": [
+    "findings/repro/035-output.txt",
+    "findings/repro/035-dtical-bymonth-pin.pl"
+   ],
+   "figures": 6,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 1,
+    "NOWHERE": 4
+   },
+   "rows": [
+    {
+     "figure": "98%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "155 / 158",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "117 / 118",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0 / 158",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "52 / 118",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "036-a-score-that-depends-on-the-host-locale.md",
+   "artifacts": [
+    "findings/data/036-locale-scores.json",
+    "findings/repro/036-ical4j-locale-wkst.java"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1456 / 1468",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1408 / 1420",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "037-a-limit-that-runs-before-the-thing-it-limits.md",
+   "artifacts": [
+    "findings/data/037-weekly-bymonth-seed-limit.json",
+    "findings/repro/037-ical4j-weekly-bymonth.java"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 3,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "161 / 161",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "60 / 60",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0 / 60",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "038-checking-the-instrument-for-what-it-measured.md",
+   "artifacts": [
+    "findings/data/038-ambient-sweep.json"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "1637 / 13",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "039-what-bysetpos-selects-from.md",
+   "artifacts": [
+    "findings/data/039-bysetpos-interaction.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "040-how-much-a-short-horizon-hides.md",
+   "artifacts": [
+    "findings/data/040-horizon-and-ambient.json"
+   ],
+   "figures": 4,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 4,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "48%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1721 / 0",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "041-a-duplicate-instant-in-a-floating-recurrence.md",
+   "artifacts": [],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "042-what-the-fourth-lineage-hides-past-occurrence-eight.md",
+   "artifacts": [
+    "findings/data/042-sabre-horizon.json",
+    "findings/repro/042-output.txt",
+    "findings/repro/042-sabre-daily-bymonth.php"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "17%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "48%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "6/73",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "043-freq-hourly-ignores-every-by-part.md",
+   "artifacts": [
+    "findings/repro/043-hourly-byparts.sh"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "044-what-bysetpos-selects-from-at-freq-yearly.md",
+   "artifacts": [
+    "findings/repro/044-yearly-bysetpos-and-leapday.sh"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "045-sub-daily-expansion-is-confined-to-one-larger-unit.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "15%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "046-the-iterator-and-the-next-chain-disagree.md",
+   "artifacts": [
+    "findings/data/046-two-traversals.json",
+    "findings/repro/046-two-traversals.py"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 2,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "168/68",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "179/73",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md",
+   "artifacts": [
+    "findings/data/047-dtical-error-column.json"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1176 / 386",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "51 /\n108",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "048-the-last-unswept-column-is-ambient-invariant.md",
+   "artifacts": [
+    "findings/data/048-dtical-bysetpos-ambient.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "049-a-negative-day-that-only-counts-when-it-expands.md",
+   "artifacts": [
+    "findings/data/049-ical4j-negative-limit.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "050-one-cell-of-the-table-four-ways-to-get-it-wrong.md",
+   "artifacts": [
+    "findings/data/050-limit-cell-negative-day.json",
+    "findings/data/050-rescore-of-every-row.json",
+    "findings/repro/050-negative-value-cells.patch"
+   ],
+   "figures": 12,
+   "counts": {
+    "DIRECT": 7,
+    "GLOBAL": 5,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "7 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "4 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "2 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "3 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1176 / 386",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "51 / 108",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1176 / 394",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "51 / 100",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "051-what-is-left-after-the-negative-limit-fix.md",
+   "artifacts": [
+    "findings/data/051-residual-ical4j-attribution.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "052-byweekno-is-one-lineage-deep.md",
+   "artifacts": [
+    "findings/data/052-byweekno-agreement.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "053-a-short-list-is-not-always-my-horizon.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "054-one-mechanism-twenty-seven-failures.md",
+   "artifacts": [
+    "findings/data/054-category-c-rederived.json",
+    "findings/repro/054-predict-weekly-037.py"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "055-a-question-with-no-answer.md",
+   "artifacts": [
+    "findings/data/055-unsatisfiable-bysetpos.json",
+    "findings/repro/055-libical-budget-scaling.c",
+    "findings/repro/055-libical-output.txt",
+    "findings/repro/055-rrulejs-output.txt",
+    "findings/repro/055-rrulejs-setpos-clamp.js",
+    "findings/repro/055-libical-setpos-budget.c"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "056-two-scopes-for-one-word.md",
+   "artifacts": [
+    "findings/data/056-category-f-attribution.json",
+    "findings/repro/056-predict-yearly-pipeline.py"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "057-a-horizon-the-corpus-keeps-on-one-side-only.md",
+   "artifacts": [
+    "findings/data/057-prefix-bucket-rescore.json"
+   ],
+   "figures": 8,
+   "counts": {
+    "DIRECT": 5,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1179 / 385",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "67 / 97",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1179 / 386",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "65 / 98",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1556 / 106",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "058-what-the-whole-field-rejects.md",
+   "artifacts": [
+    "findings/data/058-universal-residual.json"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "059-which-year-owns-a-straddling-week.md",
+   "artifacts": [
+    "findings/data/059-ical4j-before.json",
+    "findings/data/059-rescore.json"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "060-agreement-at-the-bound-is-not-agreement.md",
+   "artifacts": [
+    "findings/data/060-agreement-past-the-bound.json"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1728/1728",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "47/55",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "061-does-a-reading-survive-the-bound.md",
+   "artifacts": [
+    "findings/data/061-readings-past-the-bound.json"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1727/1728",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "062-what-raising-the-bound-costs.md",
+   "artifacts": [
+    "findings/data/062-bound-raise.json"
+   ],
+   "figures": 4,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 4
+   },
+   "rows": [
+    {
+     "figure": "0.022",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.149",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.265",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.0202",
+     "kind": "dec",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "063-a-check-that-only-ever-saw-one-branch.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "97%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "064-the-horizon-i-chose-is-not-the-one-i-pay-for.md",
+   "artifacts": [
+    "findings/repro/064-far-future-adapters.py"
+   ],
+   "figures": 12,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 9,
+    "NOWHERE": 3
+   },
+   "rows": [
+    {
+     "figure": "19%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "81%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "98%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.10",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.53",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.08",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.01",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.022",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0.212",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "67 / 67",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "45 / 67",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0/67",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "065-choosing-both-numbers-at-once.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "3818/3818",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0/67",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "066-the-ports-were-not-identical.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1702/26",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "067-an-empty-list-nobody-had-proved.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "3818 / 28",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "068-the-third-copy.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "47/55",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "069-a-number-with-no-provenance.md",
+   "artifacts": [],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "070-icaljs-is-libical-in-javascript.md",
+   "artifacts": [
+    "findings/repro/070-icaljs-contracting-negatives.js"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "071-two-of-icaljs-residuals-are-inherited.md",
+   "artifacts": [
+    "findings/data/071-icaljs-residual-attribution.json"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "47/55",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "072-an-audit-of-my-own-derived-counts.md",
+   "artifacts": [
+    "findings/data/072-derived-count-audit.json"
+   ],
+   "figures": 7,
+   "counts": {
+    "DIRECT": 5,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1376/236",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "31/84",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1075 / 330",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "146 / 114",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "29/15",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "27/11",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "16/16",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "073-which-error-columns-are-really-the-clock.md",
+   "artifacts": [
+    "findings/data/073-deadline-columns.json",
+    "findings/repro/073-icaljs-abort-vs-deadline.js",
+    "findings/repro/073-split-error-column.py"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "42/42",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "074-what-reproducing-an-output-attributes.md",
+   "artifacts": [
+    "findings/data/074-icaljs-residual-reproduced.json",
+    "findings/data/074-probe-results.json",
+    "findings/repro/074-attribute-icaljs-residual.py",
+    "findings/repro/074-run-probes.sh",
+    "findings/repro/074-probes.ndjson"
+   ],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "075-attribution-by-reproduction-ical4j.md",
+   "artifacts": [
+    "findings/data/075-ical4j-residual-reproduced.json",
+    "findings/data/075-probe-results.json",
+    "findings/repro/075-attribute-ical4j-residual.py",
+    "findings/repro/075-probes.ndjson",
+    "findings/repro/075-run-probes.sh"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 2,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1420 / 230",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "076-attribution-by-reproduction-sabre.md",
+   "artifacts": [
+    "findings/data/076-sabre-residual-reproduced.json",
+    "findings/repro/076-sabre-probes.php",
+    "findings/repro/076-attribute-sabre-residual.py",
+    "findings/repro/076-sabre-probes-output.txt"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "077-a-table-that-outlived-its-corpus.md",
+   "artifacts": [
+    "findings/data/077-rows-remeasured.json"
+   ],
+   "figures": 5,
+   "counts": {
+    "DIRECT": 2,
+    "GLOBAL": 2,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "1420 / 230",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "76 / 1",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1556 / 99",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "66 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "1659/1658",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "078-recounting-the-marked-prose.md",
+   "artifacts": [
+    "findings/data/078-ical4j-engb-reproduced.json"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 2,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1435 / 215",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "76 / 1",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "69/3",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "079-attribution-by-reproduction-dtical.md",
+   "artifacts": [
+    "findings/data/079-dtical-residual-reproduced.json",
+    "findings/repro/079-dtical-probes.pl",
+    "findings/repro/079-dtical-decompose.py",
+    "findings/repro/079-dtical-probes-output.txt",
+    "findings/repro/079-attribute-dtical-residual.py",
+    "findings/repro/079-eval-expr.pl"
+   ],
+   "figures": 6,
+   "counts": {
+    "DIRECT": 2,
+    "GLOBAL": 0,
+    "NOWHERE": 4
+   },
+   "rows": [
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1164 / 370",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "69 / 124",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "1163 / 368",
+     "kind": "frac",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "69 / 127",
+     "kind": "frac",
+     "status": "NOWHERE"
+    }
+   ]
+  },
+  {
+   "finding": "080-the-second-release-had-no-way-back.md",
+   "artifacts": [
+    "findings/data/080-ical4j-release-delta.json"
+   ],
+   "figures": 10,
+   "counts": {
+    "DIRECT": 8,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1408 / 243",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "75 / 1",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1477 / 174",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1420 / 230",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "76 / 1",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1489 / 161",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1435 / 215",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1504 / 146",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "1556 / 99",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "66 / 7",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "081-what-the-board-says-about-the-disputed-cases.md",
+   "artifacts": [
+    "findings/data/081-disputed-audit.json"
+   ],
+   "figures": 2,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 2,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "082-the-specs-own-examples-were-not-on-the-board.md",
+   "artifacts": [
+    "findings/data/082-rfc-examples-audit.json"
+   ],
+   "figures": 4,
+   "counts": {
+    "DIRECT": 1,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "0.14",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.17",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.13",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "42/42",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "083-the-date-value-type-was-not-a-wall.md",
+   "artifacts": [
+    "findings/data/083-date-value-type-table.json",
+    "findings/repro/083-output.txt",
+    "findings/repro/083-run.sh",
+    "findings/repro/083-sabre-composed-predictor.py"
+   ],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 3,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "14/14",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "20/20",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "6/6",
+     "kind": "frac",
+     "status": "DIRECT"
+    }
+   ]
+  },
+  {
+   "finding": "084-a-corpus-file-that-never-rebuilt-the-same-way.md",
+   "artifacts": [],
+   "figures": 3,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "16/18",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "18/18",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "085-four-red-builds-and-a-trailing-newline.md",
+   "artifacts": [],
+   "figures": 1,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 1,
+    "NOWHERE": 0
+   },
+   "rows": [
+    {
+     "figure": "1.0",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "086-the-residual-was-the-wrong-direction.md",
+   "artifacts": [
+    "findings/repro/086-sabre-probes-output.txt",
+    "findings/repro/086-sabre-probes.php"
+   ],
+   "figures": 0,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 0,
+    "NOWHERE": 0
+   },
+   "rows": []
+  },
+  {
+   "finding": "087-bysetpos-is-over-blamed.md",
+   "artifacts": [
+    "findings/data/087-localisation-dateutil.json",
+    "findings/data/087-localisation-dmfs.json",
+    "findings/data/087-localisation-ical4j411.json",
+    "findings/data/087-localisation-ical4j430.json",
+    "findings/data/087-localisation-icaljs.json",
+    "findings/data/087-localisation-rrulejs.json",
+    "findings/data/087-localisation-sabre.json",
+    "findings/data/087-stripped-reference.json",
+    "findings/repro/087-sabre-stripped-probe.ndjson",
+    "findings/repro/087-bysetpos-localisation.py",
+    "findings/repro/087-sabre-stripped-probe.txt"
+   ],
+   "figures": 4,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 3,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "62%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "83%",
+     "kind": "pct",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "74%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "73%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "088-the-most-over-blamed-part-is-not-bysetpos.md",
+   "artifacts": [
+    "findings/data/088-necessity-byday-dateutil.json",
+    "findings/data/088-necessity-byday-dmfs.json",
+    "findings/data/088-necessity-byday-ical4j411.json",
+    "findings/data/088-necessity-byday-ical4j430.json",
+    "findings/data/088-necessity-byday-icaljs.json",
+    "findings/data/088-necessity-byday-rrulejs.json",
+    "findings/data/088-necessity-byday-sabre.json",
+    "findings/data/088-necessity-byhour-dateutil.json",
+    "findings/data/088-necessity-byhour-dmfs.json",
+    "findings/data/088-necessity-byhour-ical4j411.json",
+    "findings/data/088-necessity-byhour-ical4j430.json",
+    "findings/data/088-necessity-byhour-icaljs.json",
+    "findings/data/088-necessity-byhour-rrulejs.json",
+    "findings/data/088-necessity-byhour-sabre.json",
+    "findings/data/088-necessity-byminute-dateutil.json",
+    "findings/data/088-necessity-byminute-dmfs.json",
+    "findings/data/088-necessity-byminute-ical4j411.json",
+    "findings/data/088-necessity-byminute-ical4j430.json",
+    "findings/data/088-necessity-byminute-icaljs.json",
+    "findings/data/088-necessity-byminute-rrulejs.json",
+    "findings/data/088-necessity-byminute-sabre.json",
+    "findings/data/088-necessity-bymonth-dateutil.json",
+    "findings/data/088-necessity-bymonth-dmfs.json",
+    "findings/data/088-necessity-bymonth-ical4j411.json",
+    "findings/data/088-necessity-bymonth-ical4j430.json",
+    "findings/data/088-necessity-bymonth-icaljs.json",
+    "findings/data/088-necessity-bymonth-rrulejs.json",
+    "findings/data/088-necessity-bymonth-sabre.json",
+    "findings/data/088-necessity-bymonthday-dateutil.json",
+    "findings/data/088-necessity-bymonthday-dmfs.json",
+    "findings/data/088-necessity-bymonthday-ical4j411.json",
+    "findings/data/088-necessity-bymonthday-ical4j430.json",
+    "findings/data/088-necessity-bymonthday-icaljs.json",
+    "findings/data/088-necessity-bymonthday-rrulejs.json",
+    "findings/data/088-necessity-bymonthday-sabre.json",
+    "findings/data/088-necessity-bysecond-dateutil.json",
+    "findings/data/088-necessity-bysecond-dmfs.json",
+    "findings/data/088-necessity-bysecond-ical4j411.json",
+    "findings/data/088-necessity-bysecond-ical4j430.json",
+    "findings/data/088-necessity-bysecond-icaljs.json",
+    "findings/data/088-necessity-bysecond-rrulejs.json",
+    "findings/data/088-necessity-bysecond-sabre.json",
+    "findings/data/088-necessity-byweekno-dateutil.json",
+    "findings/data/088-necessity-byweekno-dmfs.json",
+    "findings/data/088-necessity-byweekno-ical4j411.json",
+    "findings/data/088-necessity-byweekno-ical4j430.json",
+    "findings/data/088-necessity-byweekno-icaljs.json",
+    "findings/data/088-necessity-byweekno-rrulejs.json",
+    "findings/data/088-necessity-byweekno-sabre.json",
+    "findings/data/088-necessity-byyearday-dateutil.json",
+    "findings/data/088-necessity-byyearday-dmfs.json",
+    "findings/data/088-necessity-byyearday-ical4j411.json",
+    "findings/data/088-necessity-byyearday-ical4j430.json",
+    "findings/data/088-necessity-byyearday-icaljs.json",
+    "findings/data/088-necessity-byyearday-rrulejs.json",
+    "findings/data/088-necessity-byyearday-sabre.json",
+    "findings/data/088-stripped-reference-byday.json",
+    "findings/data/088-stripped-reference-byhour.json",
+    "findings/data/088-stripped-reference-byminute.json",
+    "findings/data/088-stripped-reference-bymonth.json",
+    "findings/data/088-stripped-reference-bymonthday.json",
+    "findings/data/088-stripped-reference-bysecond.json",
+    "findings/data/088-stripped-reference-byweekno.json",
+    "findings/data/088-stripped-reference-byyearday.json",
+    "findings/repro/088-part-necessity.py"
+   ],
+   "figures": 29,
+   "counts": {
+    "DIRECT": 14,
+    "GLOBAL": 14,
+    "NOWHERE": 1
+   },
+   "rows": [
+    {
+     "figure": "63%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "33%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "95%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "38%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "34%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "62%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "+0.40",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.68",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.00",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.80",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "0 / 0",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "5 / 2",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0 / 8",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "9 / 2",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "21 / 49",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "40 / 58",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "13 / 13",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "266 / 100",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "17 / 300",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "13 / 7",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "73 / 48",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "94 / 31",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "73 / 25",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "94 / 12",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "2 / 1",
+     "kind": "frac",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0 / 1",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "50 / 30",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "438 / 225",
+     "kind": "frac",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "245 / 410",
+     "kind": "frac",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "089-over-blame-is-not-a-property-of-the-part.md",
+   "artifacts": [],
+   "figures": 38,
+   "counts": {
+    "DIRECT": 0,
+    "GLOBAL": 36,
+    "NOWHERE": 2
+   },
+   "rows": [
+    {
+     "figure": "63%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "30%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "42%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "34%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "35%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "40%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "25%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "9%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "56%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "26%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "11%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "21%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "18%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "70%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "59%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "24%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "62%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "29%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "50%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "27%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "95%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "64%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "65%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "38%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "55%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "45%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "33%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "17%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "58%",
+     "kind": "pct",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "+0.80",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "+0.40",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "0.00",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.62",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.68",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.70",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "-0.80",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "-0.19",
+     "kind": "dec",
+     "status": "GLOBAL"
+    },
+    {
+     "figure": "-0.40",
+     "kind": "dec",
+     "status": "GLOBAL"
+    }
+   ]
+  },
+  {
+   "finding": "090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md",
+   "artifacts": [
+    "findings/data/090-profile-grid.json",
+    "findings/repro/090-profile-grid.py"
+   ],
+   "figures": 13,
+   "counts": {
+    "DIRECT": 11,
+    "GLOBAL": 0,
+    "NOWHERE": 2
+   },
+   "rows": [
+    {
+     "figure": "74%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "18%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "27%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "100%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0%",
+     "kind": "pct",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "-0.80",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "-0.68",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "-0.70",
+     "kind": "dec",
+     "status": "NOWHERE"
+    },
+    {
+     "figure": "-0.62",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "+0.80",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "+0.40",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "0.00",
+     "kind": "dec",
+     "status": "DIRECT"
+    },
+    {
+     "figure": "-0.19",
+     "kind": "dec",
+     "status": "DIRECT"
+    }
+   ]
+  }
+ ]
+}

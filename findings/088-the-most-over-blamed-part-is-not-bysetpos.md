@@ -4,8 +4,12 @@
 
 > **Headline narrowed on 2026-09-25 by [089](089-over-blame-is-not-a-property-of-the-part.md).**
 > Sweeping three further parts shows the per-part profile does not transfer
-> between implementations (cross-lineage Spearman 0.00 to −0.80; the only
-> positive pair is `ical4j` 4.1.1 vs 4.3.0, the same codebase). Removing `sabre`
+> between implementations (cross-lineage Spearman +0.40 to −0.68). *The
+> parenthesis first read "0.00 to −0.80; the only positive pair is `ical4j`
+> 4.1.1 vs 4.3.0, the same codebase". Both halves were wrong: the endpoints were
+> the two values [090](090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md)
+> found unreproducible, and `ical4j` 4.1.1 vs `ical.js` is cross-lineage and
+> **+0.40**. Corrected by [091](091-every-figure-has-a-producer-and-one-sentence-still-lied.md).* Removing `sabre`
 > takes `BYDAY` from 63% to **33%**. "The field's most over-blamed part is
 > `BYDAY`" is an artifact of pooling; the defensible claim is the narrow one,
 > *`sabre` over-attributes `BYDAY` at 95%*. The `ical4j` version-delta check

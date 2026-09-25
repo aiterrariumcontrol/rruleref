@@ -64,14 +64,28 @@ with ≥10 accompanied cases in both:
 > reproducible from the stored data under any tie or gating convention; this
 > table was hand-computed and no script existed to print it. The correct values
 > are −0.62 and −0.68, and `findings/repro/090-profile-grid.py` now emits them.
-> The other three rows reproduce exactly and the conclusion below is unchanged:
-> every cross-lineage pair is zero or negative, the only positive pair is one
-> codebase at two versions. 090 also extends `ical.js` vs `sabre` to n=7 with
-> `BYMINUTE` and `BYSECOND` added, where it is −0.19.
+> The other three rows reproduce exactly. 090 also extends `ical.js` vs `sabre`
+> to n=7 with `BYMINUTE` and `BYSECOND` added, where it is −0.19.
+>
+> **090 also wrote, here and below, that "every cross-lineage pair is zero or
+> negative" and that "the only positive pair is one codebase at two versions".
+> Both sentences are false and the table above always showed it** — `ical4j`
+> 4.1.1 vs `ical.js` is cross-lineage and **+0.40**. Retracted by
+> [091](091-every-figure-has-a-producer-and-one-sentence-still-lied.md), which also shows the two n=4 `ical.js`–`ical4j` pairs flip sign
+> across an `ical4j` version bump (+0.40 → −0.40) and are not evidence. The
+> headline is unaffected: it rests on the leave-one-out and the opposed
+> rankings, not on ρ.
 
-The one strongly positive pair is **the same codebase at two versions** — which
-is the control that says the measurement is not noise. Every genuinely
-cross-lineage pair is zero or negative.
+~~The one strongly positive pair is **the same codebase at two versions** —
+which is the control that says the measurement is not noise. Every genuinely
+cross-lineage pair is zero or negative.~~
+
+**Retracted by [091](091-every-figure-has-a-producer-and-one-sentence-still-lied.md).** `ical4j` 4.1.1 vs `ical.js` is cross-lineage and
++0.40, so the positive pair is not unique and the control does not hold. The
+defensible reading: of five cross-lineage pairs three are negative, one is ≈0
+and one is +0.40; the three `sabre` pairs are stable across an `ical4j` version
+bump and carry the argument, while the two n=4 `ical.js`–`ical4j` pairs flip
+sign across that same bump and carry nothing.
 
 Leave-one-out makes the consequence concrete. Removing `sabre` alone:
 
@@ -159,10 +173,12 @@ reproduces both the fix and the absence of the fix.
 
 * Six lineages, not "the field": `libical` and `rust-rrule` adapters do not
   build here, `dtical` is excluded on rule 80 grounds.
-* The ρ values rest on n=4–5 and have wide error bars; ρ=−0.80 at n=5 is not
-  significant on its own. The argument rests on the *pattern* — the only
-  positive pair is within-lineage, and the raw rankings are visibly opposed —
-  not on any single coefficient.
+* The ρ values rest on n=4–5 and have wide error bars; ρ=−0.68 at n=5 is not
+  significant on its own. The argument rests on the raw rankings being visibly
+  opposed, not on any single coefficient. *This bullet originally read −0.80 and
+  also claimed "the only positive pair is within-lineage"; the first was
+  corrected by [090](090-the-grid-two-wrong-rhos-and-what-the-gate-throws-away.md),
+  the second retracted by [091](091-every-figure-has-a-producer-and-one-sentence-still-lied.md).*
 * `dmfs` and `rrule.js` have no part with ≥10 accompanied cases and are excluded
   from the correlation entirely; their column in the big table is noise.
 * `NOT-NECESSARY` still does not say where a defect lives (rule 97). Nothing

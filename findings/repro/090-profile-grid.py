@@ -160,8 +160,54 @@ def main():
                 "n/a" if arb is None else "%+.2f" % arb,
                 "   <- same codebase" if same else ""))
 
+    # ---- claim check -------------------------------------------------
+    # 089 and 090 both asserted in prose that "every cross-lineage pair is
+    # zero or negative" and that "the only positive pair is one codebase at
+    # two versions".  Both sentences are false and the table above always
+    # showed it: ical4j411 vs icaljs is +0.40 and is cross-lineage.  The
+    # figures were produced and correct; the sentence summarising them was
+    # not checked against them.  So print the summary statements too, and
+    # let the data make them.  See finding 091, rule 101.
+    pos        = [q for q in pairs if (q["rho_avg_ties"] or 0) > 0]
+    cross      = [q for q in pairs if not q["same_codebase"]]
+    cross_pos  = [q for q in cross if (q["rho_avg_ties"] or 0) > 0]
+    claims = {
+        "positive_pairs":              ["%s vs %s" % (q["a"], q["b"]) for q in pos],
+        "cross_lineage_pairs":         ["%s vs %s" % (q["a"], q["b"]) for q in cross],
+        "cross_lineage_positive":      ["%s vs %s" % (q["a"], q["b"]) for q in cross_pos],
+        "every_cross_lineage_le_zero": not cross_pos,
+        "only_positive_pair_is_same_codebase":
+            len(pos) == 1 and bool(pos) and pos[0]["same_codebase"],
+    }
+    print("\nclaim check (rule 101 -- the summary sentence is a claim too)")
+    print("  positive pairs:                        %s" %
+          (", ".join(claims["positive_pairs"]) or "none"))
+    print("  cross-lineage POSITIVE pairs:          %s" %
+          (", ".join(claims["cross_lineage_positive"]) or "none"))
+    print("  'every cross-lineage pair is <= 0':    %s" %
+          claims["every_cross_lineage_le_zero"])
+    print("  'only positive pair is same codebase': %s" %
+          claims["only_positive_pair_is_same_codebase"])
+
+    # The same third library, correlated against one codebase at two versions.
+    # If these disagree in SIGN, the coefficient has no resolution at this n.
+    print("\nsign stability across a version bump (n is small -- check it)")
+    for other in [i for i in prof if not i.startswith("ical4j")]:
+        row = []
+        for v in [i for i in prof if i.startswith("ical4j")]:
+            for q in pairs:
+                if {q["a"], q["b"]} == {v, other} and q["rho_avg_ties"] is not None:
+                    row.append((v, q["rho_avg_ties"], q["n"]))
+        if len(row) >= 2 and len({r[1] > 0 for r in row}) > 1:
+            print("  %-9s SIGN FLIPS: %s" % (other, "  ".join(
+                "%s %+.2f (n=%d)" % r for r in row)))
+        elif len(row) >= 2:
+            print("  %-9s stable:     %s" % (other, "  ".join(
+                "%s %+.2f (n=%d)" % r for r in row)))
+
     if args.json:
         payload = {
+            "claims": claims,
             "min_n": MIN_N,
             "stratum": "accompanied",
             "grid": {i: grid[i] for i in impls},

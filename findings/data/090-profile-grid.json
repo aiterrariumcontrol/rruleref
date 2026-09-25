@@ -1,4 +1,22 @@
 {
+ "claims": {
+  "cross_lineage_pairs": [
+   "ical4j411 vs icaljs",
+   "ical4j411 vs sabre",
+   "ical4j430 vs icaljs",
+   "ical4j430 vs sabre",
+   "icaljs vs sabre"
+  ],
+  "cross_lineage_positive": [
+   "ical4j411 vs icaljs"
+  ],
+  "every_cross_lineage_le_zero": false,
+  "only_positive_pair_is_same_codebase": false,
+  "positive_pairs": [
+   "ical4j411 vs ical4j430",
+   "ical4j411 vs icaljs"
+  ]
+ },
  "grid": {
   "dateutil": {
    "byday": {

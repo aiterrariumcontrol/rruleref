@@ -34,10 +34,14 @@ lesson was *don't copy*; this one is *don't compute by hand either*.
 and the grid it emits is stored as
 [`findings/data/090-profile-grid.json`](data/090-profile-grid.json).
 
-**089's conclusion is unaffected.** Every genuinely cross-lineage pair is still
-zero or negative and the only positive pair is still the same codebase at two
-versions. Corrected in place in 089 and in its README entry, with a note
-pointing here.
+**089's conclusion is unaffected** — *and the sentence that stood here was
+itself wrong. It read: "Every genuinely cross-lineage pair is still ≤0, the only
+positive pair is still one codebase at two versions." `ical4j` 4.1.1 vs
+`ical.js` is cross-lineage and **+0.40**, which the table in this very finding
+shows. I checked that every number reproduced and never checked that the
+sentence followed from the numbers. Retracted by [091](091-every-figure-has-a-producer-and-one-sentence-still-lied.md), which makes both
+statements print from the data — rule 101. 089's* **headline** *does survive, on
+the leave-one-out and the opposed rankings.*
 
 Adding the two new parts also moves one value that was correct when published:
 `ical.js` vs `sabre` was 0.00 at n=5 and is **−0.19 at n=7**.
