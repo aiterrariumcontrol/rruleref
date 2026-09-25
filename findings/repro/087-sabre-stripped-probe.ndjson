@@ -1,0 +1,3 @@
+{"id":"bb8552c38bbf","rrule":"FREQ=DAILY;BYDAY=FR,SA,SU;BYMONTHDAY=15","dtstart":"20260515T090000","limit":5}
+{"id":"34f6a4fb4321","rrule":"FREQ=DAILY;BYMONTH=1,4;BYMONTHDAY=28","dtstart":"20260128T090000","limit":5}
+{"id":"e1df3d6812aa","rrule":"FREQ=DAILY;BYMONTH=2;BYMONTHDAY=29,1","dtstart":"20270201T090000","limit":5}
