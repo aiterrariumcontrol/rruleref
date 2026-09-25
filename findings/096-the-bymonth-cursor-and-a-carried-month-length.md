@@ -172,6 +172,17 @@ Not claimed:
   > first listed value of a time part at `FREQ=YEARLY`, and the omission of
   > `DTSTART` follows from that — `DTSTART`'s 09:30 is not in the surviving set.
   > No "composed predictor of depth three" was needed. The residual is **13**.
+  >
+  > **Further correction added 2026-09-25 (finding
+  > [099](099-the-anchor-year-a-negative-monthday-borrowed.md)).** Six more are
+  > now attributed. At `FREQ=YEARLY` with `BYMONTHDAY` and no other expanding
+  > by-part, `ical.js` confines the expansion to `DTSTART`'s month, and when the
+  > first listed `BYMONTHDAY` is negative and `DTSTART` is in January it also
+  > anchors the year lattice one year early. A predictor built from those two
+  > facts reproduces `0fcc0ebb9669`, `57bd6869b586`, `5b57fff10b12`,
+  > `71c5fc332bd4`, `7a381d6a4176` and `83ed4e4655a6` element for element. The
+  > residual is **7**. None of the six could have been reached from J, K or L,
+  > all three of which require `BYMONTH`.
 - The published `ical.js` residual count of 23 in 074 was correct when written
   and is **left standing there**, with a pointer to this finding, per the
   practice 095 followed.

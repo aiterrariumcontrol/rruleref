@@ -78,6 +78,14 @@
    ],
    "baseline": "098.txt",
    "finding": "098"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/099-icaljs-yearly-monthday-anchor.py"
+   ],
+   "baseline": "099.txt",
+   "finding": "099"
   }
  ]
 }

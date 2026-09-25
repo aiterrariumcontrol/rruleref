@@ -176,7 +176,12 @@ and worse failure than emitting them in an unhelpful order.
 A further 80 carry one at another frequency and are **not** claimed here. Of
 the 7, one — `3939127583ee` — was in
 [074](074-what-reproducing-an-output-attributes.md)'s unattributed residual as
-narrowed by 096 and 097, so **the residual goes 14 → 13**. Two more were filed
+narrowed by 096 and 097, so **the residual goes 14 → 13**.
+
+> **Correction notice added 2026-09-25 (finding
+> [099](099-the-anchor-year-a-negative-monthday-borrowed.md)).** The **13** was
+> correct as measured and is left standing. Six of the 13 are now attributed to
+> a separate `FREQ=YEARLY` `BYMONTHDAY` mechanism; the residual is **7**. Two more were filed
 under the "070-B" label discussed above and are re-attributed here. The other
 four already failed for reasons 074 recorded.
 

@@ -1,0 +1,74 @@
+099 -- ical.js, FREQ=YEARLY with BYMONTHDAY and no other expanding by-part
+cases_id 7bd9731d3a48 ; adapter case timeout 45000 ms
+sabre is excluded from unanimity counts for its known unconditional DTSTART (finding 024); rrule.js and dateutil are ONE vote (rule 24).
+
+-- N: the anchor defect. Expected first year = DTSTART year + INTERVAL - 1.
+  N-int2    ical.js first year 2027 (predicted 2027) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026]
+             corpus case 7a381d6a4176's shape: first year 2027, not 2026
+  N-int3    ical.js first year 2028 (predicted 2028) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026]
+             INTERVAL=3 -> first year 2028. The lag is INTERVAL-1, so it grows with INTERVAL
+  N-int4    ical.js first year 2029 (predicted 2029) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026]
+             corpus case 57bd6869b586: INTERVAL=4 -> first year 2029, lag 3
+  N-int5    ical.js first year 2030 (predicted 2030) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026]
+             INTERVAL=5 -> lag 4. The anchor is fixed at 2025; only the stride changes
+  N-md31    ical.js first year 2028 (predicted 2028) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026, 2029]
+             magnitude is irrelevant: -31 borrows into 2025 just as -2 does
+  N-first   ical.js first year 2028 (predicted 2028) OK ; dateutil/dmfs/ical4j411/ical4j430 first year [2026]
+             FIRST LISTED value decides: -2 first -> shifted
+
+-- C: controls. ical.js must NOT be shifted on any of these.
+  C-order   ical.js first year 2026, DTSTART year 2026  OK
+             SAME SET, positive first -> NOT shifted. Only setup_defaults' [0] is read
+  C-pos     ical.js first year 2026, DTSTART year 2026  OK
+             positive monthday, same shape -> first year 2026. The sign is load-bearing
+  C-july    ical.js first year 2026, DTSTART year 2026  OK
+             THE CONTROL THAT SEPARATES N FROM M: July DTSTART, -2 borrows to June and stays in 2026 -> no shift, and ical.js then equals sabre/dmfs/ical4j exactly
+  C-feb     ical.js first year 2026, DTSTART year 2026  OK
+             February DTSTART: borrows to January, same year -> no shift. JANUARY is load-bearing
+  C-dec     ical.js first year 2026, DTSTART year 2026  OK
+             December DTSTART: no shift
+  C-bymonth ical.js first year 2026, DTSTART year 2026  OK
+             an explicit BYMONTH moves the anchor month off January -> no shift
+  C-monthly ical.js first year 2026, DTSTART year 2026  OK
+             same parts at MONTHLY are CORRECT. FREQ=YEARLY is load-bearing
+  C-yearday ical.js first year 2026, DTSTART year 2026  OK
+             a negative BYYEARDAY is correct: not about negatives in general
+  C-byday   ical.js first year 2026, DTSTART year 2026  OK
+             a negative ordinal BYDAY is correct: not about negatives in general
+
+  all 6 N probes and 9 controls behave as characterised
+
+-- M: the month-expansion DISPUTE. Not scored as a defect.
+  M-neg  FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=-2   (does BYMONTHDAY expand over all twelve months at YEARLY?)
+      dateutil   20260130 20260227 20260330 20260429 20260530 20260629
+      icaljs     20270130 20290130 20310130 20330130 20350130 20370130
+      rrulejs    20260130 20260227 20260330 20260429 20260530 20260629
+      sabre      20260130 20280130 20300130 20320130 20340130 20360130
+      dmfs       20260130 20280130 20300130 20320130 20340130 20360130
+      ical4j411  20260130 20280130 20300130 20320130 20340130 20360130
+      ical4j430  20260130 20280130 20300130 20320130 20340130 20360130
+    DTSTART's month only   icaljs sabre dmfs ical4j411 ical4j430
+    all twelve             dateutil rrulejs
+  M-pos  FREQ=YEARLY;BYMONTHDAY=30   (the same question with a POSITIVE value, where N is not in play at all)
+      dateutil   20260130 20260330 20260430 20260530 20260630 20260730
+      icaljs     20260130 20270130 20280130 20290130 20300130 20310130
+      rrulejs    20260130 20260330 20260430 20260530 20260630 20260730
+      sabre      20260130 20270130 20280130 20290130 20300130 20310130
+      dmfs       20260130 20270130 20280130 20290130 20300130 20310130
+      ical4j411  20260130 20270130 20280130 20290130 20300130 20310130
+      ical4j430  20260130 20270130 20280130 20290130 20300130 20310130
+    DTSTART's month only   icaljs sabre dmfs ical4j411 ical4j430
+    all twelve             dateutil rrulejs
+  RFC 5545 3.3.10 lists BYMONTHDAY as EXPAND at FREQ=YEARLY. The field is split,
+  so this finding records the split and does not call either side a defect.
+
+-- the predictor, against ical.js's answers on every in-scope corpus case
+  in-scope corpus cases: 44 of 1727
+  predictor reproduces ical.js EXACTLY on 42, misses 2: 652f31e6bde6 1952128a3c40
+  The misses are NOT claimed. Both have DTSTART in February with a BYMONTHDAY
+  whose magnitude exceeds February's length, where by_data.BYMONTHDAY is
+  additionally rewritten by normalizeByMonthDayRules between years.
+
+-- against 074's unattributed residual
+  in scope and unattributed: 7  0fcc0ebb9669 1952128a3c40 57bd6869b586 5b57fff10b12 71c5fc332bd4 7a381d6a4176 83ed4e4655a6
+  reproduced exactly here  : 6  0fcc0ebb9669 57bd6869b586 5b57fff10b12 71c5fc332bd4 7a381d6a4176 83ed4e4655a6
