@@ -1,0 +1,35 @@
+sabre/vobject 4.6.1
+
+A  nextWeekly() advances by ONE HOUR when the rule carries BYHOUR, and the
+   week rollover it then looks for can only fire at hour 0 of the first day
+   of the week -- a no-op at INTERVAL=1. So a weekly rule becomes a DAILY
+   one: this asks for 9 o'clock once a week and gets 9 o'clock every day.
+   Unlike every other defect in finding 076, this ADDS occurrences.
+  RRULE:FREQ=WEEKLY;BYHOUR=9   DTSTART:20260302T090000
+  sabre : 20260302T090000 20260303T090000 20260304T090000 20260305T090000 20260306T090000 20260307T090000
+  RFC   : 20260302T090000 20260309T090000 20260316T090000 20260323T090000 20260330T090000 20260406T090000
+
+B  nextYearly()'s BYMONTH branch walks the month number and then calls
+   setDate() with the day number it already had. PHP's setDate() overflows
+   rather than rejecting, so 29 February in a common year becomes 1 March --
+   and the day number for every later occurrence is then 1.
+  RRULE:FREQ=YEARLY;INTERVAL=2;BYMONTH=2   DTSTART:20240229T090000
+  sabre : 20240229T090000 20260301T090000 20280201T090000 20300201T090000 20320201T090000 20340201T090000
+  RFC   : 20240229T090000 20280229T090000 20320229T090000 20360229T090000 20400229T090000 20440229T090000
+
+B' The same rule at INTERVAL=4 is CORRECT for nineteen occurrences, because
+   every step lands in a leap year -- until 2100, which is divisible by 100
+   and not by 400. Ten lines of comment in the method above this one explain
+   why the leap-day guard must not just add multiples of four, and name 2100.
+   This branch has no such care: watch position 20 and everything after it.
+  RRULE:FREQ=YEARLY;INTERVAL=4;BYMONTH=2   DTSTART:20240229T090000
+  sabre : 20240229T090000 20280229T090000 20320229T090000 20360229T090000 20400229T090000 20440229T090000 20480229T090000 20520229T090000 20560229T090000 20600229T090000 20640229T090000 20680229T090000 20720229T090000 20760229T090000 20800229T090000 20840229T090000 20880229T090000 20920229T090000 20960229T090000 21000301T090000 21040201T090000 21080201T090000
+  RFC   : ... 20960229T090000 21040229T090000 21080229T090000   (2100 is not a leap year, so 3.3.10 gives nothing there)
+
+C  getMonthlyOccurrences() is called for ONE month and applies BYSETPOS
+   inside it, so at FREQ=YEARLY the set BYSETPOS counts within is the month,
+   not the year. 'the 2nd Wednesday of September-or-November' becomes 'the
+   2nd Wednesday of September AND the 2nd Wednesday of November'.
+  RRULE:FREQ=YEARLY;BYMONTH=9,11;BYDAY=WE;BYSETPOS=2   DTSTART:20270908T090000
+  sabre : 20270908T090000 20271110T090000 20280913T090000 20281108T090000 20290912T090000 20291114T090000
+  RFC   : 20270908T090000 20280913T090000 20290912T090000 20300911T090000 20310910T090000 20320908T090000

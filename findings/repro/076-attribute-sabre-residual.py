@@ -278,9 +278,228 @@ def yearly_no_bymonth(c):
 
 
 
+# ------------------------------------------------------------- mechanism 6/7
+#
+# The two mechanisms below were added by finding 086.  Everything above models
+# sabre by DELETING what a code path does not read; that is a rewrite, and a
+# rewrite is only as good as the assumption that what IS read is then handled
+# correctly.  For two branches it is not, so these two SIMULATE the branch
+# statement for statement instead of rewriting the rule.  They are narrower
+# than the deletion models -- each answers only for one branch of one method --
+# and so they run first.
+
+def php_w(d):
+    """PHP format('w'): Sunday=0 .. Saturday=6, which is also $dayMap."""
+    return d.isoweekday() % 7
+
+
+def php_setdate(dt, y, m, day):
+    """PHP DateTime::setDate(), which does NOT reject an out-of-range day: it
+    overflows into the following month.  setDate(2026, 2, 29) is 2026-03-01."""
+    base = date(y, m, 1) + timedelta(days=day - 1)
+    return dt.replace(year=base.year, month=base.month, day=base.day)
+
+
+def _cap(c, p):
+    n = c['limit']
+    if p.get('COUNT'):
+        n = min(n, int(p['COUNT']))
+    return n
+
+
+def _until(p):
+    u = p.get('UNTIL')
+    if not u:
+        return None
+    u = u.rstrip('Z')
+    return u if 'T' in u else u + 'T000000'
+
+
+def _run(c, p, step):
+    """The iterator yields DTSTART first, then repeats step()."""
+    cur = datetime.strptime(c['dtstart'], FMT)
+    st = cur.time()
+    cap, until = _cap(c, p), _until(p)
+    out = [cur.strftime(FMT)]
+    for _ in range(cap * 4):
+        if len(out) >= cap:
+            break
+        cur = step(cur, st)
+        if cur is None:
+            return None
+        s = cur.strftime(FMT)
+        if until and s > until:
+            break
+        out.append(s)
+    return out[:cap]
+
+
+def weekly_hour_walk(c):
+    """nextWeekly() with BYHOUR advances the clock by ONE HOUR, not one week.
+
+        do {
+            if ($this->byHour) { $this->currentDate = ...modify('+1 hours'); }
+            else               { $this->advanceTheDate('+1 days'); }
+            ...
+            if ($currentDay === $firstDay && (!$this->byHour || '0' == $currentHour)) {
+                $this->currentDate = ...modify('+'.($this->interval - 1).' weeks');
+                ...
+            }
+        } while ((byDay && !in_array(currentDay, days)) || (byHour && !in_array(currentHour, hours)));
+
+    The week rollover -- the only place INTERVAL and WKST are consulted -- can
+    only fire at hour 0 of the first day of the week, and at INTERVAL=1 it is a
+    no-op.  Nothing else in the loop is weekly.  So FREQ=WEEKLY;BYHOUR=9 is not
+    9 o'clock once a week: it is 9 o'clock EVERY DAY, and the frequency the
+    caller asked for has been silently replaced by a denser one.  That is the
+    opposite direction from every other defect here, which drop occurrences.
+
+    BYSETPOS is not read at WEEKLY at all, which is why deleting it (mechanism
+    1) was right about the rule and still wrong about the answer."""
+    p = parts(c['rrule'])
+    if p.get('FREQ') != 'WEEKLY' or not p.get('BYHOUR'):
+        return None
+    interval = int(p.get('INTERVAL', 1))
+    try:
+        hours = [int(x) for x in p['BYHOUR'].split(',')]
+        days = [DAYMAP[t[-2:]] for t in p['BYDAY'].split(',')] if p.get('BYDAY') else []
+    except (KeyError, ValueError):
+        return None
+    if p.get('WKST') and p['WKST'] not in DAYMAP:
+        return None
+    first = DAYMAP[p.get('WKST', 'MO')]
+
+    def step(cur, st):
+        for _ in range(24 * 366 * 5):
+            cur = cur + timedelta(hours=1)
+            cday, chour = php_w(cur), cur.hour
+            if cday == first and chour == 0:
+                cur = cur + timedelta(weeks=interval - 1)
+                if php_w(cur) != first:                  # modify('last <day>')
+                    cur = cur - timedelta(days=((php_w(cur) - first) % 7) or 7)
+            if (days and cday not in days) or chour not in hours:
+                continue
+            return cur
+        return None
+    return _run(c, p, step)
+
+
+def monthly_occurrences(cur, p):
+    """getMonthlyOccurrences(), for the month $currentDate is in.  Returns day
+    numbers.  Note where BYSETPOS is applied: INSIDE this, i.e. per MONTH."""
+    y, m = cur.year, cur.month
+    ndays = (date(y + (m == 12), (m % 12) + 1, 1) - timedelta(days=1)).day
+    byday = []
+    if p.get('BYDAY'):
+        for tok in p['BYDAY'].split(','):
+            if tok[-2:] not in DAYMAP:
+                return None
+            hits = [d for d in range(1, ndays + 1)
+                    if php_w(date(y, m, d)) == DAYMAP[tok[-2:]]]
+            if len(tok) > 2:
+                off = int(tok[:-2])
+                i = off - 1 if off > 0 else len(hits) + off
+                if 0 <= i < len(hits):
+                    byday.append(hits[i])
+            else:
+                byday += hits
+    bymd = []
+    if p.get('BYMONTHDAY'):
+        for v in (int(x) for x in p['BYMONTHDAY'].split(',')):
+            if v > ndays or v < -ndays:
+                continue
+            bymd.append(v if v > 0 else ndays + 1 + v)
+    if p.get('BYMONTHDAY') and p.get('BYDAY'):
+        res = [x for x in bymd if x in byday]
+    elif p.get('BYMONTHDAY'):
+        res = bymd
+    else:
+        res = byday
+    res = sorted(set(res))
+    if not p.get('BYSETPOS'):
+        return res
+    filt = []
+    for sp in (int(x) for x in p['BYSETPOS'].split(',')):
+        i = len(res) + sp if sp < 0 else sp - 1
+        if 0 <= i < len(res):
+            filt.append(res[i])
+    return sorted(set(filt))
+
+
+def yearly_bymonth_walk(c):
+    """nextYearly()'s BYMONTH branch, simulated rather than rewritten.
+
+    Two sub-branches, and the deletion model is wrong about both:
+
+    (a) NO BYDAY AND NO BYMONTHDAY.  The method walks the month number forward
+        to the next member of BYMONTH (adding INTERVAL to the year when it
+        passes December) and then calls setDate() with THE DAY NUMBER IT
+        ALREADY HAD.  BYSETPOS and BYMONTHDAY are never read on this path, and
+        PHP's setDate() overflows rather than rejecting, so a 29 or a 31 landing
+        in a short month moves the series permanently: FREQ=YEARLY;INTERVAL=2;
+        BYMONTH=2 from 2024-02-29 gives 2026-03-01 -- and then the day number
+        for every later occurrence is 1.
+
+    (b) BYDAY OR BYMONTHDAY PRESENT.  getMonthlyOccurrences() is called for ONE
+        month and BYSETPOS is applied inside it, so BYSETPOS selects within the
+        month rather than within the year, which is what RFC 5545 3.3.10 asks
+        for at FREQ=YEARLY.  The first occurrence strictly greater than the
+        current day of the month wins (any occurrence, once the walk has moved
+        to a new month)."""
+    p = parts(c['rrule'])
+    if p.get('FREQ') != 'YEARLY' or not p.get('BYMONTH'):
+        return None
+    interval = int(p.get('INTERVAL', 1))
+    months = [int(x) for x in p['BYMONTH'].split(',')]
+    if not months:
+        return None
+    expands = bool(p.get('BYDAY') or p.get('BYMONTHDAY'))
+
+    def next_month(y, m):
+        for _ in range(12 * 40):
+            m += 1
+            if m > 12:
+                y += interval
+                m = 1
+            if m in months:
+                return y, m
+        return None, None
+
+    def step(cur, st):
+        m, y, dom = cur.month, cur.year, cur.day
+        if not expands:
+            y, m = next_month(y, m)
+            if y is None:
+                return None
+            return php_setdate(cur, y, m, dom).replace(
+                hour=st.hour, minute=st.minute, second=st.second)
+        advanced, tmp = False, cur
+        for _ in range(400):
+            occs = monthly_occurrences(tmp, p)
+            if occs is None:
+                return None
+            hit = None
+            for o in occs:
+                if (o > dom or advanced) and m in months:
+                    hit = o
+                    break
+            if hit is not None:
+                return php_setdate(tmp, y, m, hit).replace(
+                    hour=st.hour, minute=st.minute, second=st.second)
+            dom, advanced = 1, True
+            y, m = next_month(y, m)
+            if y is None or y > 9999:
+                return None
+            tmp = php_setdate(tmp, y, m, 1)
+        return None
+    return _run(c, p, step)
+
+
 # --------------------------------------------------------------- the ordering
 def predictors(c):
     """Narrowest first (standing rule 49)."""
+    yield "086-E  WEEKLY: BYHOUR makes the loop walk hours, not weeks", weekly_hour_walk(c)
+    yield "086-D  YEARLY: the BYMONTH month-walk (day carried, BYSETPOS per month)", yearly_bymonth_walk(c)
     yield "076-C  MINUTELY/SECONDLY: the date is never advanced", never_advances(c)
     yield "076-B  YEARLY: leap-day guard + off-by-one weekday index", yearly_no_bymonth(c)
     yield "076-A  DAILY: the no-BYHOUR/no-BYDAY early return skips BYMONTH", daily_fast_path(c)
