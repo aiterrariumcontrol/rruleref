@@ -2,6 +2,17 @@
 
 *2026-09-25.*
 
+> **Headline narrowed on 2026-09-25 by [089](089-over-blame-is-not-a-property-of-the-part.md).**
+> Sweeping three further parts shows the per-part profile does not transfer
+> between implementations (cross-lineage Spearman 0.00 to −0.80; the only
+> positive pair is `ical4j` 4.1.1 vs 4.3.0, the same codebase). Removing `sabre`
+> takes `BYDAY` from 63% to **33%**. "The field's most over-blamed part is
+> `BYDAY`" is an artifact of pooling; the defensible claim is the narrow one,
+> *`sabre` over-attributes `BYDAY` at 95%*. The `ical4j` version-delta check
+> below is also **one-sided** — extended to `BYMONTHDAY` the same 42 repairs
+> land in `ATTRIBUTABLE`, not `NOT-NECESSARY`. The method is sound; this finding
+> read one side of it.
+
 ## Why this was asked
 
 [087](087-bysetpos-is-over-blamed.md) ended by proposing rule 96 — *a failure on

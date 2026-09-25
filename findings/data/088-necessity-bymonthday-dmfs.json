@@ -1,0 +1,2869 @@
+{
+ "accompanied": {
+  "NOT-NECESSARY": 1,
+  "no-answer-original": 7,
+  "passes": 260
+ },
+ "adapter": "dmfs",
+ "alone": {
+  "passes": 139
+ },
+ "argv": [
+  "java",
+  "-cp",
+  "conformance/adapters/java/classes:conformance/adapters/java/libs/*",
+  "DmfsAdapter"
+ ],
+ "part": "BYMONTHDAY",
+ "rows": [
+  {
+   "dtstart": "20240331T090000",
+   "id": "ca23424a17d0",
+   "rrule": "FREQ=DAILY;BYDAY=FR,MO,SU;BYMONTHDAY=-1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260515T090000",
+   "id": "bb8552c38bbf",
+   "rrule": "FREQ=DAILY;BYDAY=FR,SA,SU;BYMONTHDAY=15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "43c2d278895e",
+   "rrule": "FREQ=DAILY;BYDAY=FR,TH;BYMONTHDAY=-2,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270115T090000",
+   "id": "38e025ab70e2",
+   "rrule": "FREQ=DAILY;BYDAY=FR;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260528T090000",
+   "id": "b3cc31cc4ab0",
+   "rrule": "FREQ=DAILY;BYDAY=MO,TH;BYMONTHDAY=28,31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260930T090000",
+   "id": "5c1401f8fbf1",
+   "rrule": "FREQ=DAILY;BYDAY=SA,TH,WE;BYMONTHDAY=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260705T090000",
+   "id": "b9479377220f",
+   "rrule": "FREQ=DAILY;BYDAY=SU,TH;BYMONTHDAY=5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260426T090000",
+   "id": "80338b104f2c",
+   "rrule": "FREQ=DAILY;BYDAY=SU,TU;BYMONTHDAY=28,-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270530T090000",
+   "id": "4244ff7aa9ae",
+   "rrule": "FREQ=DAILY;BYDAY=SU,WE;BYMONTHDAY=30,15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240530T090000",
+   "id": "44e46a59af27",
+   "rrule": "FREQ=DAILY;BYDAY=TH;BYMONTHDAY=-2,5;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240528T090000",
+   "id": "7a130087bb01",
+   "rrule": "FREQ=DAILY;BYDAY=TU,WE;BYMONTHDAY=28;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "00c477d3a6ca",
+   "rrule": "FREQ=DAILY;BYDAY=WE;BYMONTHDAY=-5;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260128T090000",
+   "id": "34f6a4fb4321",
+   "rrule": "FREQ=DAILY;BYMONTH=1,4;BYMONTHDAY=28;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241015T090000",
+   "id": "1654cbc8afa4",
+   "rrule": "FREQ=DAILY;BYMONTH=10;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260224T090000",
+   "id": "9b05187767dc",
+   "rrule": "FREQ=DAILY;BYMONTH=2,12;BYMONTHDAY=-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260928T090000",
+   "id": "d639b07a3716",
+   "rrule": "FREQ=DAILY;BYMONTH=2,9;BYMONTHDAY=28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260215T090000",
+   "id": "e8ab0f0bc36d",
+   "rrule": "FREQ=DAILY;BYMONTH=2;BYMONTHDAY=-5,15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270201T090000",
+   "id": "e1df3d6812aa",
+   "rrule": "FREQ=DAILY;BYMONTH=2;BYMONTHDAY=29,1;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "8e98e121b143",
+   "rrule": "FREQ=DAILY;BYMONTH=3;BYMONTHDAY=-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270305T090000",
+   "id": "696126b574df",
+   "rrule": "FREQ=DAILY;BYMONTH=3;BYMONTHDAY=5,15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260401T090000",
+   "id": "32ae02da2fe8",
+   "rrule": "FREQ=DAILY;BYMONTH=4,8;BYMONTHDAY=30,1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240429T090000",
+   "id": "efd33eccbfab",
+   "rrule": "FREQ=DAILY;BYMONTH=4;BYMONTHDAY=-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240429T090000",
+   "id": "b9db1bd13b63",
+   "rrule": "FREQ=DAILY;BYMONTH=4;BYMONTHDAY=29;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270428T090000",
+   "id": "753a44b727d7",
+   "rrule": "FREQ=DAILY;BYMONTH=4;BYMONTHDAY=30,28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "a3c31f1962bb",
+   "rrule": "FREQ=DAILY;BYMONTH=5,11;BYMONTHDAY=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260505T090000",
+   "id": "810a63cff75b",
+   "rrule": "FREQ=DAILY;BYMONTH=5,8;BYMONTHDAY=5,15;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240615T090000",
+   "id": "cdf00e0380e2",
+   "rrule": "FREQ=DAILY;BYMONTH=6,12;BYMONTHDAY=15;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270828T090000",
+   "id": "6d8f4e221c28",
+   "rrule": "FREQ=DAILY;BYMONTH=8,11;BYMONTHDAY=28,-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260901T090000",
+   "id": "0c1e55a8f097",
+   "rrule": "FREQ=DAILY;BYMONTH=9,11;BYMONTHDAY=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260928T090000",
+   "id": "4fb41ef3a03c",
+   "rrule": "FREQ=DAILY;BYMONTH=9;BYMONTHDAY=28,31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260929T090000",
+   "id": "e90b557472e3",
+   "rrule": "FREQ=DAILY;BYMONTH=9;BYMONTHDAY=29;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "18a92a27f558",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "0918809e7231",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "a83990f8f788",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1,-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "b2fc522f5698",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1,29;BYDAY=TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "ff7bd8a88e9c",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270331T090000",
+   "id": "e807aaed95c7",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYDAY=SA,WE;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "18536896ba73",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "d06591cc8529",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-1;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "c76c994d0bf2",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270130T090000",
+   "id": "f3ea3ac70da5",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "edde065121cd",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2,-5;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "6aa630dc9463",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2,15;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "b7715c75ac51",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2,15;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260629T090000",
+   "id": "31c3f3fa8ecc",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2,29;BYDAY=MO,SU,TH;WKST=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261030T090000",
+   "id": "e22221230633",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYMONTH=10,11;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "e5e2ad8b9365",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-2;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240327T090000",
+   "id": "9089e2fa724c",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "d833be6a57be",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260727T090000",
+   "id": "440733e70f61",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-1;BYDAY=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "f40f2b4a86aa",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5,-2;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240401T090000",
+   "id": "eab39ad6707a",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5,1;BYDAY=MO,SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270926T090000",
+   "id": "7ac15f1265a8",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5,29;BYMONTH=9,10",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260426T090000",
+   "id": "b48ddf5d147c",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5,29;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "f8fce77e81e5",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=1,7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240426T090000",
+   "id": "73311add759b",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5;BYMONTH=4,6",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "13ddec31f768",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=-5;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240301T090000",
+   "id": "034904dd7114",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260528T090000",
+   "id": "9436079d5526",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "fa91380ee2d6",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1,30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260901T090000",
+   "id": "1caa2a35e29b",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1,30;BYMONTH=2,9",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260601T090000",
+   "id": "0bd37173d2c3",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1,5;BYMONTH=6",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "0dbdc40e07fb",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260715T090000",
+   "id": "5663af1ab30d",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=15,30;BYMONTH=7,11;WKST=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260615T090000",
+   "id": "75ea87c22f23",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=15;BYDAY=MO,SU,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240601T090000",
+   "id": "a0e0204a72fb",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1;BYMONTH=1,6",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241001T090000",
+   "id": "5bb6a77b8320",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1;BYMONTH=10,12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260201T090000",
+   "id": "e255a4cc4a6e",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=1;BYMONTH=2;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260428T090000",
+   "id": "a7b2efe0125b",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260528T090000",
+   "id": "575fbd399bd2",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "ef3d55de2e51",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270101T090000",
+   "id": "15f5e665fd26",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28,1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "4c233e8bf44a",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240328T090000",
+   "id": "9d25606f2907",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28,30;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "8536dcf37669",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28;BYMONTH=1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270328T090000",
+   "id": "d41e8c77effa",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=28;BYMONTH=3,11;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "a47da9313deb",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "aa2a6fe3b6fe",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "91982ab7a96c",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29,1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "6f82d6e13763",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29,30;BYDAY=FR,SA,TU;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260129T090000",
+   "id": "82d42e2bb2fa",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29,31;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "479479a7f2c5",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29;BYDAY=TH,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260129T090000",
+   "id": "e5d769a38ca9",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=29;BYDAY=TH;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "60c5d7d0f3f4",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260430T090000",
+   "id": "4cc935d55799",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "0ec3c8356434",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270228T090000",
+   "id": "ed1c1c7637b2",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30,-1;BYMONTH=2,4",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260127T090000",
+   "id": "3a4992bf6311",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30,-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260128T090000",
+   "id": "e90485d1a354",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30,28;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260430T090000",
+   "id": "21b565060087",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30;BYDAY=TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260930T090000",
+   "id": "a491ecf0d57e",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30;BYMONTH=9,10;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "35dd408087d4",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "006f231af891",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=30;WKST=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "844e29c86298",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241126T090000",
+   "id": "b2b4e497e183",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,-5;BYMONTH=11;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240315T090000",
+   "id": "a1d6f4c6ec74",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,15;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "94609f4957c6",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260129T090000",
+   "id": "476ea86ea7ea",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "0e3f11394e75",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,30;WKST=SU;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "a37e085e9d75",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270205T090000",
+   "id": "5445e9562efa",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=31,5;BYMONTH=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240305T090000",
+   "id": "dec8bc3d1bc3",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260105T090000",
+   "id": "1d2a0683a4e3",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260605T090000",
+   "id": "ba1e7fd48c34",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "6bb3a2b5e2f5",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5,-1;BYDAY=MO,TH,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240327T090000",
+   "id": "9e21efecaf8d",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5,-5;BYDAY=FR,SA,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260701T090000",
+   "id": "1a73a194e583",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5,1;BYMONTH=7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240305T090000",
+   "id": "f4ecd7c272ec",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5;BYDAY=TU;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260805T090000",
+   "id": "88d38e1b367e",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5;BYDAY=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270605T090000",
+   "id": "8d50777e048d",
+   "rrule": "FREQ=DAILY;BYMONTHDAY=5;BYMONTH=6",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270430T090000",
+   "id": "c31341b1d839",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=FR,MO;BYMONTHDAY=30,28;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "10155b091e9f",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=SA,TH,WE;BYMONTHDAY=31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240801T090000",
+   "id": "bc603af09b55",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=TH,TU;BYMONTHDAY=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260901T090000",
+   "id": "a43a283f4562",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYDAY=TU;BYMONTHDAY=1,29;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270227T090000",
+   "id": "de49bcc656ad",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=2;BYMONTHDAY=-1,-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270327T090000",
+   "id": "a203e2995789",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=3,7;BYMONTHDAY=-5,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270730T090000",
+   "id": "5c6ebd82f88b",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=7;BYMONTHDAY=-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260705T090000",
+   "id": "2d23149e4f42",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTH=7;BYMONTHDAY=-2,5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260731T090000",
+   "id": "0d163ea712e3",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-1,1;BYDAY=FR",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260730T090000",
+   "id": "6d203462b76d",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-2;BYDAY=SU,TH,WE;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240527T090000",
+   "id": "e2a2bb03d989",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=-5;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260115T090000",
+   "id": "8c024467ce0b",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260815T090000",
+   "id": "0be8ed6421a4",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241030T090000",
+   "id": "2ff056e2f48c",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=15,-2;BYMONTH=10;WKST=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20280228T090000",
+   "id": "a9b731fa3a93",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=29,28;BYMONTH=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260129T090000",
+   "id": "389e0c4b7d05",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=31,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270205T090000",
+   "id": "da4ba3f673ec",
+   "rrule": "FREQ=DAILY;INTERVAL=2;BYMONTHDAY=5;BYDAY=FR,MO,TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240830T090000",
+   "id": "ac5d185ab4c2",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYDAY=FR,SU;BYMONTHDAY=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260929T090000",
+   "id": "7d61003b54d2",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYDAY=TU;BYMONTHDAY=29,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260801T090000",
+   "id": "917b4075d07c",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTH=2,8;BYMONTHDAY=1;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260705T090000",
+   "id": "55d1ebf58f74",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTH=7,12;BYMONTHDAY=5,-2;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260731T090000",
+   "id": "f4da1574fbbf",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "35ba86842f90",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-1,-5;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260727T090000",
+   "id": "ed25284350a7",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=-5,-2;BYMONTH=4,7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270301T090000",
+   "id": "34ab814aef3f",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270301T090000",
+   "id": "6bf077c83c44",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=1;BYMONTH=3,9;WKST=MO;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260329T090000",
+   "id": "3314384a9bdd",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260629T090000",
+   "id": "ba64614d5e2e",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20290727T090000",
+   "id": "4c95aca204c5",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=30,-5;BYMONTH=7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "f2c8c2f3b144",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=31,29;BYDAY=TH,TU,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260605T090000",
+   "id": "1c9e1edffd46",
+   "rrule": "FREQ=DAILY;INTERVAL=3;BYMONTHDAY=5,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "83e9734b4ed8",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=FR,SA,TH;BYMONTHDAY=30,-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20271015T090000",
+   "id": "19de5fbd005c",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=FR,SA;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240831T090000",
+   "id": "60f3ff6433a7",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=MO,SA,TU;BYMONTHDAY=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260630T090000",
+   "id": "f09e64d172f6",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYDAY=MO,SU,TU;BYMONTHDAY=28,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261129T090000",
+   "id": "c71118c4a08c",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTH=11;BYMONTHDAY=-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260728T090000",
+   "id": "25acb95ec68c",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTH=7,9;BYMONTHDAY=28;WKST=WE;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "5d1934136c6c",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "fbedb357db8f",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=10,12;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260930T090000",
+   "id": "4cce25487b52",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-1;BYMONTH=9,12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270426T090000",
+   "id": "cec09007e66d",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261227T090000",
+   "id": "36236229f931",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=1,-5;BYMONTH=12;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "bfa9775a239a",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=1,28;BYDAY=FR,TH,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240515T090000",
+   "id": "6b0132925080",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270715T090000",
+   "id": "82ee348d6928",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20280915T090000",
+   "id": "eebb1cd91f83",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=15,31;BYMONTH=2,9;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260728T090000",
+   "id": "7f3f4f9a7b6e",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=28;BYDAY=MO,SA,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20271031T090000",
+   "id": "35f349fd37cc",
+   "rrule": "FREQ=DAILY;INTERVAL=4;BYMONTHDAY=31,30;BYMONTH=2,10",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "62c703f07862",
+   "rrule": "FREQ=HOURLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "0638f190089d",
+   "rrule": "FREQ=HOURLY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "cc1dcffc4bbb",
+   "rrule": "FREQ=MINUTELY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "260db56103fc",
+   "rrule": "FREQ=MINUTELY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270426T090000",
+   "id": "c2f621c37301",
+   "rrule": "FREQ=MONTHLY;BYDAY=-1MO,-2SU;BYMONTHDAY=31,-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240901T090000",
+   "id": "a54c760ddaae",
+   "rrule": "FREQ=MONTHLY;BYDAY=1SU,-2SA;BYMONTHDAY=1,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260901T090000",
+   "id": "1111325917f3",
+   "rrule": "FREQ=MONTHLY;BYDAY=1TU,-2SU;BYMONTHDAY=1,29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270115T090000",
+   "id": "cfade1037cdd",
+   "rrule": "FREQ=MONTHLY;BYDAY=FR,SA,TH;BYMONTHDAY=5,15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260801T090000",
+   "id": "75c7bafb8195",
+   "rrule": "FREQ=MONTHLY;BYDAY=FR,SA;BYMONTHDAY=28,1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240301T090000",
+   "id": "bcc7daf20e06",
+   "rrule": "FREQ=MONTHLY;BYDAY=FR,SU,TH;BYMONTHDAY=5,1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270331T090000",
+   "id": "0322f406146a",
+   "rrule": "FREQ=MONTHLY;BYDAY=MO,WE;BYMONTHDAY=31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260329T090000",
+   "id": "70faf21f335c",
+   "rrule": "FREQ=MONTHLY;BYDAY=SA,SU,TU;BYMONTHDAY=29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260729T090000",
+   "id": "43a81ff9266c",
+   "rrule": "FREQ=MONTHLY;BYDAY=SU,TH,WE;BYMONTHDAY=29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270429T090000",
+   "id": "7b0221145dde",
+   "rrule": "FREQ=MONTHLY;BYDAY=TH;BYMONTHDAY=30,29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240305T090000",
+   "id": "9a76cce1eb4c",
+   "rrule": "FREQ=MONTHLY;BYDAY=TU,WE;BYMONTHDAY=31,5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261027T090000",
+   "id": "4d405a033cae",
+   "rrule": "FREQ=MONTHLY;BYMONTH=10;BYMONTHDAY=-5;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20271215T090000",
+   "id": "ff0b4b9a0ea3",
+   "rrule": "FREQ=MONTHLY;BYMONTH=12;BYMONTHDAY=15,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270129T090000",
+   "id": "79ca1f8768d3",
+   "rrule": "FREQ=MONTHLY;BYMONTH=1;BYMONTHDAY=29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20250129T090000",
+   "id": "4de59feb577c",
+   "rrule": "FREQ=MONTHLY;BYMONTH=1;BYMONTHDAY=29,-1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20250105T090000",
+   "id": "cfe54ed1a1f6",
+   "rrule": "FREQ=MONTHLY;BYMONTH=1;BYMONTHDAY=31,5;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "070a6ee71241",
+   "rrule": "FREQ=MONTHLY;BYMONTH=2,5;BYMONTHDAY=-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270228T090000",
+   "id": "519d6c8c4358",
+   "rrule": "FREQ=MONTHLY;BYMONTH=2;BYMONTHDAY=-1,29;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260224T090000",
+   "id": "5f3385c63fa0",
+   "rrule": "FREQ=MONTHLY;BYMONTH=2;BYMONTHDAY=-5,31;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "5cd70a228dd6",
+   "rrule": "FREQ=MONTHLY;BYMONTH=4,10;BYMONTHDAY=-2,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240429T090000",
+   "id": "25cd09bf7dd9",
+   "rrule": "FREQ=MONTHLY;BYMONTH=4;BYMONTHDAY=-2,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240405T090000",
+   "id": "4913716bdbd5",
+   "rrule": "FREQ=MONTHLY;BYMONTH=4;BYMONTHDAY=5,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "7f4c04356179",
+   "rrule": "FREQ=MONTHLY;BYMONTH=5,6;BYMONTHDAY=-1,-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "8bff6c687762",
+   "rrule": "FREQ=MONTHLY;BYMONTH=5;BYMONTHDAY=-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "71e7234a18e9",
+   "rrule": "FREQ=MONTHLY;BYMONTH=5;BYMONTHDAY=31,-2;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260601T090000",
+   "id": "468c565e9e5b",
+   "rrule": "FREQ=MONTHLY;BYMONTH=6,8;BYMONTHDAY=1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240601T090000",
+   "id": "74572c0f2e86",
+   "rrule": "FREQ=MONTHLY;BYMONTH=6;BYMONTHDAY=-1,1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260626T090000",
+   "id": "7852c19c6d09",
+   "rrule": "FREQ=MONTHLY;BYMONTH=6;BYMONTHDAY=-5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260828T090000",
+   "id": "19705b4815e6",
+   "rrule": "FREQ=MONTHLY;BYMONTH=8,11;BYMONTHDAY=28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270801T090000",
+   "id": "5a53607b03b8",
+   "rrule": "FREQ=MONTHLY;BYMONTH=8;BYMONTHDAY=31,1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270930T090000",
+   "id": "dfb87b3673dc",
+   "rrule": "FREQ=MONTHLY;BYMONTH=9;BYMONTHDAY=15,-1;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "6d37bfdccc62",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "575ef36af580",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "b07ae6983674",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "f3787d3b735b",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1,-2;BYDAY=WE;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270331T090000",
+   "id": "a7cd948df256",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1,30;BYDAY=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "6280986681cd",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1,31;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "e62c8a71a032",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=MO,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240831T090000",
+   "id": "9c4f012b2d56",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;BYDAY=SA",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "b594f7a3685c",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "754396bfec55",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-1;WKST=SU;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "8adfb50ea504",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "766680c7da48",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270130T090000",
+   "id": "c0d84d9e2603",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,-5;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261215T090000",
+   "id": "899509e98cbe",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,15;BYMONTH=12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "d4095efca176",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,1;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "88c0ba3277d1",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260330T090000",
+   "id": "4c7b07c2449b",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,30;BYDAY=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "3737c351b851",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240305T090000",
+   "id": "15d97a62c510",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2,5;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260730T090000",
+   "id": "b506195b0436",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2;BYMONTH=7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260929T090000",
+   "id": "d1e3006e89ee",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-2;BYMONTH=9;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260426T090000",
+   "id": "048bbcfa5d91",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "1507d3e20a49",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "c0ca420e4b3f",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "a5c10f412b53",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "61f765ced734",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260127T090000",
+   "id": "57fccd077995",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5,30;BYDAY=MO,SU,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260727T090000",
+   "id": "dbcc890f1c1d",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5;BYDAY=MO;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240327T090000",
+   "id": "7894a7aa4ce0",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=-5;BYMONTH=2,3",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240301T090000",
+   "id": "aa4387b77755",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260401T090000",
+   "id": "ae2bd120a5e6",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "b2a86b8f0f9c",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20271201T090000",
+   "id": "a44611499012",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,-2;BYMONTH=12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260528T090000",
+   "id": "40764243b408",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260301T090000",
+   "id": "7c45dc7430be",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,29;BYMONTH=3,7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "b43e08335d6e",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,29;WKST=SU;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "a8a1d0c36944",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "91df93a4bb66",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1,31;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260115T090000",
+   "id": "13ec20c65dd2",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "bfc48f5d13fe",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261115T090000",
+   "id": "88f0b4254de9",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15,-2;BYMONTH=11",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260415T090000",
+   "id": "bf459c5479e9",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15,30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "8a7ab1270bbf",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15,30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260515T090000",
+   "id": "1eefabd5f5f1",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15,30;BYMONTH=5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240315T090000",
+   "id": "bea963d6ae24",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270615T090000",
+   "id": "489d93923e9a",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYDAY=TU,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240615T090000",
+   "id": "265efd1a787b",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYMONTH=6,7",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270715T090000",
+   "id": "331807e8ab6d",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYMONTH=7,12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270115T090000",
+   "id": "9076ccc39337",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270115T090000",
+   "id": "a678e770494d",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=15;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20271001T090000",
+   "id": "bd23687ceb03",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=1;BYMONTH=10",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260528T090000",
+   "id": "75e2805a3fd0",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240315T090000",
+   "id": "c01fe3acef33",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=28,15;WKST=WE;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260728T090000",
+   "id": "8f007463e4b0",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=28,29;BYMONTH=7,12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "6ffb8e07a3c6",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260129T090000",
+   "id": "a50eb508d11e",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "da805a22c574",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260115T090000",
+   "id": "f4c007e4d68c",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29,15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "78b7a02f30c5",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "7a1ea832251b",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29;BYDAY=-1TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "691906dca2fc",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29;BYDAY=FR",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240629T090000",
+   "id": "52928040f880",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=29;BYMONTH=6;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "f04f023e7b2f",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270330T090000",
+   "id": "253b4b39fc15",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,-1;BYMONTH=3,4",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "9e1f525849c4",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,-1;BYMONTH=4,12;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240730T090000",
+   "id": "dd5540816622",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,-1;BYMONTH=7,10",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270430T090000",
+   "id": "4d846a9d5280",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,-5;BYDAY=FR,TH;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270201T090000",
+   "id": "a902949aa231",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,1;BYMONTH=2,3;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "ba1b5174a6de",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240305T090000",
+   "id": "da5898342cc6",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30,5;WKST=SU;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240830T090000",
+   "id": "14bfa2678e5f",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=30;BYDAY=FR",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240331T090000",
+   "id": "cacce267c814",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "3b39308243a4",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "fee549936b7a",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "ca4a2eb2685b",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,-1;BYDAY=-1SU,3TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260430T090000",
+   "id": "7d4fae58c978",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,-1;BYDAY=TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "55e9f22298ca",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270129T090000",
+   "id": "9dfb008664a5",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,29;BYDAY=-1FR;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270131T090000",
+   "id": "087202443f0e",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31,30;BYDAY=SU,TU,WE;WKST=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261031T090000",
+   "id": "ea5762364754",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31;BYDAY=SA,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "5c4807475904",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "01aad14c9229",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=31;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260105T090000",
+   "id": "08d5b286ecb4",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "2036378a06b5",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=5,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260405T090000",
+   "id": "3927856805a6",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=5,-5;BYDAY=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270105T090000",
+   "id": "b7dda732e8f6",
+   "rrule": "FREQ=MONTHLY;BYMONTHDAY=5,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20520228T090000",
+   "id": "1872a9f72003",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYDAY=MO,WE;BYMONTHDAY=5,-2;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260930T090000",
+   "id": "30437d29f489",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYDAY=WE;BYMONTHDAY=-2,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260928T090000",
+   "id": "722ac20a8e84",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTH=9;BYMONTHDAY=28;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "8199cbc01433",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-1,15;BYDAY=SU,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "f3522c17f441",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,-1;BYDAY=SA,TH,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "56b926ef388c",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,30;BYMONTH=1,5;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270227T090000",
+   "id": "6abbfd68562e",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-2,31;BYDAY=SA,SU;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260127T090000",
+   "id": "24a7b7930e40",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=-5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270201T090000",
+   "id": "13572fc13cb5",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=1,5;BYMONTH=2,8",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270515T090000",
+   "id": "56f56386f0f8",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=15;BYMONTH=5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240415T090000",
+   "id": "94d2ff75b32a",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270501T090000",
+   "id": "e6fee2c2a483",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=1;BYDAY=3SA,1SA",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270601T090000",
+   "id": "1b15bd19e17f",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=1;BYMONTH=5,6;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "5e630527261d",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=29,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260505T090000",
+   "id": "b3d157364b30",
+   "rrule": "FREQ=MONTHLY;INTERVAL=2;BYMONTHDAY=5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "e1b4925a5263",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYDAY=-1SA,2SU;BYMONTHDAY=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241130T090000",
+   "id": "6fe149830763",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYDAY=SA,SU;BYMONTHDAY=30,29",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260830T090000",
+   "id": "0fdd7d614fc6",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTH=3,8;BYMONTHDAY=-2,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260630T090000",
+   "id": "b51b9fc7a8b6",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTH=6,8;BYMONTHDAY=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240805T090000",
+   "id": "22c72a294994",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTH=8;BYMONTHDAY=30,5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "2ad3bdd2388a",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270331T090000",
+   "id": "af0275ff7b50",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,15;BYDAY=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "a5b61c1aa084",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,30;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "111d7647f8a8",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-1,5;BYDAY=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "110f0141f93f",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=-5,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20280830T090000",
+   "id": "9eeab2387da4",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=30,1;BYDAY=2WE,-1WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240530T090000",
+   "id": "09126d35081b",
+   "rrule": "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=31,30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260728T090000",
+   "id": "69003bbaa6dc",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYDAY=MO,TH,TU;BYMONTHDAY=28,5;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20251015T090000",
+   "id": "af652cb619f6",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYDAY=MO,TH,WE;BYMONTHDAY=15;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "e9b23dc6442e",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYDAY=SU;BYMONTHDAY=31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20250228T090000",
+   "id": "be630fe23f8c",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYMONTHDAY=-5,-1;BYDAY=FR,SA,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270428T090000",
+   "id": "7eeb2d0669e5",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260105T090000",
+   "id": "3144c7c129c9",
+   "rrule": "FREQ=MONTHLY;INTERVAL=4;BYMONTHDAY=5;BYMONTH=1,8",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "c76d3879a009",
+   "rrule": "FREQ=SECONDLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "ee9219c894e8",
+   "rrule": "FREQ=SECONDLY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261129T090000",
+   "id": "435f4d6ed9f7",
+   "rrule": "FREQ=YEARLY;BYDAY=FR,SU;BYMONTHDAY=15,29;WKST=SU;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270101T090000",
+   "id": "30ecf4ba2f94",
+   "rrule": "FREQ=YEARLY;BYDAY=FR,SU;BYMONTHDAY=29,1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240430T090000",
+   "id": "c88fc1ac3dd5",
+   "rrule": "FREQ=YEARLY;BYDAY=FR,TU;BYMONTHDAY=30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260828T090000",
+   "id": "afd39eca7f70",
+   "rrule": "FREQ=YEARLY;BYDAY=FR;BYMONTHDAY=28;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "4e77b8d22f44",
+   "rrule": "FREQ=YEARLY;BYDAY=SA,TU,WE;BYMONTHDAY=30;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270228T090000",
+   "id": "91d6a0860c72",
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270829T090000",
+   "id": "1133012800b2",
+   "rrule": "FREQ=YEARLY;BYDAY=SU;BYMONTHDAY=29;WKST=MO;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "8784be1985c0",
+   "rrule": "FREQ=YEARLY;BYMONTH=12;BYMONTHDAY=-1,5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260805T090000",
+   "id": "a6e70a5b3d96",
+   "rrule": "FREQ=YEARLY;BYMONTH=2,8;BYMONTHDAY=5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260429T090000",
+   "id": "7251092e97dd",
+   "rrule": "FREQ=YEARLY;BYMONTH=4,10;BYMONTHDAY=29,-2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240428T090000",
+   "id": "a209c69e2dd8",
+   "rrule": "FREQ=YEARLY;BYMONTH=4,7;BYMONTHDAY=28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "2b1153b2b393",
+   "rrule": "FREQ=YEARLY;BYMONTH=5;BYMONTHDAY=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260715T090000",
+   "id": "cbeedd221127",
+   "rrule": "FREQ=YEARLY;BYMONTH=7,11;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240815T090000",
+   "id": "71e916ccd496",
+   "rrule": "FREQ=YEARLY;BYMONTH=8,10;BYMONTHDAY=-2,15;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "f324e406cba3",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260530T090000",
+   "id": "2f1b82382dba",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20281231T090000",
+   "id": "8a5c88de1d34",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-1,15;BYYEARDAY=366,200",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260131T090000",
+   "id": "35aa6a3e01b9",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-1;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "75c0fbd522e2",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270101T090000",
+   "id": "0fcc0ebb9669",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2,1;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240429T090000",
+   "id": "9346b18d8869",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYDAY=MO",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270227T090000",
+   "id": "1fa29e134d6a",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "e86a5f650620",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-2;WKST=WE",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "fbc71855357e",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,-1;BYYEARDAY=-60,-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270127T090000",
+   "id": "83ed4e4655a6",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,15;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "652f31e6bde6",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260527T090000",
+   "id": "83e7f75b4700",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5,5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20250224T090000",
+   "id": "18be031175c6",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=-5;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20260401T090000",
+   "id": "6da81060fa6d",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240301T090000",
+   "id": "625bbf28769a",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1,5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270501T090000",
+   "id": "dd2c248e643f",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1,5;BYMONTH=5,12",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260315T090000",
+   "id": "ee3a81d38ab4",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "5b57fff10b12",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15,-1;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20331230T090000",
+   "id": "88a59d144b92",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15,-2;BYDAY=-1FR",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260415T090000",
+   "id": "58c0d0364196",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15,28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270115T090000",
+   "id": "f2cbcbc5f89b",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15,30;BYMONTH=1,8",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240615T090000",
+   "id": "c80719dd2738",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=15;BYDAY=SA,TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270401T090000",
+   "id": "f12f8876eff4",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=1;BYDAY=TH",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260128T090000",
+   "id": "5bead7b4a750",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "c4b376048071",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260128T090000",
+   "id": "06cb7d2a824b",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28,-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270128T090000",
+   "id": "71c5fc332bd4",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28,-5;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240328T090000",
+   "id": "f310c8fdca9d",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28,29;BYMONTH=3,5",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240628T090000",
+   "id": "949678876911",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28;BYDAY=FR,SA,WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241128T090000",
+   "id": "0b31a8e34072",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=28;BYSETPOS=-2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20260401T090000",
+   "id": "f8ae62f585f0",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29,1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270105T090000",
+   "id": "f2776576ee91",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29,5;BYWEEKNO=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241229T090000",
+   "id": "5c6239486394",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYDAY=-1SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270329T090000",
+   "id": "5bf10b683517",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYDAY=MO,SA,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260529T090000",
+   "id": "64dffadd2c05",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYMONTH=5,9",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260329T090000",
+   "id": "fe2685e6b007",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=29;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "298d55303d35",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240315T090000",
+   "id": "bb74eacaf2f9",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30,15",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270301T090000",
+   "id": "d41c364d7f42",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30,1;BYYEARDAY=60,365;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "780d8a3c71e4",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYDAY=SA,TU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20270130T090000",
+   "id": "326734590904",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYMONTH=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261130T090000",
+   "id": "03edd995165a",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYSETPOS=-2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20260330T090000",
+   "id": "efc480c88567",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20301230T090000",
+   "id": "9996c6ffbd63",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=30;BYWEEKNO=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240229T090000",
+   "id": "1952128a3c40",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=31,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241229T090000",
+   "id": "75f63349f562",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=31,29;BYWEEKNO=-1,52;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260105T090000",
+   "id": "9c330c1a79d9",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=31,5",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "a2293a202e6f",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=5,-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "b0ed85e5a5d4",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=5,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260405T090000",
+   "id": "84095b75f4a0",
+   "rrule": "FREQ=YEARLY;BYMONTHDAY=5;BYDAY=FR,SU,WE;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241228T090000",
+   "id": "c6d0be82ba4a",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=-1,53;BYMONTHDAY=28,-1;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "NOT-NECESSARY"
+  },
+  {
+   "dtstart": "20291231T090000",
+   "id": "67c2e7444c3b",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=1,2;BYMONTHDAY=-5,31",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241228T090000",
+   "id": "ec9aeb012c8f",
+   "rrule": "FREQ=YEARLY;BYWEEKNO=20,52;BYMONTHDAY=28",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20241230T090000",
+   "id": "3e9bc8319dc6",
+   "rrule": "FREQ=YEARLY;BYYEARDAY=365,100;BYMONTHDAY=5,30",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20420115T090000",
+   "id": "6489adef8241",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYDAY=1TH,3WE;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261227T090000",
+   "id": "a7f83b9a75b3",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTH=12;BYMONTHDAY=-5;BYSETPOS=-1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240330T090000",
+   "id": "92822e62d3da",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260130T090000",
+   "id": "7a381d6a4176",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=-2",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20280228T090000",
+   "id": "b632b80fdc66",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=-2;WKST=MO;BYSETPOS=2",
+   "stratum": "accompanied",
+   "verdict": "no-answer-original"
+  },
+  {
+   "dtstart": "20260101T090000",
+   "id": "82086b1d21ed",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=1,30",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260331T090000",
+   "id": "ebd85b187ed3",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=31,29",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260105T090000",
+   "id": "d1540837d8cc",
+   "rrule": "FREQ=YEARLY;INTERVAL=2;BYMONTHDAY=5,31",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20380105T090000",
+   "id": "54a5c8a07907",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYDAY=1TU;BYMONTHDAY=5;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260215T090000",
+   "id": "03e3a61e6cf2",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTH=2,3;BYMONTHDAY=15",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260301T090000",
+   "id": "f3f3c9b37834",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTH=3,7;BYMONTHDAY=29,1;WKST=WE",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260531T090000",
+   "id": "70af70d211f1",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20321231T090000",
+   "id": "6819ae4065e7",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=-1;BYYEARDAY=100,366;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261001T090000",
+   "id": "5cec55ded8f0",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=1;BYMONTH=10,11",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20240301T090000",
+   "id": "c4a650f73a1d",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYMONTHDAY=28,1;WKST=SU",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20530105T090000",
+   "id": "7b92dd911bbb",
+   "rrule": "FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260830T090000",
+   "id": "0fea10f4ded1",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTH=8;BYMONTHDAY=-2;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "091b49989fd1",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=-1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260615T090000",
+   "id": "664c5006b355",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=-1,15;BYMONTH=6",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20261231T090000",
+   "id": "8462083f52ec",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=-5,31;WKST=MO",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260127T090000",
+   "id": "57bd6869b586",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=-5;WKST=SU;BYSETPOS=1",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20260401T090000",
+   "id": "40289b644133",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20300101T090000",
+   "id": "2555fbe1f17d",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=1",
+   "stratum": "alone",
+   "verdict": "passes"
+  },
+  {
+   "dtstart": "20341229T090000",
+   "id": "44878d450aca",
+   "rrule": "FREQ=YEARLY;INTERVAL=4;BYMONTHDAY=29;BYDAY=-1FR,3FR;WKST=SU",
+   "stratum": "accompanied",
+   "verdict": "passes"
+  }
+ ]
+}
