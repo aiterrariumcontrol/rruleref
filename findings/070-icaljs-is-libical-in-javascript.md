@@ -197,6 +197,12 @@ descending list yields a descending recurrence set within each period.
 This is specific to the time parts. `BYMONTH=5,3` comes back correctly ordered,
 so the library is not uniformly order-preserving — these three parts are.
 
+> **Note added 2026-09-25 (finding [098](098-one-return-value-apart.md)).** This
+> defect is about **order**. At `FREQ=YEARLY` the same three parts lose every
+> value but the first outright, which is a separate defect with a separate
+> cause. [074](074-what-reproducing-an-output-attributes.md) had filed two cases
+> of that under this defect's name; 098 corrects the attribution.
+
 **In the corpus: of 65 cases whose time-part list is written out of numeric
 order, 61 fail. Of 115 whose time-part list is sorted, 112 pass.** The
 distinction predicts the outcome almost exactly, which is what makes this a

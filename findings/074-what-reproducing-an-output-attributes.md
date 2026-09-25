@@ -66,6 +66,17 @@ second thing on top, but "probably" is what 071 already refused to publish.
 > residual are attributed: the two that return the **empty list**. At
 > `FREQ=YEARLY`, when `BYDAY` is present, a negative `BYMONTHDAY` value
 > contributes no candidate dates in `ical.js`. The residual is **14**.
+>
+> **Further correction, 2026-09-25 (finding
+> [098](098-one-return-value-apart.md)).** One more of the residual is
+> attributed: at `FREQ=YEARLY`, only the **first listed** value of `BYHOUR`,
+> `BYMINUTE` or `BYSECOND` reaches the output. The residual is **13**. 098 also
+> corrects two of this finding's own attributions: `6e74ec2d96a8` and
+> `a844fe388868` were labelled "070-B `BYHOUR`/`BYSECOND` not applied", and
+> [070](070-icaljs-is-libical-in-javascript.md)'s defect B is about the *order*
+> the time parts are walked in, not about values being dropped. The label
+> described the symptom correctly and pointed at a finding that does not make
+> the claim; 098 does, and reduces it to a line of source.
 
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores

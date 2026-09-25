@@ -70,6 +70,14 @@
    ],
    "baseline": "097.txt",
    "finding": "097"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/098-icaljs-yearly-time-parts-truncated.py"
+   ],
+   "baseline": "098.txt",
+   "finding": "098"
   }
  ]
 }

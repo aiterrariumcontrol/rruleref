@@ -100,6 +100,12 @@ Both of 074's empty-list residuals carry the shape, and the reproducer re-derive
 that from `conformance/cases.ndjson` with no adapter. **`ical.js`'s unattributed
 residual goes from 16 to 14.**
 
+> **Correction notice added 2026-09-25 (finding
+> [098](098-one-return-value-apart.md)).** The **14** was correct as measured
+> and is left standing. It is now **13**: `FREQ=YEARLY;BYMINUTE=0,30` is
+> attributed to `ical.js` keeping only the first listed value of a time part at
+> `FREQ=YEARLY`, a defect 098 reduces to a single `return` statement.
+
 The honest extent statement matters more than the count. **Exactly 2 of 1727
 corpus cases carry this shape at all** — one all-negative, one mixed-sign. This
 corpus barely tests it. It does not follow that the defect is small: a rule needs

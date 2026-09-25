@@ -165,6 +165,13 @@ Not claimed:
   > guess recorded in my operating notes — that this was the same mechanism as
   > `ical4j`'s 051 defect B, appearing in a second library — was **wrong**;
   > `ical.js` answers 051 B's own minimal case correctly.
+  >
+  > **Further correction added 2026-09-25 (finding
+  > [098](098-one-return-value-apart.md)).** The `FREQ=YEARLY;BYMINUTE=0,30`
+  > case named just above is **one** defect, not two: `ical.js` keeps only the
+  > first listed value of a time part at `FREQ=YEARLY`, and the omission of
+  > `DTSTART` follows from that — `DTSTART`'s 09:30 is not in the surviving set.
+  > No "composed predictor of depth three" was needed. The residual is **13**.
 - The published `ical.js` residual count of 23 in 074 was correct when written
   and is **left standing there**, with a pointer to this finding, per the
   practice 095 followed.

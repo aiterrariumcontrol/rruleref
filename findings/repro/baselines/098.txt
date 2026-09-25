@@ -1,0 +1,94 @@
+098 -- ical.js, FREQ=YEARLY: only the first listed BYHOUR/BYMINUTE/BYSECOND value survives
+cases_id 7bd9731d3a48 ; adapter case timeout 45000 ms
+PREDICTOR: ical.js(rule) == dateutil(rule with each multi-valued time part cut to its FIRST value)
+
+-- D: the predictor holds, and the rule as written does not.
+  R-hour    predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYHOUR=9,18
+             ical.js   090000 090000 090000 090000 ...
+             correct   090000 180000 090000 180000 ...
+             corpus case 6e74ec2d96a8: the 18:00 occurrence of every year is gone
+  R-minute  predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMINUTE=0,30
+             ical.js   090000 090000 090000 090000 ...
+             correct   093000 090000 093000 090000 ...
+             corpus case 3939127583ee, the case this wake set out to explain
+  R-second  predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYSECOND=0,15
+             ical.js   093000 093000 093000 093000 ...
+             correct   093000 093015 093000 093015 ...
+             corpus case a844fe388868: all three time parts, one mechanism
+  D-rev     predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMINUTE=30,0
+             ical.js   093000 093000 093000 093000 ...
+             correct   093000 090000 093000 090000 ...
+             DECIDING: 30,0 keeps 30. It is the FIRST LISTED value, NOT the smallest
+  D-rev2    predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMINUTE=45,15
+             ical.js   094500 094500 094500 094500 ...
+             correct   091500 094500 091500 094500 ...
+             45,15 keeps 45, and 45 is not DTSTART's minute either. Rule order, nothing else
+  D-three   predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMINUTE=10,20,30
+             ical.js   091000 091000 091000 091000 ...
+             correct   091000 092000 093000 091000 ...
+             three values keep one, not two: it is not an off-by-one in the list walk
+  D-hourmin predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYHOUR=9;BYMINUTE=15,45
+             ical.js   091500 091500 091500 091500 ...
+             correct   091500 094500 091500 094500 ...
+             an explicit single-valued BYHOUR alongside does not rescue the BYMINUTE list
+  D-bymonth predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMONTH=3;BYMINUTE=15,45
+             ical.js   091500 091500 091500 091500 ...
+             correct   091500 094500 091500 094500 ...
+             nor does an explicit BYMONTH
+  D-count   predictor HOLDS ; differs from the rule as written yes 
+             FREQ=YEARLY;BYMINUTE=15,45;COUNT=4
+             ical.js   091500 091500 091500 091500
+             correct   091500 094500 091500 094500
+             COUNT=4 still returns 4 occurrences -- over 4 YEARS. The loss is INVISIBLE to a caller who only counts results
+
+-- C: controls. The predictor MUST FAIL and ical.js must be correct.
+  C-monthly ical.js CORRECT   ; predictor fails, as required   same by-parts at MONTHLY: correct. FREQ=YEARLY is load-bearing
+  C-daily   ical.js CORRECT   ; predictor fails, as required   correct at DAILY
+  C-weekly  ical.js CORRECT   ; predictor fails, as required   correct at WEEKLY
+  C-hourly  ical.js CORRECT   ; predictor fails, as required   correct at HOURLY
+  C-single  ical.js CORRECT   ; predictor n/a (rule has no multi-valued time part)   a SINGLE-valued time part at YEARLY is correct, and 45 is not DTSTART's minute: the rule is applied, it is the rest of the LIST that is lost
+  C-bymonth ical.js CORRECT   ; predictor n/a (rule has no multi-valued time part)   a multi-valued NON-time part at YEARLY is correct: this is about the time parts specifically, not about lists at YEARLY
+  C-byday   ical.js CORRECT   ; predictor n/a (rule has no multi-valued time part)   multi-valued BYDAY at YEARLY is correct too
+
+  all 9 probes and 7 controls behave as stated
+
+-- extent: every corpus case with FREQ=YEARLY and a multi-valued time part
+  3939127583ee FREQ=YEARLY;BYMINUTE=0,30              predictor exact
+  6e74ec2d96a8 FREQ=YEARLY;BYHOUR=9,18                predictor exact
+  885892ba0a69 FREQ=YEARLY;BYHOUR=9,8                 predictor exact
+  a844fe388868 FREQ=YEARLY;BYSECOND=0,15              predictor exact
+  b72c3712f042 FREQ=YEARLY;BYHOUR=9,8;BYYEARDAY=60    predictor exact
+  b96855e3bf8f FREQ=YEARLY;BYHOUR=9,8;BYYEARDAY=+60   predictor exact
+  c18ccdf31936 FREQ=YEARLY;BYHOUR=9,8;BYYEARDAY=60,59 predictor exact
+  predictor exact on 7 of 7.
+  80 further corpus cases have a multi-valued time part at another FREQ; they are NOT claimed here.
+  7 of 1727 corpus cases carry the YEARLY shape at all.
+  RARE IN THIS CORPUS IS NOT RARE IN THE RULE LANGUAGE (096's caveat, repeated).
+
+-- sabre: the same SYMPTOM from a DIFFERENT rule
+  3939127583ee predictor does not hold
+  6e74ec2d96a8 predictor exact
+  885892ba0a69 predictor exact
+  a844fe388868 predictor exact
+  b72c3712f042 predictor does not hold
+  b96855e3bf8f predictor does not hold
+  c18ccdf31936 predictor does not hold
+  sabre truncates too, but R-minute decides against a shared rule: on
+  FREQ=YEARLY;BYMINUTE=0,30 with DTSTART minute 30, ical.js keeps 0 (first
+  listed) and sabre keeps 30 (DTSTART's). Different mechanisms, and sabre's
+  answers on the BYYEARDAY cases are dominated by an unrelated sabre defect.
+
+-- against 074's unattributed residual, as narrowed by 096 and 097
+  1 of the 7 shape-carrying cases are in 074's unexplained list: 3939127583ee
+  2 more were filed under a '070-B' label: 6e74ec2d96a8 a844fe388868
+  070-B as WRITTEN is about the ORDER the time parts are walked in, at DAILY.
+  It does not contain the claim that values are DROPPED at YEARLY. That
+  attribution pointed at a finding that does not make it; this one does.
