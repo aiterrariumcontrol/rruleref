@@ -62,6 +62,14 @@
    ],
    "baseline": "096.txt",
    "finding": "096"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/097-icaljs-yearly-negative-monthday-byday.py"
+   ],
+   "baseline": "097.txt",
+   "finding": "097"
   }
  ]
 }

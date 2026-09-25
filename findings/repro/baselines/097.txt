@@ -1,0 +1,75 @@
+097 -- ical.js, FREQ=YEARLY with a negative BYMONTHDAY under BYDAY
+cases_id 7bd9731d3a48 ; adapter case timeout 45000 ms
+sabre is excluded from unanimity counts for its known unconditional DTSTART (finding 024); rrule.js and dateutil are ONE vote (rule 24).
+
+-- D: the defect. ical.js empty, the rest answer.
+  R1        ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             corpus case 9346b18d8869's shape: ical.js empty, dateutil and rrule.js answer
+  R2        ical.js EMPTY     ; 2/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             corpus case 88a59d144b92: the answer comes only from -2, so dropping it empties it
+  D-2days   ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             two plain weekdays, still empty: not about which weekday
+  D-neg1    ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             -1 as well as -2
+  D-bymonth ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             an explicit BYMONTH does not rescue it
+  D-int2    ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             INTERVAL is irrelevant
+  D-byhour  ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             an added BYHOUR is irrelevant
+  D-all7    ical.js EMPTY     ; 4/4 of dateutil/dmfs/ical4j411/ical4j430 answer non-empty
+             BYDAY that excludes NOTHING is still empty: the candidate set is empty, the filter is not the cause
+  ical.js returns the EMPTY LIST on 8 of 8 defect probes
+
+-- C: controls ical.js must pass, criterion EQUALS dateutil.
+   A characterisation that fails these is wrong, so they are checked, not narrated.
+  C-pos     ical.js == dateutil   control: POSITIVE monthday, same shape -- ical.js agrees with dateutil
+  C-monthly ical.js == dateutil   control: same by-parts at MONTHLY -- all seven agree. FREQ=YEARLY is load-bearing
+  C-yearday ical.js == dateutil   control: a NEGATIVE BYYEARDAY limited by BYDAY is correct. Not about negatives in general
+  C-ordinal ical.js == dateutil   THE NEGATIVE RESULT: 051 B's own minimal case. ical.js is CORRECT; ical4j is empty
+  C-ord-yr  ical.js == dateutil   control: ordinal BYDAY limiting at YEARLY too
+
+-- N: control whose criterion is NON-EMPTY only, not equality.
+  C-noday   ical.js NON-EMPTY   control: negative monthday at YEARLY WITHOUT BYDAY is NON-EMPTY. BYDAY is load-bearing. It is NOT equal to dateutil, and the one element that differs is 096's defect J
+             ical.js  20240429 20241230 20250430 20251230
+             dateutil 20240429 20241230 20250429 20251230
+
+  all 6 controls pass
+
+-- S: the spec boundary, both directions.
+  S-weekly  FREQ=WEEKLY;BYMONTHDAY=-2
+    RFC 5545 3.3.10: BYMONTHDAY MUST NOT appear with FREQ=WEEKLY. Who rejects it?
+      dateutil   20240429 20240530 20240629 20240730
+      icaljs     REJECTED: For WEEKLY recurrences neither BYMONTHDAY nor BYYEARDAY may appear
+      rrulejs    20240429 20240530 20240629 20240730
+      sabre      20240429 20240506 20240513 20240520
+      dmfs       REJECTED: InvalidRecurrenceRuleException: In RFC 5545, BYMONTHDAY is not allowed in WEEKLY rules
+      ical4j411  (empty)
+      ical4j430  20240429 20241230 20250929 20260330
+  S-wkpos  FREQ=WEEKLY;BYMONTHDAY=2
+    same, positive: the rejection is about the by-part, not the sign
+      dateutil   20240502 20240602 20240702 20240802
+      icaljs     REJECTED: For WEEKLY recurrences neither BYMONTHDAY nor BYYEARDAY may appear
+      rrulejs    20240502 20240602 20240702 20240802
+      sabre      20240429 20240506 20240513 20240520
+      dmfs       REJECTED: InvalidRecurrenceRuleException: In RFC 5545, BYMONTHDAY is not allowed in WEEKLY rules
+      ical4j411  20240902 20241202 20250602 20260202
+      ical4j430  20240902 20241202 20250602 20260202
+  S-wkno  FREQ=YEARLY;BYWEEKNO=18;BYMONTHDAY=29
+    BYWEEKNO with BYMONTHDAY at YEARLY is NOT forbidden by 3.3.10. Who rejects it anyway?
+      dateutil   20240429 20250429 20260429 20300429
+      icaljs     REJECTED: BYWEEKNO does not fit to BYMONTHDAY
+      rrulejs    20240429 20250429 20260429 20300429
+      sabre      20240429 20250428 20260427 20270503
+      dmfs       20240429 20250429 20260429 20300429
+      ical4j411  20240429 20250429 20260429 20270529
+      ical4j430  20240429 20250429 20260429 20270529
+
+-- extent in this corpus (derived from cases.ndjson, no adapter)
+  all-negative  1  9346b18d8869
+  mixed-sign    1  88a59d144b92
+  2 of 1727 corpus cases carry the shape at all.
+  RARE IN THIS CORPUS IS NOT RARE IN THE RULE LANGUAGE (096's caveat, repeated).
+
+-- against 074's unattributed residual, as narrowed by 096
+  2 of the shape-carrying cases are in 074's unexplained list: 88a59d144b92 9346b18d8869

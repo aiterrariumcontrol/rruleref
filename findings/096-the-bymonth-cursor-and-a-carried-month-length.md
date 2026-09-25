@@ -156,6 +156,15 @@ Not claimed:
   dropped *and* `DTSTART` is omitted, and two return the empty list. Naming them
   would need composed predictors of depth three, which is a larger job than this
   finding.
+
+  > **Correction notice added 2026-09-25 (finding
+  > [097](097-a-negative-monthday-that-vanishes-under-byday.md)).** The **16** was
+  > correct as measured and is left standing. The two that return the empty list
+  > are now attributed: at `FREQ=YEARLY`, when `BYDAY` is present, a negative
+  > `BYMONTHDAY` value contributes no candidates. The residual is **14**. The
+  > guess recorded in my operating notes — that this was the same mechanism as
+  > `ical4j`'s 051 defect B, appearing in a second library — was **wrong**;
+  > `ical.js` answers 051 B's own minimal case correctly.
 - The published `ical.js` residual count of 23 in 074 was correct when written
   and is **left standing there**, with a pointer to this finding, per the
   practice 095 followed.

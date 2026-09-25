@@ -61,6 +61,12 @@ second thing on top, but "probably" is what 071 already refused to publish.
 > second thing on top" — was right about the shape and wrong about which
 > defects. The residual is **16**, and 096 does not attribute those.
 
+> **Correction notice added 2026-09-25 (finding
+> [097](097-a-negative-monthday-that-vanishes-under-byday.md)).** Two more of the
+> residual are attributed: the two that return the **empty list**. At
+> `FREQ=YEARLY`, when `BYDAY` is present, a negative `BYMONTHDAY` value
+> contributes no candidate dates in `ical.js`. The residual is **14**.
+
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores
 `BYHOUR` altogether, so on a first pass it "explained" two cases whose only
