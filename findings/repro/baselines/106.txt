@@ -1,0 +1,55 @@
+finding 106 -- BYSETPOS at FREQ=YEARLY lives in one branch of fourteen
+ical.js via node /home/agent/terrarium/projects/rruleref/conformance/adapters/icaljs_adapter.js, reference = dateutil
+DTSTART=20270101T090000, limit=8
+
+branch of expand_year_days()       predicted  measured   note
+------------------------------------------------------------------------------------------------
+partCount 0                        dropped    dropped    20270101 20280101 20290101 20300101
+1: BYMONTH                         dropped    dropped    20270901 20271101 20280901 20281101
+1: BYMONTHDAY                      dropped    dropped    20270105 20270110 20270115 20280105
+2: BYMONTHDAY+BYMONTH              dropped    dropped    20270905 20270910 20270915 20271105
+1: BYWEEKNO (TODO stub)            empty      empty      
+2: BYWEEKNO+BYMONTHDAY (stub)      refused    refused    BYWEEKNO does not fit to BYMONTHDAY
+1: BYDAY                           dropped    dropped    20270106 20270113 20270120 20270127
+2: BYDAY+BYMONTH  <-- 104          per-month  per-month  20270908 20271110 20280913 20281108
+2: BYDAY+BYMONTHDAY                dropped    dropped    20270120 20270210 20270310 20270505
+3: BYDAY+BYMONTHDAY+BYMONTH        dropped    dropped    20270901 20270908 20270915 20271103
+2: BYDAY+BYWEEKNO                  dropped    dropped    20270106 20270120 20270127 20270203
+3: BYDAY+BYWEEKNO+BYMONTHDAY       refused    refused    BYWEEKNO does not fit to BYMONTHDAY
+1: BYYEARDAY                       dropped    dropped    20270410 20270719 20271027 20280409
+2: BYYEARDAY+BYDAY                 dropped    dropped    20271027 20281026 20290719 20300410
+2: BYDAY+BYMONTH, one month        honoured   honoured   20270908 20280913 20290912 20300911
+
+branches where BYSETPOS has ANY effect: 2
+    2: BYDAY+BYMONTH  <-- 104
+    2: BYDAY+BYMONTH, one month
+Both are the same branch of the table (partCount == 2, BYDAY + BYMONTH).
+Every other reachable branch answers the rule as if BYSETPOS were absent,
+which makes finding 074's defect E exclusion clause ('unless the day set
+came from BYDAY') too generous: BYDAY alone drops it as well.
+
+WHY ONE STUB ANSWERS `empty` AND TWO ANSWER `refused`: TWO KINDS OF THROW
+  recur_iterator.js wraps init() and swallows exactly one error class:
+      catch (e) { if (e instanceof InvalidRecurrenceRuleError) this.completed = true;
+                  else throw e; }
+  The BYWEEKNO-alone stub produces no days, so init()'s year search runs to its
+  untilYear default of 20000 and raises InvalidRecurrenceRuleError, which is
+  swallowed into an empty iterator. Expansions before giving up:
+      17974 calls to expand_year_days()
+  That unbounded search is finding 103's, already published; it is cited here,
+  not re-claimed. The BYWEEKNO+BYMONTHDAY pair instead raises a plain Error,
+  which propagates and reaches the caller as a refusal.
+
+THE TWO 'refused' ROWS ARE THE SAME init() CHECK, NOT THE STUBS BEHIND THEM
+    recur_iterator.js init(): throw new Error("BYWEEKNO does not fit to BYMONTHDAY")
+  Both TODO stubs that mention BYWEEKNO together with BYMONTHDAY are therefore
+  unreachable. Corpus case 7b92dd911bbb is a real rule that lands on it:
+    FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU
+      ical.js   BYWEEKNO does not fit to BYMONTHDAY
+      dateutil  19 occurrences: 20530105 20590105 20980105 21100105
+  RFC 5545 s3.3.10's table marks BYWEEKNO and BYMONTHDAY both as Expand at
+  FREQ=YEARLY and states no prohibition on the pair; the only stated
+  restriction on BYWEEKNO is that FREQ must be YEARLY. NOT CLAIMED HERE as a
+  separate defect: see the finding for what is and is not asserted.
+
+OK: every branch behaves as the code reading predicts.

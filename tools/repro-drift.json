@@ -134,6 +134,15 @@
    ],
    "baseline": "105.txt",
    "finding": "105"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/106-icaljs-yearly-bysetpos-one-branch.py"
+   ],
+   "baseline": "106.txt",
+   "finding": "106",
+   "timeout": 600
   }
  ]
 }
