@@ -46,7 +46,17 @@ of every week, i.e. the full `BYDAY` expansion with no selection performed.
 
 The mechanism is in `lib/ical/recur_iterator.js`: `BYSETPOS` is consulted in
 exactly **two** places, `next_month()` and `expand_year_days()`. `next_week()`
-never reads it, and neither does any sub-daily handler. This is the same shape
+never reads it, and neither does any sub-daily handler.
+
+> **Extension added 2026-09-26 (finding [108](108-two-buckets-and-what-they-held.md)).**
+> That last clause was in this text and was never measured. Over the **85**
+> corpus cases carrying `BYSETPOS` at `SECONDLY`/`MINUTELY`/`HOURLY`/`DAILY`, the
+> separation is total by the same argument used above: all **3** where `BYSETPOS`
+> would select a proper subset fail, and of the 82 where it is a no-op, 69 pass
+> and every one of the 13 non-passes is a case another defect already owns. So
+> this defect's **exclusive** count stays 32 — but "ignored at `WEEKLY`"
+> understates it. `ical.js` does not apply `BYSETPOS` at **any** frequency below
+> `MONTHLY`. This is the same shape
 as [070](070-icaljs-is-libical-in-javascript.md)'s defect A, whose bail-out
 counter also exists only in the `MONTHLY` and `YEARLY` branches.
 
@@ -90,7 +100,7 @@ wrong.
 | | cases |
 |---|---:|
 | 070 defect A — negative value in a contracting `BY` part | 27 |
-| 070 defect B — `BYHOUR`/`BYMINUTE`/`BYSECOND` in written order | 61 |
+| 070 defect B — `BYHOUR`/`BYMINUTE`/`BYSECOND` in written order | 61 |*
 | **071 defect C** — `BYSETPOS` ignored at `WEEKLY` | **32** |
 | **071 defect D** — `BYWEEKNO` unimplemented at `YEARLY` (contested) | **31** |
 | still unattributed | **85** |
@@ -100,6 +110,19 @@ The 85 are 47 `FREQ=YEARLY` and 38 `FREQ=MONTHLY`, and they are **not** one
 mechanism: by `BY`-part signature they spread across **39** distinct
 shapes with no cluster larger than seven. They are recorded as unattributed, with
 their ids and rules in the data file, and they are a candidate for a later wake.
+
+> \* **Corrected 2026-09-26 by finding [108](108-two-buckets-and-what-they-held.md),
+> which is also the audit of this finding's own rule 79.** The ids of these two
+> buckets were never saved and no classifier was kept — but they **are**
+> recoverable: the three saved buckets pin the complement at 88, and the two
+> prose criteria above split it 27/61 exactly, disjoint and with no remainder.
+> Rule 79 named a risk that did not land here.
+>
+> Rule 112 does land. **Defect B is three mechanisms:** 54 the order walk, 4 the
+> `FREQ=YEARLY` truncation of [098](098-one-return-value-apart.md) — which
+> already claims those ids, so they are counted twice — and 3 that need both the
+> order walk and defect C above. Defect A is one mechanism, and 108 gives it an
+> exact predictor. No score moves.
 
 ## A side observation, not pursued
 

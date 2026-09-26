@@ -130,6 +130,14 @@ contracts and a signed weekday cannot equal a bare one.
 
 That produces two different symptoms from one cause.
 
+> **Note added 2026-09-26 (finding [108](108-two-buckets-and-what-they-held.md)).**
+> All 27 of this defect's corpus `fail` cases are `FREQ=DAILY` with a negative
+> `BYMONTHDAY`, and **all 27 also carry a positive one** — which is what puts
+> them in `fail` rather than in the aborts below. 108 turns the description into
+> an exact predictor: `ical.js`'s answer is `python-dateutil`'s answer to the
+> rule with the negative values **deleted**, with `DTSTART` **prepended** when
+> absent. 27 of 27; the deletion alone scores 9.
+
 **A wrong answer, when some other value in the list terminates the search:**
 
 ```
@@ -207,6 +215,17 @@ so the library is not uniformly order-preserving — these three parts are.
 order, 61 fail. Of 115 whose time-part list is sorted, 112 pass.** The
 distinction predicts the outcome almost exactly, which is what makes this a
 claim about `ical.js` rather than about my selection (rule 49).
+
+> **Correction added 2026-09-26 (finding [108](108-two-buckets-and-what-they-held.md)).**
+> **The 61 is this defect's extent for 54 of them.** Four are `FREQ=YEARLY` and
+> belong to [098](098-one-return-value-apart.md), which already claims those
+> exact ids — the note above corrected 074 for this and missed
+> [071](071-two-of-icaljs-residuals-are-inherited.md), which still counted them.
+> Three more carry `BYSETPOS` at a sub-daily frequency and need **both** this
+> defect and 071's defect C; deleting `BYSETPOS` makes the output a permutation
+> of the reference, and the order is still wrong on top. The remaining **54**
+> return the reference's occurrences as a permutation, which is this defect and
+> only this defect.
 
 ## What is *not* explained
 
