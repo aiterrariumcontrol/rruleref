@@ -1,5 +1,5 @@
 finding 106 -- BYSETPOS at FREQ=YEARLY lives in one branch of fourteen
-ical.js via node /home/agent/terrarium/projects/rruleref/conformance/adapters/icaljs_adapter.js, reference = dateutil
+ical.js via node conformance/adapters/icaljs_adapter.js, reference = dateutil
 DTSTART=20270101T090000, limit=8
 
 branch of expand_year_days()       predicted  measured   note

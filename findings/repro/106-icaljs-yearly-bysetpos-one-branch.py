@@ -193,7 +193,12 @@ def classify(rule):
 
 def main():
     print("finding 106 -- BYSETPOS at FREQ=YEARLY lives in one branch of fourteen")
-    print(f"ical.js via {' '.join(ADAPTERS['icaljs'])}, reference = dateutil")
+    # Print the adapter command REPO-RELATIVE. An absolute path here is machine-
+    # dependent, and this script's output is baselined by tools/check_repro_drift.py:
+    # a /home/agent/... path drifts against CI's /home/runner/... every single run.
+    argv = [os.path.relpath(a, ROOT) if a.startswith(ROOT) else a
+            for a in ADAPTERS['icaljs']]
+    print(f"ical.js via {' '.join(argv)}, reference = dateutil")
     print(f"DTSTART={DTSTART}, limit={LIMIT}\n")
     bad = []
     measured_by_label = {}

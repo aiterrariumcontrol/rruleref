@@ -1,0 +1,53 @@
+finding 107 -- ical.js keeps a day unless its week number is FIRST in BYWEEKNO
+ical.js via node conformance/adapters/icaljs_adapter.js, reference = dateutil
+DTSTART=20270101T090000, UNTIL=20271231T000000, limit=60
+
+1. THE ANSWER DEPENDS ON THE ORDER THE VALUES ARE WRITTEN IN
+     BYWEEKNO=10,20 -> 51 days; wk10 Mon present False; wk20 Mon present True
+     BYWEEKNO=20,10 -> 51 days; wk10 Mon present True; wk20 Mon present False
+     no BYWEEKNO    -> 52 days (every Monday of 2027)
+  ok   the two orderings disagree
+  ok   10,20 drops exactly the week-10 Monday
+  ok   20,10 drops exactly the week-20 Monday
+  ok   each ordering keeps every other expanded day
+     reference (dateutil), same rule -> 2 days: ['20270308', '20270517']
+  ok   the reference selects only the two named weeks
+
+2. IT IS INDEX 0, NOT 'THE FIRST VALUE'
+     BYWEEKNO=-2,10 -> 52 days (week 10 IS listed)
+     BYWEEKNO=10    -> 51 days
+     BYWEEKNO=-2    -> 52 days
+  ok   -2,10 excludes NOTHING: index 0 holds a value no week ever equals   [a 'first value wins' model would have had to drop week 10]
+  ok   a single positive value excludes exactly its own week
+  ok   a single negative value excludes nothing
+
+3. CONTROLS -- each must fail for its own reason, or the defect is not this arm
+  ok   BYWEEKNO with no BYDAY yields nothing (arm 5's empty body)   [an unimplemented arm is indistinguishable from an empty rule; that unbounded search is finding 103's, cited not re-claimed]
+  ok   BYWEEKNO with BYMONTHDAY is REFUSED by init(), never reaching an arm   [BYWEEKNO does not fit to BYMONTHDAY]
+  ok   adding BYMONTH routes through the pre-pass, which deletes BYWEEKNO   [10 days, byte-identical to the same rule with no BYWEEKNO]
+  ok   BYSETPOS is dropped on this arm, so it does not change partCount   [arm 11 never calls check_set_position -- finding 106's widened defect E, cited not re-claimed]
+
+4. RECOMPUTING FINDING 071's DEFECT D FROM THE CORPUS
+  ok   every defect-D id is still in the corpus   [31 of 31]
+
+     20  arm 5: body is EMPTY -- unimplemented
+      8  arm 11: body RUNS -- indexOf without >= 0 (THIS FINDING)
+      3  BYMONTH+BYWEEKNO pre-pass: BYWEEKNO deleted before any arm
+
+     071 defect D published 31 cases as 'BYWEEKNO unimplemented'.
+     20 of them reach a branch whose body is literally empty.
+     8 reach arm 11, which is implemented and wrong.
+  ok   'unimplemented' does not account for all of defect D
+  ok   arm 11 accounts for a nonempty share of defect D
+
+     arm-11 ids, with the BYSETPOS carriers marked:
+       1087a3bfe5b6  FREQ=YEARLY;BYWEEKNO=-2;BYDAY=MO;BYSETPOS=-1  <- carries BYSETPOS
+       1b491afa4ef0  FREQ=YEARLY;BYDAY=FR;BYWEEKNO=-2,1;WKST=WE;BYSETPOS=2  <- carries BYSETPOS
+       2265a310aa9a  FREQ=YEARLY;BYWEEKNO=1;BYDAY=MO,TU
+       36fa68873abe  FREQ=YEARLY;INTERVAL=2;BYWEEKNO=53,20;BYDAY=SA,WE
+       52cb89bd1169  FREQ=YEARLY;BYDAY=SA,WE;BYWEEKNO=52
+       76656eaa6952  FREQ=YEARLY;BYDAY=MO,SU;BYWEEKNO=-2
+       a11bc9303af3  FREQ=YEARLY;BYDAY=FR,SA;BYWEEKNO=2,52
+       c17aa9fd3b11  FREQ=YEARLY;BYDAY=FR,MO,SU;BYWEEKNO=1;WKST=MO
+
+0 check(s) failed

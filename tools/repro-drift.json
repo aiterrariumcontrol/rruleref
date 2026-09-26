@@ -143,6 +143,14 @@
    "baseline": "106.txt",
    "finding": "106",
    "timeout": 600
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/107-icaljs-byweekno-indexof.py"
+   ],
+   "baseline": "107.txt",
+   "finding": "107"
   }
  ]
 }
