@@ -226,6 +226,16 @@ claim about `ical.js` rather than about my selection (rule 49).
 > of the reference, and the order is still wrong on top. The remaining **54**
 > return the reference's occurrences as a permutation, which is this defect and
 > only this defect.
+>
+> **Further correction added 2026-09-26 (finding
+> [109](109-who-else-counts-this-case.md)).** The two cases the note above says
+> 098 corrected — `6e74ec2d96a8` (`BYHOUR=9,18`) and `a844fe388868`
+> (`BYSECOND=0,15`) — were still filed under this defect's name in 074's **data
+> file** four wakes later. Both are visible violations of this defect's own
+> criterion without running anything: `9,18` and `0,15` are in numeric order.
+> The four 108 moved are all `9,8`, which is why 071's predicate caught those and
+> not these. Counting both kinds, **six of 098's seven corpus cases were counted
+> twice somewhere in the record.** This defect's extent is **54**.
 
 ## What is *not* explained
 

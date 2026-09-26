@@ -12,6 +12,25 @@
   "unexplained": 23
  },
  "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "corrections": [
+  {
+   "artifact_corrected_at": "109, 2026-09-26",
+   "corrected_in_prose_at": "098, 2026-09-25, in this finding's own correction notice",
+   "from_label": "070-B  BYHOUR not applied",
+   "id": "6e74ec2d96a8",
+   "to_finding": "098",
+   "why": "FREQ=YEARLY;BYHOUR=9,18. Defect 070-B IS the criterion 'a time-part list written out of numeric order', and 9,18 is in numeric order, so the label cannot hold. 098's predictor -- next_year() keeps only the first time-of-day -- holds on 7 of 7 of its corpus cases including this one."
+  },
+  {
+   "artifact_corrected_at": "109, 2026-09-26",
+   "corrected_in_prose_at": "098, 2026-09-25, in this finding's own correction notice",
+   "from_label": "070-B  BYSECOND not applied",
+   "id": "a844fe388868",
+   "to_finding": "098",
+   "why": "FREQ=YEARLY;BYSECOND=0,15. Same reason: 0,15 is in numeric order."
+  }
+ ],
+ "corrections_note": "Finding 109, rule 115. The `attribution` counts and the `ids` map above are 074's ORIGINAL measurement and are deliberately left as measured (the 035 pattern: a superseded figure is annotated, not rewritten). This list is the machine-readable form of a correction that had until now existed only in this finding's prose, where no producer could see it: 098 reassigned these two ids on 2026-09-25 and findings/data kept filing them under the old label for four wakes. A consumer of this file should apply `corrections` before counting. findings/repro/109-attribution-partition-audit.py does, and fails if the ids here are not the ones the prose names.",
  "counts": {
   "error": 84,
   "fail": 236,

@@ -12,7 +12,8 @@
   "         is covered instead by the __cases_id__ stamp those references now",
   "         carry (finding 092), which makes a stale reference exit non-zero.",
   "  091 -- scans findings/, so its output changes whenever a finding is added.",
-  "         Its guard is its own non-zero exit on a stale or unsupported provenance declaration (finding 093), wired into the suite as tests/test_figure_provenance.py -- not a baseline."
+  "         Its guard is its own non-zero exit on a stale or unsupported provenance declaration (finding 093), wired into the suite as tests/test_figure_provenance.py -- not a baseline.",
+  "  109 -- scans findings/, so its output changes whenever a finding is added, like 091. Its guard is its own non-zero exit on an unadjudicated shared id, wired into the suite as tests/test_attribution_partitions.py; the full mode also scores three adapters."
  ],
  "entries": [
   {

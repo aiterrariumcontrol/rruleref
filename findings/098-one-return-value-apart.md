@@ -12,6 +12,20 @@ FREQ=YEARLY;BYMINUTE=0,30    DTSTART:2026-03-02T09:30:00
 
 Half the recurrence set is gone, and `DTSTART` itself with it.
 
+
+> **Note added 2026-09-26 (finding
+> [109](109-who-else-counts-this-case.md)).** This finding's seven corpus cases
+> now account for themselves completely, and **six of the seven were counted
+> twice in the published record** when it was written. Four were still inside
+> [071](071-two-of-icaljs-residuals-are-inherited.md)'s defect B until
+> [108](108-two-buckets-and-what-they-held.md) found them; two were corrected in
+> [074](074-what-reproducing-an-output-attributes.md)'s *prose* by this finding
+> and left under the old label in 074's *data file* until 109; the seventh is the
+> one [102](102-the-residual-had-no-producer.md) credits here. Nothing about this
+> finding's own claim changes — the predictor still holds 7 of 7. What this
+> records is that establishing a case is yours is not the same as stopping
+> everyone else counting it (**rules 113 and 115**).
+
 ## Why this case, and what the notes said about it
 
 `ical.js`'s unattributed residual stood at **14** after

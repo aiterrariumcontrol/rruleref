@@ -5,6 +5,20 @@
 untouched. Nothing new was measured about `ical.js` — this finding audits six of
 my own.
 
+
+> **Correction added 2026-09-26 (finding
+> [109](109-who-else-counts-this-case.md)).** This finding's own stored artifact
+> was stale. [`data/102-icaljs-residual-ledger.json`](data/102-icaljs-residual-ledger.json)
+> said `residual_n: 3` while the producer computed **0**: findings
+> [104](104-one-pick-per-month.md) and [105](105-the-month-that-rolled-over.md)
+> were added to `NAMED`, the drift **baseline of the script's stdout** was
+> refreshed to `RESIDUAL: 0`, and the data file the script writes under `--write`
+> was never rewritten. The finding that exists to stop a figure being carried by
+> hand was carrying one in the half of its output nothing checked. The file has
+> been regenerated, and the script now has a **`--check`** mode wired into the
+> suite as [`tests/test_ledger_is_current.py`](../tests/test_ledger_is_current.py).
+> **109's rule 115: a producer with two outputs is guarded on the one you check.**
+
 ## The debt
 
 [Finding 074](074-what-reproducing-an-output-attributes.md) left **23** of

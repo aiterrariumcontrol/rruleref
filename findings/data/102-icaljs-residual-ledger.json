@@ -44,6 +44,10 @@
    "finding": "099",
    "how": "named in prose"
   },
+  "7a6256afbb5b": {
+   "finding": "104",
+   "how": "named in prose"
+  },
   "83ed4e4655a6": {
    "finding": "099",
    "how": "named in prose"
@@ -72,12 +76,20 @@
    "finding": "100",
    "how": "named in prose"
   },
+  "d27c58ae379a": {
+   "finding": "105",
+   "how": "named in prose"
+  },
   "d7a9ed17f9fb": {
    "finding": "096",
    "how": "K+074-F"
   },
   "e1b4925a5263": {
    "finding": "100",
+   "how": "named in prose"
+  },
+  "f9f6ec0cf765": {
+   "finding": "104",
    "how": "named in prose"
   }
  },
@@ -87,12 +99,8 @@
  "base_n": 23,
  "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
  "problems": [],
- "residual": [
-  "7a6256afbb5b",
-  "d27c58ae379a",
-  "f9f6ec0cf765"
- ],
- "residual_n": 3,
+ "residual": [],
+ "residual_n": 0,
  "withdrawn": [
   {
    "check": "not_in_base",

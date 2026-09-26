@@ -97,6 +97,21 @@ second thing on top, but "probably" is what 071 already refused to publish.
 > the corpus cannot reach at all — and it is not a claim that a larger corpus
 > would not produce a new residual. The figure's authority is the script, not
 > this paragraph.
+>
+> **Correction added 2026-09-26 (finding
+> [109](109-who-else-counts-this-case.md)).** The 098 correction two notices
+> above never reached this finding's **data file**. `6e74ec2d96a8` and
+> `a844fe388868` went on being filed under `070-B  BYHOUR/BYSECOND not applied`
+> in [`data/074-icaljs-residual-reproduced.json`](data/074-icaljs-residual-reproduced.json)
+> for four wakes after the prose retracted the label — and that file, not this
+> paragraph, is what [102](102-the-residual-had-no-producer.md)'s producer,
+> [108](108-two-buckets-and-what-they-held.md)'s audit and 109's sweep read. The
+> `attribution` counts and `ids` map are left **exactly as measured**; the file
+> now carries a machine-readable `corrections` list beside them, which a consumer
+> should apply before counting. **109's rule 115: a producer with two outputs is
+> guarded on the one you check.** No score moves, and the residual is untouched —
+> both ids were in this finding's *attributed* part and never in the 23-case base
+> set.
 
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores

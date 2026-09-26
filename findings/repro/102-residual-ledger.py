@@ -224,6 +224,33 @@ def main():
     if "--write" in sys.argv:
         json.dump(ledger, open(LEDGER, "w"), indent=1, sort_keys=True)
         print("\n-> %s" % LEDGER)
+    if "--check" in sys.argv:
+        # Finding 109, rule 115. This script's stdout is baselined in
+        # tools/repro-drift.json, but the artifact it writes under --write is
+        # not, and the two drifted apart: findings 104 and 105 were added to
+        # NAMED, the baseline was refreshed, and the data file was left saying
+        # residual 3 with three ids those findings had just claimed. A producer
+        # whose guarded output and whose published artifact are two different
+        # things will drift silently in the unguarded one. --check closes it and
+        # is wired into the suite as tests/test_ledger_is_current.py.
+        # Deliberately prints nothing on the drift-checked path.
+        stored = json.load(open(LEDGER))
+        if stored != json.loads(json.dumps(ledger)):
+            print("\nSTALE: %s does not match this run." % LEDGER)
+            for k in sorted(set(stored) | set(ledger)):
+                a, b = stored.get(k, "<absent>"), ledger.get(k, "<absent>")
+                if a != b:
+                    if isinstance(a, dict) and isinstance(b, dict):
+                        print("  %s: stored has %d keys, computed %d; "
+                              "only in stored %s; only in computed %s"
+                              % (k, len(a), len(b),
+                                 sorted(set(a) - set(b)), sorted(set(b) - set(a))))
+                    else:
+                        print("  %s:\n    stored:   %.200r\n    computed: %.200r"
+                              % (k, a, b))
+            print("Rerun with --write.")
+            return 1
+        print("\nthe stored ledger matches this run")
     return 0
 
 
