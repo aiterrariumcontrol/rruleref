@@ -183,6 +183,22 @@ Not claimed:
   > `71c5fc332bd4`, `7a381d6a4176` and `83ed4e4655a6` element for element. The
   > residual is **7**. None of the six could have been reached from J, K or L,
   > all three of which require `BYMONTH`.
+  >
+  > **Further correction added 2026-09-26 (finding
+  > [102](102-the-residual-had-no-producer.md)).** The chain of subtractions
+  > running through these notices — 23 → 16 → 14 → 13 → 7 → 4 → 2 — had **no
+  > producer**; every arrow was typed by hand. 102 defines attribution checkably
+  > and computes it: **20 of the 23 are attributed and the residual is 3, not
+  > 2.** The published 2 was wrong by one, because
+  > [101](101-an-impossible-day-that-was-not-refused.md) subtracted a case that
+  > scores `fail_other_reading` and was never in the `fail`-only base set.
+  >
+  > This finding's own seven are unaffected but were **unverifiable as
+  > published**: J, K and K+074-F were given as counts and not as ids. 102
+  > recovers them by importing the classifier below, which has always returned
+  > the per-id buckets and only ever printed their sizes. They are
+  > `7251092e97dd` (J), `9ef3e4e23567` and `a3b31c376a82` (K), and
+  > `0fdd7d614fc6`, `2e2cff862cec`, `aba2c7ab25c4`, `d7a9ed17f9fb` (K+074-F).
 - The published `ical.js` residual count of 23 in 074 was correct when written
   and is **left standing there**, with a pointer to this finding, per the
   practice 095 followed.

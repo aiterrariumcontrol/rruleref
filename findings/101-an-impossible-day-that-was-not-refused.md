@@ -170,6 +170,23 @@ occurrence — reproduces `ical.js` **element for element, all 25 occurrences**,
 Both were on [074](074-what-reproducing-an-output-attributes.md)'s unattributed
 residual as narrowed by 096–100. **The residual goes 4 → 2.**
 
+> **Correction notice added 2026-09-26 (finding
+> [102](102-the-residual-had-no-producer.md)).** The sentence immediately above is
+> **wrong**, and is left standing with this notice rather than rewritten. Only
+> **one** of the two cases, `1952128a3c40`, was on 074's residual.
+> `652f31e6bde6` was not and never could have been: it returns its own
+> `reading_alternatives.dtstart_fill` entry **exactly**, so
+> [`score.py`](../conformance/score.py) buckets it `fail_other_reading` — one of
+> the 31 counted apart from the 236 `fail` that 074 drew its residual from.
+> **The residual went 4 → 3.**
+>
+> The predictor's reproduction of `652f31e6bde6` element for element is
+> unaffected and the mechanism above is not in question. What was wrong was
+> treating "my predictor reproduces this case" and "this case leaves the
+> residual" as the same claim. 102 builds the producer that the whole 23 → 2
+> chain had been running without, and commits this withdrawal as a check that
+> re-verifies its own reason on every run.
+
 ## What this does not establish
 
 - **Corpus extent is 2 of 1727,** and that is the honest number. The rule *shape*

@@ -102,6 +102,14 @@
    ],
    "baseline": "101.txt",
    "finding": "101"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/102-residual-ledger.py"
+   ],
+   "baseline": "102.txt",
+   "finding": "102"
   }
  ]
 }

@@ -77,6 +77,16 @@ second thing on top, but "probably" is what 071 already refused to publish.
 > the time parts are walked in, not about values being dropped. The label
 > described the symptom correctly and pointed at a finding that does not make
 > the claim; 098 does, and reduces it to a line of source.
+>
+> **Further correction, 2026-09-26 (finding
+> [102](102-the-residual-had-no-producer.md)).** The **23** above is this
+> finding's own published set and is left standing; what follows is about the
+> chain of subtractions from it. That chain was carried in prose with no script
+> behind it. 102 commits a producer and a definition — an id counts as attributed
+> only if it is in **this** set and is named by the finding claiming it — and the
+> result is **20 attributed, residual 3**, not the 2 the chain had reached. All
+> three survivors carry `BYSETPOS` **and** `BYDAY`, which is exactly the
+> population defect **E**'s exclusion clause above carves out.
 
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores

@@ -1,0 +1,105 @@
+{
+ "attributed": {
+  "0fcc0ebb9669": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "0fdd7d614fc6": {
+   "finding": "096",
+   "how": "K+074-F"
+  },
+  "111d7647f8a8": {
+   "finding": "100",
+   "how": "named in prose"
+  },
+  "1952128a3c40": {
+   "finding": "101",
+   "how": "named in prose"
+  },
+  "2e2cff862cec": {
+   "finding": "096",
+   "how": "K+074-F"
+  },
+  "3939127583ee": {
+   "finding": "098",
+   "how": "named in prose"
+  },
+  "57bd6869b586": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "5b57fff10b12": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "71c5fc332bd4": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "7251092e97dd": {
+   "finding": "096",
+   "how": "J"
+  },
+  "7a381d6a4176": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "83ed4e4655a6": {
+   "finding": "099",
+   "how": "named in prose"
+  },
+  "88a59d144b92": {
+   "finding": "097",
+   "how": "named in prose"
+  },
+  "9346b18d8869": {
+   "finding": "097",
+   "how": "named in prose"
+  },
+  "9ef3e4e23567": {
+   "finding": "096",
+   "how": "K"
+  },
+  "a3b31c376a82": {
+   "finding": "096",
+   "how": "K"
+  },
+  "aba2c7ab25c4": {
+   "finding": "096",
+   "how": "K+074-F"
+  },
+  "be630fe23f8c": {
+   "finding": "100",
+   "how": "named in prose"
+  },
+  "d7a9ed17f9fb": {
+   "finding": "096",
+   "how": "K+074-F"
+  },
+  "e1b4925a5263": {
+   "finding": "100",
+   "how": "named in prose"
+  }
+ },
+ "base_bucket": "fail",
+ "base_finding": "074",
+ "base_key": "ids.unexplained",
+ "base_n": 23,
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "problems": [],
+ "residual": [
+  "7a6256afbb5b",
+  "d27c58ae379a",
+  "f9f6ec0cf765"
+ ],
+ "residual_n": 3,
+ "withdrawn": [
+  {
+   "check": "not_in_base",
+   "claim": "101 said both of its in-scope corpus cases 'were on 074's unattributed residual', taking it 4 -> 2.",
+   "finding": "101",
+   "id": "652f31e6bde6",
+   "reason": "652f31e6bde6 matches its own reading_alternatives.dtstart_fill entry exactly, so the scorer buckets it fail_other_reading, not fail. 074 drew its residual from the fail bucket only, so this case was never in it. 101's predictor does reproduce the case and that evidence stands; what does not stand is the subtraction. The residual went 4 -> 3."
+  }
+ ]
+}

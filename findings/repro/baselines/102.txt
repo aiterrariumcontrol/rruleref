@@ -1,0 +1,44 @@
+074 base set: 23 ids, from the `fail` bucket only, cases 7bd9731d3a48
+
+096 -- recovered from its own classifier (it published counts, not ids):
+  0fdd7d614fc6  K+074-F
+  2e2cff862cec  K+074-F
+  7251092e97dd  J
+  9ef3e4e23567  K
+  a3b31c376a82  K
+  aba2c7ab25c4  K+074-F
+  d7a9ed17f9fb  K+074-F
+
+Findings that name their ids:
+  097  88a59d144b92   in 097: True   in 074 base: True 
+  097  9346b18d8869   in 097: True   in 074 base: True 
+  098  3939127583ee   in 098: True   in 074 base: True 
+  099  0fcc0ebb9669   in 099: True   in 074 base: True 
+  099  57bd6869b586   in 099: True   in 074 base: True 
+  099  5b57fff10b12   in 099: True   in 074 base: True 
+  099  71c5fc332bd4   in 099: True   in 074 base: True 
+  099  7a381d6a4176   in 099: True   in 074 base: True 
+  099  83ed4e4655a6   in 099: True   in 074 base: True 
+  100  111d7647f8a8   in 100: True   in 074 base: True 
+  100  be630fe23f8c   in 100: True   in 074 base: True 
+  100  e1b4925a5263   in 100: True   in 074 base: True 
+  101  1952128a3c40   in 101: True   in 074 base: True 
+
+Withdrawn claims, with their reasons re-checked:
+  101  652f31e6bde6   still outside 074's base set: True
+
+ATTRIBUTED: 20 of 23
+RESIDUAL:   3
+
+The current unattributed set, in full:
+  7a6256afbb5b  20260728T090000  FREQ=YEARLY;INTERVAL=4;BYMONTH=7,8;BYDAY=-1TU,-2WE;WKST=WE;BYSETPOS=2
+  d27c58ae379a  20270102T090000  FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2
+  f9f6ec0cf765  20270908T090000  FREQ=YEARLY;BYMONTH=9,11;BYDAY=WE;BYSETPOS=2
+
+Of the 3: 3 carry BYSETPOS, 3 carry BYDAY.
+074's defect E is `BYSETPOS silently dropped UNLESS the day set came
+from BYDAY`. Every residual case has both, so E's own exclusion clause
+is exactly what is left. The residual is not miscellaneous.
+
+No problems: every claimed id is in 074's base set, named in its
+own finding, and claimed exactly once.
