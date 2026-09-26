@@ -50,6 +50,7 @@ NAMED = {
             "71c5fc332bd4", "7a381d6a4176", "83ed4e4655a6"],
     "100": ["111d7647f8a8", "be630fe23f8c", "e1b4925a5263"],
     "101": ["1952128a3c40"],
+    "104": ["7a6256afbb5b", "f9f6ec0cf765"],
 }
 
 # Claims that WERE published and are now withdrawn. Each carries the reason, and
@@ -176,9 +177,13 @@ def main():
     byday = [i for i in residual if "BYDAY" in cases[i]["rrule"]]
     print("\nOf the %d: %d carry BYSETPOS, %d carry BYDAY."
           % (len(residual), len(bysetpos), len(byday)))
-    print("074's defect E is `BYSETPOS silently dropped UNLESS the day set came")
-    print("from BYDAY`. Every residual case has both, so E's own exclusion clause")
-    print("is exactly what is left. The residual is not miscellaneous.")
+    if len(bysetpos) == len(byday) == len(residual) and residual:
+        print("074's defect E is `BYSETPOS silently dropped UNLESS the day set came")
+        print("from BYDAY`. Every residual case has both, so E's own exclusion clause")
+        print("is exactly what is left. The residual is not miscellaneous.")
+        print("Finding 104 took the FREQ=YEARLY half of that population. What is")
+        print("left is not automatically the same shape -- 104 declined to claim")
+        print("d27c58ae379a on exactly those grounds. Check before assuming.")
 
     if problems:
         print("\n*** %d PROBLEM(S) ***" % len(problems))

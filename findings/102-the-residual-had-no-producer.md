@@ -65,6 +65,15 @@ The seven are `7251092e97dd` (J), `9ef3e4e23567` and `a3b31c376a82` (K), and
 
 ## Result: the residual is 3, not 2
 
+> **Superseded by measurement, 2026-09-26 (same day).** The 3 below was correct
+> when published and the correction to 101 stands unchanged. [Finding
+> 104](104-one-pick-per-month.md) then attributed two of the three, so the
+> residual is now **1**. The figure in this section is left as published, per
+> [035](035-one-deletion-and-a-pinned-day.md)'s pattern; the producer
+> [`repro/102-residual-ledger.py`](repro/102-residual-ledger.py) is the
+> authority and reports the current set on every run — which is the entire
+> point of this finding, and the first chance it has had to demonstrate it.
+
 20 of the 23 are attributed. **The published figure of 2 is wrong by one.**
 
 The error is in [101](101-an-impossible-day-that-was-not-refused.md), which said

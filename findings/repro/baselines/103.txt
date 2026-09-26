@@ -1,0 +1,59 @@
+103 -- ical.js 2.2.1: FREQ=YEARLY ends after 28 consecutive non-matching iterations
+cases_id 7bd9731d3a48 ; adapter case timeout 45000 ms
+PREDICTOR: ical.js(rule) == reference(rule) cut before the first occurrence
+           that is >= 28 non-matching iterations past the PREVIOUS ONE.
+           The gap from DTSTART to the FIRST occurrence is exempt: init()
+           scans to year 20000 unbounded. That asymmetry is the defect.
+
+-- D: the predictor fires, and ical.js is short of the reference.
+  D-5mo        PREDICTED
+     FREQ=YEARLY;BYMONTH=2;BYDAY=5MO  (a fifth Monday in February needs a leap year whose Feb 1 is a Monday: 2044, 2072, then nothing until 2112. ical.js stops at 2072)
+     ical.js   20440229 20720229
+     reference 20440229 20720229 21120229 21400229 ...
+  D-feb29mon   PREDICTED
+     FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29;BYDAY=MO  (a different rule text reaching the same rare conjunction, stopped at the same year: the mechanism is the empty run, not the BYDAY ordinal)
+     ical.js   20440229 20720229
+     reference 20440229 20720229 21120229 21400229 ...
+  D-count      PREDICTED
+     FREQ=YEARLY;BYMONTH=2;BYDAY=5MO;COUNT=6  (COUNT=6 returns 2. A caller who asked for a fixed count gets a short series with no error: the loss is SILENT)
+     ical.js   20440229 20720229
+     reference 20440229 20720229 21120229 21400229 ...
+  D-interval3  PREDICTED
+     FREQ=YEARLY;INTERVAL=3;BYMONTH=2;BYDAY=5MO  (INTERVAL=3 keeps only 2044 -- the next reachable year is 2140, 32 iterations away. A LARGER interval truncates EARLIER in calendar terms)
+     ical.js   20440229
+     reference 20440229 21400229 22360229 23320229 ...
+
+-- A / C: the predictor does NOT fire, and ical.js is correct.
+  A-dtstart    ASYMMETRY SHOWN
+     FREQ=YEARLY;BYMONTH=2;BYDAY=5MO  (DECIDING, and it is the asymmetry: the SAME rule from 2080 must cross the SAME 31 empty iterations to reach 2112 -- and it does, because that search happens in init(), which is not bounded. Past the gap it is fully correct. Bounded and unbounded search for the same thing in the same class)
+     ical.js   21120229 21400229 21680229 21960229 ...
+  C-interval2  HELD
+     FREQ=YEARLY;INTERVAL=2;BYMONTH=2;BYDAY=5MO  (DECIDING: INTERVAL=2 crosses the SAME 40 calendar years correctly, in 19 iterations. The bound counts ITERATIONS, not years)
+     ical.js   20440229 20720229 21120229 21400229 ...
+  C-leaponly   HELD
+     FREQ=YEARLY;BYYEARDAY=366  (leap years alone, via BYYEARDAY=366 rather than BYMONTHDAY=29 (which finding 101 already shows ical.js mishandles): gaps of at most 8, no loss)
+     ical.js   20281231 20321231 20361231 20401231 ...
+  C-monthly    HELD
+     FREQ=MONTHLY;BYMONTH=2;BYMONTHDAY=29;BYDAY=MO  (the MONTHLY analogue of the identical conjunction is CORRECT. Its own bound is 336, and BYMONTH is a contracting rule checked outside next_month(), so invalid_count is reset every month. FREQ=YEARLY is load-bearing)
+     ical.js   20440229 20720229 21120229 21400229 ...
+
+-- the other implementations on D-5mo (is ical.js alone?)
+  dateutil   == reference 20440229 20720229 21120229 ...
+  icaljs     DIFFERS      20440229 20720229
+  rrulejs    == reference 20440229 20720229 21120229 ...
+  dmfs       == reference 20440229 20720229 21120229 ...
+  ical4j411  == reference 20440229 20720229 21120229 ...
+  sabre      DIFFERS      20260101 20440229 20720229 ...
+  sabre differs by prepending DTSTART; that is its own separate reading,
+  not this defect -- its tail reaches 2112 and beyond.
+
+-- S: scope. Longest run of non-matching iterations any corpus
+   FREQ=YEARLY case demands, from its own stored reference expansion:
+     16  54a5c8a07907  INTERVAL=3  FREQ=YEARLY;INTERVAL=3;BYDAY=1TU;BYMONTHDAY=5;WKST=SU
+     12  7b92dd911bbb  INTERVAL=3  FREQ=YEARLY;INTERVAL=3;BYWEEKNO=-2,2;BYMONTHDAY=31,5;WKST=SU
+     11  7711557ffd3f  INTERVAL=1  FREQ=YEARLY;BYDAY=MO;BYYEARDAY=365;BYSETPOS=-1
+   373 YEARLY cases; longest run 16; bound 28. 0 case(s) reach the bound.
+   This finding therefore moves NO score and subtracts NOTHING from
+   074's residual. It was found by reading next(), not by measuring.
+
+All probes and controls behaved as published.

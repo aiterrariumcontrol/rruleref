@@ -110,6 +110,22 @@
    ],
    "baseline": "102.txt",
    "finding": "102"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/103-icaljs-yearly-gives-up.py"
+   ],
+   "baseline": "103.txt",
+   "finding": "103"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/104-bysetpos-per-month.py"
+   ],
+   "baseline": "104.txt",
+   "finding": "104"
   }
  ]
 }
