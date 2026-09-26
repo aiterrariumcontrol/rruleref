@@ -1,0 +1,50 @@
+finding 105 -- ical.js FREQ=MONTHLY negative BYSETPOS on day 1 of the month
+corpus case: d27c58ae379a  DTSTART=20270102T090000
+
+ok   FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2
+       the corpus case d27c58ae379a: 1SA is day 1 whenever the month starts Saturday
+       predicted 10 dropped: ['20270501', '20280101', '20280401', '20280701', '20290901', '20291201'] ...
+       actual    10 dropped: ['20270501', '20280101', '20280401', '20280701', '20290901', '20291201'] ...
+ok   FREQ=MONTHLY;BYDAY=3FR,1WE;BYSETPOS=-2
+       same shape, different weekday -- the trigger is day 1, not Saturday
+       predicted 8 dropped: ['20270901', '20271201', '20280301', '20281101', '20290801', '20300501'] ...
+       actual    8 dropped: ['20270901', '20271201', '20280301', '20281101', '20290801', '20300501'] ...
+ok   FREQ=MONTHLY;BYDAY=2FR,1SA;BYSETPOS=-2
+       moving the OTHER token changes nothing; 1SA is what matters
+       predicted 10 dropped: ['20270501', '20280101', '20280401', '20280701', '20290901', '20291201'] ...
+       actual    10 dropped: ['20270501', '20280101', '20280401', '20280701', '20290901', '20291201'] ...
+ok   FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=-9
+       unprefixed BYDAY, set size varies: only the 9-member months drop
+       predicted 16 dropped: ['20270601', '20280201', '20280801', '20290501', '20300101', '20301001'] ...
+       actual    16 dropped: ['20270601', '20280201', '20280801', '20290501', '20300101', '20301001'] ...
+ok   FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=-8
+       same rule at -8: a different, disjoint set of months drops
+       predicted 1 dropped: ['20270201']
+       actual    1 dropped: ['20270201']
+ok   FREQ=MONTHLY;BYDAY=MO,WE,FR;BYSETPOS=-13
+       three-token set, size 12-14: only the 13-member months drop
+       predicted 15 dropped: ['20270901', '20271001', '20271101', '20280901', '20281101', '20281201'] ...
+       actual    15 dropped: ['20270901', '20271001', '20271101', '20280901', '20281101', '20281201'] ...
+ok   FREQ=MONTHLY;BYDAY=3FR,2SA;BYSETPOS=-2
+       CONTROL: 2SA is never day 1, so nothing is dropped
+       predicted 0 dropped: []
+       actual    0 dropped: []
+ok   FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=1
+       CONTROL: the positive spelling of the same selection is handled
+       predicted 0 dropped: []
+       actual    0 dropped: []
+ok   FREQ=MONTHLY;BYDAY=1SA,3FR;BYSETPOS=1,-2
+       CONTROL: adding the positive spelling to the failing rule repairs it
+       predicted 0 dropped: []
+       actual    0 dropped: []
+ok   FREQ=MONTHLY;BYDAY=MO,TU;BYSETPOS=-1
+       CONTROL: -1 is never position 1 in a ~9-member set, so no month drops
+       predicted 0 dropped: []
+       actual    0 dropped: []
+
+field agreement on the corpus rule (FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2):
+  4 of 4 other adapters that build here -- dateutil, rrule.js, sabre,
+  dmfs -- agree with each other and disagree with ical.js. Verified at
+  wake 153; re-run with --field to check again.
+
+ok -- predictor exact on all 10 probes

@@ -126,6 +126,14 @@
    ],
    "baseline": "104.txt",
    "finding": "104"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/105-icaljs-monthly-negative-bysetpos-rollover.py"
+   ],
+   "baseline": "105.txt",
+   "finding": "105"
   }
  ]
 }

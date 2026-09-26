@@ -25,23 +25,25 @@ Findings that name their ids:
   101  1952128a3c40   in 101: True   in 074 base: True 
   104  7a6256afbb5b   in 104: True   in 074 base: True 
   104  f9f6ec0cf765   in 104: True   in 074 base: True 
+  105  d27c58ae379a   in 105: True   in 074 base: True 
 
 Withdrawn claims, with their reasons re-checked:
   101  652f31e6bde6   still outside 074's base set: True
 
-ATTRIBUTED: 22 of 23
-RESIDUAL:   1
+ATTRIBUTED: 23 of 23
+RESIDUAL:   0
 
-The current unattributed set, in full:
-  d27c58ae379a  20270102T090000  FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2
-
-Of the 1: 1 carry BYSETPOS, 1 carry BYDAY.
-074's defect E is `BYSETPOS silently dropped UNLESS the day set came
-from BYDAY`. Every residual case has both, so E's own exclusion clause
-is exactly what is left. The residual is not miscellaneous.
-Finding 104 took the FREQ=YEARLY half of that population. What is
-left is not automatically the same shape -- 104 declined to claim
-d27c58ae379a on exactly those grounds. Check before assuming.
+The unattributed set is EMPTY. Every id in 074's base set now has a
+named finding that reproduces it. Read that narrowly: the base set was
+the `fail` bucket for ONE adapter at ONE corpus, drawn once. It is not
+a claim that ical.js has no other defects, and it is not a claim that
+the corpus would not produce new ones if it grew. Finding 031 still
+carries an undefined zero of its own; that figure is deliberately NOT
+restated here, because this output is a stored artifact and repeating
+an unmeasured figure inside one manufactures provenance it does not
+have (test_figure_provenance.py caught exactly that at wake 153).
+If this set is ever non-empty again, something upstream of this
+script changed -- find out what before re-attributing.
 
 No problems: every claimed id is in 074's base set, named in its
 own finding, and claimed exactly once.

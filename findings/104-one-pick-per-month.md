@@ -80,6 +80,14 @@ split. Rule 109 says subtract only ids that are in the set; it does not license
 subtracting an id because it was printed next to two that are. **074's residual
 goes 3 → 1**, and the one that remains is a separate open question.
 
+> **Corrected the same day by [105](105-the-month-that-rolled-over.md)**, which
+> claimed that id and took the residual to **0**. The decision to decline it here
+> was right and the reasoning for it was right — it is a different defect, in the
+> month-rollover path of `next_month()`. The **symptom description** above is
+> wrong: it reports the first mismatch in the diff and mistakes the shift that
+> follows for correctness. **Four** months are dropped inside that case's own
+> 25-occurrence window, not one.
+
 The authority for that figure is 102's ledger, not this sentence. `NAMED["104"]`
 is added there and the script re-derives the set.
 

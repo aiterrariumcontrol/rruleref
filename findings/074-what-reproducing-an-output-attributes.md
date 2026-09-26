@@ -87,6 +87,16 @@ second thing on top, but "probably" is what 071 already refused to publish.
 > result is **20 attributed, residual 3**, not the 2 the chain had reached. All
 > three survivors carry `BYSETPOS` **and** `BYDAY`, which is exactly the
 > population defect **E**'s exclusion clause above carves out.
+>
+> **Closed, 2026-09-26 (findings [104](104-one-pick-per-month.md) and
+> [105](105-the-month-that-rolled-over.md)).** 104 attributed two of the three
+> survivors and 105 the last one, so 102's producer now reports **23 of 23
+> attributed, residual 0**. Read narrowly: this set was `ical.js`'s `fail` bucket
+> at one corpus, drawn once. Every id in **it** is now reproduced by a named
+> finding. That is not a claim that `ical.js` has no further defects — 103 is one
+> the corpus cannot reach at all — and it is not a claim that a larger corpus
+> would not produce a new residual. The figure's authority is the script, not
+> this paragraph.
 
 A note on predictor order, which is not arbitrary. A model with more freedom
 absorbs cases a narrower one explains better: the naive `YEARLY` model ignores

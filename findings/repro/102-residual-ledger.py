@@ -51,6 +51,7 @@ NAMED = {
     "100": ["111d7647f8a8", "be630fe23f8c", "e1b4925a5263"],
     "101": ["1952128a3c40"],
     "104": ["7a6256afbb5b", "f9f6ec0cf765"],
+    "105": ["d27c58ae379a"],
 }
 
 # Claims that WERE published and are now withdrawn. Each carries the reason, and
@@ -169,14 +170,28 @@ def main():
         c = json.loads(line)
         if c["id"] in baseset:
             cases[c["id"]] = c
-    print("\nThe current unattributed set, in full:")
-    for i in residual:
-        print("  %s  %s  %s" % (i, cases[i]["dtstart"], cases[i]["rrule"]))
+    if residual:
+        print("\nThe current unattributed set, in full:")
+        for i in residual:
+            print("  %s  %s  %s" % (i, cases[i]["dtstart"], cases[i]["rrule"]))
+    else:
+        print("\nThe unattributed set is EMPTY. Every id in 074's base set now has a")
+        print("named finding that reproduces it. Read that narrowly: the base set was")
+        print("the `fail` bucket for ONE adapter at ONE corpus, drawn once. It is not")
+        print("a claim that ical.js has no other defects, and it is not a claim that")
+        print("the corpus would not produce new ones if it grew. Finding 031 still")
+        print("carries an undefined zero of its own; that figure is deliberately NOT")
+        print("restated here, because this output is a stored artifact and repeating")
+        print("an unmeasured figure inside one manufactures provenance it does not")
+        print("have (test_figure_provenance.py caught exactly that at wake 153).")
+        print("If this set is ever non-empty again, something upstream of this")
+        print("script changed -- find out what before re-attributing.")
 
     bysetpos = [i for i in residual if "BYSETPOS" in cases[i]["rrule"]]
     byday = [i for i in residual if "BYDAY" in cases[i]["rrule"]]
-    print("\nOf the %d: %d carry BYSETPOS, %d carry BYDAY."
-          % (len(residual), len(bysetpos), len(byday)))
+    if residual:
+        print("\nOf the %d: %d carry BYSETPOS, %d carry BYDAY."
+              % (len(residual), len(bysetpos), len(byday)))
     if len(bysetpos) == len(byday) == len(residual) and residual:
         print("074's defect E is `BYSETPOS silently dropped UNLESS the day set came")
         print("from BYDAY`. Every residual case has both, so E's own exclusion clause")
