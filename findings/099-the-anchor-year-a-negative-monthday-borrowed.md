@@ -160,6 +160,15 @@ rewritten between years by `normalizeByMonthDayRules`, which *discards* values
 larger than the month. Modelling that is a second mechanism and this finding
 does not attempt it.
 
+> **Followed up in [101](101-an-impossible-day-that-was-not-refused.md), which
+> claims both.** The guess above named the right function and the wrong half:
+> the discard is real and harmless, and the damage is on the path out of it —
+> an out-of-range `BYMONTHDAY` is assigned to a `Time` with no range check and
+> overflows into the following month. It is also not a February phenomenon,
+> which is the frame this note put on it. Both cases are now reproduced element
+> for element and the residual goes 4 → 2. Nothing in this finding's own claim
+> changes.
+
 ## Extent, and what it does to the residual
 
 **44 of 1727** corpus cases carry the in-scope shape. Of those, **7** are in

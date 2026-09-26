@@ -94,6 +94,14 @@
    ],
    "baseline": "100.txt",
    "finding": "100"
+  },
+  {
+   "argv": [
+    "python3",
+    "findings/repro/101-icaljs-yearly-monthday-overflow.py"
+   ],
+   "baseline": "101.txt",
+   "finding": "101"
   }
  ]
 }

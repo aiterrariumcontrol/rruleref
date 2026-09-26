@@ -1,0 +1,127 @@
+101 -- ical.js, an impossible BYMONTHDAY at FREQ=YEARLY overflows
+cases_id 7bd9731d3a48
+
+RFC 5545 3.3.10: invalid recurrence instances MUST be ignored. Every D probe
+names its month with BYMONTH, so the 099 month-expansion dispute cannot apply.
+
+-- D: the defect. Correct answer is the EMPTY SET on every one of these.
+  D-in-2-30    FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=30   
+               dateutil EMPTY    ; ical.js 20230302 20240301 20250302
+               every ical.js occurrence in month 3 (the month AFTER the one named): yes
+  D-out-2-30   FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=30   
+               dateutil EMPTY    ; ical.js 20230302 20240301 20250302
+               every ical.js occurrence in month 3 (the month AFTER the one named): yes
+  D-in-2-31    FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230303 20240302 20250303
+               every ical.js occurrence in month 3 (the month AFTER the one named): yes
+  D-out-2-31   FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230303 20240302 20250303
+               every ical.js occurrence in month 3 (the month AFTER the one named): yes
+  D-in-4-31    FREQ=YEARLY;BYMONTH=4;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230501 20240501 20250501
+               every ical.js occurrence in month 5 (the month AFTER the one named): yes
+  D-out-4-31   FREQ=YEARLY;BYMONTH=4;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230501 20240501 20250501
+               every ical.js occurrence in month 5 (the month AFTER the one named): yes
+  D-in-6-31    FREQ=YEARLY;BYMONTH=6;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230701 20240701 20250701
+               every ical.js occurrence in month 7 (the month AFTER the one named): yes
+  D-out-6-31   FREQ=YEARLY;BYMONTH=6;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20230701 20240701 20250701
+               every ical.js occurrence in month 7 (the month AFTER the one named): yes
+  D-in-9-31    FREQ=YEARLY;BYMONTH=9;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20231001 20241001 20251001
+               every ical.js occurrence in month 10 (the month AFTER the one named): yes
+  D-out-9-31   FREQ=YEARLY;BYMONTH=9;BYMONTHDAY=31   
+               dateutil EMPTY    ; ical.js 20231001 20241001 20251001
+               every ical.js occurrence in month 10 (the month AFTER the one named): yes
+  D-in-11-31   FREQ=YEARLY;BYMONTH=11;BYMONTHDAY=31  
+               dateutil EMPTY    ; ical.js 20231201 20241201 20251201
+               every ical.js occurrence in month 12 (the month AFTER the one named): yes
+  D-out-11-31  FREQ=YEARLY;BYMONTH=11;BYMONTHDAY=31  
+               dateutil EMPTY    ; ical.js 20231201 20241201 20251201
+               every ical.js occurrence in month 12 (the month AFTER the one named): yes
+
+  All 6 (month, day) cells that are impossible in EVERY year, exhaustively:
+  2/30, 2/31, 4/31, 6/31, 9/31, 11/31
+  dateutil empty on all of them; ical.js empty on NONE of them.
+
+-- H: is the fabricated stream bounded? It is not.
+  H-2-30       asked for 40, ical.js returned 40, last = 20620302
+  H-2-31       asked for 40, ical.js returned 40, last = 20620303
+  H-4-31       asked for 40, ical.js returned 40, last = 20620501
+  H-6-31       asked for 40, ical.js returned 40, last = 20620701
+  H-9-31       asked for 40, ical.js returned 40, last = 20621001
+  H-11-31      asked for 40, ical.js returned 40, last = 20621201
+
+-- C: controls. Criterion is PREFIX equality: every occurrence ical.js
+   returns must be dateutil's, in order, from the start. A characterisation
+   that fails these is wrong, so they are checked, not narrated.
+  C-valid-4-30   FREQ=YEARLY;BYMONTH=4;BYMONTHDAY=30        ok
+                 control: the LARGEST day April does have. No overflow. The trigger is the range check, not the size of the number
+                 ical.js 20230430 20240430 20250430 20260430
+  C-valid-2-28   FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=28        ok
+                 control: February 28 always exists
+                 ical.js 20230228 20240228 20250228 20260228
+  C-monthly-31   FREQ=MONTHLY;BYMONTHDAY=31                 ok
+                 control: THE SAME impossible day at FREQ=MONTHLY is handled correctly -- ical.js skips the short months. FREQ=YEARLY is load-bearing
+                 ical.js 20240531 20240731 20240831 20241031 20241231 20250131
+  C-monthly-30   FREQ=MONTHLY;BYMONTHDAY=31,-1              ok
+                 control: mixed sign at MONTHLY, also correct
+                 ical.js 20240229 20240331 20240430 20240531 20240630 20240731
+  C-byday-5th    FREQ=YEARLY;BYMONTH=4;BYDAY=5SU            ok
+                 THE INTERNAL CONTROL. expand_year_days's BYDAY branches bounds-check (`if (month_day <= daysInMonth)`); a 5th Sunday that April does not have is dropped, not overflowed. Same function, same year, opposite handling
+                 ical.js 20230430 20280430 20290429 20340430
+  C-byday-5th-2  FREQ=YEARLY;BYMONTH=2;BYDAY=5MO            ok
+                 same internal control in February, and the one probe where ical.js STOPS EARLY: a 5th Monday in February needs a leap year beginning on a Monday (2044, 2072, 2112, 2140), and ical.js returns only the first two. Every date it does return is correct, so the BYDAY bounds check still holds. The early stop is next_year() returning 0 when a single year expands empty; it is NOT this finding's defect and is NOT claimed here
+                 ical.js 20440229 20720229
+  C-byyearday    FREQ=YEARLY;BYYEARDAY=366                  ok
+                 control: an out-of-range BYYEARDAY is NOT overflowed into the next year
+                 ical.js 20241231 20281231 20321231 20361231
+
+   ical.js returned FEWER than asked on: C-byday-5th-2 (2 of 4)
+   Those are correct as far as they go. The truncation is next_year()
+   returning 0 on a single empty year -- a separate phenomenon, not claimed here.
+
+-- F: the follow-on, inside the disputed no-BYMONTH shape. Reported as
+   measured behaviour, NOT as a conformance verdict (099's dispute applies here).
+  F-31-neg1    FREQ=YEARLY;BYMONTHDAY=31,-1   DTSTART 20240229T090000
+               ical.js  20240229 20240302 20250303 20260303 20270303 20280302
+               dateutil 20240229 20240331 20240430 20240531 20240630 20240731
+               corpus case 1952128a3c40's shape. After the first year the -1 has VANISHED: this.last is in March, -1 renormalises to 31 there, and 31 is already present, so the dedup in normalizeByMonthDayRules drops it
+  F-neg5-31    FREQ=YEARLY;BYMONTHDAY=-5,31   DTSTART 20240229T090000
+               ical.js  20240302 20250227 20250303 20260227 20260303 20270227
+               dateutil 20240327 20240331 20240426 20240527 20240531 20240626
+               -5 renormalises against MARCH to 27, so Feb 27 appears -- a day the rule never named under either reading. Same mechanism, visible instead of invisible
+  F-1-31       FREQ=YEARLY;BYMONTHDAY=1,31   DTSTART 20240229T090000
+               ical.js  20240302 20250201 20250303 20260201 20260303 20270201
+               dateutil 20240301 20240331 20240401 20240501 20240531 20240601
+               no collision: 1 and 31 both survive, so both appear. The deletion in F-31-neg1 is specifically a dedup collision
+
+-- X: the near-miss cell, stated because the criterion differs.
+  X1           FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29
+               ical.js  20230301 20240229 20280229 20320229
+               dateutil 20240229 20280229 20320229 20360229
+
+-- corpus extent
+  2 of 1727 corpus cases carry a FREQ=YEARLY BYMONTHDAY that exceeds every
+  candidate month length. Both have DTSTART in February:
+    652f31e6bde6  20240229T090000  FREQ=YEARLY;BYMONTHDAY=-5,29
+    1952128a3c40  20240229T090000  FREQ=YEARLY;BYMONTHDAY=31,-1
+  The corpus extent is small. The rule shape is not: FREQ=YEARLY;BYMONTH=4;
+  BYMONTHDAY=31 is a typo a calendar UI can emit, and ical.js answers it with a
+  May reminder every year for ever instead of refusing it.
+
+-- A: attribution by reproduction (074's standard). The predictor above is
+   built from the mechanism alone and never consults ical.js's answer.
+    652f31e6bde6  FREQ=YEARLY;BYMONTHDAY=-5,29   limit 25  ->  EXACT, element for element
+    1952128a3c40  FREQ=YEARLY;BYMONTHDAY=31,-1   limit 25  ->  EXACT, element for element
+  reproduced exactly: 2 of 2
+  Both were on 074's unattributed residual as narrowed by 096-100.
+  THE RESIDUAL GOES 4 -> 2.
+  NOT CLAIMED: this predictor is scoped to BYMONTHDAY alone at FREQ=YEARLY.
+  On a wider 520-probe grid that adds BYMONTH and more DTSTART months it is
+  exact on 373. The init walk on those shapes is not modelled and is not claimed.
+
+-- verdict
+  12/12 defect probes behave exactly as characterised; all 7 controls pass.
