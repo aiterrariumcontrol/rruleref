@@ -156,6 +156,16 @@ ADAPTERS = {
                  "-cp", "@CP@", "DmfsAdapter"],
         "fail": 4,
     },
+    # Added at wake 160 by finding 112, the third of the four. Unlike the
+    # others this one needs a shared library that is not in the tree, so its
+    # run carries an extra environment variable; LIBICAL_LIB overrides it.
+    "libical": {
+        "argv": ["conformance/adapters/c/libical_adapter"],
+        "fail": 6,
+        "env": {"LD_LIBRARY_PATH": os.path.join(os.environ.get(
+            "LIBICAL_LIB",
+            "/home/agent/terrarium/scratch/libical-install-4edd"), "lib")},
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -317,8 +327,8 @@ def score(name, timeout):
     tmp = os.path.join(ROOT, ".109-%s-score.json" % name)
     cmd = ([sys.executable, os.path.join(ROOT, "conformance", "score.py"),
             "--json", tmp, "--timeout", str(timeout), "--"] + argv)
-    subprocess.run(cmd, cwd=ROOT, env=dict(os.environ, TZ="UTC"),
-                   capture_output=True, text=True)
+    env = dict(os.environ, TZ="UTC", **ADAPTERS[name].get("env", {}))
+    subprocess.run(cmd, cwd=ROOT, env=env, capture_output=True, text=True)
     if not os.path.exists(tmp):
         raise SystemExit("score.py wrote no output file for %s" % name)
     with open(tmp) as fh:
@@ -342,6 +352,8 @@ def partitions():
         "110-rrulejs-port-divergence.json")))
     d111 = json.load(open(os.path.join(DATA,
         "111-dmfs-weekno-overflow.json")))
+    d112 = json.load(open(os.path.join(DATA,
+        "112-libical-week-start-blind.json")))
     icaljs = {
         "071-A": d108["recovered"]["defect_A"],
         "071-B": d108["recovered"]["defect_B"],
@@ -351,14 +363,16 @@ def partitions():
     for k, v in d074["ids"].items():
         icaljs["074 " + k] = v
     ids = {}
-    for d in (d071["corpus_version"], d074, d075, d076, d108, d110, d111):
+    for d in (d071["corpus_version"], d074, d075, d076, d108, d110, d111,
+              d112):
         ids[d.get("cases_id") or d["cases_id"]] = True
     cases_ids = sorted(ids)
     return ({"icaljs": icaljs,
              "ical4j": {"075 " + k: v for k, v in d075["ids"].items()},
              "sabre": {"076 " + k: v for k, v in d076["ids"].items()},
              "rrulejs": {"110 " + k: v for k, v in d110["ids"].items()},
-             "dmfs": {"111 " + k: v for k, v in d111["partition"].items()}},
+             "dmfs": {"111 " + k: v for k, v in d111["partition"].items()},
+             "libical": {"112 " + k: v for k, v in d112["partition"].items()}},
             cases_ids)
 
 

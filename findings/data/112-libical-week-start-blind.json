@@ -1,0 +1,199 @@
+{
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "corpus_id": "48988e689fb27ee40f492f73c213d4385a1b1ddab9e8be976b18fcc5bd8a6c99",
+ "fail_bucket": [
+  "1b491afa4ef0",
+  "47957affeae1",
+  "52cb89bd1169",
+  "6a2a3349a31d",
+  "a11bc9303af3",
+  "cd5d1f7e7232"
+ ],
+ "observable_a_week_outside_year": {
+  "2024": {
+   "asked": 2024,
+   "got": "20241223T090000",
+   "outside": false
+  },
+  "2025": {
+   "asked": 2025,
+   "got": "20251224T090000",
+   "outside": false
+  },
+  "2026": {
+   "asked": 2026,
+   "got": "20270107T090000",
+   "outside": true
+  },
+  "2027": {
+   "asked": 2027,
+   "got": "20271231T090000",
+   "outside": false
+  },
+  "2028": {
+   "asked": 2028,
+   "got": "20281230T090000",
+   "outside": false
+  },
+  "2029": {
+   "asked": 2029,
+   "got": "20291224T090000",
+   "outside": false
+  },
+  "2030": {
+   "asked": 2030,
+   "got": "20301224T090000",
+   "outside": false
+  },
+  "2031": {
+   "asked": 2031,
+   "got": "20311224T090000",
+   "outside": false
+  },
+  "2032": {
+   "asked": 2032,
+   "got": "20330106T090000",
+   "outside": true
+  },
+  "2033": {
+   "asked": 2033,
+   "got": "20331231T090000",
+   "outside": false
+  },
+  "2034": {
+   "asked": 2034,
+   "got": "20341224T090000",
+   "outside": false
+  },
+  "2035": {
+   "asked": 2035,
+   "got": "20351224T090000",
+   "outside": false
+  },
+  "2036": {
+   "asked": 2036,
+   "got": "20361223T090000",
+   "outside": false
+  },
+  "2037": {
+   "asked": 2037,
+   "got": "20380107T090000",
+   "outside": true
+  },
+  "2038": {
+   "asked": 2038,
+   "got": "20381231T090000",
+   "outside": false
+  },
+  "2039": {
+   "asked": 2039,
+   "got": "20391231T090000",
+   "outside": false
+  },
+  "2040": {
+   "asked": 2040,
+   "got": "20401223T090000",
+   "outside": false
+  }
+ },
+ "observable_b_short_week": {
+  "2024": {
+   "days": 6,
+   "jan1": "Mon",
+   "predicted": 6
+  },
+  "2025": {
+   "days": 7,
+   "jan1": "Wed",
+   "predicted": 7
+  },
+  "2026": {
+   "days": 7,
+   "jan1": "Thu",
+   "predicted": 7
+  },
+  "2027": {
+   "days": 3,
+   "jan1": "Fri",
+   "predicted": 3
+  },
+  "2028": {
+   "days": 4,
+   "jan1": "Sat",
+   "predicted": 4
+  },
+  "2029": {
+   "days": 6,
+   "jan1": "Mon",
+   "predicted": 6
+  },
+  "2030": {
+   "days": 7,
+   "jan1": "Tue",
+   "predicted": 7
+  },
+  "2031": {
+   "days": 7,
+   "jan1": "Wed",
+   "predicted": 7
+  },
+  "2032": {
+   "days": 7,
+   "jan1": "Thu",
+   "predicted": 7
+  },
+  "2033": {
+   "days": 4,
+   "jan1": "Sat",
+   "predicted": 4
+  },
+  "2034": {
+   "days": 5,
+   "jan1": "Sun",
+   "predicted": 5
+  },
+  "2035": {
+   "days": 6,
+   "jan1": "Mon",
+   "predicted": 6
+  },
+  "2036": {
+   "days": 7,
+   "jan1": "Tue",
+   "predicted": 7
+  },
+  "2037": {
+   "days": 7,
+   "jan1": "Thu",
+   "predicted": 7
+  },
+  "2038": {
+   "days": 3,
+   "jan1": "Fri",
+   "predicted": 3
+  },
+  "2039": {
+   "days": 4,
+   "jan1": "Sat",
+   "predicted": 4
+  },
+  "2040": {
+   "days": 5,
+   "jan1": "Sun",
+   "predicted": 5
+  }
+ },
+ "partition": {
+  "A-weeks-in-year-ignores-wkst": [
+   "1b491afa4ef0",
+   "47957affeae1",
+   "6a2a3349a31d",
+   "cd5d1f7e7232"
+  ],
+  "B-week-year-truncated-by-doy-offset-plus-one": [
+   "52cb89bd1169",
+   "a11bc9303af3"
+  ]
+ },
+ "subject": "libical master 4edd39a3 (HAVE_LIBICU=1)"
+}
