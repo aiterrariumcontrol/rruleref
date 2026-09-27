@@ -30,7 +30,8 @@ WHAT IT FOUND, AND IT IS NOT NOTHING.
   * The three partitions are exact. 0 internal overlaps, 0 gaps, at one
     cases_id, verified by re-scoring all three adapters.
 
-  * 336 ids are claimed by TWO OR THREE partitions at once, and every one of
+  * 336 ids are claimed by TWO OR THREE partitions at once (352 over two to
+    four since finding 110 added rrule.js at wake 158), and every one of
     those is correct: a corpus case that breaks one library usually breaks
     several, and the claims are about different implementations. A detector
     that keys on the case id alone reports 336 collisions and is wrong 336
@@ -136,6 +137,15 @@ ADAPTERS = {
         "argv": ["php", "conformance/adapters/php/vobject_adapter.php"],
         "fail": 980,
     },
+    # Added at wake 158 by finding 110, which is the fourth published map to
+    # claim a whole fail bucket. Its partition is built differently -- by a
+    # patched-parent predictor rather than per-defect reproduction -- and the
+    # check here does not care how a map was produced, only that it is a
+    # partition of the live bucket.
+    "rrulejs": {
+        "argv": ["node", "conformance/adapters/rrulejs_adapter.js"],
+        "fail": 28,
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -164,6 +174,15 @@ CITATIONS = {
                              "the three controls do not agree on it'.",
     ("055", "c29dd0b92b8f"): "055 is about ical4j's negative BYSETPOS index; it names "
                              "the case as the corpus's instance of that defect.",
+    ("110", "6e74ec2d96a8"): "110 prints it to say it is NOT among its defect "
+                             "A's 22: an implementation whose behaviour IS "
+                             "'written order preserved' does not fail a list "
+                             "that is already in order. That is corroboration "
+                             "of 098's retraction, not a claim on the case.",
+    ("110", "a844fe388868"): "110 prints it for the same reason as "
+                             "6e74ec2d96a8: BYSECOND=0,15 is in numeric order, "
+                             "so defect A cannot reach it. Cited as evidence "
+                             "for 098, not claimed.",
     ("041", "0b0303cd2335"): "041 is about rust-rrule under an ambient TZ.",
     ("041", "eaf7b2453c5a"): "041 is about rust-rrule under an ambient TZ.",
     ("041", "3c45e01105a5"): "041 is about rust-rrule under an ambient TZ.",
@@ -309,6 +328,8 @@ def partitions():
         "075-ical4j-residual-reproduced.json")))
     d076 = json.load(open(os.path.join(DATA,
         "076-sabre-residual-reproduced.json")))
+    d110 = json.load(open(os.path.join(DATA,
+        "110-rrulejs-port-divergence.json")))
     icaljs = {
         "071-A": d108["recovered"]["defect_A"],
         "071-B": d108["recovered"]["defect_B"],
@@ -318,12 +339,13 @@ def partitions():
     for k, v in d074["ids"].items():
         icaljs["074 " + k] = v
     ids = {}
-    for d in (d071["corpus_version"], d074, d075, d076, d108):
+    for d in (d071["corpus_version"], d074, d075, d076, d108, d110):
         ids[d.get("cases_id") or d["cases_id"]] = True
     cases_ids = sorted(ids)
     return ({"icaljs": icaljs,
              "ical4j": {"075 " + k: v for k, v in d075["ids"].items()},
-             "sabre": {"076 " + k: v for k, v in d076["ids"].items()}},
+             "sabre": {"076 " + k: v for k, v in d076["ids"].items()},
+             "rrulejs": {"110 " + k: v for k, v in d110["ids"].items()}},
             cases_ids)
 
 
@@ -335,7 +357,7 @@ def main():
     args = ap.parse_args()
 
     parts, cases_ids = partitions()
-    print("PART 1 -- the three published partitions")
+    print("PART 1 -- the %d published partitions" % len(parts))
     check("every source data file names ONE cases_id",
           len(cases_ids) == 1, cases_ids[0][:12] if len(cases_ids) == 1
           else ", ".join(c[:12] for c in cases_ids))
@@ -379,7 +401,7 @@ def main():
         per_id[i] += 1
     multi_impl = [i for i, n in per_id.items() if n > 1]
     print("\n  %d distinct cases appear in at least one partition; %d of them "
-          "in TWO OR THREE" % (len(per_id), len(multi_impl)))
+          "in MORE THAN ONE" % (len(per_id), len(multi_impl)))
     print("  Those %d are what a detector keyed on the case id alone would "
           "report, and all %d are correct claims about different "
           "implementations." % (len(multi_impl), len(multi_impl)))

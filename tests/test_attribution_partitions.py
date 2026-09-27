@@ -32,5 +32,5 @@ if r.returncode != 0:
 for line in r.stdout.splitlines():
     if "distinct cases appear" in line or "are named by a finding" in line:
         print(line.strip())
-print("ok  the three attribution maps are partitions and every shared id is "
+print("ok  every attribution map is a partition and every shared id is "
       "adjudicated")

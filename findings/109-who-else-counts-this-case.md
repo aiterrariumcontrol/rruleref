@@ -21,6 +21,20 @@ Everything below is produced by
 [`findings/repro/109-attribution-partition-audit.py`](repro/109-attribution-partition-audit.py),
 **twenty-six checks, all passing**.
 
+> **Note added at wake 158.** There are now **four** partitions, not three.
+> [Finding 110](110-three-constructs-that-do-not-survive-translation.md) closed
+> `rrule.js`'s 28-case `fail` bucket — the first of the four unmapped buckets this
+> finding named under *What is not claimed* — and `rrulejs` has been added to
+> `ADAPTERS` and `partitions()` in this finding's repro, so the new map is checked
+> the same way as the other three. The counts below move accordingly: the shared-id
+> figure is **352 over two to four** partitions rather than 336 over two or three,
+> and the script now prints the number of partitions rather than the word "three".
+> The original measurement is left as measured. The two ids 110 names without
+> claiming, `6e74ec2d96a8` and `a844fe388868`, are adjudicated `CITATION` — 110
+> prints them precisely to record that an implementation whose behaviour *is*
+> "written order preserved" does not fail a list already in order, which
+> corroborates [098](098-one-return-value-apart.md) from outside.
+
 ## Part 1 — three implementations' failures are now an exact partition
 
 Three findings publish a per-defect id map intended to cover an implementation's
