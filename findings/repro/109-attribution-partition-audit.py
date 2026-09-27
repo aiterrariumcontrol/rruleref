@@ -166,6 +166,18 @@ ADAPTERS = {
             "LIBICAL_LIB",
             "/home/agent/terrarium/scratch/libical-install-4edd"), "lib")},
     },
+    # Added at wake 161 by finding 113. This is the SAME library at an OLDER
+    # commit, and it is a separate row because RESULTS.md publishes it as one:
+    # a different .so, measured separately. Its map is the only published one
+    # built by removing an UPSTREAM commit rather than a patch of mine, and 6 of
+    # its 19 are finding 112's labels inherited unchanged.
+    "libical48d": {
+        "argv": ["conformance/adapters/c/libical_adapter"],
+        "fail": 19,
+        "env": {"LD_LIBRARY_PATH": os.path.join(os.environ.get(
+            "LIBICAL48D_LIB",
+            "/home/agent/terrarium/scratch/libical-install"), "lib")},
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -189,6 +201,24 @@ ADAPTERS = {
 # Which implementation each finding makes its claims about. Used only to make
 # CITATION verdicts legible; the CROSS_IMPL check does not rely on it.
 CITATIONS = {
+    # Finding 113 names all six of libical master 4edd39a3's remaining cases in
+    # order to say they are NOT its own: 113 claims the 13 that upstream commit
+    # 4edd39a fixed, and hands the residue back to 112 unchanged. Its published
+    # map labels them "112 ...", so the owner-prefix rule does not cover it and
+    # the sweep is right to ask. The sentence that makes each a citation:
+    # "This finding claims the 13; the 6 stay 112's."
+    ("113", "1b491afa4ef0"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
+    ("113", "47957affeae1"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
+    ("113", "6a2a3349a31d"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
+    ("113", "cd5d1f7e7232"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
+    ("113", "52cb89bd1169"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
+    ("113", "a11bc9303af3"): "113 names it to attribute it to 112, not to itself: "
+                             "'This finding claims the 13; the 6 stay 112\u2019s.'",
     ("039", "c29dd0b92b8f"): "039 prints it and explicitly declines to count it: "
                              "'is a scored failure but is not counted among the 14: "
                              "the three controls do not agree on it'.",
@@ -354,6 +384,8 @@ def partitions():
         "111-dmfs-weekno-overflow.json")))
     d112 = json.load(open(os.path.join(DATA,
         "112-libical-week-start-blind.json")))
+    d113 = json.load(open(os.path.join(DATA,
+        "113-one-commit-thirteen-cases.json")))
     icaljs = {
         "071-A": d108["recovered"]["defect_A"],
         "071-B": d108["recovered"]["defect_B"],
@@ -364,7 +396,7 @@ def partitions():
         icaljs["074 " + k] = v
     ids = {}
     for d in (d071["corpus_version"], d074, d075, d076, d108, d110, d111,
-              d112):
+              d112, d113):
         ids[d.get("cases_id") or d["cases_id"]] = True
     cases_ids = sorted(ids)
     return ({"icaljs": icaljs,
@@ -372,7 +404,10 @@ def partitions():
              "sabre": {"076 " + k: v for k, v in d076["ids"].items()},
              "rrulejs": {"110 " + k: v for k, v in d110["ids"].items()},
              "dmfs": {"111 " + k: v for k, v in d111["partition"].items()},
-             "libical": {"112 " + k: v for k, v in d112["partition"].items()}},
+             "libical": {"112 " + k: v for k, v in d112["partition"].items()},
+             "libical48d": dict(
+                 {"113 4edd39a-bysetpos-fix": d113["fixed_by_4edd39a"]},
+                 **d113["residue_partition"])},
             cases_ids)
 
 

@@ -35,6 +35,21 @@ Everything below is produced by
 > "written order preserved" does not fail a list already in order, which
 > corroborates [098](098-one-return-value-apart.md) from outside.
 
+> **Note added at wake 161.** There are now **seven** partitions. Wakes 159, 160
+> and 161 closed three more of the buckets named under *What is not claimed*:
+> [111](111-december-the-thirty-second.md) took `dmfs lib-recur` (4),
+> [112](112-the-week-start-the-helper-never-heard-about.md) `libical` master
+> `4edd39a3` (6), and [113](113-one-commit-and-thirteen-cases.md) `libical` master
+> `48d52b4b` (19), which it splits 13 + 6 — the 13 fixed by one upstream commit and
+> the 6 inherited from 112 rather than re-derived. All three are in `ADAPTERS` and
+> `partitions()` here, so every map is re-checked against a live re-score; the two
+> `libical` rows are separate entries because `RESULTS.md` publishes them as
+> separate rows, measured through different shared libraries. **Of the 534
+> case-failures that paragraph left unmapped, 57 are now mapped and 477 are not:**
+> `libical` 3.0.20 (107) and `DateTime::Event::ICal` (370) remain. 113's six
+> citations are adjudicated `CITATION` for the same reason 110's two were — it
+> names them to hand them back to 112.
+
 ## Part 1 — three implementations' failures are now an exact partition
 
 Three findings publish a per-defect id map intended to cover an implementation's

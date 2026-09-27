@@ -1,0 +1,131 @@
+{
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "commits_in_range": 15,
+ "commits_touching_icalrecur": [
+  "4edd39a",
+  "ce5332a"
+ ],
+ "counts": {
+  "48d52b4b": {
+   "error": 35,
+   "fail": 19,
+   "fail_other_reading": 72,
+   "pass": 1601
+  },
+  "4edd39a3": {
+   "error": 35,
+   "fail": 6,
+   "fail_other_reading": 72,
+   "pass": 1614
+  },
+  "cefc9ca": {
+   "error": 35,
+   "fail": 19,
+   "fail_other_reading": 72,
+   "pass": 1601
+  }
+ },
+ "defect_sites_unchanged": {
+  "A-weeks-in-year-body": true,
+  "B-last-day-site": true
+ },
+ "fail": {
+  "48d52b4b": [
+   "090cbf9a00d5",
+   "1280f7e6985a",
+   "1b491afa4ef0",
+   "3ac91c227a82",
+   "47957affeae1",
+   "52cb89bd1169",
+   "690ba4d5ab73",
+   "6a2a3349a31d",
+   "701ff3884d53",
+   "8339bac5714b",
+   "835b8cde09da",
+   "9e228865a075",
+   "a11bc9303af3",
+   "a88e0fd12d29",
+   "b1953b6ff688",
+   "cd5d1f7e7232",
+   "d627bc6d4375",
+   "f359caaf9d2e",
+   "f9a5d240c793"
+  ],
+  "4edd39a3": [
+   "1b491afa4ef0",
+   "47957affeae1",
+   "52cb89bd1169",
+   "6a2a3349a31d",
+   "a11bc9303af3",
+   "cd5d1f7e7232"
+  ],
+  "cefc9ca": [
+   "090cbf9a00d5",
+   "1280f7e6985a",
+   "1b491afa4ef0",
+   "3ac91c227a82",
+   "47957affeae1",
+   "52cb89bd1169",
+   "690ba4d5ab73",
+   "6a2a3349a31d",
+   "701ff3884d53",
+   "8339bac5714b",
+   "835b8cde09da",
+   "9e228865a075",
+   "a11bc9303af3",
+   "a88e0fd12d29",
+   "b1953b6ff688",
+   "cd5d1f7e7232",
+   "d627bc6d4375",
+   "f359caaf9d2e",
+   "f9a5d240c793"
+  ]
+ },
+ "fixed_by_4edd39a": [
+  "090cbf9a00d5",
+  "1280f7e6985a",
+  "3ac91c227a82",
+  "690ba4d5ab73",
+  "701ff3884d53",
+  "8339bac5714b",
+  "835b8cde09da",
+  "9e228865a075",
+  "a88e0fd12d29",
+  "b1953b6ff688",
+  "d627bc6d4375",
+  "f359caaf9d2e",
+  "f9a5d240c793"
+ ],
+ "new_is_strict_subset": true,
+ "parent_identical_to_base": true,
+ "regressions": [],
+ "residue_partition": {
+  "112 A-weeks-in-year-ignores-wkst": [
+   "1b491afa4ef0",
+   "47957affeae1",
+   "6a2a3349a31d",
+   "cd5d1f7e7232"
+  ],
+  "112 B-week-year-truncated-by-doy-offset-plus-one": [
+   "52cb89bd1169",
+   "a11bc9303af3"
+  ]
+ },
+ "rules_fixed": {
+  "090cbf9a00d5": "FREQ=WEEKLY;BYMONTH=8;BYDAY=SU,TU;BYSETPOS=-1",
+  "1280f7e6985a": "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1",
+  "3ac91c227a82": "FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1",
+  "690ba4d5ab73": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=6,9;BYDAY=MO,SU,TU;WKST=MO;BYSETPOS=-1",
+  "701ff3884d53": "FREQ=WEEKLY;BYMONTH=8;BYDAY=FR,MO,TH;BYSETPOS=1",
+  "8339bac5714b": "FREQ=WEEKLY;INTERVAL=4;BYMONTH=5;BYDAY=FR,TU,WE;BYSETPOS=1",
+  "835b8cde09da": "FREQ=WEEKLY;BYDAY=MO,TU;BYMONTH=8;BYSETPOS=-1",
+  "9e228865a075": "FREQ=WEEKLY;BYDAY=MO,TH;BYMONTH=4,11;WKST=SU;BYSETPOS=1",
+  "a88e0fd12d29": "FREQ=WEEKLY;BYDAY=MO,WE;BYMONTH=9;BYSETPOS=1",
+  "b1953b6ff688": "FREQ=WEEKLY;INTERVAL=3;BYMONTH=3;BYDAY=SA,SU,TH;BYSETPOS=-1",
+  "d627bc6d4375": "FREQ=WEEKLY;BYMONTH=10;BYDAY=SA,SU;BYSETPOS=-1",
+  "f359caaf9d2e": "FREQ=WEEKLY;BYMONTH=9,11;BYDAY=SA,SU,TU;WKST=WE;BYSETPOS=1",
+  "f9a5d240c793": "FREQ=WEEKLY;BYDAY=FR,WE;BYMONTH=1,11;BYSETPOS=1"
+ },
+ "signature_all_weekly_bysetpos": true,
+ "subject": "libical master, 48d52b4b..4edd39a3"
+}

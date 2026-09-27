@@ -165,6 +165,11 @@ is the half a predictor cannot produce at all.**
 * Only `4edd39a3` was patched. `libical` 3.0.20 (107 `fail`) and master
   `48d52b4b` (19) are still unpartitioned; whether these two defects are the
   tail of those buckets is **not** measured and is not claimed.
+  **Superseded for `48d52b4b` at wake 161**: [finding
+  113](113-one-commit-and-thirteen-cases.md) partitions that bucket as 13 + 6,
+  the 13 fixed by upstream commit `4edd39a` and the 6 being A and B here, whose
+  source sites it verifies are byte-identical at both commits. `3.0.20` remains
+  unpartitioned and unclaimed.
 * Defect A is stated for `HAVE_LIBICU=1`. The non-ICU `get_week_number()` in
   the `#else` branch derives the week number itself and normalises by
   `week_start`, so it is week-start-aware too and the same disagreement with

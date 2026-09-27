@@ -167,6 +167,18 @@ whole corpus: 8 fixed, 0 regressions, 1599 → 1607 pass. The remaining
 non-passing cases are `FREQ=YEARLY` shapes, and 71 of them are now scored as
 the other reading rather than as failures. Finding 019, "Retest".
 
+**The two `libical` master rows differ by exactly one commit's worth of
+behaviour.** `48d52b4b` fails 19 and `4edd39a3` fails 6, and the 13-case
+difference is entirely `4edd39a` — the same commit finding 019 reported against
+above, re-measured on the corpus as it now stands, where it moves 13 rather than
+the 8 it moved on 2026-09-11. Fifteen commits separate the builds and two touch
+`icalrecur.c`; building the intervening `cefc9ca` shows the other one changes no
+outcome, id for id. All 13 are `FREQ=WEEKLY` with `BYSETPOS`; `fail(4edd39a3)` is
+a strict subset of `fail(48d52b4b)`, so no case regressed. With
+[finding 112](../findings/112-the-week-start-the-helper-never-heard-about.md)'s
+six, 13 + 6 = 19 exhausts the older build's bucket.
+[Finding 113](../findings/113-one-commit-and-thirteen-cases.md).
+
 `score.py` reports a failure that matches one of a case's `reading_alternatives`
 as `fail_other_reading` rather than `fail`, broken down by which reading
 (finding 018 for `first_period_truncated`, finding 024 for `dtstart_fill`, and

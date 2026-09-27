@@ -51,3 +51,28 @@ the result is a property of the adapter's bounds.
 `build_cases.py` emits — four flat keys, no escapes, no nesting — and exits `2`
 on anything else rather than guessing. A silently mis-parsed line would score as
 a failure and look like a libical defect.
+
+## The three master builds, and which prefix each row is measured through
+
+`RESULTS.md` publishes three `libical` rows and they are three different shared
+libraries. None is in the tree; the prefixes live outside it and the tests that
+need one skip when it is absent.
+
+| row | prefix under `scratch/` | notes |
+|---|---|---|
+| `3.0.20` | *(system)* | Debian trixie's `libical-dev`; the adapter must be rebuilt against it |
+| master `48d52b4b` | `libical-install` | 1601 / 19 / 72 / 35 |
+| master `cefc9ca` | `libical-install-cefc9ca` | not a published row; built at wake 161 to separate the two commits in the range that touch `icalrecur.c`. Scores identically to `48d52b4b`, id for id |
+| master `4edd39a3` | `libical-install-4edd` | 1614 / 6 / 72 / 35. **Canonical** — `lib/libical.so.4.0.6` md5 `0b5bcae725ae82d4ec7db8785ea6eda4` |
+
+Per **rule 102**, anything that patches libical installs to its own prefix and
+restores the canonical one byte-identically, because every published master
+`4edd39a3` figure was measured through that one file. `cefc9ca` was built from a
+`git worktree` so the source tree the canonical build came from was never
+checked out to a different commit:
+
+```sh
+git -C scratch/libical worktree add ../libical-wt-cefc9ca cefc9ca
+```
+
+See [finding 113](../../../findings/113-one-commit-and-thirteen-cases.md).
