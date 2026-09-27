@@ -27,7 +27,7 @@ somebody says which finding owns it.
 
 WHAT IT FOUND, AND IT IS NOT NOTHING.
 
-  * The three partitions are exact. 0 internal overlaps, 0 gaps, at one
+  * The partitions are exact. 0 internal overlaps, 0 gaps, at one
     cases_id, verified by re-scoring all three adapters.
 
   * 336 ids are claimed by TWO OR THREE partitions at once (352 over two to
@@ -145,6 +145,16 @@ ADAPTERS = {
     "rrulejs": {
         "argv": ["node", "conformance/adapters/rrulejs_adapter.js"],
         "fail": 28,
+    },
+    # Added at wake 159 by finding 111, which closes the second of the four
+    # buckets this script's own text named as unpartitioned. Its map has three
+    # labels for four cases because the necessity test refused a two-label
+    # version: one case carries the week-53 overflow AND the dtstart_fill
+    # reading, and one carries no defect at all.
+    "dmfs": {
+        "argv": ["java", "-Duser.language=en", "-Duser.country=US",
+                 "-cp", "@CP@", "DmfsAdapter"],
+        "fail": 4,
     },
 }
 
@@ -330,6 +340,8 @@ def partitions():
         "076-sabre-residual-reproduced.json")))
     d110 = json.load(open(os.path.join(DATA,
         "110-rrulejs-port-divergence.json")))
+    d111 = json.load(open(os.path.join(DATA,
+        "111-dmfs-weekno-overflow.json")))
     icaljs = {
         "071-A": d108["recovered"]["defect_A"],
         "071-B": d108["recovered"]["defect_B"],
@@ -339,13 +351,14 @@ def partitions():
     for k, v in d074["ids"].items():
         icaljs["074 " + k] = v
     ids = {}
-    for d in (d071["corpus_version"], d074, d075, d076, d108, d110):
+    for d in (d071["corpus_version"], d074, d075, d076, d108, d110, d111):
         ids[d.get("cases_id") or d["cases_id"]] = True
     cases_ids = sorted(ids)
     return ({"icaljs": icaljs,
              "ical4j": {"075 " + k: v for k, v in d075["ids"].items()},
              "sabre": {"076 " + k: v for k, v in d076["ids"].items()},
-             "rrulejs": {"110 " + k: v for k, v in d110["ids"].items()}},
+             "rrulejs": {"110 " + k: v for k, v in d110["ids"].items()},
+             "dmfs": {"111 " + k: v for k, v in d111["partition"].items()}},
             cases_ids)
 
 

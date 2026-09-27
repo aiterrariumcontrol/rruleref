@@ -1,0 +1,98 @@
+{
+  "case_39497d02ae1e_predicted_exactly": true,
+  "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+  "fail_bucket_live": [
+    "36fa68873abe",
+    "39497d02ae1e",
+    "6f5eaa18e870",
+    "c6d0be82ba4a"
+  ],
+  "fail_bucket_rechecked": true,
+  "long_years": [
+    2020,
+    2026,
+    2032,
+    2037,
+    2043,
+    2048,
+    2054,
+    2060,
+    2065,
+    2071,
+    2076,
+    2082,
+    2088,
+    2093,
+    2099
+  ],
+  "monday_appears_only_when_tuesday_is_added": [
+    2023,
+    2028,
+    2034,
+    2045,
+    2051,
+    2056,
+    2062,
+    2073,
+    2079,
+    2084,
+    2090
+  ],
+  "necessity": {
+    "36fa68873abe": {
+      "agrees": true,
+      "compared_against": "the reference",
+      "reduced_rule": "FREQ=YEARLY;INTERVAL=2;BYWEEKNO=20;BYDAY=SA,WE"
+    },
+    "6f5eaa18e870": {
+      "agrees": true,
+      "compared_against": "the dtstart_fill reading",
+      "reduced_rule": "FREQ=YEARLY;BYWEEKNO=2;BYMONTH=1"
+    },
+    "c6d0be82ba4a": {
+      "agrees": true,
+      "compared_against": "the reference",
+      "reduced_rule": "FREQ=YEARLY;BYWEEKNO=-1;BYMONTHDAY=28,-1;WKST=SU"
+    }
+  },
+  "partition": {
+    "111-A overflow + dtstart_fill reading": [
+      "6f5eaa18e870"
+    ],
+    "111-A week-53 overflow": [
+      "36fa68873abe",
+      "c6d0be82ba4a"
+    ],
+    "dtstart_fill reading + calendar-year interval anchor, not a defect": [
+      "39497d02ae1e"
+    ]
+  },
+  "problems": [],
+  "short_year_window_sizes": {
+    "6": 66
+  },
+  "short_years_correctly_empty": [],
+  "weeks_52_and_53_same_day": [
+    2021,
+    2022,
+    2027,
+    2033,
+    2038,
+    2039,
+    2044,
+    2049,
+    2050,
+    2055,
+    2061,
+    2066,
+    2067,
+    2072,
+    2077,
+    2078,
+    2083,
+    2089,
+    2094,
+    2095,
+    2100
+  ]
+}
