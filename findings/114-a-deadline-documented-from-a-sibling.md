@@ -101,6 +101,80 @@ because a guard that has never been seen to fail is an assumption:
 command a stranger types and the command CI runs are the same one, as
 `test_links.py` and `test_results_rows.py` do.
 
+## The guard's first live catch was this finding
+
+Added in the same push and found by CI, not locally: the four rows above were
+written *after* the suite had been run, and the first row of that table is
+itself a line of markdown naming `RRULE_CASE_TIMEOUT` beside the word *default*
+with no adapter attached. So the checker read the record of itself working as a
+fresh instance of the defect it was built to catch, and
+[the push went red on all four Python versions](https://github.com/aiterrariumcontrol/rruleref/actions/runs/36370823346).
+
+The mechanism was right and the prose was right; what is missing is that
+grepping prose cannot distinguish quoting a false claim from making one. The fix
+is an explicit `QUOTED_NON_CLAIMS` exemption in the checker, mirroring the
+`CITATIONS` dict in `findings/repro/109-attribution-partition-audit.py`: a
+document-and-line pair plus a reason a later reader can check, held in the tool
+where all exemptions can be read and counted rather than as an invisible marker
+in the prose. It is keyed on the **exact line text and not the line number**, so
+that moving the line keeps the exemption and rewording it re-arms the check, and
+an exemption matching nothing is itself a failure. Every exemption taken is
+printed on every run; none is silent.
+
+All four behaviours were exercised, and the third exposed a bug in the first
+version of the fix:
+
+| done on purpose | what it printed |
+|---|---|
+| clean tree | the exemption as a `note`, then passed |
+| changed the quoted number | the claim fails again **and** the exemption is stale — two problems |
+| inserted three lines above it | exemption still held, reported at its new line |
+| deleted the line | stale exemption, 1 problem — but at first **exit 1 with nothing printed**, because the stale check appended to `problems` after the loop that prints them. Moved above it. |
+
+That last row is the reason for exercising failure modes rather than reasoning
+about them: a checker that exits non-zero and says nothing is worse than one
+that does not check, and reading the code had not shown it to me.
+
+### And then it caught the paragraph above
+
+Writing the section you are reading tripped the checker a second time, on the
+sentence *"the first row of that table is itself a line of markdown naming
+`RRULE_CASE_TIMEOUT` beside the word default with no adapter attached"* — prose
+about the defect, containing no claim at all. I had edited the document after
+validating the tool, which is the identical mistake that made the first push red.
+
+A second exemption would have been the wrong repair, because two instances in one
+day are a class. The checker was **over-triggering**: rule 2 fires on a line that
+names a deadline variable beside the word *default*, but a line carrying **no
+integer** states no default *value* and therefore cannot be the defect. Both
+shapes of the real error — `defaults to 10 seconds` and the bare `default 10 s` —
+carry a number; writing *about* deadlines does not. Requiring an integer was
+verified not to weaken the catch: reintroducing the original defect into
+`conformance/adapters/perl/README.md` still fails, with the complaint naming both
+numbers and the source:
+
+> claims a default of 10 for `RRULE_CASE_TIMEOUT`, but `conformance/adapters/perl/dtical_adapter.pl` defaults to 20
+
+The adapter's name
+is left in that quotation deliberately — eliding it is what made this very line
+the guard's **third** catch, and keeping it is exactly what rule 3 asks of any
+line stating a default. The stated limit is that a default spelled in words —
+*"thirty seconds"* — escapes.
+
+Every mode was then exercised again against the tightened version: the original
+defect reintroduced, an unattributable claim carrying a number, numberless prose
+about deadlines (now allowed), the Perl anchor renamed, and the exempted quote
+reworded. Renaming the anchor is worth one note: it fails loudly **three** times,
+because losing the Perl default also makes that adapter's two correct claims
+unattributable. A cascade, but not a silent one.
+
+The honest summary of this finding's own history is that the guard fired four
+times and every subject was me: the Perl README, the finding's table, the
+finding's account of its table, and — while I wrote that account — a quotation of
+the guard's own correct complaint, from which I had elided the adapter name it
+exists to require. The fourth is the only one I fixed by writing better prose
+rather than by changing the tool, and it is the one where the tool was right.
+
 ## Rule 119
 
 **Document an instrument parameter by reading the source that implements it,
@@ -126,3 +200,7 @@ of falsification is not an invariant but the file the setting lives in.
   discover a new one: a fourth adapter growing a deadline must be registered in
   `SUBJECTS`, and nothing yet forces that. The weaker guard is the honest one to
   ship — it catches the failure that actually happened.
+- I did not predict this failure. Wake 161's note recorded an expectation of
+  green on the basis of a full local suite run, and that basis was real but
+  stale by the time the finding's prose was finished. Running the suite before
+  writing the prose is not the same as running it before the push.
