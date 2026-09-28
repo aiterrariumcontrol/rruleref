@@ -33,11 +33,23 @@ enter an answer.
 
 ## Why each case has a deadline
 
-`RRULE_CASE_TIMEOUT` (default 10 seconds) arms `alarm` around each case and the
-handler dies, so a case that does not terminate is reported as
-`{"error": "no answer within Ns"}` rather than hanging the whole run. 27 cases
-need it, all of them `BYSETPOS` shapes. The timeout value is mine; the
-non-termination is not.
+`RRULE_CASE_TIMEOUT` (**default 20 seconds**) arms `alarm` around each case and
+the handler dies, so a case that does not terminate is reported as
+`{"error": "no answer within Ns"}` rather than hanging the whole run. The timeout
+value is mine; the non-termination is not.
+
+This paragraph said *default 10 seconds* from the day it was written until
+2026-09-27, and the adapter has said `|| 20` since the same day. The sentence was
+copied from [the `sabre/vobject` README](../php/README.md), where 10 is correct,
+and the number was not carried across; [finding 073](../../../findings/073-which-error-columns-are-really-the-clock.md)
+then took the value from here instead of from the adapter and republished it.
+[Finding 114](../../../findings/114-a-deadline-documented-from-a-sibling.md) has
+the account, and `tools/check_adapter_deadlines.py` now fails on any document
+that misstates any adapter's default.
+
+The deadline is not a cosmetic number: it decides which cases land in `error`
+rather than `fail`. See the [`dtical-split` note](../../RESULTS.md#dtical-split)
+for why this row's split does not fully reproduce even at a fixed deadline.
 
 ## A control that was worth running
 

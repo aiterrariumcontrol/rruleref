@@ -22,9 +22,22 @@ an adapter, and there are exactly **three** of them:
 
 | adapter | deadline | mechanism |
 |---|---|---|
-| `perl/dtical_adapter.pl` | `RRULE_CASE_TIMEOUT`, default 10 s | `SIGALRM` |
+| `perl/dtical_adapter.pl` | `RRULE_CASE_TIMEOUT`, default 20 s | `SIGALRM` |
 | `php/vobject_adapter.php` | `RRULE_CASE_TIMEOUT`, default 10 s | `pcntl_alarm` |
 | `icaljs_adapter.js` | `RRULE_CASE_TIMEOUT_MS`, default 2000 | supervisor kills and restarts the worker |
+
+**Corrected 2026-09-27: the `perl` row said `default 10 s` and the adapter has
+said `|| 20` since the line was born.** The wrong value was not measured, it was
+copied — from [the `sabre/vobject` adapter README](../conformance/adapters/php/README.md),
+where 10 is correct, into [the `DateTime::Event::ICal` one](../conformance/adapters/perl/README.md)
+written a finding later, and this table then took it from that README instead of
+from the source. It is the one number on this page that nothing here measured.
+[Finding 114](114-a-deadline-documented-from-a-sibling.md) has the account and
+the guard; `tools/check_adapter_deadlines.py` now extracts all three defaults
+from the adapters and fails on any document that misstates one. Note that
+[finding 047](047-the-error-column-is-four-failures-and-one-of-them-is-a-horizon.md),
+published *before* this page, had the value right: it compares
+`RRULE_CASE_TIMEOUT=20` to `120`.
 
 The other seven — `dateutil`, `rrule.js`, `rrule-go`, `rust-rrule`, `ical4j`,
 `dmfs lib-recur`, `libical` — have none. Their `error` cells can only be the
