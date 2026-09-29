@@ -63,6 +63,15 @@ The classification is by symptom, not by root cause — I did not bisect. What
 turns it from a guess into a check is that master, which contains the fixes,
 passes 89 of the 90 cases in the three fixed classes.
 
+> **Note added at wake 164.** [Finding
+> 115](115-the-released-library-and-its-own-tracker.md) took that admission as its
+> starting point and built the exhaustive per-id map of the `fail` bucket this
+> table only counted. Two of these classes are now verified by reproduction. One
+> is refined: master does not make the `BYWEEKNO`-without-`BYDAY` cases in the
+> `fail` bucket pass — it moves them to a reading the corpus scores
+> `fail_other_reading`. "Fixed in master" in the table above is a statement about
+> classes, and per id it is too strong for that row.
+
 ## The lineage split now has three votes
 
 Scoring three implementations against the corpus and asking where **all three

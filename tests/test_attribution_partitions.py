@@ -2,9 +2,11 @@
 """The published attribution maps are still partitions, and every id named by
 more than one finding is still adjudicated.
 
-Finding 109. Three findings publish a per-defect id map covering an
-implementation's whole `fail` bucket -- 076 (sabre, 980), 075 (ical4j, 230), and
-074 with 071 (ical.js, 236). The audit checks each is an exact partition, then
+Finding 109. Eight published maps now cover an implementation's whole `fail`
+bucket per defect -- 076 (sabre, 980), 075 (ical4j, 230), 074 with 071 (ical.js,
+236), 110 (rrule.js, 28), 111 (dmfs, 4), 112 and 113 (libical master at two
+commits, 6 and 19) and 115 (libical 3.0.20, 107). The audit checks each is an
+exact partition, then
 sweeps every id named in findings/*.md and in the claim lists stored under
 findings/data/ and requires a verdict for every id two findings both name.
 
@@ -14,8 +16,8 @@ rule 113, and the cheapest place to notice it is here rather than in a count
 three findings downstream.
 
 This runs the audit's `--no-adapters` mode, which is stored data only -- no
-adapter, no scoring, deterministic. The full mode re-measures the three fail
-buckets and is too slow for the suite.
+adapter, no scoring, deterministic. The full mode re-measures every fail
+bucket and is too slow for the suite.
 """
 import os, subprocess, sys
 

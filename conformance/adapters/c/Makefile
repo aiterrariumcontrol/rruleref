@@ -14,6 +14,13 @@ endif
 libical_adapter: libical_adapter.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS) -lical
 
+# A SECOND binary, always against the system library, under its own name so it
+# can sit beside a master build instead of replacing it. Finding 115 needs both
+# at once: LD_LIBRARY_PATH cannot turn one binary into the other, because
+# libical 3 and 4 differ in API and the source compiles to different calls.
+libical_adapter3: libical_adapter.c
+	$(CC) -O2 -Wall -Wextra -o $@ $< -lical
+
 clean:
-	rm -f libical_adapter
+	rm -f libical_adapter libical_adapter3
 .PHONY: clean

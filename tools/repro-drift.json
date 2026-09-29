@@ -13,7 +13,8 @@
   "         carry (finding 092), which makes a stale reference exit non-zero.",
   "  091 -- scans findings/, so its output changes whenever a finding is added.",
   "         Its guard is its own non-zero exit on a stale or unsupported provenance declaration (finding 093), wired into the suite as tests/test_figure_provenance.py -- not a baseline.",
-  "  109 -- scans findings/, so its output changes whenever a finding is added, like 091. Its guard is its own non-zero exit on an unadjudicated shared id, wired into the suite as tests/test_attribution_partitions.py; the full mode also scores three adapters."
+  "  109 -- scans findings/, so its output changes whenever a finding is added, like 091. Its guard is its own non-zero exit on an unadjudicated shared id, wired into the suite as tests/test_attribution_partitions.py; the full mode also scores three adapters.",
+  "  115 -- needs TWO builds of the C adapter at once, one of them against a libical master install outside the tree, so it cannot run from a clean checkout. Its guard is its own --check mode, which refuses to run unless each binary links the libical major version it is supposed to."
  ],
  "entries": [
   {

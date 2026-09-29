@@ -1,0 +1,183 @@
+{
+ "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+ "corpus_version": {
+  "cases_id": "7bd9731d3a48c0155ba35f943d43756ff2ec8ae69cced3464d45940e62e53f5b",
+  "corpus_id": "48988e689fb27ee40f492f73c213d4385a1b1ddab9e8be976b18fcc5bd8a6c99",
+  "scorer_id": "434342bbd1984df706a4cc615e8380949039adc2617c68a9820e9e613a4edcaa",
+  "version": "1.0.2"
+ },
+ "evidence": {
+  "794_ignore_predictor_refuted_in": {
+   "candidates": 8,
+   "refuted": 8
+  },
+  "795_predictor": {
+   "candidates": 37,
+   "reproduced": 35
+  },
+  "795_predictor_misses": [
+   [
+    "1b491afa4ef0",
+    "FREQ=YEARLY;BYDAY=FR;BYWEEKNO=-2,1;WKST=WE;BYSETPOS=2"
+   ],
+   [
+    "6280986681cd",
+    "FREQ=MONTHLY;BYMONTHDAY=-1,31;BYSETPOS=-1"
+   ]
+  ],
+  "counts": {
+   "115 1276-yearly-weekno-byday": 4,
+   "115 794-byweekno-no-byday": 8,
+   "115 795-bysetpos-ignored": 35,
+   "115 937-dtstart-twice": 1,
+   "115 937-order": 58,
+   "115 unexplained": 1
+  },
+  "master_bucket_by_label": {
+   "115 1276-yearly-weekno-byday": {
+    "fail": 3,
+    "pass": 1
+   },
+   "115 794-byweekno-no-byday": {
+    "fail_other_reading": 8
+   },
+   "115 795-bysetpos-ignored": {
+    "pass": 35
+   },
+   "115 937-dtstart-twice": {
+    "pass": 1
+   },
+   "115 937-order": {
+    "pass": 58
+   },
+   "115 unexplained": {
+    "pass": 1
+   }
+  },
+  "master_fails_that_3020_passes": [],
+  "total": 107
+ },
+ "finding": "115",
+ "master_lib": "/home/agent/terrarium/scratch/libical-install-4edd",
+ "partition": {
+  "115 1276-yearly-weekno-byday": [
+   "1b491afa4ef0",
+   "52cb89bd1169",
+   "a11bc9303af3",
+   "c17aa9fd3b11"
+  ],
+  "115 794-byweekno-no-byday": [
+   "34afb5a2239e",
+   "39497d02ae1e",
+   "3fd84e7bf1f2",
+   "9003081c8acc",
+   "97d20caffc98",
+   "9c5c4b6b85f1",
+   "e1a5034515b4",
+   "ede58c1adc09"
+  ],
+  "115 795-bysetpos-ignored": [
+   "090cbf9a00d5",
+   "092b43dfeb9d",
+   "1280f7e6985a",
+   "3ac91c227a82",
+   "43bbb0e198c6",
+   "50662f7ac3ef",
+   "5ba766770aa8",
+   "5d8441c50bad",
+   "5d88846156dc",
+   "690ba4d5ab73",
+   "701ff3884d53",
+   "729357f27806",
+   "731b3111a70e",
+   "7a5b8357c6db",
+   "7e8a4b388c13",
+   "7ef50b7da690",
+   "8339bac5714b",
+   "835b8cde09da",
+   "8df1d3465c42",
+   "9e228865a075",
+   "a6e65b03a70c",
+   "a6fcf79f8b94",
+   "a88e0fd12d29",
+   "aeb071f4d36c",
+   "b1953b6ff688",
+   "b4a3461822b0",
+   "baa6ef6f43cd",
+   "c29dd0b92b8f",
+   "cf16e3636e1e",
+   "d627bc6d4375",
+   "e1e8534d2dbb",
+   "f359caaf9d2e",
+   "f3f803647e48",
+   "f4c6b95baf2e",
+   "f9a5d240c793"
+  ],
+  "115 937-dtstart-twice": [
+   "03d8d4f58198"
+  ],
+  "115 937-order": [
+   "0b5c3613393b",
+   "0b75fa37cc68",
+   "0cea5d9bb3db",
+   "0ff05dd5673e",
+   "19666ba668c1",
+   "1adcedb83d76",
+   "1d811ed7fc7d",
+   "1e6b20fe94dd",
+   "21a7c0170525",
+   "32bffe851942",
+   "346790b1dd62",
+   "38a5fc7c27ed",
+   "3c45e01105a5",
+   "41f6d2f13ac2",
+   "45d423b77e83",
+   "467a6ef7dcb4",
+   "49c18610a0ea",
+   "49f779f6f628",
+   "534b621b5f0b",
+   "5402fa1c95ab",
+   "55ae970742bc",
+   "5a732d1c3612",
+   "5ce2523d6ace",
+   "61c4a2378fb6",
+   "65966706acdb",
+   "6a4f37202e12",
+   "7414e89a5325",
+   "74426865042d",
+   "799a894a67bc",
+   "79e7d596c415",
+   "885892ba0a69",
+   "8be865e40a26",
+   "8ca4915bc09f",
+   "92bcec0aec77",
+   "93b63f35515f",
+   "9516c591cfb1",
+   "960dccbfe6e5",
+   "9b068719fd71",
+   "9eb477cb1829",
+   "9ee246666b67",
+   "a33abb7bdf1e",
+   "a762cd64100f",
+   "b72c3712f042",
+   "b96855e3bf8f",
+   "bb25f0485dfd",
+   "beab70b29b49",
+   "c18ccdf31936",
+   "c1d24c8d528f",
+   "c29afb854f86",
+   "c316e73f48e4",
+   "c5aa8d21666a",
+   "c918a7a2e76b",
+   "c9b99d448be0",
+   "d2ebf2021726",
+   "de0215836ab7",
+   "f082d1cce6aa",
+   "f37148da202f",
+   "f49a3b11d6de"
+  ],
+  "115 unexplained": [
+   "6280986681cd"
+  ]
+ }
+}

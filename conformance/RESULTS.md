@@ -154,6 +154,14 @@ tracker already documents**, three of them fixed in master and one still open. T
 corpus reproduced a stranger's known-issue list without being told it existed,
 and found nothing outside it. Finding 017.
 
+[Finding 115](../findings/115-the-released-library-and-its-own-tracker.md) turns
+that class count into an **exhaustive per-id map of the 107-case `fail` bucket**,
+verifies the ordering and `BYSETPOS` classes by reproduction rather than by
+symptom, and refines one class: master does not make the eight `BYWEEKNO`-without-
+`BYDAY` cases pass, it moves all eight to `fail_other_reading` — a different
+reading, not a fix. 96 of the 107 pass in master and none of 3.0.20's passes
+regress.
+
 **That does not carry over to master.** Eight of master's failures — every
 `FREQ=WEEKLY` failure it has — are outside libical's documented known-issue
 set: `BYSETPOS` indexes the set before `BYMONTH` limits it, and the week that

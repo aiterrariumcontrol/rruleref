@@ -50,6 +50,21 @@ Everything below is produced by
 > citations are adjudicated `CITATION` for the same reason 110's two were — it
 > names them to hand them back to 112.
 
+> **Note added at wake 164.** There are now **eight** partitions.
+> [Finding 115](115-the-released-library-and-its-own-tracker.md) closed released
+> `libical` 3.0.20's 107-case `fail` bucket, the larger of the two buckets the
+> note above left, and added `libical3020` to `ADAPTERS` and `partitions()` here.
+> Its map is the sixth partition of a `fail` bucket this finding audits and the
+> first built on top of an **existing symptom classification** — finding
+> [017](017-libical-third-lineage.md) had the classes and said it had not
+> bisected; 115 makes the id map exhaustive, verifies two classes by
+> reproduction, and refutes the obvious mechanism for a third. **Of the 534
+> case-failures the paragraph under *What is not claimed* left unmapped, 164 are
+> now mapped and 370 are not:** `DateTime::Event::ICal` 0.13 alone. The script
+> reports **44 checks** with a live re-score of all eight adapters, and the
+> shared-id figure moves to **362** cases in more than one partition, of 1056
+> appearing in at least one.
+
 ## Part 1 — three implementations' failures are now an exact partition
 
 Three findings publish a per-defect id map intended to cover an implementation's

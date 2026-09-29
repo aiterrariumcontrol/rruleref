@@ -6,6 +6,7 @@ js/*.js
 js/cases.json
 js/datecases.json
 conformance/adapters/c/libical_adapter
+conformance/adapters/c/libical_adapter3
 conformance/adapters/java/classes/
 conformance/adapters/java/libs/
 conformance/adapters/go/rrulego_adapter

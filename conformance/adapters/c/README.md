@@ -41,6 +41,19 @@ The adapter compiles against both API generations: libical 4 replaced
 `icalrecurrencetype_new_from_string`, and the source switches on
 `ICAL_MAJOR_VERSION`.
 
+Because it switches at **compile** time, one binary cannot be pointed at the
+other library, and `make libical_adapter3` exists to build the system-libical
+one under its own name so it can sit beside a master build. Finding
+[115](../../../findings/115-the-released-library-and-its-own-tracker.md) needs
+both at once.
+
+**The trap.** `make LIBICAL_PREFIX=...` is a silent no-op when `libical_adapter`
+is newer than `libical_adapter.c`, because the target name does not depend on the
+prefix. The result is a run that reports one library's numbers while you believe
+you measured the other, with nothing in the output to say so. `rm -f` the binary
+first, or let 115's repro script check: it calls `ldd` on both binaries and
+refuses to run unless the sonames are what the row requires.
+
 ## Two things this adapter does that are worth knowing
 
 **It imposes no horizon.** Unlike the Java adapters, which need an explicit

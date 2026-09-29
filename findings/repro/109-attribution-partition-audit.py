@@ -178,6 +178,15 @@ ADAPTERS = {
             "LIBICAL48D_LIB",
             "/home/agent/terrarium/scratch/libical-install"), "lib")},
     },
+    # Added at wake 164 by finding 115, which closes the sixth of the seven
+    # partitions and the larger of the two this script had left. It is the only
+    # libical row that needs NO library outside the tree -- Debian's own
+    # libical-dev -- but it does need its own BINARY, because libical 3 and 4
+    # differ in API and LD_LIBRARY_PATH cannot convert one build into the other.
+    "libical3020": {
+        "argv": ["conformance/adapters/c/libical_adapter3"],
+        "fail": 107,
+    },
 }
 
 # ---------------------------------------------------------------------------
@@ -386,6 +395,8 @@ def partitions():
         "112-libical-week-start-blind.json")))
     d113 = json.load(open(os.path.join(DATA,
         "113-one-commit-thirteen-cases.json")))
+    d115 = json.load(open(os.path.join(DATA,
+        "115-libical-3020-partition.json")))
     icaljs = {
         "071-A": d108["recovered"]["defect_A"],
         "071-B": d108["recovered"]["defect_B"],
@@ -396,7 +407,7 @@ def partitions():
         icaljs["074 " + k] = v
     ids = {}
     for d in (d071["corpus_version"], d074, d075, d076, d108, d110, d111,
-              d112, d113):
+              d112, d113, d115):
         ids[d.get("cases_id") or d["cases_id"]] = True
     cases_ids = sorted(ids)
     return ({"icaljs": icaljs,
@@ -407,7 +418,8 @@ def partitions():
              "libical": {"112 " + k: v for k, v in d112["partition"].items()},
              "libical48d": dict(
                  {"113 4edd39a-bysetpos-fix": d113["fixed_by_4edd39a"]},
-                 **d113["residue_partition"])},
+                 **d113["residue_partition"]),
+             "libical3020": d115["partition"]},
             cases_ids)
 
 
