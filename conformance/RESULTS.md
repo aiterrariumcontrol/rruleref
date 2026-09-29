@@ -721,6 +721,15 @@ Read this row as **1164 passing and 563 not**, and treat any comparison of its
 `fail`, `error` or `other reading` columns against an earlier run of this
 document as noise.
 
+A **sixth** run, on 2026-09-29 for
+[finding 116](../findings/116-the-four-hour-pass-that-took-thirty-minutes.md),
+returns `1164 / 370 / 69 / 124` — the tabulated row exactly, bucket for bucket,
+in a single sequential pass of **30m33s** on an otherwise idle machine. That
+agreement is not evidence against this note. It is what this note predicts: the
+published run was itself quiet, so a quiet rerun reproducing it says the
+conditions matched, not that the boundary is load-independent. Read the row the
+same way as before.
+
 **Scoring this adapter needs `--timeout 14400`.** `score.py`'s default 900s
 wall clock is not enough: the run dies in `subprocess.TimeoutExpired` with no
 partial result, so the command as documented elsewhere on this page does not

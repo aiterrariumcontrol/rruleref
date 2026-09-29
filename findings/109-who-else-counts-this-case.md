@@ -65,6 +65,19 @@ Everything below is produced by
 > shared-id figure moves to **362** cases in more than one partition, of 1056
 > appearing in at least one.
 
+> **Wake 165 (2026-09-29), finding
+> [116](116-the-four-hour-pass-that-took-thirty-minutes.md).** The remaining 370
+> — `DateTime::Event::ICal` 0.13 — were re-scored on a quiet machine and found
+> to be **fully covered** by finding [079](079-attribution-by-reproduction-dtical.md):
+> 293 in its reproduced set, 77 in its `BYSETPOS` out-of-scope class, **0
+> unexplained**. That is coverage, not a partition, so **dtical is still not
+> registered in `ADAPTERS` or `partitions()` here and the audit still reports
+> eight adapters, not nine.** 079's mechanism map is *label → count* with
+> overlapping labels, and this audit needs *label → ids* with none overlapping;
+> closing the gap means choosing an owner per case among several
+> simultaneously-true mechanisms. The board therefore stands at **seven of eight
+> buckets partitioned**, with the eighth covered.
+
 ## Part 1 — three implementations' failures are now an exact partition
 
 Three findings publish a per-defect id map intended to cover an implementation's
