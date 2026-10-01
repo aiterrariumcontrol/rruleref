@@ -148,6 +148,14 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # 2026-09-11, which is exactly the gap this test exists to close.
         ("FREQ=WEEKLY;BYDAY=MO,SU,TU;BYMONTH=7;BYSETPOS=1", "20260705T090000",
          "libical-weekly-bymonth-bysetpos"),
+        # Finding 103. A fifth Monday in February needs a leap year whose
+        # 1 February is a Monday: 2044, 2072, then 2112 -- a 40-year hole that
+        # is 39 empty iterations, past ical.js 2.2.1's bound of 28, so it
+        # stops at 2072 and reports the series complete. The note's accuracy
+        # about *where* it stops is checked against the real library in
+        # tests/test_icaljs_abandon.py; this row only pins that it fires.
+        ("FREQ=YEARLY;BYMONTH=2;BYDAY=5MO", "20260101T000000",
+         "icaljs-yearly-abandon"),
     ]
     driver = """
 import fs from "node:fs";

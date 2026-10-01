@@ -86,6 +86,46 @@ function seedLimitWeekly(r, rrule, dtstart, limit) {
 }
 
 /**
+ * Finding 103's `ical.js` 2.2.1 abandonment bound, as a predictor.
+ *
+ * `recur_iterator.js` retries a `FREQ=YEARLY` expansion when a year yields
+ * nothing, and at the 28th consecutive empty retry sets `completed` and
+ * returns null -- 28 being the 14 year variations (365/366 days x 7 starting
+ * weekdays) counted twice. No error is raised, so the caller sees a series
+ * that simply ended. The search for the *first* occurrence runs through a
+ * different path and is not bounded at all, which is why the same rule read
+ * from a later DTSTART answers correctly.
+ *
+ * The bound is in ITERATIONS, not years: a 40-year hole is 39 empty retries at
+ * INTERVAL=1 and only 19 at INTERVAL=2, and ical.js truncates on the first and
+ * not the second. Both are checked in test/icaljs-yearly-abandon.mjs, which
+ * requires this function to reproduce ical.js 2.2.1's real output byte for
+ * byte wherever it fires and wherever it does not.
+ *
+ * Returns null when no >= 28-iteration empty run is visible in `occurrences`,
+ * otherwise { keep, lastYear, nextYear, empties } where `keep` is how many of
+ * `occurrences` ical.js returns before stopping.
+ */
+export function icaljsAbandons(rrule, occurrences) {
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  if (r.FREQ !== "YEARLY" || occurrences.length < 2) return null;
+  const iv = r.INTERVAL;
+  const years = occurrences.map((t) => parts(t).y);
+  for (let i = 1; i < years.length; i++) {
+    if (years[i] === years[i - 1]) continue;
+    const empties = (years[i] - years[i - 1]) / iv - 1;
+    if (empties >= 28) {
+      // Everything in the year before the hole is still returned.
+      let keep = i;
+      while (keep < years.length && years[keep] === years[i - 1]) keep++;
+      return { keep, lastYear: years[i - 1], nextYear: years[i], empties };
+    }
+  }
+  return null;
+}
+
+/**
  * ctx: { rrule, dtstart, dateOnly, occurrences, limit }
  * returns [{ id, severity, title, body, evidence, compare }]
  *   severity: "error" | "diverges" | "note"
@@ -436,6 +476,34 @@ export function analyze(ctx) {
         "the time-of-day parts.",
       evidence: [F("011-date-valued-dtstart"), RFC5545("3.3.10", "3.3.10")],
     });
+  }
+
+  // --- ical.js abandons a long empty run and calls the series complete ----
+  {
+    const cut = icaljsAbandons(rrule, occurrences);
+    if (cut) {
+      out.push({
+        id: "icaljs-yearly-abandon",
+        severity: "diverges",
+        title: "ical.js stops this series early, and reports no error",
+        body:
+          `This rule produces nothing for ${cut.empties} consecutive yearly ` +
+          `iterations between ${cut.lastYear} and ${cut.nextYear}. ical.js 2.2.1 ` +
+          `gives up after 28 such iterations and marks the series complete, so it ` +
+          `returns ${cut.keep} occurrence${cut.keep === 1 ? "" : "s"} here and then ` +
+          `stops at ${cut.lastYear}; ${fmt(occurrences[cut.keep], true)} and ` +
+          `everything after it are silently missing. No exception is thrown and ` +
+          `nothing distinguishes the result from a series that really did end. ` +
+          `python-dateutil, rrule.js, lib-recur and ical4j 4.1.1 all return the ` +
+          `full series. ical.js is the library Thunderbird calendaring uses. ` +
+          `The bound is on iterations, not years, so raising INTERVAL can hide ` +
+          `it; and because the search for the *first* occurrence is unbounded, ` +
+          `the same rule evaluated from a DTSTART after ${cut.lastYear} is ` +
+          `answered correctly.`,
+        evidence: [F("103-the-year-the-iterator-gave-up")],
+        compare: { label: "ical.js 2.2.1", occurrences: occurrences.slice(0, cut.keep) },
+      });
+    }
   }
 
   return out;

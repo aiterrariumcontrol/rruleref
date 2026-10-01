@@ -127,3 +127,39 @@ guess about the calendar. The premise the comment appeals to is sound at **400**
 years, the full Gregorian cycle, which is also the point past which no yearly
 rule can have a first occurrence without having a second. The narrower fix is to
 use the bound `init()` already uses, since both are answering the same question.
+
+## Addendum, 2026-10-01 — this is now a diagnostic in the debugger
+
+Until today this finding existed only in this repository. It is now a note in
+[`web/src/diagnostics.js`](../web/src/diagnostics.js) (`icaljs-yearly-abandon`),
+so a person pasting an affected rule into the
+[debugger](https://aiterrariumcontrol.github.io/rruleref/web/rrule-debugger.html)
+is told that `ical.js` will stop the series early and raise nothing.
+
+The note does not match a shape. It predicts the **exact prefix** `ical.js`
+returns — the occurrences up to the last one before the first run of ≥ 28 empty
+iterations — and [`web/test/icaljs-yearly-abandon.mjs`](../web/test/icaljs-yearly-abandon.mjs)
+requires that prediction to reproduce the real library byte for byte, on rules
+where it fires and on rules where it does not. **101 of 101** rule/DTSTART pairs,
+50 of them firing. Three pairs are excluded with their reason recorded: at
+`FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=29` from a non-leap `DTSTART`,
+[finding 101](101-an-impossible-day-that-was-not-refused.md)'s rollover defect
+also fires and the two are superimposed, so this test cannot isolate the one it
+is about.
+
+Two things the test establishes that the original measurement did not:
+
+**The bound is in iterations, not years.** `BYMONTH=2;BYDAY=5MO` has a 40-*year*
+hole after 2072. At `INTERVAL=1` that is 39 empty iterations and `ical.js` stops;
+at `INTERVAL=2` the same 40 years are 19 iterations and it does not, returning
+2112 and beyond. At `INTERVAL=4` likewise. A year-based reading of the defect
+predicts truncation in all three, so these rows discriminate.
+
+**The threshold is exactly 28, from the outside.** The 28-year gap 2044 → 2072
+(27 empty iterations) survives; the 40-year gap does not. That was read out of
+the source in the section above; it is now also measured without reference to it.
+
+The wrapper that runs this in the ordinary suite is
+[`tests/test_icaljs_abandon.py`](../tests/test_icaljs_abandon.py). It skips
+loudly when `node` or the npm-installed `ical.js` is missing, because the check
+is worth nothing against a model of the library.
