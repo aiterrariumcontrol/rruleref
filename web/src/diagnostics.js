@@ -14,7 +14,7 @@
 //     measured. Where it cannot be computed from the rule alone, the note says
 //     which implementations were tested and does not generalise past them.
 
-import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, mk, daysInMonth, DAYS } from "./naive.js";
+import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, toOrd, mk, daysInMonth, DAYS } from "./naive.js";
 
 const F = (name) => ({
   label: `finding ${name.slice(0, 3)}`,
@@ -223,6 +223,197 @@ export function icaljsMonthdayRollover(rrule, dtstart, limit) {
 }
 
 /**
+ * Finding 111: dmfs `lib-recur` 0.17.1 answers `BYWEEKNO=53` in a 52-week year
+ * with December 32nd.
+ *
+ * ISO 8601 gives a year a 53rd week only when the year is long, and RFC 5545
+ * 3.3.10 defines BYWEEKNO by that numbering, so `BYWEEKNO=53` must select
+ * nothing in a short year. `ByWeekNoYearlyExpander.expand()` normalises the
+ * requested week against `getWeeksPerYear(year)` and then, when the result is
+ * LARGER than that count, does not skip it -- it adds an instance at December
+ * 31st plus one day, with no year adjustment. Everything downstream works from
+ * a day that does not exist.
+ *
+ * That phantom is invisible on its own: a rule with no BYDAY emits nothing in a
+ * short year, because the sanity filter drops the impossible date. It becomes
+ * visible when BYDAY expands around it, and what comes out is decided by an
+ * asymmetry in the library's own day arithmetic, which this predictor models
+ * rather than approximates:
+ *
+ *   * `ByDayWeeklyExpander` calls `setDayOfWeek(instance, weekday)`, whose
+ *     delta is `((wkst - dow(instance) - 7) % 7) + ((weekday - wkst + 7) % 7)`,
+ *     evaluated with the weekday of *December 32nd* -- i.e. of January 1st.
+ *   * `prevDay(instance, n)` clamps the day of month to `daysInMonth + 1`, so
+ *     32 survives and the negative deltas land on real December days.
+ *   * `nextDay(instance, n)` clamps it to `daysInMonth`, so 32 becomes 31 and
+ *     the positive deltas are counted from December 31st instead -- one day
+ *     short, which is why the week that comes out has six days and not seven.
+ *   * the weekday whose delta is exactly zero yields December 32nd unchanged
+ *     and is DROPPED. That is the whole of finding 111's monotonicity break:
+ *     with `BYDAY=MO` alone the Monday can be the dropped one, and adding
+ *     `TU` makes a Monday appear.
+ *
+ * Only the overflow branch is modelled. Every exclusion below was measured in
+ * tests/test_dmfs_weekno_overflow.py, which runs this predictor against the
+ * real library:
+ *
+ *   * a BYWEEKNO that normalises to zero or less (`BYWEEKNO=-53` in a 52-week
+ *     year) takes the sibling branch of the same `if`, which adds month 0 day
+ *     0 -- a different phantom this does not model;
+ *   * BYMONTH alongside routes the rule through a different expander
+ *     (`ByWeekNoMonthly*`), where short years stop firing at all;
+ *   * BYSETPOS, BYHOUR, BYMINUTE, BYSECOND, BYMONTHDAY and BYYEARDAY each
+ *     transform the result set after this expansion;
+ *   * an ordinal BYDAY (`1MO`) is rejected outright by lib-recur when
+ *     BYWEEKNO is set, so there is no output to predict.
+ *
+ * Returns null when the shape is outside the model, otherwise
+ * { predicted, phantom, years }: lib-recur's whole stream, the dates in it
+ * that are not occurrences of the rule at all, and the years whose week count
+ * the rule overshoots. `years` is empty on most rules, and the stream is still
+ * predicted there, so the harness can check the silence as well as the note.
+ */
+const LR_WD = { SU: 0, MO: 1, TU: 2, WE: 3, TH: 4, FR: 5, SA: 6 };
+const LR_MIN_DAYS = 4;          // minDaysInFirstWeek, ISO
+/** lib-recur's getWeekDayOfFirstYearDay, verbatim. 0 = Sunday. */
+function lrFirstYearDayWeekday(y) {
+  const p = y - 1;
+  return (1 + 5 * (p & 3) + 4 * (p % 100) + 6 * (p % 400)) % 7;
+}
+function lrDaysPerYear(y) { return toOrd(y + 1, 1, 1) - toOrd(y, 1, 1); }
+/** lib-recur's getYearDayOfFirstWeekStart: may be <= 0, i.e. in the year before. */
+function lrFirstWeekStart(y, ws) {
+  const d = 1 + ws - lrFirstYearDayWeekday(y);
+  if (d > LR_MIN_DAYS) return d - 7;
+  if (d < LR_MIN_DAYS - 6) return d + 7;
+  return d;
+}
+/** lib-recur's getWeeksPerYear. Honours WKST, unlike libical's (finding 112). */
+function lrWeeksPerYear(y, ws) {
+  const t = lrDaysPerYear(y) - lrFirstWeekStart(y, ws) + 1;
+  return (7 - (t % 7)) >= LR_MIN_DAYS ? Math.trunc(t / 7) : Math.trunc(t / 7) + 1;
+}
+/** A year-day of `y`, which may be out of range in either direction. */
+function lrYearDay(y, yd) { return fromOrd(toOrd(y, 1, 1) + yd - 1); }
+
+export function dmfsWeeknoOverflow(rrule, dtstart, limit, opts = {}) {
+  // `ungated` exists only for the harness, which runs the predictor on the
+  // shapes the guard refuses in order to show the refusal was necessary. It is
+  // never set by a caller that shows a note to anybody.
+  const ungated = opts.ungated === true;
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  if (r.FREQ !== "YEARLY") return null;
+  if (!("BYWEEKNO" in r) || !("BYDAY" in r)) return null;
+  if (!ungated) {
+    for (const k of ["BYMONTH", "BYMONTHDAY", "BYYEARDAY", "BYSETPOS",
+                     "BYHOUR", "BYMINUTE", "BYSECOND"]) {
+      if (k in r) return null;
+    }
+    // An ordinal BYDAY with BYWEEKNO is refused by the library outright.
+    if (r.BYDAY.some(([ord]) => ord !== null)) return null;
+  }
+  if (r.BYWEEKNO.some((v) => v === 0 || v > 53 || v < -53)) return null;
+
+  const ws = LR_WD[r.WKST];
+  const p0 = parts(dtstart);
+  const iv = r.INTERVAL;
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  const byday = r.BYDAY.map(([, day]) => LR_WD[day]);
+  const predicted = [], phantom = [], years = [];
+  for (let y = p0.y; y <= p0.y + 400 && predicted.length < cap; y += iv) {
+    const n = lrWeeksPerYear(y, ws);
+    const days = new Map();          // timestamp -> is it from the phantom
+    let overshot = false;
+    for (const v of r.BYWEEKNO) {
+      const wk = v >= 0 ? v : n + v + 1;
+      if (wk <= 0) { if (ungated) continue; return null; }  // the month-0 day-0 branch
+      if (wk <= n) {
+        const base = lrFirstWeekStart(y, ws) + (wk - 1) * 7;
+        for (const t of byday) {
+          const [yy, mm, dd] = lrYearDay(y, base + ((t - ws + 7) % 7));
+          const ts = mk(yy, mm, dd, p0.h, p0.mi, p0.s);
+          days.set(ts, false);   // a real week reached it
+        }
+      } else {
+        overshot = true;
+        const p = lrDaysPerYear(y) + 1;                 // December 32nd
+        const dowp = (lrFirstYearDayWeekday(y) + p - 1) % 7;
+        const first = (ws - dowp - 7) % 7;              // -6 .. 0
+        for (const t of byday) {
+          const delta = first + ((t - ws + 7) % 7);
+          if (delta === 0) continue;                    // December 32nd itself: dropped
+          // prevDay tolerates the 32nd, nextDay clamps it to the 31st.
+          const yd = delta < 0 ? p + delta : lrDaysPerYear(y) + delta;
+          const [yy, mm, dd] = lrYearDay(y, yd);
+          const ts = mk(yy, mm, dd, p0.h, p0.mi, p0.s);
+          if (!days.has(ts)) days.set(ts, true);
+        }
+      }
+    }
+    if (overshot) years.push(y);
+    for (const ts of [...days.keys()].sort((a, b) => a - b)) {
+      if (ts < dtstart) continue;
+      // lib-recur's iterator never goes backwards, and the phantom week of one
+      // year can reach past the first real week of the next.
+      if (predicted.length && ts <= predicted[predicted.length - 1]) continue;
+      if (until !== null && ts > until) return finish();
+      if (predicted.length >= cap) break;
+      predicted.push(ts);
+      if (days.get(ts)) phantom.push(ts);
+    }
+  }
+  return finish();
+
+  // `years` empty means the rule overshoots nothing in its own window, which
+  // is the common case and is returned rather than nulled: the harness
+  // byte-compares the whole stream on rules the note stays silent about too,
+  // and silence that was never checked is not evidence of anything.
+  function finish() { return { predicted, phantom, years }; }
+}
+
+/**
+ * Finding 111 as a note. Like finding 101's, it lives outside `analyze` because
+ * its headline case -- a rule that asks only for week 53 and a window with no
+ * long year in it -- is a CORRECTLY EMPTY series, and `analyze` returns early
+ * there (rule 121).
+ */
+function weeknoOverflowNote(rrule, dtstart, limit) {
+  const o = dmfsWeeknoOverflow(rrule, dtstart, limit);
+  if (!o || !o.years.length || !o.phantom.length) return null;
+  const shortYears = o.years;
+  const shown = o.phantom.slice(0, 4).map((t) => fmt(t, true)).join(", ");
+  const allPhantom = o.phantom.length === o.predicted.length;
+  const yearList = shortYears.slice(0, 6).join(", ") + (shortYears.length > 6 ? ", …" : "");
+  return {
+    id: "dmfs-weekno-overflow",
+    severity: "diverges",
+    title: "lib-recur answers the week this rule asks for with a day that does not exist",
+    body:
+      `ISO 8601 gives a year a 53rd week only when the year is long. ` +
+      `${shortYears.length === 1 ? "The year" : "The years"} ${yearList} ` +
+      `${shortYears.length === 1 ? "has" : "have"} fewer weeks than this rule asks for, ` +
+      `so the correct answer there is nothing, and python-dateutil and rrule.js return ` +
+      `nothing. dmfs lib-recur 0.17.1 instead adds an instance at December 31st plus one ` +
+      `day — December 32nd — and lets BYDAY expand around it, emitting ` +
+      `${shown}${o.phantom.length > 4 ? ", …" : ""}` +
+      (allPhantom ? ". Every occurrence shown beside this note is one of those. " : ". ") +
+      `The week that comes out has six days, never seven: the library's prevDay tolerates ` +
+      `the 32nd and its nextDay clamps it to the 31st, so one day of the week is lost. The ` +
+      `weekday whose offset is exactly zero is dropped as an impossible date, which is why ` +
+      `BYDAY=MO alone can yield nothing in a year where BYDAY=MO,TU yields a Monday. ` +
+      `Note that the phantom is invisible without BYDAY: the same rule with no BYDAY is ` +
+      `answered correctly, because the impossible date is then the occurrence itself and ` +
+      `the sanity filter drops it. Use BYWEEKNO=-1 if what you mean is the last week of ` +
+      `the year.`,
+    evidence: [F("111-december-the-thirty-second"),
+               RFC5545("3.3.10", "3.3.10")],
+    compare: { label: "dmfs lib-recur 0.17.1", occurrences: o.predicted },
+  };
+}
+
+/**
  * Finding 101 as a note, built apart from `analyze` because the case that
  * matters most is the one `analyze` used to return early on: when every date
  * the rule names is impossible, the *correct* series is empty, and the "this
@@ -297,6 +488,8 @@ export function analyze(ctx) {
     });
     const rn = monthdayRolloverNote(rrule, dtstart, limit);
     if (rn) out.push(rn);
+    const wn = weeknoOverflowNote(rrule, dtstart, limit);
+    if (wn) out.push(wn);
     return out;
   }
 
@@ -624,6 +817,12 @@ export function analyze(ctx) {
   {
     const rn = monthdayRolloverNote(rrule, dtstart, limit);
     if (rn) out.push(rn);
+  }
+
+  // --- lib-recur answers an overshot BYWEEKNO with December 32nd -----------
+  {
+    const wn = weeknoOverflowNote(rrule, dtstart, limit);
+    if (wn) out.push(wn);
   }
 
   // --- ical.js abandons a long empty run and calls the series complete ----

@@ -129,3 +129,90 @@ six days is not established here, and the `MO` versus `MO,TU` asymmetry in
 particular is measured and unexplained. That asymmetry is a lead, not a result.
 No score moved, no case changed bucket, `cases_id` unchanged, `RESULTS.md`
 untouched.
+
+## Addendum, 2026-10-01 — in the debugger, and the mechanism closed
+
+This finding is now a note in the
+[RRULE debugger](../web/rrule-debugger.html): `dmfs-weekno-overflow` in
+[`web/src/diagnostics.js`](../web/src/diagnostics.js). It fires on the user's
+own rule, naming the years in that rule's own window whose week count the rule
+overshoots and the dates lib-recur answers them with.
+
+Writing it closed the part this finding left open. The text above says the
+`MO` versus `MO,TU` asymmetry is "measured and unexplained" and that "exactly
+which downstream expander turns it into which six days is not established
+here". Both are established now, and the predictor is built out of them rather
+than out of the table above:
+
+* `ByDayWeeklyExpander.expand()` is the downstream expander. It calls
+  `setDayOfWeek(instance, weekday)` once per unprefixed `BYDAY` value, whose
+  offset is `((wkst - dow(instance) - 7) % 7) + ((weekday - wkst + 7) % 7)`,
+  evaluated with the weekday of **December 32nd** — i.e. of January 1st.
+* `prevDay(instance, n)` clamps the day of month to `daysInMonth + 1`, so 32
+  survives it and the negative offsets land on real December days.
+  `nextDay(instance, n)` clamps it to `daysInMonth`, so 32 becomes 31 and the
+  positive offsets are counted from December 31st — one day short. **That
+  asymmetry, and nothing else, is why the week has six days and not seven.**
+* the weekday whose offset is exactly zero is returned as December 32nd
+  unchanged and is dropped as an impossible date. **That is the `MO` versus
+  `MO,TU` asymmetry**: in a year where Monday is the zero-offset weekday,
+  `BYDAY=MO` alone yields nothing and `BYDAY=MO,TU` yields a Monday, because
+  Tuesday's offset of `+1` is counted from the 31st and lands on January 1st.
+* `getWeeksPerYear()` honours `WKST`, unlike libical's
+  ([112](112-the-week-start-the-helper-never-heard-about.md)), so the set of
+  overshot years is `WKST`-dependent and the predictor computes it per rule.
+* the library's iterator never goes backwards, which only shows up when
+  `BYWEEKNO` mixes an overshooting value with a real one — the phantom week of
+  one year can reach past the first real week of the next, and the real week is
+  then silently dropped. A predictor that merge-sorted the years instead would
+  be wrong on those rules and right on every other, which is how this was
+  found.
+
+**Rule 122: a predictor that is exact everywhere except on one shape is
+describing a stage you have not modelled, not a defect in the subject.** The
+merge-sorted version scored 828 of 840 and every one of the twelve was a
+`BYWEEKNO` list mixing an overshooting value with a real one. The temptation
+was to exclude that shape; the thing it was actually pointing at was a filter
+in the iterator that applies to every rule, and modelling it took the sweep to
+2698 of 2698.
+
+Also newly measured: **the phantom is invisible without `BYDAY`.** A rule with
+no `BYDAY` is answered *correctly* in a short year, because the impossible
+date is then the occurrence itself and the sanity filter removes it. The note
+therefore requires `BYDAY`, which is a precision the table above did not have.
+
+[`tests/test_dmfs_weekno_overflow.py`](../tests/test_dmfs_weekno_overflow.py)
+requires the prediction to reproduce the real library byte for byte. Because
+lib-recur is Java the prediction and the implementation cannot share a process,
+so node is asked for the prediction, the compiled `DmfsAdapter` for the truth,
+and the test file — which reads neither library — owns every comparison. On the
+run that published this addendum:
+
+| | |
+|---|---|
+| rules swept, all seven `WKST` values, eight `DTSTART`s, `INTERVAL` 1–3 | 2698 |
+| byte-exact against lib-recur 0.17.1 | 2698 |
+| …on which the note fires | 2037 |
+| …on which it stays silent, stream still predicted exactly | 661 |
+| overshot years under `WKST=MO`, checked against python's own ISO calendar | 121 |
+| exclusions, each declined by the guard **and** wrong without it | 7 |
+| shapes lib-recur refuses outright (ordinal `BYDAY` with `BYWEEKNO`) | 2 |
+
+The note also tells the reader what python-dateutil and rrule.js do, and that
+is measured in the same test rather than asserted: both return **nothing** for
+`FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO` closed with `UNTIL=20251231T000000`, and with
+the window left open both fire in 2026 and 2032 and in no year between. A note
+that reports other implementations' behaviour to a user has to be guarded on
+that too.
+
+The seven exclusions are the `BYWEEKNO` that normalises to zero or less — the
+sibling branch of the same `if`, which adds month 0 day 0 and is a *different*
+phantom — and `BYMONTH`, `BYSETPOS`, `BYHOUR`, `BYMONTHDAY`, which each route
+or reshape the expansion. With `BYMONTH` the rule goes through
+`ByWeekNoMonthly*` instead and short years stop firing at all. Each is run
+ungated as well as gated, so an exclusion that was never necessary would fail
+the test rather than sit there unchallenged.
+
+No conformance claim changes. The four-case partition stands, `cases_id`
+unchanged, `RESULTS.md` untouched, nothing filed upstream ([rule
+27](../README.md) holds).

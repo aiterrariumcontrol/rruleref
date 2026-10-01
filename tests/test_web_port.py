@@ -171,6 +171,19 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # only looked at empty series would miss this one.
         ("FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=1,30", "20260201T090000",
          "icaljs-monthday-rollover"),
+        # Finding 111. ISO 8601 gives 2021-2025 no week 53 at all, so this
+        # rule's correct answer inside its own UNTIL is the empty set; dmfs
+        # lib-recur 0.17.1 answers 27 December 2021 and four more, each from an
+        # instance it placed at December 32nd. Like finding 101's note this one
+        # has to survive analyze()'s early return (rule 121), which is why the
+        # window is closed with UNTIL rather than left to the horizon.
+        ("FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO;UNTIL=20251231T000000", "20210101T090000",
+         "dmfs-weekno-overflow"),
+        # The same note where the correct series is NOT empty: week 52 exists
+        # in every year, so the rule returns something either way and the
+        # phantom week is mixed in among real occurrences.
+        ("FREQ=YEARLY;BYWEEKNO=52,53;BYDAY=MO", "20210101T090000",
+         "dmfs-weekno-overflow"),
     ]
     driver = """
 import fs from "node:fs";
