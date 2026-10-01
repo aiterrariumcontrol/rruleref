@@ -14,7 +14,7 @@
 //     measured. Where it cannot be computed from the rule alone, the note says
 //     which implementations were tested and does not generalise past them.
 
-import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, toOrd, mk, daysInMonth, DAYS } from "./naive.js";
+import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, toOrd, mk, daysInMonth, bydayMatches, DAYS } from "./naive.js";
 
 const F = (name) => ({
   label: `finding ${name.slice(0, 3)}`,
@@ -414,6 +414,96 @@ function weeknoOverflowNote(rrule, dtstart, limit) {
 }
 
 /**
+ * Finding 105's `ical.js` 2.2.1 month-rollover asymmetry, as a predictor.
+ *
+ * `recur_iterator.js`, `next_month()`, the BYDAY-without-BYMONTHDAY branch.
+ * The in-month scan tests BOTH spellings of a set position:
+ *
+ *     if (!this.has_by_data("BYSETPOS") ||
+ *         this.check_set_position(++setpos) ||
+ *         this.check_set_position(setpos - setpos_total - 1)) {
+ *
+ * Twelve lines later the path that walks off the end of a month and lands on
+ * day 1 of the next one tests only the POSITIVE spelling, `check_set_position(1)`,
+ * and never computes `setpos_total` for the month it has just entered. Day 1,
+ * when it is in the BYDAY set, is necessarily set position 1, so the hardcoded
+ * `1` is right as far as it goes -- but a rule that names position 1 only as
+ * `-n` for a set of size n falls through with `data_valid` left at 0, and that
+ * occurrence is lost.
+ *
+ * Finding 105 described the symptom as a DROPPED MONTH, which is what it looks
+ * like whenever position 1 is the month's only selection. Building the
+ * predictor showed the mechanism is narrower and the finding's phrasing was a
+ * special case: `BYSETPOS=-2,2` loses only the day-1 date and keeps the other
+ * one. That is measured, not reasoned -- see the addendum on 105.
+ *
+ * Scope, every exclusion measured in test/icaljs-negative-bysetpos.mjs rather
+ * than assumed:
+ *
+ *   * BYMONTH is excluded. ical.js's month filter interacts with the same
+ *     rollover and the ungated predictor scores 0/15 there.
+ *   * BYMONTHDAY is excluded: `_byDayAndMonthDay()` is a different branch
+ *     entirely, which finding 105 explicitly did not probe. Ungated: 0/10.
+ *   * BYHOUR/BYMINUTE/BYSECOND are excluded; they multiply each date and the
+ *     predictor models dates only. Ungated: 0/5.
+ *   * DTSTART must be the rule's own first occurrence. Otherwise finding 004's
+ *     first-period truncation is superimposed -- ical.js emits an extra
+ *     opening date -- and those pairs are counted, not quietly skipped.
+ *
+ * Returns null when nothing is lost, otherwise { predicted, lost, emptied }:
+ * ical.js's whole stream, the dates it drops, and the subset of `lost` whose
+ * month ends up with no occurrence at all.
+ */
+export function icaljsNegativeSetposRollover(rrule, dtstart, limit) {
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  if (r.FREQ !== "MONTHLY") return null;
+  if (!("BYDAY" in r) || !("BYSETPOS" in r)) return null;
+  for (const k of ["BYMONTH", "BYMONTHDAY", "BYWEEKNO", "BYYEARDAY",
+                   "BYHOUR", "BYMINUTE", "BYSECOND"]) {
+    if (k in r) return null;
+  }
+  // The positive spelling of position 1 is the repair, so a rule that already
+  // contains it is unaffected by construction.
+  if (r.BYSETPOS.includes(1) || !r.BYSETPOS.some((p) => p < 0)) return null;
+  // Finding 004 otherwise fires in the same stream; see the scope note above.
+  const ref = tryExpand(rrule, dtstart, { limit });
+  if (!ref || !ref.length || ref[0] !== dtstart) return null;
+
+  const p0 = parts(dtstart);
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  const predicted = [], lost = [], emptied = [];
+  for (let k = 0; predicted.length < cap && k < 1200; k++) {
+    const mIdx = (p0.mo - 1) + k * r.INTERVAL;
+    const y = p0.y + Math.floor(mIdx / 12), mo = (mIdx % 12) + 1;
+    // S(M): the BYDAY-derived day set for this month, in date order. This is
+    // the set BYSETPOS indexes, and |S| is the n that -n is measured against.
+    const S = [];
+    for (let d = 1, dim = daysInMonth(y, mo); d <= dim; d++) {
+      if (bydayMatches(parts(mk(y, mo, d)), r.BYDAY, "MONTHLY", false)) S.push(d);
+    }
+    const n = S.length;
+    if (!n) continue;
+    const picked = S.filter((d, i) => r.BYSETPOS.includes(i + 1) || r.BYSETPOS.includes(i - n));
+    // k > 0: day 1 of the DTSTART month is not reached by the rollover path.
+    const dropsDay1 = k > 0 && S[0] === 1 && r.BYSETPOS.includes(-n);
+    let kept = 0;
+    for (const d of picked) {
+      const t = mk(y, mo, d);
+      if (t < dtstart) continue;
+      if (until !== null && t > until) return { predicted, lost, emptied };
+      if (dropsDay1 && d === 1) { lost.push(t); continue; }
+      kept++;
+      if (predicted.length < cap) predicted.push(t);
+    }
+    if (dropsDay1 && !kept && picked.includes(1)) emptied.push(mk(y, mo, 1));
+  }
+  if (!lost.length) return null;
+  return { predicted, lost, emptied };
+}
+
+/**
  * Finding 101 as a note, built apart from `analyze` because the case that
  * matters most is the one `analyze` used to return early on: when every date
  * the rule names is impossible, the *correct* series is empty, and the "this
@@ -538,6 +628,40 @@ export function analyze(ctx) {
           { label: "dateutil/dateutil#1398", url: "https://github.com/dateutil/dateutil/issues/1398" },
         ],
         compare: { label: "first period truncated at DTSTART (python-dateutil lineage)", occurrences: show(other) },
+      });
+    }
+    const nr = icaljsNegativeSetposRollover(rrule, dtstart, limit);
+    if (nr) {
+      const shown = nr.lost.slice(0, 4).map((t) => fmt(t, dateOnly)).join(", ");
+      const n = nr.lost.length;
+      out.push({
+        id: "icaljs-negative-bysetpos-rollover",
+        severity: "diverges",
+        title: "ical.js loses the first of the month when BYSETPOS names it only negatively",
+        body:
+          `This rule selects the first day of some months — ${shown}` +
+          `${n > 4 ? `, … (${n} of them in the window shown)` : ""} — and names that ` +
+          `position only negatively. ical.js 2.2.1 does not return ` +
+          `${n === 1 ? "that date" : "those dates"}. ` +
+          (nr.emptied.length
+            ? (nr.emptied.length === n
+                ? `In each of those months it is the only occurrence, so the month `
+                : `In ${nr.emptied.length} of those months it is the only occurrence, so the month `) +
+              `disappears from the series entirely, with the months either side correct — ` +
+              `which is the shape this is usually noticed in. `
+            : `The other occurrences in those months survive, so what you see is a single ` +
+              `missing date rather than a gap. `) +
+          `python-dateutil, rrule.js, sabre/vobject and dmfs lib-recur all return the full ` +
+          `series. The cause is an asymmetry twelve lines wide in next_month(): the in-month ` +
+          `scan tests a set position in both spellings, but the path that rolls over into ` +
+          `the next month and lands on day 1 tests only the positive one, and never computes ` +
+          `that month's set size, so it can never recognise −n. ` +
+          `Adding the positive spelling repairs it without changing which dates the rule ` +
+          `selects: for a set of size n, write BYSETPOS=1,−n rather than BYSETPOS=−n. ` +
+          `ical.js is the library Thunderbird calendaring uses.`,
+        evidence: [F("105-the-month-that-rolled-over"),
+                   F("004-bysetpos-first-period-truncation")],
+        compare: { label: "ical.js 2.2.1", occurrences: show(nr.predicted) },
       });
     }
     if (has("UNTIL")) {

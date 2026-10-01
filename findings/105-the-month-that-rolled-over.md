@@ -10,6 +10,12 @@ At `FREQ=MONTHLY` with a day set from `BYDAY` and a **negative** `BYSETPOS`,
 `ical.js` **drops an entire month** whenever the occurrence the rule selects is
 **day 1** of that month.
 
+> **Corrected 2026-10-01.** What ical.js loses is the **day-1 occurrence**; the
+> month disappears only when that occurrence is the month's only selection,
+> which is true of nine of the ten probes below and not in general. The
+> mechanism quoted under *The mechanism* is unchanged. See the addendum at the
+> end of this file, which is where the correction was forced.
+
 ```
 FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2   from 2027-01-02   (corpus d27c58ae379a)
   reference  20270102 20270206 20270306 20270403 20270501 20270605 20270703 ...
@@ -167,3 +173,74 @@ exhausted: the base set was the `fail` bucket at one corpus for one adapter, and
      figure 031 publishes and itself declares UNCHECKED, cited only to bound what
      the residual-0 claim covers. Its provenance is 031's problem, and 031 says so:
      re-deriving 163 needs a definition of "non-vacuous", not a sweep. -->
+
+## Addendum, 2026-10-01: converting this into a diagnostic corrected it
+
+This finding is now a note in the debugger —
+`icaljs-negative-bysetpos-rollover` in [`web/src/diagnostics.js`](../web/src/diagnostics.js),
+computed from the user's own rule and backed by
+[`web/test/icaljs-negative-bysetpos.mjs`](../web/test/icaljs-negative-bysetpos.mjs),
+which requires the prediction to reproduce ical.js 2.2.1 byte for byte:
+
+```
+$ node web/test/icaljs-negative-bysetpos.mjs
+ical.js negative-BYSETPOS rollover note, against ical.js 2.2.1
+  rule/DTSTART pairs expanded by both: 1048
+  note fires (day 1 selected, position named only negatively): 238
+  controls where it must stay silent: 810
+  excluded -- the rule has no occurrence from that seed at all: 471
+  excluded -- DTSTART unsynchronized, finding 004 superimposed: 1004
+  prediction reproduces ical.js exactly: 1048/1048
+  guard declines every out-of-scope shape: 70 checks, 0 leak(s)
+  of those, affected but declined (the exclusions cost real coverage): 21
+  exclusion is necessary -- ungated predictor with BYMONTH:     0/21 exact
+  exclusion is necessary -- ungated predictor with BYMONTHDAY:  0/7 exact
+  exclusion is necessary -- ungated predictor with BYHOUR:      0/7 exact
+     (those three take DTSTART from the rule without the excluded part)
+  exclusion is necessary -- ungated on unsynchronized DTSTART:  180/228 exact
+OK: the predictor reproduces ical.js on every pair, firing and not firing alike.
+```
+
+The suite runs it through
+[`tests/test_icaljs_negative_bysetpos.py`](../tests/test_icaljs_negative_bysetpos.py),
+and [`tests/test_web_port.py`](../tests/test_web_port.py) pins two rows: a rule
+whose month empties and one whose month does not.
+
+**The predictor at the top of this finding is wrong, in a way worth keeping
+visible.** It says ical.js *omits month M*. The first model did exactly that
+and scored 70/75, and every one of the five misses was a `BYSETPOS=-2,2` rule
+— where ical.js keeps the position-2 date and loses only the day-1 one. Rule
+122: a predictor exact everywhere except on one shape is describing a stage not
+yet modelled, not a defect in the subject. The correct statement is
+
+> ical.js loses the occurrence at **day 1** of month *M* iff *M* is not the
+> `DTSTART` month, day 1 of *M* is in *S(M)*, and `BYSETPOS` contains −|*S(M)*|
+> but not 1. The month disappears only when that occurrence is the month's
+> **only** selection.
+
+The month-shaped symptom is that special case, which is what the ten probes
+above happened to sample — nine of them have a single-valued `BYSETPOS`. The
+mechanism quoted from `next_month()` was right all along; the sentence
+describing its effect over-generalised from the sample, and the thing that
+caught it was being made to predict instead of describe.
+
+Four shapes are excluded, and the `exclusion is necessary` lines above are
+what an ungated predictor would have claimed on each:
+
+| excluded | why |
+|---|---|
+| `BYMONTH` | its month filter interacts with the same rollover |
+| `BYMONTHDAY` | `_byDayAndMonthDay()` is the branch this finding never probed |
+| `BYHOUR`/`BYMINUTE`/`BYSECOND` | they multiply each date; the predictor models dates |
+| unsynchronized `DTSTART` | [004](004-bysetpos-first-period-truncation.md)'s extra opening date is superimposed |
+
+The `DTSTART` row is the interesting one, and the only exclusion the harness
+does **not** refute outright: the ungated predictor is right on most
+unsynchronized pairs, so excluding them removes coverage that mostly *would*
+have been correct. It stays because the pairs it gets wrong are
+indistinguishable from the rest without running the library, and the debugger
+already raises `unsynchronized-dtstart` on exactly those rules. Those pairs are
+excluded **and counted** in the output above rather than dropped silently, as
+is the number of out-of-scope checks that are rules this defect really does
+affect — the exclusions cost real coverage, and saying so is cheaper than
+pretending they do not.

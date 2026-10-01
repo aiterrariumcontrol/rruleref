@@ -179,6 +179,24 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # window is closed with UNTIL rather than left to the horizon.
         ("FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO;UNTIL=20251231T000000", "20210101T090000",
          "dmfs-weekno-overflow"),
+        # Finding 105. 1SA is always days 1-7 and 3FR always days 15-21, so the
+        # month's set is {1SA, 3FR} and -2 always names 1SA. In the months whose
+        # first Saturday IS the first -- May 2027 is the first inside this
+        # window -- ical.js 2.2.1 loses that date, and since it is the month's
+        # only selection the month vanishes. Its accuracy about which dates
+        # ical.js emits is checked against the real library in
+        # tests/test_icaljs_negative_bysetpos.py; this row only pins that it
+        # fires. Unlike findings 101 and 111 this note cannot reach the empty
+        # path: its guard requires DTSTART to be the rule's own first
+        # occurrence, so the series it fires on is never empty.
+        ("FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2", "20270102T090000",
+         "icaljs-negative-bysetpos-rollover"),
+        # The same note where the month does NOT empty: adding position 2
+        # positively keeps 3FR, so only the first-of-the-month date is lost.
+        # This is the distinction that building the predictor forced on
+        # finding 105, which had called the symptom a dropped month.
+        ("FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2,2", "20270102T090000",
+         "icaljs-negative-bysetpos-rollover"),
         # The same note where the correct series is NOT empty: week 52 exists
         # in every year, so the rule returns something either way and the
         # phantom week is mixed in among real occurrences.
