@@ -202,6 +202,30 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # phantom week is mixed in among real occurrences.
         ("FREQ=YEARLY;BYWEEKNO=52,53;BYDAY=MO", "20210101T090000",
          "dmfs-weekno-overflow"),
+        # Finding 112's defect B. 2024 starts on a Monday, so libical's
+        # `doy_offset` is 0 and the week-numbering year it expands BYDAY over is
+        # one day short: week 52 of 2024 comes back as six days, 23-28
+        # December, with the Sunday missing. Which dates master 4edd39a3 really
+        # emits is checked against two real builds in
+        # tests/test_libical_week_year.py; this row only pins that it fires.
+        ("FREQ=YEARLY;BYWEEKNO=52;BYDAY=MO,TU,WE,TH,FR,SA,SU;WKST=MO",
+         "20240101T090000", "libical-week-year-truncated"),
+        # The other end of the same arithmetic. 2025 starts on a Wednesday, so
+        # its first week reaches back into 2024, `doy_offset` goes negative, and
+        # the period is one day too LONG -- which lets the stride loop reach a
+        # 53rd week in a year ISO gives 52. Finding 112 looked for this
+        # over-run and did not find it; it needs a BYWEEKNO naming a week the
+        # year does not have, which is why BYWEEKNO=1 showed nothing.
+        ("FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO;WKST=MO", "20240101T090000",
+         "libical-week-year-truncated"),
+        # And the note on the empty path (rule 121). 2024 has no 53rd week
+        # under any reading, so the correct answer inside this UNTIL is
+        # nothing and analyze() returns early -- but libical does not return an
+        # empty series here, it reports MALFORMEDDATA, because the week is
+        # always inside the part of the year it drops and its constructor
+        # searches to MAX_TIME_T_YEAR before giving up.
+        ("FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE;WKST=SA;UNTIL=20241231T000000",
+         "20240101T090000", "libical-week-year-truncated"),
     ]
     driver = """
 import fs from "node:fs";

@@ -129,6 +129,12 @@ years, patched and unpatched alike. The extra days are generated only for a
 `BYDAY` whose weekday recurs past the end, and the stride loop stops first.
 Recorded as reasoned-but-unobserved: **a lead, not a result.**
 
+> **Superseded 2026-10-01.** The over-run *is* observable, and the probe above
+> was the wrong one: `BYWEEKNO=1` names a week every year has, so the extra
+> stride can only land on a date the rule had already selected. Ask for a week
+> the year does **not** have and the extra stride becomes the only thing that
+> reaches it. See the addendum at the end of this finding.
+
 ## How the two were separated
 
 Both patches are in [`repro/112-patch-libical.py`](repro/112-patch-libical.py),
@@ -198,3 +204,97 @@ Per **rule 102** the patched builds install to their own prefixes: the run
 finishes by rebuilding the pristine source into the canonical prefix, and the
 restored `libical.so.4.0.6` is byte-identical to the one the published rows were
 measured through.
+
+## Addendum, 2026-10-01 — defect B is now in the debugger, and its over-run is observable after all
+
+Defect B is now a computed note in
+[`web/src/diagnostics.js`](../web/src/diagnostics.js), `libical-week-year-truncated`,
+and the live tool at
+[rrule-debugger](https://aiterrariumcontrol.github.io/rruleref/web/rrule-debugger.html)
+says it on the visitor's own rule. The note is not a shape match: it predicts
+the whole stream `libical` master `4edd39a3` emits, from the library's own
+arithmetic — ICU's `WEEK_OF_YEAR` under `WKST` with four minimal days, the
+week-start-blind `weeks_in_year()`, `get_start_of_week()` at January 1st, the
+straddle probe in `icalrecur_iterator_new()`, and the loop in
+`icalrecur_iterator_next()` that swallows a repeated instant.
+
+Because this defect is a *patch*, the predictor could be held to something the
+earlier conversions could not: it models **both** arms, and has to be
+byte-exact against **two real builds** — pristine `4edd39a3` and the same
+source with patch B. `tests/test_libical_week_year.py` owns every comparison
+and can read neither library:
+
+```
+$ python3 tests/test_libical_week_year.py
+sweep              14604 rules, 3737 firing, 10867 silent, 71 refused by the library,
+                   every stream byte-exact against libical master 4edd39a3 AND against the patch-B build
+two arms           3012 rules lose dates only, 424 invent dates only, 230 do both
+counterexamples    6 exclusions, each declined by the guard and each wrong without it
+
+OK: the finding 112 diagnostic predicts libical 4edd39a3 exactly, and the patch-B build too
+```
+
+### The over-run above was a lead. It is now a result.
+
+This finding said of defect B's forward direction:
+
+> **I looked for that over-run as a second observable and did not find one.**
+> `BYWEEKNO=1` with all seven weekdays returns a seven-day week in all
+> seventeen years, patched and unpatched alike. […] Recorded as
+> reasoned-but-unobserved: **a lead, not a result.**
+
+That was the wrong probe. `BYWEEKNO=1` asks for a week every year really has,
+so the extra stride lands on a weekday the rule has already selected and
+nothing is added. The over-run is visible only where the rule asks for a week
+the year does **not** have, because then the extra stride is the *only* thing
+that reaches it. 2025 starts on a Wednesday, its first week reaches back into
+2024, `doy_offset` is −2, and the period is one day too long:
+
+```
+$ echo '{"id":"plain","rrule":"FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO;WKST=MO","dtstart":"20240101T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd/lib ./conformance/adapters/c/libical_adapter
+{"id":"plain","occurrences":["20251229T090000","20261228T090000","20311229T090000","20321227T090000"]}
+$ echo '{"id":"patchB","rrule":"FREQ=YEARLY;BYWEEKNO=53;BYDAY=MO;WKST=MO","dtstart":"20240101T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd-B/lib ./conformance/adapters/c/libical_adapter
+{"id":"patchB","occurrences":["20261228T090000","20321227T090000","20371228T090000","20431228T090000"]}
+```
+
+29 December 2025 is a Monday in a year ISO 8601 gives 52 weeks. `libical`
+returns it for a rule that asks for week 53; patch B removes it. So defect B
+has two user-visible signs, not one, and the note reports them separately: the
+dates it **loses** at the end of a positive-`doy_offset` year, and the dates it
+**invents** in a negative-`doy_offset` one. The harness separates them, over the whole sweep:
+
+```
+$ python3 tests/test_libical_week_year.py | sed -n 3p
+two arms           3012 rules lose dates only, 424 invent dates only, 230 do both
+```
+
+The `refused` column is a third sign, and the sharpest one for a user. Where
+the requested week is *always* inside the dropped tail, the constructor's
+search loop runs to `MAX_TIME_T_YEAR` and the library does not return an empty
+series — it rejects the rule:
+
+```
+$ echo '{"id":"plain","rrule":"FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE;WKST=SA","dtstart":"20240101T090000","limit":3}' | LD_LIBRARY_PATH=.../libical-install-4edd/lib ./conformance/adapters/c/libical_adapter
+{"id":"plain","error":"MALFORMEDDATA: An input string was not correctly formed or a component has missing or extra properties"}
+$ echo '{"id":"patchB","rrule":"FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE;WKST=SA","dtstart":"20240101T090000","limit":3}' | LD_LIBRARY_PATH=.../libical-install-4edd-B/lib ./conformance/adapters/c/libical_adapter
+{"id":"patchB","occurrences":["20270106T090000","20330105T090000","20380106T090000"]}
+```
+
+None of these three shapes is in the 1727-case corpus, which is why defect B
+showed there as two cases and not as hundreds. The corpus bounds every count
+in this finding; it does not bound the defect.
+
+### What the conversion does not claim
+
+* Still `4edd39a3` with `HAVE_LIBICU=1` only. `3.0.20` remains unpartitioned.
+* The note's guard refuses an ordinal `BYDAY`, `BYMONTH`, `BYMONTHDAY`,
+  `BYYEARDAY`, `BYSETPOS` and `BYHOUR`/`BYMINUTE`/`BYSECOND`. Each exclusion is
+  measured, not assumed: the harness runs the predictor **ungated** on each and
+  requires it to be wrong there. One candidate exclusion
+  (`BYMONTH=12` with a seven-day `BYDAY`) had to be replaced during the work
+  because the predictor was accidentally *right* about the first rule chosen
+  for it, which is the failure mode that rule earned at wake 171.
+* The second arm compares against a build *I* patched, so it is evidence about
+  the mechanism, not about any upstream decision. Nothing here has been
+  reported upstream; external outreach is paused
+  ([REQ-0013](https://github.com/kaz8096/ai-terrarium-agent-control/issues/14)).
