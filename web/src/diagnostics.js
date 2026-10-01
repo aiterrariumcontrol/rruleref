@@ -475,6 +475,40 @@ function liWeeksInYear(y) {
   const dow = liDow(y, 1, 1);
   return 52 + (dow === 5 || (dow === 4 && liLeap(y)) ? 1 : 0);
 }
+/**
+ * The week count ICU's own numbering implies for this week start -- what
+ * weeks_in_year() would return if it had heard about WKST.  Defect A is
+ * exactly the difference between this and liWeeksInYear().
+ */
+function liWeeksInYearTrue(y, ws) {
+  const len = liYearLen(y);
+  const w = liWeekOfYear(y, len, ws);
+  return w > 1 ? w : liWeekOfYear(y, len - 7, ws);
+}
+
+/**
+ * The BYWEEKNO-without-BYDAY branch of expand_year_days(), as day-of-year
+ * numbers.  libical expands such a rule to ONE day per selected week -- the
+ * next instance of DTSTART's weekday -- and the returned numbers may exceed
+ * the length of `y`, which is how a week lands in the next calendar year.
+ */
+function liNoBydayDays(y, byweekno, ws, p0, fix) {
+  const nweeks = fix ? liWeeksInYearTrue(y, ws) : liWeeksInYear(y);
+  let start = 1;
+  if (liWeekOfYear(y, 1, ws) > 1) start += 7;   // Jan 1 is in last year's week
+  let k = (liDow(y, 1, 1) - ws) % 7;
+  if (k < 0) k += 7;
+  start += (1 - k) - 1;                         // get_start_of_week(Jan 1) - 1
+  start += (liDow(p0.y, p0.mo, p0.d) - ws + 7) % 7;
+  const bits = new Set();
+  for (let w of byweekno) {
+    if (w < 0) w += nweeks + 1;
+    else if (w > nweeks) continue;
+    bits.add(start + 7 * (w - 1));
+  }
+  return [...bits].sort((a, b) => a - b);
+}
+
 /** The year-day bitmask libical builds for one year, as day-of-year numbers. */
 function liYearDays(y, byweekno, byday, ws, fix) {
   let doyOffset = liWeekOfYear(y, 1, ws) > 1 ? 7 : 0;
@@ -499,6 +533,53 @@ function liYearDays(y, byweekno, byday, ws, fix) {
     }
   }
   return [...bits].sort((a, b) => a - b);
+}
+
+/**
+ * icalrecur_iterator's year-by-year walk, shared by both BYWEEKNO defects.
+ * `bitsOf(y)` supplies the day-of-year bitmask for one year; everything here
+ * is the iterator around it, which is the same code for either branch of
+ * expand_year_days().
+ */
+function liIterate(bitsOf, p0, start, iv, until, cap, ws) {
+  // icalrecur_iterator_new()'s straddle probe: a January DTSTART sitting in
+  // the previous year's last week takes that year's OVERFLOW bits only, and
+  // a December one in week 1 takes the next year instead.
+  const swn = liWeekOfYear(p0.y, start - toOrd(p0.y, 1, 1) + 1, ws);
+  let firstYear = p0.y, firstMin = -4;
+  if (swn > 5 && p0.mo === 1) {
+    const len = liYearLen(p0.y - 1);
+    if (bitsOf(p0.y - 1).some((b) => b > len)) { firstYear = p0.y - 1; firstMin = len + 1; }
+  } else if (swn < 45 && p0.mo === 12) {
+    if (bitsOf(p0.y + 1).length) firstYear = p0.y + 1;
+  }
+  const out = [];
+  let prev = null, sawAny = false, expansions = 0;
+  for (let y = firstYear, first = true; out.length < cap; y += iv, first = false) {
+    // The Gregorian calendar repeats every 400 years and so does the mask,
+    // so 400 expansions with nothing set proves there is no year to find.
+    // That is the constructor's loop running to MAX_TIME_T_YEAR, which the
+    // library reports as MALFORMEDDATA and not as an empty series.
+    if (!sawAny && expansions >= 400) return { out, refused: true };
+    if (y > LI_MAX_YEAR) break;
+    const bits = bitsOf(y);
+    expansions++;
+    if (!bits.length) continue;
+    sawAny = true;
+    for (const b of bits) {
+      if (first && b < firstMin) continue;
+      const n = toOrd(y, 1, 1) + b - 1;
+      if (n < start) continue;
+      if (n === prev) continue;   // next() loops while the instant stands still
+      prev = n;
+      const [yy, mm, dd] = fromOrd(n);
+      const t = mk(yy, mm, dd, p0.h, p0.mi, p0.s);
+      if (until !== null && t > until) return { out, refused: false };
+      if (out.length >= cap) break;
+      out.push(t);
+    }
+  }
+  return { out, refused: false };
 }
 
 /**
@@ -534,47 +615,9 @@ export function libicalWeekYearTruncated(rrule, dtstart, limit, opts = {}) {
   const until = "UNTIL" in r ? r.UNTIL : null;
   const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
 
-  const run = (fix) => {
-    const bitsOf = (y) => liYearDays(y, r.BYWEEKNO, byday, ws, fix);
-    // icalrecur_iterator_new()'s straddle probe: a January DTSTART sitting in
-    // the previous year's last week takes that year's OVERFLOW bits only, and
-    // a December one in week 1 takes the next year instead.
-    const swn = liWeekOfYear(p0.y, start - toOrd(p0.y, 1, 1) + 1, ws);
-    let firstYear = p0.y, firstMin = -4;
-    if (swn > 5 && p0.mo === 1) {
-      const len = liYearLen(p0.y - 1);
-      if (bitsOf(p0.y - 1).some((b) => b > len)) { firstYear = p0.y - 1; firstMin = len + 1; }
-    } else if (swn < 45 && p0.mo === 12) {
-      if (bitsOf(p0.y + 1).length) firstYear = p0.y + 1;
-    }
-    const out = [];
-    let prev = null, sawAny = false, expansions = 0;
-    for (let y = firstYear, first = true; out.length < cap; y += iv, first = false) {
-      // The Gregorian calendar repeats every 400 years and so does the mask,
-      // so 400 expansions with nothing set proves there is no year to find.
-      // That is the constructor's loop running to MAX_TIME_T_YEAR, which the
-      // library reports as MALFORMEDDATA and not as an empty series.
-      if (!sawAny && expansions >= 400) return { out, refused: true };
-      if (y > LI_MAX_YEAR) break;
-      const bits = bitsOf(y);
-      expansions++;
-      if (!bits.length) continue;
-      sawAny = true;
-      for (const b of bits) {
-        if (first && b < firstMin) continue;
-        const n = toOrd(y, 1, 1) + b - 1;
-        if (n < start) continue;
-        if (n === prev) continue;   // next() loops while the instant stands still
-        prev = n;
-        const [yy, mm, dd] = fromOrd(n);
-        const t = mk(yy, mm, dd, p0.h, p0.mi, p0.s);
-        if (until !== null && t > until) return { out, refused: false };
-        if (out.length >= cap) break;
-        out.push(t);
-      }
-    }
-    return { out, refused: false };
-  };
+  const run = (fix) =>
+    liIterate((y) => liYearDays(y, r.BYWEEKNO, byday, ws, fix),
+              p0, start, iv, until, cap, ws);
 
   const a = run(false), b = run(true);
   if (a.refused) {
@@ -582,6 +625,67 @@ export function libicalWeekYearTruncated(rrule, dtstart, limit, opts = {}) {
   }
   // Compare only inside the window both streams certainly cover: past the
   // shorter one's last date neither is evidence about the other.
+  const horizon = Math.min(a.out.length ? a.out[a.out.length - 1] : Infinity,
+                           b.out.length ? b.out[b.out.length - 1] : Infinity);
+  const A = new Set(a.out), B = new Set(b.out);
+  const lost = b.out.filter((t) => !A.has(t) && t <= horizon);
+  const phantom = a.out.filter((t) => !B.has(t) && t <= horizon);
+  const years = [...new Set(phantom.map((t) => parts(t).y))];
+  return { predicted: a.out, fixed: b.out, lost, phantom, refused: false, years };
+}
+
+/**
+ * Finding 112's defect A, as a predictor.
+ *
+ * `weeks_in_year()` in `icalrecur.c` counts ISO weeks -- its own comment says
+ * so, and ISO means `WKST=MO`.  The week *numbering* it is compared against
+ * comes from ICU, which this build configures with four minimal days and the
+ * first day of the week taken from the rule's `WKST`.  So the numbering
+ * honours `WKST` and the count of weeks does not, and with any non-Monday
+ * `WKST` they can disagree by one.  Two places consume the count:
+ *
+ *     if (weekno < 0) weekno += nweeks + 1;      // normalise a negative
+ *     else if (weekno > nweeks) continue;        // the only overflow guard
+ *
+ * so a negative `BYWEEKNO` can be normalised to the wrong week, and a week the
+ * year does have under its own numbering can be dropped -- or one it does not
+ * have can be kept, and then it lands in the next calendar year.
+ *
+ * Returns null when the shape is outside the model, otherwise the same shape
+ * as `libicalWeekYearTruncated`: the stream libical 4edd39a3 emits, the stream
+ * the WKST-aware count would give, and the two differences.
+ */
+export function libicalWeeksInYearBlind(rrule, dtstart, limit, opts = {}) {
+  const ungated = opts.ungated === true;
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  if (r.FREQ !== "YEARLY") return null;
+  // This is the BYWEEKNO branch libical takes when there is NO BYDAY; with
+  // BYDAY it is finding 112's defect B and liYearDays() models it instead.
+  if (!("BYWEEKNO" in r) || "BYDAY" in r) return null;
+  if (!ungated) {
+    // expand_year_days() raises UNIMPLEMENTED for the first three outright.
+    for (const k of ["BYMONTH", "BYMONTHDAY", "BYYEARDAY", "BYSETPOS",
+                     "BYHOUR", "BYMINUTE", "BYSECOND"]) {
+      if (k in r) return null;
+    }
+  }
+  if (r.BYWEEKNO.some((v) => v === 0 || v > 53 || v < -53)) return null;
+  if (!(r.WKST in LI_WD)) return null;
+
+  const ws = LI_WD[r.WKST];
+  const p0 = parts(dtstart);
+  const start = toOrd(p0.y, p0.mo, p0.d);
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  const run = (fix) =>
+    liIterate((y) => liNoBydayDays(y, r.BYWEEKNO, ws, p0, fix),
+              p0, start, r.INTERVAL, until, cap, ws);
+
+  const a = run(false), b = run(true);
+  if (a.refused) {
+    return { predicted: [], fixed: b.out, lost: [], phantom: [], refused: true, years: [] };
+  }
   const horizon = Math.min(a.out.length ? a.out[a.out.length - 1] : Infinity,
                            b.out.length ? b.out[b.out.length - 1] : Infinity);
   const A = new Set(a.out), B = new Set(b.out);
@@ -748,6 +852,79 @@ function weekYearTruncatedNote(rrule, dtstart, limit) {
   };
 }
 
+/**
+ * Finding 112's defect A as a note. The sibling of `weekYearTruncatedNote`,
+ * and in the other branch of `expand_year_days()`: BYWEEKNO with no BYDAY,
+ * where libical expands to one day per selected week. Outside `analyze` for
+ * the same two reasons (rule 121): libical can refuse a rule whose correct
+ * answer is ordinary, and some of these rules correctly produce nothing.
+ */
+function weeksInYearBlindNote(rrule, dtstart, limit) {
+  const o = libicalWeeksInYearBlind(rrule, dtstart, limit);
+  if (!o) return null;
+  if (!o.refused && !o.lost.length && !o.phantom.length) return null;
+  const list = (ts) => ts.slice(0, 4).map((t) => fmt(t, true)).join(", ") +
+                       (ts.length > 4 ? ", …" : "");
+  const base =
+    "The cause is one helper: `weeks_in_year()` counts ISO weeks — its own comment says " +
+    "so, and ISO means `WKST=MO`. But the week *numbering* that count is checked against " +
+    "is ICU's, which this build configures with the `WKST` from your rule. So the " +
+    "numbering moves with `WKST` and the count does not, and for any non-Monday `WKST` " +
+    "they can differ by one. That count is used in exactly two places: to turn a negative " +
+    "`BYWEEKNO` into a positive one, and as the only check that the year has the week you " +
+    "asked for. Measured on master `4edd39a3` built with ICU; `3.0.20` was not partitioned " +
+    "and is not claimed.";
+  let body;
+  if (o.refused) {
+    // NOT OBSERVED. Defect B reaches MALFORMEDDATA because the week it asks
+    // for is always inside the part of the year that branch drops; here the
+    // ISO count is 52 or 53 depending on the year, so a week survives in some
+    // year eventually and negatives normalise into range. The sweep in
+    // tests/test_libical_weeks_in_year_blind.py refused 0 of 3958 rules. This
+    // arm is kept because the predictor can still produce it, not because any
+    // rule is known to reach it.
+    body = "`libical` master `4edd39a3` does not answer this rule at all: it reports " +
+      "MALFORMEDDATA. Under its week-start-blind count no year ever has the week this " +
+      "rule names, so the constructor searches every year up to its maximum, finds " +
+      "nothing, and fails instead of returning an empty series. The same build with the " +
+      "one-line fix answers it" +
+      (o.fixed.length ? ", starting " + list(o.fixed) + "." : ".") + " " + base;
+  } else {
+    const bits = [];
+    if (o.lost.length) {
+      bits.push("it drops " + (o.lost.length === 1 ? "an occurrence" : "occurrences") +
+        " — " + list(o.lost) + " — for a week the year does have once the week start is " +
+        "taken into account");
+    }
+    if (o.phantom.length) {
+      // What is certain by construction is that these dates are in libical's
+      // stream and not in the WKST-aware one. Whether a given date also falls
+      // outside the calendar year it was selected for depends on the rule, so
+      // the note does not assert it.
+      bits.push((o.lost.length ? "and it emits " : "it emits ") + list(o.phantom) +
+        " instead" + (o.years.length ? " — in " +
+          o.years.slice(0, 5).join(", ") + (o.years.length > 5 ? ", …" : "") : "") +
+        " — which the WKST-aware count does not select: the week your rule names " +
+        "resolves to a different week under the ISO count");
+    }
+    body = "`libical` master `4edd39a3` answers this rule differently from the other " +
+      "implementations here: " + bits.join(", ") + ". " + base;
+  }
+  return {
+    id: "libical-weeks-in-year-blind",
+    severity: "diverges",
+    title: o.refused
+      ? "libical rejects this rule as malformed, because it counts the year's weeks without WKST"
+      : "libical counts this year's weeks without the WKST it numbers them by",
+    body,
+    evidence: [F("112-the-week-start-the-helper-never-heard-about"),
+               RFC5545("3.3.10", "3.3.10")],
+    compare: o.refused
+      ? { label: "libical 4edd39a3 + the one-line fix", occurrences: o.fixed }
+      : { label: "libical master 4edd39a3 (ICU build)", occurrences: o.predicted },
+  };
+}
+
 function monthdayRolloverNote(rrule, dtstart, limit) {
   const roll = icaljsMonthdayRollover(rrule, dtstart, limit);
   if (!roll) return null;
@@ -819,6 +996,8 @@ export function analyze(ctx) {
     if (wn) out.push(wn);
     const tn = weekYearTruncatedNote(rrule, dtstart, limit);
     if (tn) out.push(tn);
+    const bn = weeksInYearBlindNote(rrule, dtstart, limit);
+    if (bn) out.push(bn);
     return out;
   }
 
@@ -1188,6 +1367,8 @@ export function analyze(ctx) {
     if (wn) out.push(wn);
     const tn = weekYearTruncatedNote(rrule, dtstart, limit);
     if (tn) out.push(tn);
+    const bn = weeksInYearBlindNote(rrule, dtstart, limit);
+    if (bn) out.push(bn);
   }
 
   // --- ical.js abandons a long empty run and calls the series complete ----

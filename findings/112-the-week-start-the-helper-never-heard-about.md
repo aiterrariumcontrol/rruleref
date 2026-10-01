@@ -298,3 +298,93 @@ in this finding; it does not bound the defect.
   the mechanism, not about any upstream decision. Nothing here has been
   reported upstream; external outreach is paused
   ([REQ-0013](https://github.com/kaz8096/ai-terrarium-agent-control/issues/14)).
+
+## Addendum, 2026-10-01 — defect A is now in the debugger too, and what its one guard costs
+
+Defect B went into `web/src/diagnostics.js` earlier today. Defect A is now
+there as well, as a separate note (`libical-weeks-in-year-blind`), and the two
+do not overlap: B lives in the `BYWEEKNO`+`BYDAY` branch of
+`expand_year_days()`, A in the branch with `BYWEEKNO` and **no** `BYDAY`, where
+`libical` expands to one day per selected week. The note is computed from the
+reader's own rule, not matched against a shape: it predicts the whole stream
+`libical` emits from the library's own arithmetic — `weeks_in_year()`, ICU's
+`WEEK_OF_YEAR` under `WKST` with four minimal days, and the iterator around
+them — and it must reproduce **two real builds** byte for byte, pristine
+`4edd39a3` and the same source with the one-line patch A.
+
+```
+$ python3 tests/test_libical_weeks_in_year_blind.py
+sweep              3958 rules, 1747 firing, 2211 silent, 0 refused by the library,
+                   every stream byte-exact against libical master 4edd39a3 AND against the patch-A build
+controls           576 WKST=MO rules, 0 of them fired
+two consumers      1018 firing rules use a negative BYWEEKNO, 941 name week 53
+counterexamples    5 exclusions, each declined by the guard and each shown necessary
+bysetpos cost      192/192 rules where BYSETPOS is a no-op on a one-date set: the guard declines them and the predictor would have been right
+                   115/128 where it really selects: the guard is load-bearing
+
+OK: the finding 112 defect A diagnostic predicts libical 4edd39a3 exactly, and the patch-A build too
+```
+
+The `WKST=MO` arm is the control that matters most here. Monday is the one week
+start for which the ISO count is the right count, so a note that ever fired
+there would be describing nothing; 576 Monday rules, none firing.
+
+Both of the count's two consumers are observable, and the two rows now pinned
+in `tests/test_web_port.py` are one of each. The first is the negative
+normalisation, and it is also the empty-path case (rule 121) — inside this
+`UNTIL` the WKST-aware answer has one date and `libical`'s has none:
+
+```
+$ echo '{"id":"4edd","rrule":"FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000","dtstart":"20261227T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd/lib ./conformance/adapters/c/libical_adapter
+{"id":"4edd","occurrences":[]}
+$ echo '{"id":"4edd-A","rrule":"FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000","dtstart":"20261227T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd-A/lib ./conformance/adapters/c/libical_adapter
+{"id":"4edd-A","occurrences":["20261227T090000"]}
+```
+
+The second is the overflow guard, on the same rule with a different `DTSTART`.
+`libical` answers 2025 with 22 December where the WKST-aware count gives 29
+December, and then stops a year early:
+
+```
+$ echo '{"id":"4edd","rrule":"FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000","dtstart":"20240101T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd/lib ./conformance/adapters/c/libical_adapter
+{"id":"4edd","occurrences":["20241223T090000","20251222T090000"]}
+$ echo '{"id":"4edd-A","rrule":"FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000","dtstart":"20240101T090000","limit":4}' | LD_LIBRARY_PATH=.../libical-install-4edd-A/lib ./conformance/adapters/c/libical_adapter
+{"id":"4edd-A","occurrences":["20241223T090000","20251229T090000","20261228T090000"]}
+```
+
+### The `BYSETPOS` exclusion is necessary, and it is also wasteful, and both are measured
+
+The first counterexample chosen for `BYSETPOS` was
+`FREQ=YEARLY;BYWEEKNO=-1;BYSETPOS=1;WKST=SU`, and the harness rejected the
+exclusion as superstition — correctly. With one week selected and no `BYDAY`,
+the per-year set has exactly one member, so `BYSETPOS=1` picks the only thing
+there is and ignoring it cannot be wrong. The counterexample was replaced with
+a multi-week rule, where the exclusion is plainly load-bearing: 115 of 128
+rules where `BYSETPOS` really selects come back different.
+
+That is only half the truth, and the harness prints the other half rather than
+the flattering one. The guard also declines the degenerate rules, and on all
+192 of them the predictor would have been right. So this exclusion throws away
+coverage it did not need to. It stays anyway, and for a reason worth stating:
+telling the two sides apart means evaluating `BYSETPOS` against the per-year
+set, which is precisely the stage this predictor does not model — and a
+predictor that guesses at an unmodelled stage is the failure mode rule 122
+describes. An exclusion that is *mostly* unnecessary is a different thing from
+one that is refuted, and both numbers are in the output above.
+
+### What the conversion does not claim
+
+* `4edd39a3` with `HAVE_LIBICU=1` only, as before. `3.0.20` remains
+  unpartitioned and nothing here is a claim about it.
+* The note's `refused` arm — the MALFORMEDDATA case that makes defect B so
+  visible — **was never observed in this branch**. 0 of 3958 rules in the sweep
+  were refused by the library, and that is expected: the ISO count is 52 or 53
+  depending on the year, so a requested week survives the guard in some year
+  eventually and a negative normalises into range. The arm is kept because the
+  predictor can still reach it, not because any rule is known to.
+* The second arm compares against a build *I* patched. It is evidence about the
+  mechanism, not about any upstream decision, and nothing here has been
+  reported upstream; external outreach remains paused.
+* The 1727-case corpus bounds the counts in the body of this finding, not the
+  defect. These 3958 rules are a sweep built for the mechanism and are not part
+  of the published corpus or of any scored row.

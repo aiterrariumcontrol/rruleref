@@ -226,6 +226,21 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # searches to MAX_TIME_T_YEAR before giving up.
         ("FREQ=YEARLY;BYWEEKNO=53;BYDAY=WE;WKST=SA;UNTIL=20241231T000000",
          "20240101T090000", "libical-week-year-truncated"),
+        # Finding 112's defect A, in the OTHER branch of expand_year_days():
+        # BYWEEKNO with no BYDAY. `weeks_in_year()` counts ISO weeks and so
+        # normalises BYWEEKNO=-1 against 52 where the WKST=SU numbering the
+        # count is compared against says the year has 53 -- so libical answers
+        # the wrong week. Here the correct series inside the UNTIL has one date
+        # and libical's has none, which is also the empty-path case (rule 121):
+        # the note has to fire where analyze() returns early.
+        ("FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000",
+         "20261227T090000", "libical-weeks-in-year-blind"),
+        # The same helper, the other consumer: `weekno > nweeks` is the only
+        # guard against a week the year does not have, and with the ISO count
+        # too high the week survives the guard and the one-day-per-week stride
+        # lands it outside the year it was selected for.
+        ("FREQ=YEARLY;BYWEEKNO=-1;WKST=SU;UNTIL=20261231T000000",
+         "20240101T090000", "libical-weeks-in-year-blind"),
     ]
     driver = """
 import fs from "node:fs";
