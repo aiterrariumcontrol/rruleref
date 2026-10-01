@@ -14,7 +14,7 @@
 //     measured. Where it cannot be computed from the rule alone, the note says
 //     which implementations were tested and does not generalise past them.
 
-import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, DAYS } from "./naive.js";
+import { expand, parse, parts, fmt, weekday, weekStart, fromOrd, mk, daysInMonth, DAYS } from "./naive.js";
 
 const F = (name) => ({
   label: `finding ${name.slice(0, 3)}`,
@@ -126,6 +126,146 @@ export function icaljsAbandons(rrule, occurrences) {
 }
 
 /**
+ * Finding 101's `ical.js` 2.2.1 BYMONTHDAY overflow, as a predictor.
+ *
+ * `expand_year_days` resolves a NEGATIVE BYMONTHDAY against the month's
+ * length and then assigns a POSITIVE one raw -- `t3.day = monthday` with no
+ * range check -- and lets `dayOfYear()` normalise it. So February 31st does
+ * not become "no date"; it becomes March 3rd. RFC 5545 3.3.10 is explicit
+ * that an invalid recurrence instance MUST be ignored, and the control is in
+ * the same function: its BYDAY branches *do* bounds-check, so
+ * `BYMONTH=4;BYDAY=5SU` is dropped rather than overflowed.
+ *
+ * Predicting it is one line of arithmetic -- the cross product of BYMONTH and
+ * BYMONTHDAY, each cell normalised by carrying the overflow into the next
+ * month -- and that is what makes it worth asserting. The prediction is
+ * required to reproduce ical.js's real output byte for byte in
+ * test/icaljs-monthday-rollover.mjs.
+ *
+ * The scope below is narrow, and every exclusion was measured rather than
+ * assumed (counts in that harness):
+ *
+ *   * A NEGATIVE BYMONTHDAY alongside a positive one superimposes a second
+ *     mechanism. `next_year()` renormalises the rule list against the month
+ *     of the LAST EMITTED occurrence -- which by then may be an invented one
+ *     -- and a dedupe collision there deletes a value the user wrote. That is
+ *     finding 101's follow-on; this predictor does not model it and scores
+ *     18/48 where it applies.
+ *   * BYDAY alongside turns the result empty (0/48), because the bounds-checked
+ *     BYDAY branch and the overflowed BYMONTHDAY branch intersect to nothing.
+ *     There is no fabricated date to warn about.
+ *   * `BYMONTH=2;BYMONTHDAY=29` is excluded because February 29th is a real
+ *     date in leap years, so "impossible" is not a property of the cell. It is
+ *     the ONLY year-dependent cell that exists, and ical.js handles it by a
+ *     third path.
+ *   * BYMONTH is REQUIRED, following finding 101's rule 108. Without it,
+ *     which months `FREQ=YEARLY;BYMONTHDAY=31` ranges over is a genuine field
+ *     dispute, and a defect may not be built on a contested reading. Naming
+ *     the month costs the user nothing and removes every competing reading.
+ *
+ * Returns null unless at least one (BYMONTH, BYMONTHDAY) cell is impossible,
+ * otherwise { predicted, invented, cells } -- `predicted` being ical.js's
+ * whole stream and `invented` the dates in it that are not occurrences of the
+ * rule at all.
+ */
+export function icaljsMonthdayRollover(rrule, dtstart, limit) {
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  if (r.FREQ !== "YEARLY") return null;
+  if (!("BYMONTH" in r) || !("BYMONTHDAY" in r)) return null;
+  for (const k of ["BYDAY", "BYWEEKNO", "BYYEARDAY", "BYSETPOS",
+                   "BYHOUR", "BYMINUTE", "BYSECOND"]) {
+    if (k in r) return null;
+  }
+  if (r.BYMONTHDAY.some((d) => d < 0)) return null;
+  if (r.BYMONTH.includes(2) && r.BYMONTHDAY.includes(29)) return null;
+
+  // Which cells can never be a date? February is 29 at its longest, so this
+  // is a property of the cell and not of the year -- the one exception, (2,29),
+  // is excluded above.
+  const longest = (m) => (m === 2 ? 29 : daysInMonth(2001, m));
+  const cells = [];
+  for (const m of r.BYMONTH) {
+    for (const d of r.BYMONTHDAY) if (d > longest(m)) cells.push([m, d]);
+  }
+  if (!cells.length) return null;
+
+  const p0 = parts(dtstart);
+  const iv = r.INTERVAL;
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  const predicted = [], invented = [];
+  for (let y = p0.y; y <= p0.y + 400 && predicted.length < cap; y += iv) {
+    // ical.js pushes day-of-year values, so two cells landing on the same day
+    // collapse to one occurrence. A date a VALID cell also reaches is not
+    // invented, however it was additionally arrived at.
+    const seen = new Map();
+    for (const m of r.BYMONTH) {
+      for (const d of r.BYMONTHDAY) {
+        let mo = m, day = d, over = false;
+        while (day > daysInMonth(y, mo) && mo < 12) {
+          day -= daysInMonth(y, mo); mo++; over = true;
+        }
+        if (day > daysInMonth(y, mo)) continue;   // unreachable: BYMONTHDAY <= 31
+        const t = mk(y, mo, day, p0.h, p0.mi, p0.s);
+        seen.set(t, (seen.get(t) ?? true) && over);
+      }
+    }
+    for (const t of [...seen.keys()].sort((a, b) => a - b)) {
+      if (t < dtstart || (until !== null && t > until)) continue;
+      if (predicted.length >= cap) break;
+      predicted.push(t);
+      if (seen.get(t)) invented.push(t);
+    }
+  }
+  if (!invented.length) return null;
+  return { predicted, invented, cells };
+}
+
+/**
+ * Finding 101 as a note, built apart from `analyze` because the case that
+ * matters most is the one `analyze` used to return early on: when every date
+ * the rule names is impossible, the *correct* series is empty, and the "this
+ * rule produces no occurrences" note was the last word. That note even gives
+ * `BYMONTH=2` with `BYMONTHDAY=30` as its example cause -- while saying
+ * nothing about the library that answers it with a March date every year.
+ */
+function monthdayRolloverNote(rrule, dtstart, limit) {
+  const roll = icaljsMonthdayRollover(rrule, dtstart, limit);
+  if (!roll) return null;
+    const cellList = roll.cells
+      .map(([m, d]) => `${MONTHS[m - 1]} ${d}`)
+      .join(", ");
+    const shown = roll.invented.slice(0, 4).map((t) => fmt(t, true)).join(", ");
+    const allInvented = roll.invented.length === roll.predicted.length;
+    return {
+      id: "icaljs-monthday-rollover",
+      severity: "diverges",
+      title: "ical.js answers this rule with dates that are not in the month it names",
+      body:
+        `This rule asks for ${cellList} — ${roll.cells.length === 1 ? "a day that" : "days that"} ` +
+        `cannot occur. RFC 5545 3.3.10 says a recurrence instance that is an invalid date ` +
+        `MUST be ignored, so the correct answer ` +
+        (allInvented
+          ? `is the empty set, and python-dateutil, rrule.js and lib-recur all return nothing. `
+          : `omits ${roll.cells.length === 1 ? "that cell" : "those cells"} entirely. `) +
+        `ical.js 2.2.1 instead carries the overflow forward into the following month and ` +
+        `emits ${shown}${roll.invented.length > 4 ? ", …" : ""} — ` +
+        `${roll.invented.length === 1 ? "a date" : "dates"} in a month this rule does not name, ` +
+        `once a year, indefinitely. Nothing is logged and no exception is thrown, so a ` +
+        `mistyped day-of-month becomes a permanent recurring reminder on the wrong date ` +
+        `rather than a rule that visibly produces nothing. ` +
+        `The cause is a missing range check on positive BYMONTHDAY values in ` +
+        `expand_year_days; the same function's BYDAY branches are bounds-checked, so ` +
+        `BYMONTH=${roll.cells[0][0]};BYDAY=5SU is correctly dropped. ical.js is the ` +
+        `library Thunderbird calendaring uses.`,
+      evidence: [F("101-an-impossible-day-that-was-not-refused"),
+                 RFC5545("3.3.10", "3.3.10")],
+      compare: { label: "ical.js 2.2.1", occurrences: roll.predicted },
+    };
+}
+
+/**
  * ctx: { rrule, dtstart, dateOnly, occurrences, limit }
  * returns [{ id, severity, title, body, evidence, compare }]
  *   severity: "error" | "diverges" | "note"
@@ -155,6 +295,8 @@ export function analyze(ctx) {
         "cannot apply.",
       evidence: [],
     });
+    const rn = monthdayRolloverNote(rrule, dtstart, limit);
+    if (rn) out.push(rn);
     return out;
   }
 
@@ -476,6 +618,12 @@ export function analyze(ctx) {
         "the time-of-day parts.",
       evidence: [F("011-date-valued-dtstart"), RFC5545("3.3.10", "3.3.10")],
     });
+  }
+
+  // --- ical.js turns an impossible BYMONTHDAY into a date in the next month --
+  {
+    const rn = monthdayRolloverNote(rrule, dtstart, limit);
+    if (rn) out.push(rn);
   }
 
   // --- ical.js abandons a long empty run and calls the series complete ----

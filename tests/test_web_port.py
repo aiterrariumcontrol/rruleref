@@ -156,6 +156,21 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # tests/test_icaljs_abandon.py; this row only pins that it fires.
         ("FREQ=YEARLY;BYMONTH=2;BYDAY=5MO", "20260101T000000",
          "icaljs-yearly-abandon"),
+        # Finding 101. April has no 31st in any year, so RFC 5545 3.3.10
+        # requires the empty set; ical.js 2.2.1 answers 1 May, every year. The
+        # correct series being empty is the point: this note has to survive
+        # analyze()'s early return for a rule that produces no occurrences,
+        # which is where it was invisible before. Its accuracy about *which*
+        # dates ical.js emits is checked against the real library in
+        # tests/test_icaljs_monthday_rollover.py; this row only pins that it
+        # fires, and that it fires alongside "empty" rather than instead of it.
+        ("FREQ=YEARLY;BYMONTH=4;BYMONTHDAY=31", "20260115T090000",
+         "icaljs-monthday-rollover"),
+        # The same note on a rule that is NOT empty: 1 February is a real date
+        # and is returned, 30 February is not and becomes 2 March. A guard that
+        # only looked at empty series would miss this one.
+        ("FREQ=YEARLY;BYMONTH=2;BYMONTHDAY=1,30", "20260201T090000",
+         "icaljs-monthday-rollover"),
     ]
     driver = """
 import fs from "node:fs";

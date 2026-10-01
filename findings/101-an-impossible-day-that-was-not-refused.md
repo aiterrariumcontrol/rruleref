@@ -237,3 +237,57 @@ May 1st in the very first printout is the whole finding. I had a mechanism in mi
 before running anything, checked it against a 300-probe grid, matched 112, and
 threw it away; the corrected model matched 373 of 520 and I declined to publish
 that too. What survived is the part that is exhaustive and exact.
+
+## Addendum, 2026-10-01 — this is now in the debugger
+
+The defect above is computable from the rule alone, so it is no longer only a
+finding. `web/src/diagnostics.js` carries it as the `icaljs-monthday-rollover`
+note: given the user's own `FREQ=YEARLY` rule, it names the impossible cells,
+and shows `ical.js` 2.2.1's **actual stream** beside the correct one.
+
+It is backed by a predictor, not a shape match — the cross product of `BYMONTH`
+and `BYMONTHDAY` with each cell's overflow carried into the following month,
+deduped the way `ical.js`'s day-of-year list dedupes.
+[`web/test/icaljs-monthday-rollover.mjs`](../web/test/icaljs-monthday-rollover.mjs)
+requires that prediction to reproduce the real library byte for byte, and it
+does: **902/902** rule/`DTSTART` pairs, **326** where the note fires and **576**
+where it must stay silent. The twelve single-month sets are in the grid so the
+seven long months act as controls; the harness fails if the note fires on
+everything, which is how a vacuous predictor would otherwise pass.
+
+The guard is narrow and each exclusion is asserted in both directions — that it
+is declined, and that declining it was necessary:
+
+| excluded shape | why | ungated predictor |
+|---|---|---|
+| a negative `BYMONTHDAY` alongside a positive one | the `next_year()` renormalisation above — a second mechanism | 5/18 exact |
+| `BYDAY` alongside | the bounds-checked `BYDAY` branch intersects to nothing | 0/12 exact |
+| `BYMONTH=2;BYMONTHDAY=29` | the only year-dependent cell in the calendar | third path |
+| no `BYMONTH` | rule 108: the month-expansion reading is disputed | not claimed |
+
+`BYMONTH=2;BYMONTHDAY=28,29,30,31` is the interesting exclusion: February 30th
+and 31st really do overflow, but the 29 in the same list drags in the
+year-dependent path, so the predictor models neither half and the note stays
+silent. 52 such pairs are **counted and reported** by the harness rather than
+quietly passed — predicting "`ical.js` agrees with the reference" there would
+have been wrong, and in the first version of the harness it was.
+
+### What the conversion changed about the tool, which was the real finding
+
+The note had to be moved **out of** `analyze()`'s main body. `analyze()` returns
+early when the rule produces no occurrences, with a note that says so — and that
+note's own example of a cause is `BYMONTH=2` with `BYMONTHDAY=30`. So on
+precisely the rules this defect is about, the debugger said "this produces
+nothing" and stopped, while the library a Thunderbird user is running answers
+with a March date every year for ever. The most important case was the one the
+early return swallowed. Both are now shown together, and
+[`tests/test_web_port.py`](../tests/test_web_port.py) pins that the rollover note
+fires *alongside* `empty` and not instead of it.
+
+**Rule 121: an early return in a diagnostic path is a silent scope limit.**
+`analyze()` had three years' worth of notes after that `return`, and nothing in
+the file recorded that an empty series could not reach them.
+
+No conformance claim changes. `cases_id` unchanged, `RESULTS.md` untouched, the
+corpus extent is still 2 of 1727, and the residual is still 3 as corrected by
+finding 102.
