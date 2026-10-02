@@ -222,6 +222,17 @@ two Python expanders one of which is mine. Three things here need amending.
   were.** `ical4j` responds to `WKST` (it reproduces P5's 23 and adds 57 of its
   own) and yet passes **all 13** of P6's. So P6's 13 are implementation
   dependent in a way P5's 23 are not.
+* **P6's 13, on this shape, are not defects at all** —
+  [finding 119](119-a-property-that-cannot-fail.md), 2026-10-02. Every one of
+  them is `FREQ=WEEKLY` with `BYMONTH`, `BYDAY` and `BYSETPOS`, and under
+  [022](022-weekly-bymonth-ordering.md)'s *seed-limit* reading of §3.3.10 P6
+  **cannot fail**: `BYMONTH` then decides only which weeks participate, so
+  dropping it adds weeks and the wider output is a superset by construction.
+  Measured: 13 of 13 fail under filter-instances, 0 of 13 under seed-limit. P6
+  is therefore not a defect detector on this shape but a **reading detector**,
+  and rule 131 has a second form — a property is also passed by an
+  implementation whose reading makes it a tautology, which is not vacuity and
+  not conformance either.
 * **A passing build may simply be inert.** `sabre/vobject` and `ical.js` pass
   P5 and P6 because they do not read `WKST` or `BYSETPOS` at all, which 118
   demonstrates with a direct probe. Every "passes property X" in this file

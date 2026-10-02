@@ -246,18 +246,27 @@ original: **every build that responds to `WKST` and `BYSETPOS` at all
 reproduces P5's 23 and P6's 13 exactly, across three independent lineages and
 four languages — with one exception.** Standing rule 131.
 
-### the exception, left open
+### the exception, closed by finding 119 — and P6's column withdrawn
 
 `ical4j` responds to `WKST` — it has 80 P5 failures, the 23 plus 57 of its own —
 and yet passes **all 13** of P6's. So its P6 pass is not vacuity, and finding
 014's symmetric treatment of P5 and P6 does not survive: P5's 23 are
 reproduced by every responsive build, P6's 13 are not.
 
-I did not settle why, and a short probe cannot: on the first of the 13,
-`FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6;WKST=SU;BYSETPOS=-1` at `DTSTART
-20270101T090000`, `dateutil` and `ical4j` agree for the first five occurrences
-and the lost occurrence is **2027-06-28**, nearly six months out. That is the
-precise starting point for whoever picks this up; it is a lead, not a result.
+**Settled the next day by [finding 119](119-a-property-that-cannot-fail.md), and
+it settles more than the exception.** The paragraph above reached for `WKST` to
+argue `ical4j` is not inert, but P6 does not vary `WKST` — it varies a Limit
+part — so that argument was a non-sequitur and is withdrawn. What 119 measures
+instead: all 13 of P6's failures are `FREQ=WEEKLY` with `BYMONTH`, `BYDAY` and
+`BYSETPOS`, which is [finding 022](022-weekly-bymonth-ordering.md)'s territory,
+and **under 022's seed-limit reading P6 cannot fail at all** — 13 of 13 fail
+under filter-instances, 0 of 13 under seed-limit, because seed-limit lets
+`BYMONTH` decide only which weeks participate and never touches the set
+`BYSETPOS` indexes. `ical4j` is exact on 13 of 13 against seed-limit composed
+with [036](036-a-score-that-depends-on-the-host-locale.md)'s locale `WKST`
+default. So **P6's 13 are not 13 defects**, and the zeros in its column mean two
+unrelated things: `sabre` is inert (rule 131), `ical4j` holds a reading under
+which the property is a tautology. The table above should be read accordingly.
 
 ## Scope and what is not here
 
