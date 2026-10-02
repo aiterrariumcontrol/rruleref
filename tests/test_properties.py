@@ -91,6 +91,46 @@ def test_alignment_does_not_report_truncation_as_failure():
         check("align/%s" % name, r["status"] in (P.PASS, P.NA), r)
 
 
+def test_a_death_in_the_ablated_arm_is_not_scored_as_a_loss():
+    """Rule 138. P6 is an ablation, and its verdict is written in the units
+    "occurrences lost", so an ablated arm that *dies* and returns nothing would
+    look like total loss. Finding 124's ablation made exactly that mistake in
+    the units of seconds. Here the death must surface as an error instead.
+
+    The guard matters as much as the assertion: the injected exception type has
+    to appear in the recorded error, or an unrelated crash would pass this test.
+    """
+    ds = datetime(2026, 1, 1, 9, 0, 0)
+    rule = "FREQ=WEEKLY;BYDAY=FR,MO;BYMONTH=1,6"  # BYMONTH is Limit at WEEKLY
+    widened = P.drop(P.drop(rule, "COUNT", "UNTIL"), "BYMONTH")
+    real = EXPANDERS["dateutil"]
+    seen = []
+
+    class AblatedArmDied(Exception):
+        pass
+
+    def dying(r, dtstart, horizon, cap):
+        if r == widened:
+            seen.append(r)
+            raise AblatedArmDied("the widened rule killed the expander")
+        return real(r, dtstart, horizon, cap)
+
+    res = P.check(dying, rule, ds, props=[P.BY_ID["P6"]],
+                  horizon_days=1095, cap=500)["P6"]
+    check("death is not a loss", res["status"] == P.ERROR, res)
+    check("death is not a loss/n_lost", "n_lost" not in res, res)
+    check("the injected death is the one reported",
+          "AblatedArmDied" in res.get("error", ""), res.get("error", ""))
+    # Vacuity: P6 must really have ablated BYMONTH and called the widened arm,
+    # and the same rule on the real expander must reach a verdict without
+    # erroring -- otherwise the ERROR above says nothing.
+    check("the widened arm was actually exercised", seen, seen)
+    clean = P.check(real, rule, ds, props=[P.BY_ID["P6"]],
+                    horizon_days=1095, cap=500)["P6"]
+    check("vacuity/real expander reaches a verdict",
+          clean["status"] in (P.PASS, P.FAIL), clean)
+
+
 if __name__ == "__main__":
     for fn in sorted(k for k in dict(globals()) if k.startswith("test_")):
         globals()[fn]()
