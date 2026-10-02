@@ -18,7 +18,7 @@ cannot drift silently. It pins:
    version of that module checked every part unconditionally and would have
    published 31 false claims against ical4j (finding 016).
 """
-import sys, os, json, subprocess
+import sys, os, json, subprocess, concurrent.futures
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "src"))
@@ -48,6 +48,91 @@ def unbounded(rule, ds, cap):
         if len(out) >= cap:
             break
     return out
+
+
+def workers():
+    """How many processes to split the two per-case loops across.
+
+    This file was 198.7s of a 900.9s suite. Profiling it (rule 133: profile,
+    do not tune) put essentially all of that in two loops, and in both of them
+    the cost is concentrated in the *same* cases -- the ones whose `expect` is
+    empty:
+
+      reclassify, 3818 cases, 56.7s   224 cases over 10ms account for 56.6s of
+                                      it; the worst are ~1.1s each and every
+                                      one of them is empty. That is
+                                      `prove_empty.prove` searching a full
+                                      146097-day Gregorian period (finding 067).
+      recheck,     383 cases, 145.7s  the ten worst are ~3.0s each and all are
+                                      empty. With `expect` empty, `cap` is 1,
+                                      so the loop asks dateutil for one
+                                      occurrence of a provably-empty rule and
+                                      it can only answer by exhausting its own
+                                      internal search.
+
+    Neither is wasted work -- the second is an independent implementation
+    corroborating the first, which is exactly what finding 067's decision
+    procedure needs -- but it is per-case and pure, so it parallelises.
+
+    CONF_WORKERS=1 restores the single-process behaviour exactly, and
+    tests/test_conformance_sharding.py is what holds the split honest.
+    """
+    n = os.environ.get("CONF_WORKERS")
+    if n:
+        return max(1, int(n))
+    return max(1, min(8, (os.cpu_count() or 1)))
+
+
+def _reclassify_chunk(chunk):
+    """How many of `chunk` the classifier disagrees with. Pure per case."""
+    bad = 0
+    for c in chunk:
+        ds = datetime.strptime(c["dtstart"], FMT)
+        occ = [datetime.strptime(x, FMT) for x in c["expect"]]
+        if build_corpus.expect_bound(c["rrule"], ds, occ) != c["expect_bound"]:
+            bad += 1
+    return bad
+
+
+def _recheck_chunk(chunk):
+    """Which of `chunk` do not really end where `expect` ends. Pure per case."""
+    wrong = []
+    for c in chunk:
+        got = unbounded(c["rrule"], datetime.strptime(c["dtstart"], FMT),
+                        len(c["expect"]) + 1)
+        if got != c["expect"]:
+            wrong.append(c["rrule"])
+    return wrong
+
+
+def mapped(fn, items, nworkers, merge, empty):
+    """`fn` over `items`, split across processes, merged with `merge`.
+
+    Round-robin chunks rather than contiguous blocks, and more chunks than
+    workers: the corpus is grouped by shape, so the empty-`expect` cases that
+    cost ~1000x the median sit next to each other and a contiguous split would
+    hand one worker all of them. This is the same lesson test_why.py's
+    `agreement` records, where one chunk per worker bought 2.5x of a possible 8.
+    """
+    if nworkers <= 1 or len(items) < 2 * nworkers:
+        return fn(items)
+    nchunks = nworkers * 4
+    chunks = [c for c in (items[i::nchunks] for i in range(nchunks)) if c]
+    acc = empty()
+    with concurrent.futures.ProcessPoolExecutor(nworkers) as pool:
+        for got in pool.map(fn, chunks):
+            acc = merge(acc, got)
+    return acc
+
+
+def reclassified_count(corpus, nworkers):
+    return mapped(_reclassify_chunk, corpus, nworkers,
+                  lambda a, b: a + b, int)
+
+
+def recheck_wrong(complete, nworkers):
+    return mapped(_recheck_chunk, complete, nworkers,
+                  lambda a, b: a + b, list)
 
 
 def _check_invariants():
@@ -88,23 +173,15 @@ def _check_invariants():
 def main():
     corpus = json.load(open(os.path.join(ROOT, "corpus", "corroborated.json")))["cases"]
 
+    nworkers = workers()
+
     # 1. The classifier agrees with the committed corpus, and "complete" is true.
-    reclassified = 0
-    for c in corpus:
-        ds = datetime.strptime(c["dtstart"], FMT)
-        occ = [datetime.strptime(x, FMT) for x in c["expect"]]
-        if build_corpus.expect_bound(c["rrule"], ds, occ) != c["expect_bound"]:
-            reclassified += 1
+    reclassified = reclassified_count(corpus, nworkers)
     check("expect_bound in the corpus matches the classifier",
           reclassified == 0, "%d disagree" % reclassified)
 
-    wrong = []
     complete = [c for c in corpus if c["expect_bound"] == "complete"]
-    for c in complete:
-        got = unbounded(c["rrule"], datetime.strptime(c["dtstart"], FMT),
-                        len(c["expect"]) + 1)
-        if got != c["expect"]:
-            wrong.append(c["rrule"])
+    wrong = recheck_wrong(complete, nworkers)
     check("every 'complete' case really ends where expect ends",
           not wrong, "%d/%d wrong: %s" % (len(wrong), len(complete), wrong[:3]))
 
