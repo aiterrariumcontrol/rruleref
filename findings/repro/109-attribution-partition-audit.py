@@ -303,6 +303,7 @@ NON_ATTRIBUTION_FINDINGS = {
            "to report who else counts them and claims none of them itself",
     "090": "the part sweep's per-part ATTRIBUTABLE populations -- 090 prints "
            "ical.js's whole BYSECOND set as a sweep population, and says so",
+    "124": "what the slow band is paying for. Every id 124 prints is a row of a\n           wall-clock ABLATION table -- the same rule timed with and without one\n           part -- and 124 states in its own text that no occurrence it compares\n           is claimed to be right. A performance measurement is not an\n           attribution (rule 80), and the subject has no partition on this board\n           anyway: 079 covers DateTime::Event::ICal, as it does for 122.",
     "122": "the Perl adapter's error column, decomposed. 122 does attribute -- "
            "86 of 124 errors to DateTime::Event::ICal rather than to the "
            "clock -- but that adapter has no partition on this board (079 "
