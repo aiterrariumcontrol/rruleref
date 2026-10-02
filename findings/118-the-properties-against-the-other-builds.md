@@ -274,7 +274,13 @@ which the property is a tautology. The table above should be read accordingly.
   case per second with a 20-second per-case alarm
   ([finding 114](114-a-deadline-documented-from-a-sibling.md)), so 36,000
   requests is hours rather than minutes. Deliberately deferred, not forgotten;
-  it is the one build whose property row is missing. `rrule-go` and the other
+  it is the one build whose property row is missing.
+  **Addendum, 2026-10-02:** the request count was close and the rate was not.
+  Measured on two samples, the column is **38–40 thousand requests at about
+  1.9 s each — some twenty hours**, not "hours"; see finding
+  [120](120-the-missing-column-priced.md), which also makes the sweep resumable
+  so a figure like that can be spent in slices. The row is still not published,
+  now as a priced decision rather than an estimate. `rrule-go` and the other
   `libical` builds are likewise unswept — one `libical` prefix was chosen
   (`4edd39a3`, the canonical one) rather than all three.
 * **No count here is a defect count.** Four properties are hedged, errors are

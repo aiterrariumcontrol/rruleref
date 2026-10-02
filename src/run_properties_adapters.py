@@ -12,6 +12,17 @@ and re-run, and only a pass with **zero misses** is reported.
 
     python3 src/run_properties_adapters.py --adapter icaljs [--sample N]
     python3 src/run_properties_adapters.py --adapter all
+
+An expensive adapter can be swept across several runs (finding 120):
+
+    python3 src/run_properties_adapters.py --adapter dtical \
+        --cache scratch/property-cache --chunk 200 --budget 1800
+
+`--cache` persists answers per adapter and refuses a cache written by a
+different build; `--chunk` makes progress durable part-way through a round; and
+`--budget` stops without writing a row, because a pass that still has misses
+answered some properties from the placeholder and its tally would be a figure
+computed from a lie.
 """
 import argparse
 import json
@@ -31,7 +42,17 @@ from run_properties import load_rules
 MAX_ROUNDS = 12
 
 
-def sweep(exp, rules, horizon_days, cap, verbose=True):
+class Budget(Exception):
+    """The adapter time budget ran out before a zero-miss pass.
+
+    Deliberately not a result. A pass that still had misses answered some
+    properties from the placeholder `[]`, so reporting its tally would be
+    reporting a number computed from a lie. With a cache attached the adapter
+    time is kept and the next run starts from it; without one it is lost.
+    """
+
+
+def sweep(exp, rules, horizon_days, cap, verbose=True, budget=0):
     """Replay the property pass until it needs nothing new. Returns the pass."""
     for attempt in range(1, MAX_ROUNDS + 1):
         exp.misses = 0
@@ -51,6 +72,11 @@ def sweep(exp, rules, horizon_days, cap, verbose=True):
         if verbose:
             print("    pass %d: %d misses, %d keys to resolve"
                   % (attempt, exp.misses, len(exp.pending)), flush=True)
+        if budget and exp.adapter_seconds >= budget:
+            raise Budget("%s: %.0fs of adapter time spent, budget %.0fs, "
+                         "%d keys still unresolved"
+                         % (exp.name, exp.adapter_seconds, budget,
+                            len(exp.pending)))
         exp.resolve()
     raise SystemExit("%s: no fixpoint after %d passes (%d misses left)"
                      % (exp.name, MAX_ROUNDS, exp.misses))
@@ -66,6 +92,17 @@ def main(argv=None):
     ap.add_argument("--cap", type=int, default=P.CAP)
     ap.add_argument("--timeout", type=float, default=3600,
                     help="per adapter subprocess, not for the whole sweep")
+    ap.add_argument("--cache", metavar="DIR",
+                    help="persist each adapter's answers under DIR so an "
+                         "interrupted sweep resumes instead of restarting")
+    ap.add_argument("--cache-reset", action="store_true",
+                    help="discard an existing cache for these adapters first")
+    ap.add_argument("--chunk", type=int, default=0, metavar="N",
+                    help="keys per adapter call; flushes the cache after "
+                         "each, so progress survives an interruption")
+    ap.add_argument("--budget", type=float, default=0, metavar="SECONDS",
+                    help="stop after this much adapter time without writing a "
+                         "result; the cache keeps the work for the next run")
     ap.add_argument("--out", default=os.path.join(
         REPO, "findings", "data", "properties-adapters.json"))
     a = ap.parse_args(argv)
@@ -94,11 +131,29 @@ def main(argv=None):
         except Exception:
             pass
 
+    incomplete = []
     for name in names:
         print("%s:" % name, flush=True)
-        exp = A.AdapterExpander(name, cap=a.cap, timeout=a.timeout)
+        exp = A.AdapterExpander(name, cap=a.cap, timeout=a.timeout,
+                                chunk=a.chunk)
+        if a.cache:
+            os.makedirs(a.cache, exist_ok=True)
+            path = os.path.join(a.cache, "%s.jsonl" % name)
+            n = exp.attach_cache(path, reset=a.cache_reset)
+            print("  cache %s: %d keys loaded" % (path, n), flush=True)
         t0 = time.time()
-        tally, failures, passes = sweep(exp, rules, a.horizon_days, a.cap)
+        try:
+            tally, failures, passes = sweep(exp, rules, a.horizon_days, a.cap,
+                                            budget=a.budget)
+        except Budget as exc:
+            exp.close()
+            print("  %s" % exc, flush=True)
+            print("  no result written for %s; %d keys cached, %.0fs adapter "
+                  "time kept" % (name, len(exp.cache), exp.adapter_seconds),
+                  flush=True)
+            incomplete.append(name)
+            continue
+        exp.close()
         out["adapters"][name] = {
             "argv": A.REGISTRY[name]["argv"],
             "n_rules": len(rules),
@@ -121,6 +176,9 @@ def main(argv=None):
             json.dump(out, f, indent=1, sort_keys=True)
             f.write("\n")
     print("-> %s" % a.out)
+    if incomplete:
+        print("incomplete (budget), no row written: %s" % ", ".join(incomplete))
+        return 2
     return 0
 
 
