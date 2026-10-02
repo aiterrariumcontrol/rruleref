@@ -18,7 +18,17 @@ the code under it, and both guarded:
 
   * A refactor that dropped the split and ran everything serially satisfies
     the equivalence trivially. `test_several_workers_are_several_processes`
-    checks that several workers really are several processes.
+    checks that the work really leaves this process.
+
+    The load-bearing half of that check is that the *parent's* pid is absent,
+    because a serial fallback is exactly "it all ran here". The "more than one
+    distinct pid" half needs the probe to do real work: pool workers start
+    lazily, so on a probe that returns immediately the first worker to come up
+    drains the whole queue before the others exist, and the check fails while
+    nothing is wrong. CI found this on Python 3.14 -- whose default start
+    method is now `forkserver`, so workers are slowest to appear there -- on a
+    commit where the split was in fact working (test_conformance.py went
+    367.3s -> 202.4s in the same run).
   * On a healthy corpus both chunk functions report *nothing* -- zero
     disagreements, no offending rules -- so one worker and several agree on
     the empty answer no matter how broken the merge is. The equivalence is
@@ -59,7 +69,17 @@ def _cases():
     return json.load(open(path))["cases"]
 
 
+#: Enough work per chunk that lazily-started pool workers all get a turn.
+#: A probe that returns instantly is drained by whichever worker comes up
+#: first, which says nothing about whether the pool is distributing.
+PROBE_SPIN = 0.05
+
+
 def _pids(chunk):
+    import time
+    end = time.time() + PROBE_SPIN
+    while time.time() < end:
+        pass
     return [os.getpid()]
 
 
@@ -129,12 +149,14 @@ def test_several_workers_are_several_processes():
     """Otherwise the equivalence above is satisfied by doing nothing."""
     items = list(range(NCASES))
     pids = T.mapped(_pids, items, NWORKERS, lambda a, b: a + b, list)
-    if len(set(pids)) < 2:
-        fails.append("mapped() with %d workers ran in %d distinct process(es)"
-                     % (NWORKERS, len(set(pids))))
+    # The invariant that actually catches a serial fallback.
     if os.getpid() in set(pids):
         fails.append("mapped() with %d workers ran in the parent process"
                      % NWORKERS)
+    # And the pool should be spreading the work, not funnelling it.
+    if len(set(pids)) < 2:
+        fails.append("mapped() with %d workers ran in %d distinct process(es)"
+                     % (NWORKERS, len(set(pids))))
 
 
 def test_one_worker_stays_in_this_process():

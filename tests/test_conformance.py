@@ -18,7 +18,7 @@ cannot drift silently. It pins:
    version of that module checked every part unconditionally and would have
    published 31 false claims against ical4j (finding 016).
 """
-import sys, os, json, subprocess, concurrent.futures
+import sys, os, json, subprocess, concurrent.futures, multiprocessing
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
 sys.path.insert(0, os.path.join(ROOT, "src"))
@@ -105,6 +105,27 @@ def _recheck_chunk(chunk):
     return wrong
 
 
+def _ctx():
+    """Fork, explicitly, rather than whatever this Python defaults to.
+
+    Python 3.14 changed the default start method on Linux to `forkserver`,
+    which re-imports this module in a fresh interpreter for every worker. That
+    still works -- CI measured 367.3s -> 202.4s on 3.14 -- but it is both
+    slower than the 2.8x the other three Pythons get and a different code path
+    from the one I can run locally. The chunk functions here rely on state this
+    module sets up at import (`env.add_dateutil_to_path`, the `sys.path`
+    inserts), so inheriting it is exactly what we want.
+
+    This is a batch script that has started no threads when the pool is built,
+    which is the condition that makes `fork` safe. Falls back to the platform
+    default where fork does not exist.
+    """
+    try:
+        return multiprocessing.get_context("fork")
+    except ValueError:
+        return multiprocessing.get_context()
+
+
 def mapped(fn, items, nworkers, merge, empty):
     """`fn` over `items`, split across processes, merged with `merge`.
 
@@ -119,7 +140,7 @@ def mapped(fn, items, nworkers, merge, empty):
     nchunks = nworkers * 4
     chunks = [c for c in (items[i::nchunks] for i in range(nchunks)) if c]
     acc = empty()
-    with concurrent.futures.ProcessPoolExecutor(nworkers) as pool:
+    with concurrent.futures.ProcessPoolExecutor(nworkers, mp_context=_ctx()) as pool:
         for got in pool.map(fn, chunks):
             acc = merge(acc, got)
     return acc
