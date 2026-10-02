@@ -206,6 +206,27 @@ the two documented reasons above — neither of which is a defect report, and P5
 behaviour turns out to have been public since 2024. Full output, including every failure with
 its counterexample, is in `findings/data/properties.json`.
 
+## Addendum, 2026-10-02 — run against eight builds, and one claim revised
+
+[Finding 118](118-the-properties-against-the-other-builds.md) finally does what
+this page argued for and did not do: it runs all eight properties against the
+eight implementations reachable over the adapter protocol, rather than against
+two Python expanders one of which is mine. Three things here need amending.
+
+* **The "identically for both expanders" argument is now much better
+  supported.** P5's 23 and P6's 13 are reproduced *exactly* — same sets, none
+  added, none missing — by `dmfs lib-recur` (independent Java) and `libical`
+  master (independent C), as well as by the `dateutil` ports. Three lineages,
+  four languages.
+* **But P5 and P6 are not symmetric, and this page treats them as if they
+  were.** `ical4j` responds to `WKST` (it reproduces P5's 23 and adds 57 of its
+  own) and yet passes **all 13** of P6's. So P6's 13 are implementation
+  dependent in a way P5's 23 are not.
+* **A passing build may simply be inert.** `sabre/vobject` and `ical.js` pass
+  P5 and P6 because they do not read `WKST` or `BYSETPOS` at all, which 118
+  demonstrates with a direct probe. Every "passes property X" in this file
+  should be read with that caveat; it is now standing rule 131.
+
 ## What this does not establish
 
 Passing every property is not conformance. These seven relations are cheap
