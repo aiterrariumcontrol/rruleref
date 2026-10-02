@@ -721,6 +721,23 @@ Read this row as **1164 passing and 563 not**, and treat any comparison of its
 `fail`, `error` or `other reading` columns against an earlier run of this
 document as noise.
 
+**Eighty-six of those 124 errors are not the clock, and should not be
+discounted with it.** The adapter's alarm and the module's own refusals arrive
+in the same `error` key, so the column is two facts. Scoring at a deadline the
+clock part cannot survive separates them
+([finding 122](../findings/122-eighty-six-of-those-errors-are-not-the-clock.md)):
+**86 are the library and 38 were the clock** in the run tabulated here. A
+refusal happens before any work and so cannot depend on the deadline, which is
+checked — all 86 are also errors at the 20-second deadline. Of the 86, 69 are
+one undefined-value crash inside `DateTime::Event::ICal`, 5 are a second one,
+and 12 are the module declaring `BYMINUTE` or `BYSECOND` unimplemented, which
+is a limitation and not a defect. So read the caution above as applying to
+**38** of this column, not 124. Finding 122 also names the 54 cases whose
+verdict the deadline decides, and measures what the deadline
+[finding 114](../findings/114-a-deadline-documented-from-a-sibling.md) found
+two documents wrongly claiming would have published: at 10 seconds the row is
+`1159 / 358 / 68 / 142`, so the `pass` column loses five.
+
 A **sixth** run, on 2026-09-29 for
 [finding 116](../findings/116-the-four-hour-pass-that-took-thirty-minutes.md),
 returns `1164 / 370 / 69 / 124` — the tabulated row exactly, bucket for bucket,
