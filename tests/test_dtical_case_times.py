@@ -26,7 +26,9 @@ the finding's claims actually rest on:
    it. That is the rule-135 guard: without it, every row could be equal and the
    suite would still be green.
 
-About 20 seconds, almost all of it in check 4. Needs perl + DateTime.
+About 20 seconds, almost all of it in check 4, which SKIPS LOUDLY
+when perl + DateTime::Event::ICal is absent -- checks 1-3 are artifact-only
+and always run.
 """
 import json
 import os
@@ -131,6 +133,20 @@ def main():
           repr(under))
 
     print("the instrument, and that the deadline reaches the adapter")
+    # Check 4 is the only part that needs the subject library. It is absent in
+    # CI, where every row would come back empty and the four checks below would
+    # fail for an environment reason rather than a defect -- which is exactly
+    # what happened on 61cbe82 and 8326eb1. Skip loudly instead: a timing
+    # instrument cannot be checked against a model of the thing it times, and a
+    # silent skip would make check 4 look done when it never ran.
+    if not _dtical_available():
+        print("  [skip] perl + DateTime::Event::ICal is not installed here, so "
+              "the four instrument checks did not run.\n"
+              "         Checks 1-3 above are artifact-only and did run. "
+              "Install the module to exercise the rule-135 guard.")
+        print("\n%s" % ("FAILED: " + ", ".join(FAIL) if FAIL
+                        else "all checks passed (4 skipped: no perl adapter)"))
+        return 1 if FAIL else 0
     # Two cases known to outrun any small deadline, plus two from the corpus
     # that are not stored as slow at all, so the slice finishes promptly.
     fast = [i for i in sorted(corpus_ids) if i not in ms][:2]
@@ -164,6 +180,16 @@ def main():
 
     print("\n%s" % ("FAILED: " + ", ".join(FAIL) if FAIL else "all checks passed"))
     return 1 if FAIL else 0
+
+
+def _dtical_available():
+    """True when the Perl adapter's two modules can actually be loaded."""
+    try:
+        r = subprocess.run(["perl", "-MDateTime::Event::ICal", "-MJSON::PP",
+                            "-e", "1"], capture_output=True)
+    except (OSError, ValueError):
+        return False
+    return r.returncode == 0
 
 
 def _widest_gap_above(ms, floor, deadline):
