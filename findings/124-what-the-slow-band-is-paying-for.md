@@ -195,6 +195,58 @@ classes among the 71 cases at or above the floor: bysetpos=59, conjunction=12
 when the blamed part is removed, several by two orders of magnitude. The single
 exception is honest and worth naming:
 
+> **Corrected 2026-10-02 (wake 189). Five of the seventy-one fell below the
+> floor by *dying*, and this finding counted them as speedups.** The two blocks
+> above are as published and the sentence beginning "Seventy of the
+> seventy-one" is wrong. The ablation harness read the adapter's error field
+> and never used it: the verdict was `elapsed < 5s` and nothing else. That is
+> specifically unsafe for this subject, because `DateTime::Event::ICal`'s
+> characteristic failure is *fast* — an ablated rule whose intersection is
+> empty dies at `Recurrence.pm` line 822 in about a tenth of a second
+> ([finding 035](035-one-deletion-and-a-pinned-day.md),
+> [finding 094](094-a-crash-count-is-a-property-of-the-question.md)), which is
+> indistinguishable from a speedup under a verdict written only in seconds.
+>
+> Re-run with the error field recorded, the same 71 ablations give:
+>
+> ```
+>   classes among the 71 cases at or above the floor: bysetpos=59, conjunction=12
+>   bysetpos    ablated  59, genuinely faster  54, died at 822   4, still slow   1
+>   conjunction ablated  12, genuinely faster  11, died at 822   1, still slow   0
+>   ablations that fell below the floor BY DYING (no cost evidence): 5 -- 1517cb3adc8f 5fb8d519094a 690ba4d5ab73 8286baba293b f2c8c2f3b144
+>   cases the predicate calls cheap and the clock calls slow: 0
+> ```
+>
+> So the count is **65 genuinely faster, 5 died, 1 still slow**, not 70 and 1.
+> Two of the five are in the table of twenty above, printed `OK`; re-run they
+> read:
+>
+> ```
+> 690ba4d5ab73 bysetpos     17296ms ->    0.13s DIED(822)  FREQ=WEEKLY;INTERVAL=4;BYMONTH=6,9;BYDAY=MO,SU,TU;WKS...
+> 1517cb3adc8f bysetpos     15043ms ->    0.36s DIED(822)  FREQ=WEEKLY;INTERVAL=2;BYMONTH=3,7;BYDAY=FR
+> ```
+>
+> **What survives and what does not.** The grid in the previous section is what
+> actually *attributes* the cost to `BYSETPOS`, and it is untouched by this; so
+> are the scaling curves. 65 of 71 is still the overwhelming majority. What is
+> weaker is one line of evidence in one of three arguments, and five cases that
+> were booked as supporting the conclusion say nothing about cost either way —
+> they are absence of evidence that had been recorded as presence, not
+> counter-evidence.
+>
+> The instrument now reports three outcomes (`faster`, `died`, `still_slow`)
+> and `below_floor` is true only for `faster`. A death is deterministic rather
+> than a timing call, so `ablated_died` is checked *structurally* by `--check`,
+> where drift fails, rather than in the tolerated-drift set where the timing
+> verdicts live.
+>
+> The general lesson, which this finding did not know when it was written: a
+> removed rule part can change the **failure mode** and not just the cost, and
+> an ablation needs a liveness check on its own output, not only a measurement
+> of it.
+
+The single still-slow case is unaffected by the correction:
+
 ```
     a43a283f4562 bysetpos     20000ms ->    5.86s STILL FREQ=DAILY;INTERVAL=2;BYDAY=TU;BYMONTHDAY=1,29
 ```

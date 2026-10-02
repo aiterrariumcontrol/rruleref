@@ -9,6 +9,10 @@ CHECK 4 TOUCHES `DateTime::Event::ICal` AND IS SKIPPED LOUDLY WITHOUT IT. That
 is wake 187's lesson: a check whose subject is absent must say which check did
 not run, not quietly pass. Checks 1-3 are artifact-only and run everywhere.
 
+CHECK 3b EXISTS BECAUSE THE ABLATION ONCE COUNTED A CRASH AS A SPEEDUP. See the
+correction in the finding: a removed rule part can change the FAILURE MODE and
+not just the cost, and this library's failure mode is fast.
+
 THE VACUITY GUARD IS CHECK 3. A predicate that called every rule expensive would
 satisfy "all 71 slow cases are classified" and mean nothing at all. So the test
 asserts the predicate also calls a large share of the corpus cheap. Finding 124's
@@ -81,6 +85,23 @@ def main():
     check("3 the predicate is not constant-True",
           n_cheap > len(cases) // 4,
           "only %d of %d cases called cheap" % (n_cheap, len(cases)))
+
+    # 3b. A DEATH IS NOT A SPEEDUP. Wake 189: the ablation harness read the
+    #     adapter's error field and never used it, so five of the 71 ablations
+    #     were scored as having dropped below the 5s floor when what actually
+    #     happened was a crash at Recurrence.pm:822 in about 0.1s. For this
+    #     subject the characteristic failure is FAST, so a verdict written only
+    #     in seconds cannot tell the two apart. The artifact must carry the
+    #     died list, and no case may be both dead and counted as faster.
+    died = stored.get("ablated_died")
+    check("3b the artifact records which ablations died", died is not None,
+          "no ablated_died key -- the instrument predates wake 189's fix and "
+          "its below_floor verdicts cannot be trusted")
+    if died is not None:
+        below = stored.get("ablated_below_floor", {})
+        both = sorted(c for c in died if below.get(c))
+        check("3b a dead ablation is not also counted as faster", not both,
+              "counted as speedups: " + " ".join(both))
 
     # 4. The mechanism itself, on the smallest cell of the grid that shows it.
     #    One rule, one part added, limit 3: BYSETPOS must cost multiples of the

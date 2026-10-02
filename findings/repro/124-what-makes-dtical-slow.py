@@ -191,10 +191,18 @@ def ablation(cases, times, out):
                          "below_floor": None})
             continue
         el, n, err = run(ab, c["dtstart"], c["limit"], GRID_DEADLINE)
+        # An ablated rule that DIES is fast and says nothing about cost: this
+        # library kills an empty intersection in ~0.1s at Recurrence.pm:822
+        # (findings 035, 094). Counting that as "the ablation made it cheap"
+        # would let a crash stand in for a speedup, so DIED is its own outcome
+        # and is NOT counted as below_floor. Audited at wake 189; 5 of these
+        # 71 were being scored as speedups.
+        outcome = "died" if err else ("faster" if el < FLOOR_S else "still_slow")
         rows.append({"id": cid, "class": cls, "ablated": ab,
-                     "below_floor": el < FLOOR_S})
-        out("    %s %-11s %6.0fms -> %7.2fs %-4s %s"
-            % (cid, cls, ms, el, "OK" if el < FLOOR_S else "STILL",
+                     "below_floor": outcome == "faster", "outcome": outcome})
+        out("    %s %-11s %6.0fms -> %7.2fs %-10s %s"
+            % (cid, cls, ms, el,
+               {"faster": "OK", "still_slow": "STILL", "died": "DIED(822)"}[outcome],
                ab if len(ab) < 56 else ab[:53] + "..."))
     return rows
 
@@ -208,9 +216,14 @@ def summarise(rows, times, out):
         sub = [r for r in rows if r["class"] == cls and r["ablated"]]
         if not sub:
             continue
-        ok = sum(1 for r in sub if r["below_floor"])
-        out("  %-11s ablated %3d, dropped below the floor %3d, still slow %3d"
-            % (cls, len(sub), ok, len(sub) - ok))
+        ok = sum(1 for r in sub if r["outcome"] == "faster")
+        died = sum(1 for r in sub if r["outcome"] == "died")
+        out("  %-11s ablated %3d, genuinely faster %3d, died at 822 %3d, "
+            "still slow %3d" % (cls, len(sub), ok, died, len(sub) - ok - died))
+    died_all = [r["id"] for r in rows if r.get("outcome") == "died"]
+    out("  ablations that fell below the floor BY DYING (no cost evidence): "
+        "%d%s" % (len(died_all), (" -- " + " ".join(sorted(died_all)))
+                  if died_all else ""))
     unexplained = [r["id"] for r in rows if r["class"] == "cheap"]
     out("  cases the predicate calls cheap and the clock calls slow: %d%s"
         % (len(unexplained), (" -- " + " ".join(unexplained))
@@ -257,15 +270,20 @@ def main(argv=None):
         "     is slow. How rare the candidate is still sets the cost.")
 
     result = {"floor_s": FLOOR_S, "grid_deadline": GRID_DEADLINE,
+              "ablated_died": sorted(r["id"] for r in rows
+                                     if r.get("outcome") == "died"),
               "classes": {r["id"]: r["class"] for r in rows},
               "ablated_below_floor": {r["id"]: r["below_floor"]
                                       for r in rows if r["ablated"]},
+              "ablated_outcome": {r["id"]: r["outcome"]
+                                  for r in rows if r["ablated"]},
               "unexplained": sorted(unexplained),
               "predicate_expensive_among_fast": len(fp)}
     if a.check:
         old = json.load(open(OUT))
         bad = []
-        for k in ("classes", "unexplained", "predicate_expensive_among_fast"):
+        for k in ("classes", "unexplained", "predicate_expensive_among_fast",
+                  "ablated_died"):
             if old.get(k) != result[k]:
                 bad.append(k)
         # below_floor is a timing call and may legitimately move under load;
