@@ -35,12 +35,39 @@ def parse(rrule):
         elif k == "UNTIL":
             out[k] = _parse_until(v)
         elif k == "BYDAY":
-            out[k] = [_parse_byday(x) for x in v.split(",")]
-        else:
+            out[k] = _dedupe([_parse_byday(x) for x in v.split(",")])
+        elif k == "BYSETPOS":
+            # Left alone deliberately: BYSETPOS indexes into an already-built
+            # list rather than contributing candidates, and `flush` already
+            # collects its picks into a set, so a repeat is inert there by
+            # construction. See property P8.
             out[k] = [int(x) for x in v.split(",")]
+        else:
+            out[k] = _dedupe([int(x) for x in v.split(",")])
     out.setdefault("FREQ", None)
     out.setdefault("INTERVAL", 1)
     out.setdefault("WKST", "MO")
+    return out
+
+
+def _dedupe(vals):
+    """Drop repeated values from one BY-list, keeping first-seen order.
+
+    A BY-list names which candidates to select; naming the same one twice
+    selects it once. Before this, ``BYSECOND=0,30,0`` emitted 09:00:00 twice
+    and -- because COUNT is evaluated after the BYxxx parts -- a COUNT=12
+    rule stopped eight distinct instants in. Found by property P8 on
+    2026-10-02, which was itself written after four 2026 issue reports of the
+    same mechanism against ical.js, rust-rrule, rrule-go and rrule.js.
+
+    The RFC does not legislate this case directly; see P8's docstring for
+    what it does and does not say.
+    """
+    seen, out = set(), []
+    for v in vals:
+        if v not in seen:
+            seen.add(v)
+            out.append(v)
     return out
 
 

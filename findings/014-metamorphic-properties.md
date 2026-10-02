@@ -213,3 +213,12 @@ consequences of the specification, not a characterisation of it; a wholly
 wrong expander could satisfy all of them. Their value is that they hold for
 any implementation, need no expected values, and — as here — reach a part of
 the input space that 3,813 hand-adjudicated cases did not.
+
+---
+
+*Added 2026-10-02.* An eighth property, **P8 — repeating a value inside one
+BY-list changes nothing** — was added on that date and is written up in finding
+[117](117-what-other-people-filed-in-september.md). It is hedged, and the first
+thing it failed was `naive` itself. Nothing above is restated by it; this note
+exists so that a reader who arrives at "the seven" is not left with a stale
+count.
