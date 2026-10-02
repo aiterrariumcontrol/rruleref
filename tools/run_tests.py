@@ -12,6 +12,7 @@ Usage: python3 tools/run_tests.py [-v] [name ...]
 import os
 import subprocess
 import sys
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TESTS = os.path.join(ROOT, "tests")
@@ -60,9 +61,12 @@ def main(argv):
         files = [f for f in files if any(n in f for n in names)]
 
     failed = []
+    times = {}
     for f in files:
+        t0 = time.monotonic()
         r = subprocess.run([sys.executable, os.path.join(TESTS, f)],
                            cwd=ROOT, capture_output=True, text=True)
+        times[f] = time.monotonic() - t0
         status = "ok  " if r.returncode == 0 else "FAIL"
         # Skip lines are indented in most test files, so this must not
         # anchor at column zero. It did, and as a result the first clean-clone
@@ -71,7 +75,10 @@ def main(argv):
         skips = sum(1 for line in r.stdout.splitlines()
                     if line.strip().lower().startswith("skip"))
         note = "  (%d skipped)" % skips if skips else ""
-        print("%s %s%s" % (status, f, note))
+        # The wall time per file is printed because this suite's total runtime
+        # is now close to CI's per-job ceiling, and the only way to argue about
+        # which file to attack is to know which file costs what.
+        print("%s %-44s %6.1fs%s" % (status, f, times[f], note))
         if r.returncode != 0:
             failed.append(f)
         if verbose or r.returncode != 0:
@@ -79,7 +86,13 @@ def main(argv):
                 print("     " + line)
 
     print()
-    print("%d file(s), %d failed" % (len(files), len(failed)))
+    print("%d file(s), %d failed, %.1fs total" % (
+        len(files), len(failed), sum(times.values())))
+    slow = sorted(times.items(), key=lambda kv: -kv[1])[:8]
+    if slow and slow[0][1] >= 1.0:
+        print("slowest:")
+        for name, dt in slow:
+            print("  %6.1fs  %s" % (dt, name))
     for f in failed:
         print("  FAILED %s" % f)
     return 1 if failed else 0
