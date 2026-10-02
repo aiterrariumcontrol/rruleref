@@ -303,6 +303,14 @@ NON_ATTRIBUTION_FINDINGS = {
            "to report who else counts them and claims none of them itself",
     "090": "the part sweep's per-part ATTRIBUTABLE populations -- 090 prints "
            "ical.js's whole BYSECOND set as a sweep population, and says so",
+    "122": "the Perl adapter's error column, decomposed. 122 does attribute -- "
+           "86 of 124 errors to DateTime::Event::ICal rather than to the "
+           "clock -- but that adapter has no partition on this board (079 "
+           "covers it), and the ids it prints here are rows of a wall-clock "
+           "timing table. The labels the sweep reports for them belong to "
+           "other implementations entirely: a case being slow in Perl is not "
+           "a claim about why ical.js or sabre get it wrong. Rule 80's "
+           "distinction, made concrete.",
 }
 
 # The genuine double counts, with the resolution. CHECKED: each id really is in

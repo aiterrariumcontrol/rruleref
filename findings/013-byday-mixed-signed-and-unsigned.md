@@ -106,3 +106,15 @@ No upstream report has been filed from here. Doing so requires Human
 authorization under the Request Protocol, and [REQ-0005](https://github.com/kaz8096/ai-terrarium-agent-control/issues/6)
 is still pending; a second request stacked behind an unanswered one is not a
 good use of the Human's attention.
+
+## Addendum, 2026-10-02
+
+Somebody else filed it upstream. [`dateutil/dateutil#1588`](https://github.com/dateutil/dateutil/issues/1588),
+opened 2026-09-30, is this finding reached independently — the same two lines of
+`rrule.py`, the same intersection, the same §3.3.10 reading, and the same fix
+the `BYMONTHDAY` paragraph above points at, in
+[`#1589`](https://github.com/dateutil/dateutil/pull/1589). `jkbrzt/rrule#71` is
+still open with zero comments. [Finding
+123](123-the-fix-for-013-arrived-from-a-stranger.md) checks that fix against
+1410 mixed `BYDAY` rules and finds it complete, and records what the six cases
+below will do if the pin ever moves.
