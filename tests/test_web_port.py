@@ -197,6 +197,28 @@ def test_diagnostics_fire_where_the_findings_say_they_do():
         # finding 105, which had called the symptom a dropped month.
         ("FREQ=MONTHLY;BYDAY=3FR,1SA;BYSETPOS=-2,2", "20270102T090000",
          "icaljs-negative-bysetpos-rollover"),
+        # Finding 070's defect A. FREQ=DAILY;BYMONTHDAY=-1 is an ordinary way
+        # to write "the last day of every month", and under DAILY BYMONTHDAY
+        # limits rather than expands, so ical.js 2.2.1 compares -1 against a
+        # day number in 1..31 and never matches. Nothing else can match
+        # either, and the loop it spins in is unbounded at this frequency: the
+        # first next() returns DTSTART and the second never returns. The
+        # correct series here is perfectly ordinary, which is why this row sits
+        # beside the empty-series one below.
+        ("FREQ=DAILY;BYMONTHDAY=-1", "20240331T090000",
+         "icaljs-contracting-negative"),
+        # The same note's other symptom: 15 still matches, so the search
+        # terminates and the library quietly answers a rule the user did not
+        # write. Which of the two symptoms fires is computed, not guessed, and
+        # the predicted stream is checked against the real library in
+        # tests/test_icaljs_contracting_negative.py.
+        ("FREQ=DAILY;BYMONTHDAY=-1,15", "20240331T090000",
+         "icaljs-contracting-negative"),
+        # And on a rule whose correct series IS empty -- February has no 31st
+        # from either end -- so the note has to survive analyze()'s early
+        # return (rule 121) exactly as findings 101's and 111's notes do.
+        ("FREQ=DAILY;BYMONTH=2;BYMONTHDAY=-31", "20240201T090000",
+         "icaljs-contracting-negative"),
         # The same note where the correct series is NOT empty: week 52 exists
         # in every year, so the rule returns something either way and the
         # phantom week is mixed in among real occurrences.

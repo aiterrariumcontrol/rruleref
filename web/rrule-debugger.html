@@ -1603,6 +1603,206 @@ function icaljsNegativeSetposRollover(rrule, dtstart, limit) {
  * nothing about the library that answers it with a March date every year.
  */
 /**
+ * Finding 070's defect A: a negative value in a BY part that *contracts*
+ * under the rule's own FREQ, which ical.js 2.2.1 can never match.
+ *
+ * `RecurIterator.check_contract_restriction(aRuleType, v)` compares each
+ * stored value of a contracting BY part against the candidate date
+ * *literally* -- `bydata == v`, with `v` a day of month in 1..31 or a bare
+ * weekday -- so `BYMONTHDAY=-1` and `BYDAY=-1MO` cannot be equal to anything.
+ * libical, which this iterator is a port of, passes the length of the period
+ * into the same function as a fourth argument and normalises the negative
+ * against it; ical.js's signature has no such parameter and no negative arm,
+ * so neither of libical's two outcomes -- the correct match, or an explicit
+ * MALFORMEDDATA -- survives the port.
+ *
+ * That produces two symptoms from one cause, and which one the user gets is
+ * computable from the rule:
+ *
+ *   * if the part still holds a value that CAN match, ical.js answers as
+ *     though the negative values had never been written -- a wrong list, with
+ *     nothing logged and no exception;
+ *   * if it does not, `check_contracting_rules()` never passes, and the
+ *     `do ... while` loop in `next()` has no iteration bound at FREQ=SECONDLY,
+ *     MINUTELY, HOURLY, DAILY or WEEKLY. The bound the MONTHLY and YEARLY
+ *     branches carry (`++invalid_count == 336`) is absent from exactly the
+ *     five branches where a contracting negative is reachable. The iterator
+ *     allocates as it scans, so this is not a hang a caller can time out: in
+ *     Node the process aborts with "FATAL ERROR: ... JavaScript heap out of
+ *     memory", and in a browser the tab stops responding.
+ *
+ * The frequencies this reads are SECONDLY, MINUTELY, HOURLY and DAILY.
+ * FREQ=WEEKLY is the fifth unbounded branch but cannot be reached: ical.js
+ * refuses BYMONTHDAY and BYYEARDAY there at parse time, and BYDAY *expands*
+ * under WEEKLY. BYYEARDAY is refused outside YEARLY for the same reason, so
+ * BYMONTHDAY and BYDAY are the only two parts that get here.
+ *
+ * Returns null when the rule is unaffected, otherwise
+ * { kind, lost, stripped, predicted } where `kind` is "nonterminating" or
+ * "drops", `lost` names each part with the values ical.js loses and the ones
+ * it keeps, and `predicted` is ical.js's whole stream -- for "nonterminating"
+ * the single occurrence it returns before the second `next()` stops coming
+ * back.
+ */
+function icaljsContractingNegative(rrule, dtstart, limit) {
+  let r;
+  try { r = parse(rrule); } catch { return null; }
+  const rank = CONTRACT_RANK[r.FREQ];
+  if (rank === undefined) return null;
+  const lost = [];
+  if ("BYMONTHDAY" in r && r.BYMONTHDAY.some((v) => v < 0)) {
+    lost.push({ part: "BYMONTHDAY",
+                dropped: r.BYMONTHDAY.filter((v) => v < 0).map(String),
+                kept: r.BYMONTHDAY.filter((v) => v > 0).map(String) });
+  }
+  if ("BYDAY" in r && r.BYDAY.some(([o]) => o !== null)) {
+    const tok = ([o, d]) => (o === null ? d : `${o}${d}`);
+    lost.push({ part: "BYDAY",
+                dropped: r.BYDAY.filter(([o]) => o !== null).map(tok),
+                kept: r.BYDAY.filter(([o]) => o === null).map(tok) });
+  }
+  if (!lost.length) return null;
+  const until = "UNTIL" in r ? r.UNTIL : null;
+  // An UNTIL at or before DTSTART is answered with the empty set before the
+  // loop is ever entered, so the defect is unreachable. Declining is not a
+  // formality: the harness shows the ungated prediction is wrong there.
+  if (until !== null && until < dtstart) return null;
+  const cap = "COUNT" in r ? Math.min(limit, r.COUNT) : limit;
+  // A part left with no matchable value at all can never be satisfied. The
+  // first next() still returns DTSTART, so COUNT=1 is answered and only a
+  // second occurrence hangs.
+  if (lost.some((l) => !l.kept.length)) {
+    return { kind: cap <= 1 ? "drops" : "nonterminating", lost,
+             stripped: null, predicted: [dtstart] };
+  }
+  // The rule ical.js actually evaluates. COUNT and UNTIL come out because
+  // neither is tested inside the loop: an UNTIL one day after DTSTART does
+  // not save a rule whose contracting part can never match.
+  let stripped = rrule.split(";").filter((c) => {
+    const k = c.split("=")[0].trim().toUpperCase();
+    return c && k !== "COUNT" && k !== "UNTIL" && !lost.some((l) => l.part === k);
+  });
+  for (const l of lost) stripped.push(`${l.part}=${l.kept.join(",")}`);
+  stripped = stripped.join(";");
+  let occ;
+  try { occ = expand(stripped, dtstart, { limit: cap + 1 }); } catch { return null; }
+  const seed = icaljsSeed(r, dtstart);
+  let stream = seed === null || (occ.length && occ[0] === seed) ? occ : [seed, ...occ];
+  let clipped = false;
+  if (until !== null) {
+    const i = stream.findIndex((x) => x > until);
+    if (i >= 0) { stream = stream.slice(0, i); clipped = true; }
+  }
+  // Short of the cap with UNTIL not the reason: the stripped rule has run out
+  // of occurrences, so the loop is searching for one that is not there.
+  if (!clipped && stream.length < cap) {
+    return { kind: "nonterminating", lost, stripped, predicted: [dtstart] };
+  }
+  return { kind: "drops", lost, stripped, predicted: stream.slice(0, cap) };
+}
+
+/**
+ * The four frequencies under which BYMONTHDAY and BYDAY contract, ranked
+ * coarsest-last. The rank is also what decides whether a time-of-day part
+ * expands, which `icaljsSeed` needs.
+ */
+const CONTRACT_RANK = { SECONDLY: 0, MINUTELY: 1, HOURLY: 2, DAILY: 3 };
+
+/**
+ * DTSTART as ical.js emits it, which is not always verbatim.
+ *
+ * ical.js returns DTSTART as the first occurrence whether or not the rule
+ * selects it -- but only if DTSTART is at or before the FIRST time-of-day the
+ * rule's expanding BY parts permit on that day. At FREQ=DAILY with
+ * BYHOUR=9,10, a midnight DTSTART comes back as 09:00; a 10:00 DTSTART does
+ * not come back at all, and neither does an 08:30 DTSTART under
+ * BYMINUTE=0,30, even though 08:30 is itself one of the permitted times --
+ * the first permitted time that day is 08:00, which is already behind it.
+ * A part that CONTRACTS under the rule's own FREQ (BYHOUR at FREQ=HOURLY and
+ * finer) is not consulted here at all, and DTSTART comes back exactly as
+ * given even when it violates the part. RFC 5545 3.3.10's expand/limit table
+ * is what decides which, so the frequency's rank is what this reads.
+ *
+ * This is ical.js's first-occurrence handling and not finding 070's defect,
+ * but the predictor cannot be exact without it: the stripped rule almost
+ * never selects DTSTART, because DTSTART was usually chosen to satisfy the
+ * negative value that is being lost.
+ */
+function icaljsSeed(r, dtstart) {
+  const p = parts(dtstart);
+  const rank = CONTRACT_RANK[r.FREQ];
+  const first = (key, floor, own) =>
+    key in r && rank >= floor ? Math.min(...r[key]) : own;
+  const t = mk(p.y, p.mo, p.d, first("BYHOUR", 3, p.h),
+               first("BYMINUTE", 2, p.mi), first("BYSECOND", 1, p.s));
+  return t >= dtstart ? t : null;
+}
+
+/**
+ * Finding 070's defect A as a note. Outside `analyze` for rule 121's reason:
+ * a rule whose correct series is empty -- FREQ=DAILY;BYMONTH=2;BYMONTHDAY=-31
+ * names a day February never has -- reaches `analyze`'s early return, and
+ * that is one of the rules this note is most worth firing on.
+ */
+function contractingNegativeNote(rrule, dtstart, limit) {
+  const o = icaljsContractingNegative(rrule, dtstart, limit);
+  if (!o) return null;
+  const list = (xs) => xs.join(", ");
+  const asked = o.lost
+    .map((l) => `${l.part}=${list(l.dropped)}`)
+    .join(" and ");
+  const plural = o.lost.reduce((n, l) => n + l.dropped.length, 0) > 1;
+  const why =
+    `ical.js 2.2.1 compares each value of a contracting BY part against the ` +
+    `candidate date literally — a day of month in 1 to 31, or a bare weekday — ` +
+    `with nothing to turn ${plural ? "those values" : "that value"} into the day ` +
+    `${plural ? "they name" : "it names"}, so ${plural ? "they" : "it"} can never ` +
+    `match. libical, which this iterator is a port of, passes the length of the ` +
+    `period into the same function and normalises the negative against it; the ` +
+    `port kept the function and dropped that argument.`;
+  if (o.kind === "nonterminating") {
+    return {
+      id: "icaljs-contracting-negative",
+      severity: "diverges",
+      title: "ical.js never finishes answering this rule, and takes the process with it",
+      body:
+        `This rule writes ${asked} under FREQ=${parse(rrule).FREQ}, where that part ` +
+        `limits the candidates rather than expanding them. ${why} Nothing else in this ` +
+        `rule can match either, so the search never succeeds — and the do/while loop in ` +
+        `RecurIterator.next() has no iteration bound at SECONDLY, MINUTELY, HOURLY, ` +
+        `DAILY or WEEKLY. The bound the MONTHLY and YEARLY branches carry is absent from ` +
+        `exactly the frequencies where this is reachable. The first next() returns ` +
+        `${fmt(dtstart, false)}, which is DTSTART; the second never returns. It is not a ` +
+        `hang a caller can time out, because the iterator allocates as it scans: in Node ` +
+        `the process aborts with "FATAL ERROR: … JavaScript heap out of memory", and in a ` +
+        `browser the tab stops responding. Neither COUNT nor UNTIL rescues it — UNTIL is ` +
+        `not tested inside the loop, so an UNTIL one day after DTSTART dies the same way. ` +
+        `ical.js is the library Thunderbird calendaring uses, and it parses untrusted ` +
+        `calendar data.`,
+      evidence: [F("070-icaljs-is-libical-in-javascript"), RFC5545("3.3.10", "3.3.10")],
+      compare: { label: "ical.js 2.2.1, then no further answer", occurrences: o.predicted },
+    };
+  }
+  const kept = o.lost.map((l) => `${l.part}=${list(l.kept)}`).join(";");
+  return {
+    id: "icaljs-contracting-negative",
+    severity: "diverges",
+    title: `ical.js silently drops ${asked} from this rule`,
+    body:
+      `This rule writes ${asked} under FREQ=${parse(rrule).FREQ}, where that part limits ` +
+      `the candidates rather than expanding them. ${why} The remaining ${kept} does ` +
+      `match, so the search still terminates and ical.js answers as though ` +
+      `${plural ? "the negative values" : "the negative value"} had never been written — ` +
+      `the dates beside this note are its whole stream for \`${o.stripped}\`. Every ` +
+      `occurrence ${asked} asked for is simply missing; nothing is logged and no ` +
+      `exception is thrown. Remove the other ${kept} and the same rule stops ` +
+      `terminating altogether. ical.js is the library Thunderbird calendaring uses.`,
+    evidence: [F("070-icaljs-is-libical-in-javascript"), RFC5545("3.3.10", "3.3.10")],
+    compare: { label: "ical.js 2.2.1", occurrences: o.predicted },
+  };
+}
+
+/**
  * Finding 112's defect B as a note. Like findings 101's and 111's it lives
  * outside `analyze` because libical can refuse the rule where the correct
  * series is a perfectly ordinary one, and because the rules this note is
@@ -1807,6 +2007,8 @@ function analyze(ctx) {
     if (tn) out.push(tn);
     const bn = weeksInYearBlindNote(rrule, dtstart, limit);
     if (bn) out.push(bn);
+    const cn = contractingNegativeNote(rrule, dtstart, limit);
+    if (cn) out.push(cn);
     return out;
   }
 
@@ -2170,6 +2372,12 @@ function analyze(ctx) {
     if (rn) out.push(rn);
   }
 
+  // --- ical.js can never match a negative value in a part that contracts ---
+  {
+    const cn = contractingNegativeNote(rrule, dtstart, limit);
+    if (cn) out.push(cn);
+  }
+
   // --- lib-recur answers an overshot BYWEEKNO with December 32nd -----------
   {
     const wn = weeknoOverflowNote(rrule, dtstart, limit);
@@ -2211,7 +2419,7 @@ function analyze(ctx) {
   return out;
 }
 
-return {icaljsAbandons, icaljsMonthdayRollover, dmfsWeeknoOverflow, libicalWeekYearTruncated, libicalWeeksInYearBlind, icaljsNegativeSetposRollover, analyze};
+return {icaljsAbandons, icaljsMonthdayRollover, dmfsWeeknoOverflow, libicalWeekYearTruncated, libicalWeeksInYearBlind, icaljsNegativeSetposRollover, icaljsContractingNegative, analyze};
 })();
 
 // ---- src/icalinput.js --------------------------------------------------

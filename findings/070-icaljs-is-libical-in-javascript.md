@@ -191,6 +191,72 @@ under their own `FREQ`. `ical.js` answers none of them correctly** — 42 abort,
 27 return a wrong list, 3 match the `dtstart_fill` alternative for unrelated
 reasons.
 
+> **Note added 2026-10-02.** Defect A is now a diagnostic in the debugger,
+> `icaljs-contracting-negative`, and building it turned this description into
+> an exact predictor of ical.js's answer rather than of its shape. The note is
+> computed from the user's own rule: it decides which of the two symptoms
+> applies, and where a stream comes back it shows the stream.
+>
+> The predictor is `icaljsContractingNegative` in `web/src/diagnostics.js`.
+> Its model is that ical.js answers the rule exactly as it answers **the rule
+> with every negative `BYMONTHDAY` and ordinal `BYDAY` deleted**, and that the
+> search fails to terminate precisely when that stripped rule has nothing left
+> to find. `web/test/icaljs-contracting-negative.mjs` requires that to hold
+> against ical.js 2.2.1, each case in its own child process with a 16 MB heap:
+>
+> ```
+> ical.js 2.2.1, one child per case at 16 MB
+> in scope:   190 predictions
+>    122 of an exact stream, reproduced byte for byte
+>     56 of no answer at all, shown by the heap abort itself (DAILY, HOURLY)
+>     12 of no answer at all at MINUTELY/SECONDLY, shown only by silence for
+>        3000 ms beside a control that answers in it -- a weaker observation
+> controls:   84 declined by the guard, 66 of them run against the library
+> deadlines:  0
+> ```
+>
+> **Three things the conversion established that this finding did not.**
+>
+> 1. **`COUNT` does limited work and `UNTIL` does none.** This finding says
+>    "neither `COUNT` nor `UNTIL` helps: the abort happens inside the first
+>    `next()`". The first half is wrong in a way that matters and the second is
+>    understated. The *first* `next()` returns fine — it returns `DTSTART` —
+>    and the abort happens inside the **second**, so `COUNT=1` is answered and
+>    `COUNT=2` dies. `UNTIL` is not tested inside the loop at all, so
+>    `FREQ=DAILY;BYMONTHDAY=-1;UNTIL=` one day after `DTSTART` dies exactly as
+>    the unbounded rule does. The one case where `UNTIL` does rescue it is an
+>    `UNTIL` at or before `DTSTART`, which is answered with the empty set
+>    before the loop is entered; that is a declined shape in the predictor and
+>    the harness shows the library really does return nothing there.
+>
+> 2. **The heap abort is only a cheap signal at the two coarse frequencies.**
+>    Under a 16 MB heap it arrives in about 0.65 s at `FREQ=DAILY` and 1–3 s at
+>    `HOURLY`, but in more than 30 s at `MINUTELY` and far longer at
+>    `SECONDLY`: the allocation happens when the iterator crosses a period
+>    boundary, and a minutely rule crosses 1440 times fewer of them per
+>    iteration. So the harness proves the non-termination two different ways
+>    and counts them separately — by the abort where that is cheap, and
+>    elsewhere only by silence beside a control that answers in the same
+>    deadline, which is a weaker observation and is labelled as one.
+>
+> 3. **A positive ordinal `BYDAY` is the same defect.** This finding names
+>    `BYDAY=-1MO`. `BYDAY=5SA` under `FREQ=DAILY` never matches either, for
+>    the identical reason — `check_contract_restriction` compares the stored
+>    token against a bare weekday — so the predictor keys on *any* ordinal,
+>    not on a negative one. The corpus count of 72 in this finding counts
+>    negatives only and is left as measured.
+>
+> The predictor also needed one stage that is **not** this defect: ical.js's
+> first occurrence is `DTSTART` only when `DTSTART` is at or before the first
+> time-of-day the rule's *expanding* time parts permit on that day. At
+> `FREQ=DAILY` with `BYMINUTE=0,30`, an 08:30 `DTSTART` is not emitted at all
+> even though 08:30 is one of the permitted times, because 08:00 is already
+> behind it; at `FREQ=HOURLY` the same part contracts and `DTSTART` comes back
+> verbatim. That shape was the last thing the predictor was wrong about, and
+> modelling it — rather than excluding it — is what made the harness figures
+> above exact. The intermediate probe that found it was a throwaway script and
+> is not an artifact, so no count of it is quoted here.
+
 ## Defect B — `BYHOUR`, `BYMINUTE` and `BYSECOND` are iterated in rule order
 
 ```
