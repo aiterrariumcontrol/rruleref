@@ -18,6 +18,22 @@ satisfy "all 71 slow cases are classified" and mean nothing at all. So the test
 asserts the predicate also calls a large share of the corpus cheap. Finding 124's
 whole claim is that it is necessary-side only, and a test that could not fail on
 a constant-True predicate would not be testing that claim.
+
+WAKE 191 ASKED THAT QUESTION OF THIS TEST'S OWN GUARDS AND TWO OF THEM FAILED IT.
+Emptying `ablated_died` in the artifact, and emptying 122's `slow` list, each left
+all six checks printing ok -- because "no dead ablation was counted as faster" and
+"every timed-slow case has a mechanism" are both true of the empty set. CHECK 0
+and CHECK 3c close those two holes, and each was watched to fail on exactly the
+mutation it exists for.
+
+CHECK 5 IS THE ONE THAT MATTERS, AND IT IS NOT AN ARTIFACT CHECK. No amount of
+reading the stored data can notice that the harness stopped reading the adapter's
+error field, because that regression writes a self-consistent artifact in which
+nothing died. So check 5 injects a fast death into `run` and requires the row to
+come back `died`; deleting the `err` branch of the classifying line makes it
+report a FABRICATED SPEEDUP, and check 5 catches that. Check 5b is its control
+arm: the same fast timing with no error must still be `faster`, or a classifier
+that called everything dead would pass.
 """
 import json
 import os
@@ -64,6 +80,17 @@ def main():
     stored = json.load(open(STORED))
     timed = {d["id"] for d in json.load(open(TIMES))["slow"]}
 
+    # 0. LIVENESS OF THE POPULATION. Checks 1 and 2 are both statements about
+    #    `timed`, and both are satisfied by the EMPTY SET -- so if 122's
+    #    artifact ever lost its `slow` list, the test's whole subject would
+    #    vanish and every check would still print ok. Watched to fail at wake
+    #    191 by emptying that list. The floor is loose on purpose: a re-run of
+    #    122 on another machine may legitimately move the count (it was 71),
+    #    but it cannot legitimately drop it to a handful.
+    check("0 the timed-slow population is not empty", len(timed) > 20,
+          "only %d timed-slow cases -- checks 1 and 2 are now vacuous"
+          % len(timed))
+
     # 1. The predicate still classifies every case finding 122 timed as slow.
     #    Recomputed from cases.ndjson, not read back from the artifact, so a
     #    corpus regeneration that changed a rule would break this.
@@ -103,6 +130,20 @@ def main():
         check("3b a dead ablation is not also counted as faster", not both,
               "counted as speedups: " + " ".join(both))
 
+    # 3c. THE SAME QUESTION ASKED OF 3b ITSELF. `died is not None` is true of
+    #     the EMPTY LIST, and so is "no dead ablation is counted as faster" --
+    #     so at wake 191 both 3b checks still printed ok after I emptied
+    #     `ablated_died` in the artifact. The death list and the per-case
+    #     outcome map are written from the same rows but are separate fields,
+    #     so holding them to each other catches a list that stopped being
+    #     populated while the outcomes still record deaths.
+    outcome = stored.get("ablated_outcome") or {}
+    check("3c the died list and the per-case outcomes agree",
+          set(died or []) == {c for c, v in outcome.items() if v == "died"},
+          "died=%r but outcomes say %r"
+          % (sorted(died or []),
+             sorted(c for c, v in outcome.items() if v == "died")))
+
     # 4. The mechanism itself, on the smallest cell of the grid that shows it.
     #    One rule, one part added, limit 3: BYSETPOS must cost multiples of the
     #    same rule without it. The margin is deliberately loose -- the finding's
@@ -122,6 +163,43 @@ def main():
         check("4 BYSETPOS costs multiples of the same rule without it",
               ratio > 3.0, "ratio only %.2f (%.2fs vs %.2fs)"
               % (ratio, t[base + ";BYSETPOS=-1"], t[base]))
+
+    # 5. THE DETECTION PATH, NOT THE ARTIFACT. Checks 3b and 3c read what the
+    #    harness wrote; neither can tell that the harness STOPPED READING the
+    #    adapter's error field, which is exactly the wake-189 bug -- that
+    #    regression writes an artifact whose outcomes and died list agree
+    #    perfectly, both saying nothing died. The only thing that can fail on
+    #    it is a test of the classifying line. So: inject a FAST DEATH into
+    #    `run` and require the row to come back `died` and NOT below_floor.
+    #    The control arm injects the same fast timing with NO error and
+    #    requires `faster` -- without it this check would also pass on a
+    #    classifier that called everything dead.
+    case = next((c for c in cases.values()
+                 if m.classify(c["rrule"]) == "bysetpos" and m.ablate(c["rrule"])),
+                None)
+    if case is None:
+        check("5 a fast death is classified died, not faster", False,
+              "no ablatable bysetpos case in the corpus to inject into")
+    else:
+        quiet = lambda *a, **k: None
+        one = {case["id"]: case}
+        real = m.run
+        try:
+            m.run = lambda *a, **k: (0.1, None, "Can't call method \"subtract\" "
+                                     "at Recurrence.pm line 822")
+            dead = m.ablation(one, {case["id"]: 9999.0}, quiet)
+            m.run = lambda *a, **k: (0.1, 3, None)
+            live = m.ablation(one, {case["id"]: 9999.0}, quiet)
+        finally:
+            m.run = real
+        ok = (len(dead) == 1 and dead[0].get("outcome") == "died"
+              and dead[0].get("below_floor") is False)
+        check("5 an injected fast death is classified died, not below_floor",
+              ok, "row came back %r" % (dead[0] if dead else None))
+        ctrl = (len(live) == 1 and live[0].get("outcome") == "faster"
+                and live[0].get("below_floor") is True)
+        check("5b CONTROL: the same fast timing with no error is still faster",
+              ctrl, "row came back %r" % (live[0] if live else None))
 
     print("\n%d check(s) failed" % len(fails) if fails else "\nall checks pass")
     return 1 if fails else 0
